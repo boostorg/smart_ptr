@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>weak_ptr</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	</head>
+	<body bgcolor="#ffffff" text="#000000">
+		<h1><img src="../../c++boost.gif" alt="c++boost.gif (8819 bytes)" align="middle" width="277" height="86">weak_ptr 
+			class template</h1>
+		<p>The <b>weak_ptr</b> class template stores a pointer to an object that's already 
+			managed by a <b>shared_ptr</b>. When the object last <b>shared_ptr</b> to the 
+			object goes away and the object is deleted, all <b>weak_ptr</b> objects have 
+			their stored pointers set to 0.</p>
+		<p>Every <b>weak_ptr</b> meets the <b>CopyConstructible</b> and <b>Assignable</b> requirements 
+			of the C++ Standard Library, and so can be used in standard library containers. 
+			Comparison operators are supplied so that <b>weak_ptr</b> works with the 
+			standard library's associative containers.</p>
+		<p>The class template is parameterized on <b>T</b>, the type of the object pointed 
+			to. <b>T</b> must meet the smart pointer <a href="smart_ptr.htm#Common requirements">
+				common requirements</a>.</p>
+		<P>Compared to&nbsp;<STRONG>shared_ptr</STRONG>, <STRONG>weak_ptr</STRONG> provides 
+			a very limited subset of operations since accessing its stored pointer is 
+			unsafe in multithreaded&nbsp;programs (that is, it may invoke undefined 
+			behavior.) Consider, for example, this innocent piece of code:</P>
+		<pre>
+shared_ptr&lt;int&gt; p(new int(5));
+weak_ptr&lt;int&gt; q(p);
+
+// some time later
+
+if(int * r = q.get())
+{
+	// use *r
+}
+</pre>
+		<P>Imagine that after the <STRONG>if</STRONG>, but immediately before <STRONG>r</STRONG>
+			is used, another thread executes the statement <code>p.reset()</code>. Now <STRONG>r</STRONG>
+			is a dangling pointer.</P>
+		<P>The solution to this problem is to create a temporary <STRONG>shared_ptr</STRONG>
+			from <STRONG>q</STRONG>:</P>
+		<pre>
+shared_ptr&lt;int&gt; p(new int(5));
+weak_ptr&lt;int&gt; q(p);
+
+// some time later
+
+if(shared_ptr&lt;int&gt; r = <a href="#make_shared">make_shared</a>(q))
+{
+	// use *r
+}
+</pre>
+		<p>Now <STRONG>r</STRONG> holds a reference to the object that was pointed by <STRONG>q</STRONG>. 
+			Even if <code>p.reset()</code> is executed in another thread, the object will 
+			stay alive until <STRONG>r</STRONG> goes out of scope (or is reset.)</p>
+		<h2><a name="Synopsis">Synopsis</a></h2>
+		<pre>namespace boost {
+
+  template&lt;typename T&gt; class weak_ptr {
+
+    public:
+      typedef T <a href="#element_type">element_type</a>;
+
+      <a href="#constructors">weak_ptr</a>();
+      template&lt;typename Y&gt; <a href="#constructors">weak_ptr</a>(shared_ptr&lt;Y&gt; const &amp; r); // never throws
+      <a href="#destructor">~weak_ptr</a>(); // never throws
+
+      <a href="#constructors">weak_ptr</a>(weak_ptr const &amp; r); // never throws
+      template&lt;typename Y&gt; <a href="#constructors">weak_ptr</a>(weak_ptr&lt;Y&gt; const &amp; r); // never throws
+
+      weak_ptr &amp; <a href="#assignment">operator=</a>(weak_ptr const &amp; r); // never throws  
+      template&lt;typename Y&gt; weak_ptr &amp; <a href="#assignment">operator=</a>(weak_ptr&lt;Y&gt; const &amp; r); // never throws
+      template&lt;typename Y&gt; weak_ptr &amp; <a href="#assignment">operator=</a>(shared_ptr&lt;Y&gt; const &amp; r); // never throws
+
+      void <a href="#reset">reset</a>();
+      T * <a href="#get">get</a>() const; // never throws; unsafe in multithreaded code!
+
+      long <a href="#use_count">use_count</a>() const; // never throws
+      bool <a href="#expired">expired</a>() const; // never throws
+
+      void <a href="#swap">swap</a>(weak_ptr&lt;T&gt; &amp; b); // never throws
+  };
+
+  template&lt;typename T, typename U&gt;
+    bool <a href="#comparison">operator==</a>(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;U&gt; const &amp; b); // never throws
+  template&lt;typename T, typename U&gt;
+    bool <a href="#comparison">operator!=</a>(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;U&gt; const &amp; b); // never throws
+  template&lt;typename T&gt;
+    bool <a href="#comparison">operator&lt;</a>(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;T&gt; const &amp; b); // never throws
+
+  template&lt;typename T&gt; void <a href="#free-swap">swap</a>(weak_ptr&lt;T&gt; &amp; a, weak_ptr&lt;T&gt; &amp; b); // never throws
+
+  template&lt;typename T&gt;
+    shared_ptr&lt;T&gt; <a href="#make_shared">make_shared</a>(weak_ptr&lt;T&gt; const &amp; r); // never throws
+
+}
+</pre>
+		<h2><a name="Members">Members</a></h2>
+		<h3><a name="element_type">element_type</a></h3>
+		<pre>typedef T element_type;</pre>
+		<blockquote>
+			<p>Provides the type of the template parameter T.</p>
+		</blockquote>
+		<h3><a name="constructors">constructors</a></h3>
+		<pre>explicit weak_ptr();</pre>
+		<blockquote>
+			<p><b>Effects:</b> Constructs a <b>weak_ptr</b>.</p>
+			<p><b>Postconditions:</b> <A href="#use_count">use count</A> is 0; the stored 
+				pointer is 0.</p>
+			<p><b>Throws:</b> <b>std::bad_alloc</b>.</p>
+			<p><b>Exception safety:</b> If an exception is thrown, the constructor has no 
+				effect.</p>
+			<P><B>Notes:</B> <B>T</B> need not be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</blockquote>
+		<pre>template&lt;typename Y&gt; weak_ptr</A>(shared_ptr&lt;Y&gt; const &amp; r); // never throws</pre>
+		<blockquote>
+			<p><b>Effects:</b> Constructs a <b>weak_ptr</b>, as if by storing a copy of the 
+				pointer stored in <b>r</b>.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> The <a href="#use_count">use count</a> for all copies is 
+				unchanged. When the last <b>shared_ptr</b> is destroyed, the use count and 
+				stored pointer become 0.</P>
+		</blockquote>
+		<pre>weak_ptr(weak_ptr const &amp; r); // never throws
+template&lt;typename Y&gt; weak_ptr(weak_ptr&lt;Y&gt; const &amp; r); // never throws</pre>
+		<blockquote>
+			<p><b>Effects:</b> Constructs a <b>weak_ptr</b>, as if by storing a copy of the 
+				pointer stored in <b>r</b>.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> The <a href="#use_count">use count</a> for all copies is 
+				unchanged.</P>
+		</blockquote>
+		<h3><a name="destructor">destructor</a></h3>
+		<pre>~weak_ptr(); // never throws</pre>
+		<BLOCKQUOTE>
+			<P><B>Effects:</B> Destroys this <b>weak_ptr</b> but has no effect on the object 
+				its stored pointer points to.</P>
+			<P><B>Throws:</B> nothing.</P>
+			<P><B>Notes:</B> <B>T</B> need not be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</BLOCKQUOTE>
+		<h3><a name="assignment">assignment</a></h3>
+		<pre>weak_ptr &amp; <a href="#assignment">operator=</a>(weak_ptr const &amp; r); // never throws
+template&lt;typename Y&gt; weak_ptr &amp; <a href="#assignment">operator=</a>(weak_ptr&lt;Y&gt; const &amp; r); // never throws
+template&lt;typename Y&gt; weak_ptr &amp; <a href="#assignment">operator=</a>(shared_ptr&lt;Y&gt; const &amp; r); // never throws</pre>
+		<BLOCKQUOTE>
+			<P><B>Effects:</B> Equivalent to <code>weak_ptr(r).swap(*this)</code>.</P>
+			<P><B>Throws:</B> nothing.</P>
+			<P><B>Notes:</B> The implementation is free to meet the effects (and the implied 
+				guarantees) via different means, without creating a temporary.</P>
+		</BLOCKQUOTE>
+		<h3><a name="reset">reset</a></h3>
+		<pre>void reset();</pre>
+		<BLOCKQUOTE>
+			<P><B>Effects:</B> Equivalent to <code>weak_ptr().swap(*this)</code>.</P>
+		</BLOCKQUOTE>
+		<h3><a name="get">get</a></h3>
+		<pre>T * get() const; // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> the stored pointer (0 if all <b>shared_ptr</b> objects for that 
+				pointer are destroyed.)</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> Using <b>get</b> in multithreaded code is dangerous. After the 
+				function returns, the pointed-to object may be destroyed by a different thread, 
+				since the <b>weak_ptr</b> doesn't affect its <b>use_count</b>.</P>
+		</blockquote>
+		<h3><a name="use_count">use_count</a></h3>
+		<pre>long use_count() const; // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> the number of <b>shared_ptr</b> objects sharing ownership of the 
+				stored pointer.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> <code>use_count()</code> is not necessarily efficient. Use only 
+				for debugging and testing purposes, not for production code. <B>T</B> need not 
+				be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</blockquote>
+		<h3><a name="expired">expired</a></h3>
+		<pre>bool expired() const; // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> <code>use_count() == 0</code>.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> <code>expired()</code> may be faster than <code>use_count()</code>.
+				<B>T</B> need not be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</blockquote>
+		<h3><a name="swap">swap</a></h3>
+		<pre>void swap(weak_ptr &amp; b); // never throws</pre>
+		<blockquote>
+			<p><b>Effects:</b> Exchanges the contents of the two smart pointers.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> <B>T</B> need not be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</blockquote>
+		<h2><a name="functions">Free Functions</a></h2>
+		<h3><a name="comparison">comparison</a></h3>
+		<pre>template&lt;typename T, typename U&gt;
+  bool operator==(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;U&gt; const &amp; b); // never throws
+template&lt;typename T, typename U&gt;
+  bool operator!=(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;U&gt; const &amp; b); // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> <code>a.get() == b.get()</code>.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> <B>T</B> need not be a complete type. See the smart pointer <A href="smart_ptr.htm#Common requirements">
+					common requirements</A>.</P>
+		</blockquote>
+		<pre>template&lt;typename T&gt;
+  bool operator&lt;(weak_ptr&lt;T&gt; const &amp; a, weak_ptr&lt;T&gt; const &amp; b); // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> an implementation-defined value such that <b>operator&lt;</b> is 
+				a strict weak ordering as described in section 25.3 <code>[lib.alg.sorting]</code>
+				of the C++ standard.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<P><B>Notes:</B> Allows <STRONG>weak_ptr</STRONG> objects to be used as keys in 
+				associative containers. <B>T</B> need not be a complete type. See the smart 
+				pointer <A href="smart_ptr.htm#Common requirements">common requirements</A>.</P>
+		</blockquote>
+		<h3><a name="free-swap">swap</a></h3>
+		<pre>template&lt;typename T&gt;
+  void swap(weak_ptr&lt;T&gt; &amp; a, weak_ptr&lt;T&gt; &amp; b) // never throws</pre>
+		<BLOCKQUOTE>
+			<P><B>Effects:</B> Equivalent to <code>a.swap(b)</code>.</P>
+			<P><B>Throws:</B> nothing.</P>
+			<P><B>Notes:</B> Matches the interface of <B>std::swap</B>. Provided as an aid to 
+				generic programming.</P>
+		</BLOCKQUOTE>
+		<h3><a name="make_shared">make_shared</a></h3>
+		<pre>template&lt;typename T&gt;
+  shared_ptr&lt;T&gt; make_shared(weak_ptr&lt;T&gt; &amp; const r) // never throws</pre>
+		<BLOCKQUOTE>
+			<P><B>Returns:</B> <code>r.expired()? shared_ptr&lt;T&gt;(): shared_ptr&lt;T&gt;(r)</code>.</P>
+			<P><B>Throws:</B> nothing.</P>
+		</BLOCKQUOTE>
+		<hr>
+		<p>Revised 12 March 2002<!--webbot bot="Timestamp" i-checksum="38439" endspan --></p>
+		<p>Copyright 1999 Greg Colvin and Beman Dawes. Copyright 2002 Darin Adler. 
+			Copyright 2002 Peter Dimov. Permission to copy, use, modify, sell and 
+			distribute this document is granted provided this copyright notice appears in 
+			all copies. This document is provided "as is" without express or implied 
+			warranty, and with no claim as to its suitability for any purpose.</p>
+		</A>
+	</body>
+</html>

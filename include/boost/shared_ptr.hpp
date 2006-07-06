@@ -330,7 +330,7 @@ public:
         return px != 0;
     }
 
-#elif defined( _MANAGED )
+#elif defined( _MANAGED ) || defined( __SUNPRO_CC )
 
     static void unspecified_bool( this_type*** )
     {

@@ -323,14 +323,14 @@ public:
 
     // implicit conversion to "bool"
 
-#if defined(__SUNPRO_CC) && BOOST_WORKAROUND(__SUNPRO_CC, <= 0x530)
+#if defined(__SUNPRO_CC) && BOOST_WORKAROUND(__SUNPRO_CC, <= 0x580)
 
     operator bool () const
     {
         return px != 0;
     }
 
-#elif defined( _MANAGED ) || defined( __SUNPRO_CC )
+#elif defined( _MANAGED )
 
     static void unspecified_bool( this_type*** )
     {

@@ -1,17 +1,11 @@
-#ifndef BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
-#define BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
-
-// MS compatible compilers support #pragma once
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
-# pragma once
-#endif
+#ifndef BOOST_DETAIL_SP_COUNTED_BASE_ACC_IA64_HPP_INCLUDED
+#define BOOST_DETAIL_SP_COUNTED_BASE_ACC_IA64_HPP_INCLUDED
 
 //
-//  detail/sp_counted_base_cw_ppc.hpp - CodeWarrior on PowerPC
+//  detail/sp_counted_base_acc_ia64.hpp - aC++ on HP-UX IA64
 //
-//  Copyright (c) 2001, 2002, 2003 Peter Dimov and Multi Media Ltd.
-//  Copyright 2004-2005 Peter Dimov
+//  Copyright 2007 Baruch Zilber
+//  Copyright 2007 Boris Gubenko
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -20,11 +14,9 @@
 //
 //  Lock-free algorithm by Alexander Terekhov
 //
-//  Thanks to Ben Hitchings for the #weak + (#shared != 0)
-//  formulation
-//
 
 #include "sp_typeinfo.hpp"
+#include <machine/sys/inline.h>
 
 namespace boost
 {
@@ -32,63 +24,51 @@ namespace boost
 namespace detail
 {
 
-inline void atomic_increment( register long * pw )
+inline void atomic_increment( int * pw )
 {
-    register int a;
+    // ++*pw;
 
-    asm
+    _Asm_fetchadd(_FASZ_W, _SEM_REL, pw, +1, _LDHINT_NONE);
+} 
+
+inline int atomic_decrement( int * pw )
+{
+    // return --*pw;
+
+    int r = static_cast<int>(_Asm_fetchadd(_FASZ_W, _SEM_REL, pw, -1, _LDHINT_NONE));
+    if (1 == r)
     {
-loop:
-
-    lwarx   a, 0, pw
-    addi    a, a, 1
-    stwcx.  a, 0, pw
-    bne-    loop
+        _Asm_mf();
     }
+    
+    return r - 1;
 }
 
-inline long atomic_decrement( register long * pw )
+inline int atomic_conditional_increment( int * pw )
 {
-    register int a;
+    // if( *pw != 0 ) ++*pw;
+    // return *pw;
 
-    asm
+    int v = *pw;
+    
+    for (;;)
     {
-    sync
-
-loop:
-
-    lwarx   a, 0, pw
-    addi    a, a, -1
-    stwcx.  a, 0, pw
-    bne-    loop
-
-    isync
+        if (0 == v)
+        {
+            return 0;
+        }
+        
+        _Asm_mov_to_ar(_AREG_CCV,
+                       v,
+                       (_UP_CALL_FENCE | _UP_SYS_FENCE | _DOWN_CALL_FENCE | _DOWN_SYS_FENCE));
+        int r = static_cast<int>(_Asm_cmpxchg(_SZ_W, _SEM_ACQ, pw, v + 1, _LDHINT_NONE));
+        if (r == v)
+        {
+            return r + 1;
+        }
+        
+        v = r;
     }
-
-    return a;
-}
-
-inline long atomic_conditional_increment( register long * pw )
-{
-    register int a;
-
-    asm
-    {
-loop:
-
-    lwarx   a, 0, pw
-    cmpwi   a, 0
-    beq     store
-
-    addi    a, a, 1
-
-store:
-
-    stwcx.  a, 0, pw
-    bne-    loop
-    }
-
-    return a;
 }
 
 class sp_counted_base
@@ -98,8 +78,8 @@ private:
     sp_counted_base( sp_counted_base const & );
     sp_counted_base & operator= ( sp_counted_base const & );
 
-    long use_count_;        // #shared
-    long weak_count_;       // #weak + (#shared != 0)
+    int use_count_;        // #shared
+    int weak_count_;       // #weak + (#shared != 0)
 
 public:
 
@@ -159,7 +139,7 @@ public:
 
     long use_count() const // nothrow
     {
-        return static_cast<long const volatile &>( use_count_ );
+        return static_cast<int const volatile &>( use_count_ ); // TODO use ld.acq here
     }
 };
 
@@ -167,4 +147,4 @@ public:
 
 } // namespace boost
 
-#endif  // #ifndef BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
+#endif  // #ifndef BOOST_DETAIL_SP_COUNTED_BASE_ACC_IA64_HPP_INCLUDED

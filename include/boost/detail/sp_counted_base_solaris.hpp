@@ -1,17 +1,13 @@
-#ifndef BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
-#define BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
-
-// MS compatible compilers support #pragma once
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
-# pragma once
-#endif
+#ifndef BOOST_DETAIL_SP_COUNTED_BASE_SOLARIS_HPP_INCLUDED
+#define BOOST_DETAIL_SP_COUNTED_BASE_SOLARIS_HPP_INCLUDED
 
 //
-//  detail/sp_counted_base_cw_ppc.hpp - CodeWarrior on PowerPC
+//  detail/sp_counted_base_solaris.hpp
+//   based on: detail/sp_counted_base_w32.hpp
 //
 //  Copyright (c) 2001, 2002, 2003 Peter Dimov and Multi Media Ltd.
 //  Copyright 2004-2005 Peter Dimov
+//  Copyright 2006 Michael van der Westhuizen
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -25,71 +21,13 @@
 //
 
 #include "sp_typeinfo.hpp"
+#include <atomic.h>
 
 namespace boost
 {
 
 namespace detail
 {
-
-inline void atomic_increment( register long * pw )
-{
-    register int a;
-
-    asm
-    {
-loop:
-
-    lwarx   a, 0, pw
-    addi    a, a, 1
-    stwcx.  a, 0, pw
-    bne-    loop
-    }
-}
-
-inline long atomic_decrement( register long * pw )
-{
-    register int a;
-
-    asm
-    {
-    sync
-
-loop:
-
-    lwarx   a, 0, pw
-    addi    a, a, -1
-    stwcx.  a, 0, pw
-    bne-    loop
-
-    isync
-    }
-
-    return a;
-}
-
-inline long atomic_conditional_increment( register long * pw )
-{
-    register int a;
-
-    asm
-    {
-loop:
-
-    lwarx   a, 0, pw
-    cmpwi   a, 0
-    beq     store
-
-    addi    a, a, 1
-
-store:
-
-    stwcx.  a, 0, pw
-    bne-    loop
-    }
-
-    return a;
-}
 
 class sp_counted_base
 {
@@ -98,8 +36,8 @@ private:
     sp_counted_base( sp_counted_base const & );
     sp_counted_base & operator= ( sp_counted_base const & );
 
-    long use_count_;        // #shared
-    long weak_count_;       // #weak + (#shared != 0)
+    uint32_t use_count_;        // #shared
+    uint32_t weak_count_;       // #weak + (#shared != 0)
 
 public:
 
@@ -127,17 +65,22 @@ public:
 
     void add_ref_copy()
     {
-        atomic_increment( &use_count_ );
+        atomic_inc_32( &use_count_ );
     }
 
     bool add_ref_lock() // true on success
     {
-        return atomic_conditional_increment( &use_count_ ) != 0;
+        for( ;; )
+        {
+            uint32_t tmp = static_cast< uint32_t const volatile& >( use_count_ );
+            if( tmp == 0 ) return false;
+            if( atomic_cas_32( &use_count_, tmp, tmp + 1 ) == tmp ) return true;
+        }
     }
 
     void release() // nothrow
     {
-        if( atomic_decrement( &use_count_ ) == 0 )
+        if( atomic_dec_32_nv( &use_count_ ) == 0 )
         {
             dispose();
             weak_release();
@@ -146,12 +89,12 @@ public:
 
     void weak_add_ref() // nothrow
     {
-        atomic_increment( &weak_count_ );
+        atomic_inc_32( &weak_count_ );
     }
 
     void weak_release() // nothrow
     {
-        if( atomic_decrement( &weak_count_ ) == 0 )
+        if( atomic_dec_32_nv( &weak_count_ ) == 0 )
         {
             destroy();
         }
@@ -167,4 +110,4 @@ public:
 
 } // namespace boost
 
-#endif  // #ifndef BOOST_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
+#endif  // #ifndef BOOST_DETAIL_SP_COUNTED_BASE_SOLARIS_HPP_INCLUDED

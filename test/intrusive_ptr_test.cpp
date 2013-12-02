@@ -330,6 +330,13 @@ void test()
 
         BOOST_TEST(get_pointer(px) == px.get());
     }
+
+    {
+        boost::intrusive_ptr<X> px(new X);
+        X* detached = px.detach();
+        BOOST_TEST(detached->use_count() == 1);
+        delete detached;
+    }
 }
 
 } // namespace n_access

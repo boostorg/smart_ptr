@@ -71,6 +71,7 @@
       T &amp; <A href="#indirection" >operator*</A>() const; // never throws
       T * <A href="#indirection" >operator-&gt;</A>() const; // never throws
       T * <A href="#get" >get</A>() const; // never throws
+      T * <A href="#detach" >detach</A>(); // never throws
 
       operator <A href="#conversions" ><i>unspecified-bool-type</i></A>() const; // never throws
 
@@ -178,6 +179,22 @@ intrusive_ptr &amp; operator=(T * r);</pre>
 		<blockquote>
 			<p><b>Returns:</b> the stored pointer.</p>
 			<p><b>Throws:</b> nothing.</p>
+		</blockquote>
+		<h3><a name="detach">detach</a></h3>
+		<pre>T * detach(); // never throws</pre>
+		<blockquote>
+			<p><b>Returns:</b> the stored pointer.</p>
+			<p><b>Throws:</b> nothing.</p>
+			<p><b>Postconditions:</b> <code>get() == 0</code>.</p>
+			<p><b>Notes:</b> The returned pointer has an elevated reference count. This
+				allows conversion of an <b>intrusive_ptr</b> back to a raw pointer,
+				without the performance overhead of acquiring and dropping an extra
+				reference. It can be viewed as the complement of the
+				non-reference-incrementing constructor.</p>
+			<p><b>Caution:</b> Using <code>detach</code> escapes the safety of automatic
+				reference counting provided by <code>intrusive_ptr</code>. It should
+				by used only where strictly necessary (such as when interfacing to an
+				existing API), and when the implications are thoroughly understood.</p>
 		</blockquote>
 		<h3><a name="conversions">conversions</a></h3>
 		<pre>operator <i>unspecified-bool-type</i> () const; // never throws</pre>

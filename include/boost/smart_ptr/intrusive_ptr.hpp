@@ -151,6 +151,13 @@ public:
         return px;
     }
 
+    T * detach() BOOST_NOEXCEPT
+    {
+        T * ret = px;
+        px = 0;
+        return ret;
+    }
+
     T & operator*() const
     {
         BOOST_ASSERT( px != 0 );

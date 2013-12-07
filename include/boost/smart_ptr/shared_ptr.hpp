@@ -70,6 +70,7 @@ template< class T > struct sp_element
     typedef T type;
 };
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T > struct sp_element< T[] >
 {
@@ -85,6 +86,7 @@ template< class T, std::size_t N > struct sp_element< T[N] >
 
 #endif
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // sp_dereference, return type of operator*
 
@@ -117,6 +119,7 @@ template<> struct sp_dereference< void const volatile >
 
 #endif // !defined(BOOST_NO_CV_VOID_SPECIALIZATIONS)
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T > struct sp_dereference< T[] >
 {
@@ -132,6 +135,7 @@ template< class T, std::size_t N > struct sp_dereference< T[N] >
 
 #endif
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // sp_member_access, return type of operator->
 
@@ -140,6 +144,7 @@ template< class T > struct sp_member_access
     typedef T * type;
 };
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T > struct sp_member_access< T[] >
 {
@@ -155,6 +160,7 @@ template< class T, std::size_t N > struct sp_member_access< T[N] >
 
 #endif
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // sp_array_access, return type of operator[]
 
@@ -163,6 +169,7 @@ template< class T > struct sp_array_access
     typedef void type;
 };
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T > struct sp_array_access< T[] >
 {
@@ -178,6 +185,7 @@ template< class T, std::size_t N > struct sp_array_access< T[N] >
 
 #endif
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // sp_extent, for operator[] index check
 
@@ -186,12 +194,14 @@ template< class T > struct sp_extent
     enum _vt { value = 0 };
 };
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T, std::size_t N > struct sp_extent< T[N] >
 {
     enum _vt { value = N };
 };
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // enable_shared_from_this support
 
@@ -267,6 +277,7 @@ template< class T, class Y > inline void sp_pointer_construct( boost::shared_ptr
     boost::detail::sp_enable_shared_from_this( ppx, p, p );
 }
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T, class Y > inline void sp_pointer_construct( boost::shared_ptr< T[] > * /*ppx*/, Y * p, boost::detail::shared_count & pn )
 {
@@ -280,6 +291,7 @@ template< class T, std::size_t N, class Y > inline void sp_pointer_construct( bo
     boost::detail::shared_count( p, boost::checked_array_deleter< T >() ).swap( pn );
 }
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 // deleter constructor helper
 
@@ -288,6 +300,7 @@ template< class T, class Y > inline void sp_deleter_construct( boost::shared_ptr
     boost::detail::sp_enable_shared_from_this( ppx, p, p );
 }
 
+#if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 template< class T, class Y > inline void sp_deleter_construct( boost::shared_ptr< T[] > * /*ppx*/, Y * /*p*/ )
 {
@@ -299,6 +312,7 @@ template< class T, std::size_t N, class Y > inline void sp_deleter_construct( bo
     sp_assert_convertible< Y[N], T[N] >();
 }
 
+#endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
 } // namespace detail
 

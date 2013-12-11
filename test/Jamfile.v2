@@ -1,6 +1,6 @@
 #  Boost.SmartPtr Library test Jamfile
 #
-#  Copyright (c) 2003-2007 Peter Dimov
+#  Copyright (c) 2003-2013 Peter Dimov
 #  Copyright (c) 2003 Dave Abrahams
 #
 #  Distributed under the Boost Software License, Version 1.0. (See
@@ -78,6 +78,7 @@ import testing ;
           [ run sp_array_cast_test.cpp ]
           [ run sp_zero_compare_test.cpp ]
           [ run sp_nullptr_test.cpp ]
+          [ run sa_nullptr_test.cpp ]
 
           [ compile-fail array_fail_spa_sp_c.cpp ]
           [ compile-fail array_fail_sp_spa_c.cpp ]

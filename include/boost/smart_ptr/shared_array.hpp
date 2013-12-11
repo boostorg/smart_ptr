@@ -61,6 +61,14 @@ public:
     {
     }
 
+#if !defined( BOOST_NO_CXX11_NULLPTR )
+
+    shared_array( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT : px( 0 ), pn()
+    {
+    }
+
+#endif
+
     template<class Y>
     explicit shared_array( Y * p ): px( p ), pn( p, checked_array_deleter<Y>() )
     {

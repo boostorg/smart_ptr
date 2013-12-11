@@ -694,7 +694,7 @@ template&lt;class T&gt;
 			built-in types. A <code>shared_ptr</code> instance can be "read" (accessed
 			using only const operations) simultaneously by multiple threads. Different <code>shared_ptr</code>
 			instances can be "written to" (accessed using mutable operations such as <code>operator=
-			</code>or <code>reset</code>) simultaneosly by multiple threads (even
+			</code>or <code>reset</code>) simultaneously by multiple threads (even
 			when these instances are copies, and share the same reference count
 			underneath.)</p>
 		<p>Any other simultaneous accesses result in undefined behavior.</p>

@@ -16,10 +16,6 @@
 
 #include <boost/config.hpp>   // for broken compiler workarounds
 
-#if defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(BOOST_MSVC6_MEMBER_TEMPLATES)
-#include <boost/smart_ptr/detail/shared_array_nmt.hpp>
-#else
-
 #include <memory>             // TR1 cyclic inclusion fix
 
 #include <boost/assert.hpp>
@@ -292,7 +288,5 @@ template< class D, class T > D * get_deleter( shared_array<T> const & p )
 }
 
 } // namespace boost
-
-#endif  // #if defined(BOOST_NO_MEMBER_TEMPLATES) && !defined(BOOST_MSVC6_MEMBER_TEMPLATES)
 
 #endif  // #ifndef BOOST_SMART_PTR_SHARED_ARRAY_HPP_INCLUDED

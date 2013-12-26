@@ -332,9 +332,26 @@ void test()
     }
 
     {
-        boost::intrusive_ptr<X> px(new X);
+        boost::intrusive_ptr<X> px;
         X* detached = px.detach();
-        BOOST_TEST(detached->use_count() == 1);
+        BOOST_TEST( px.get() == 0 );
+        BOOST_TEST( detached == 0 );
+    }
+
+    {
+        X * p = new X;
+        BOOST_TEST( p->use_count() == 0 );
+
+        boost::intrusive_ptr<X> px( p );
+        BOOST_TEST( px.get() == p );
+        BOOST_TEST( px->use_count() == 1 );
+
+        X * detached = px.detach();
+        BOOST_TEST( px.get() == 0 );
+
+        BOOST_TEST( detached == p );
+        BOOST_TEST( detached->use_count() == 1 );
+
         delete detached;
     }
 }

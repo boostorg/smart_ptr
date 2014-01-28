@@ -9,6 +9,7 @@
 #ifndef BOOST_SMART_PTR_DETAIL_ARRAY_DELETER_HPP
 #define BOOST_SMART_PTR_DETAIL_ARRAY_DELETER_HPP
 
+#include <boost/smart_ptr/detail/array_traits.hpp>
 #include <boost/smart_ptr/detail/array_utility.hpp>
 
 namespace boost {
@@ -35,9 +36,9 @@ namespace boost {
                 object = memory;
             }
 
-            template<std::size_t M>
-            void init(T* memory, const T* list) {
-                array_init<T, M>(memory, size, list);
+            template<std::size_t N>
+            void init(T* memory, const T* value) {
+                array_init<T, N>(memory, size, value);
                 object = memory;
             }
 
@@ -77,8 +78,8 @@ namespace boost {
             }
 
             template<std::size_t M>
-            void init(T* memory, const T* list) {
-                array_init<T, M>(memory, N, list);
+            void init(T* memory, const T* value) {
+                array_init<T, M>(memory, N, value);
                 object = memory;
             }
 

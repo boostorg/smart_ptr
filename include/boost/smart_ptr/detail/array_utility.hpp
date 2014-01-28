@@ -16,11 +16,13 @@
 namespace boost {
     namespace detail {
         template<typename T>
-        inline void array_destroy(T*, std::size_t, boost::true_type) {
+        inline void array_destroy(T*, std::size_t, 
+            boost::true_type) {
         }
 
         template<typename T>
-        inline void array_destroy(T* memory, std::size_t size, boost::false_type) {
+        inline void array_destroy(T* memory, std::size_t size, 
+            boost::false_type) {
             for (std::size_t i = size; i > 0; ) {
                 memory[--i].~T();
             }
@@ -33,7 +35,8 @@ namespace boost {
         }
 
         template<typename T>
-        inline void array_value(T* memory, std::size_t size, boost::true_type) {
+        inline void array_value(T* memory, std::size_t size, 
+            boost::true_type) {
             for (std::size_t i = 0; i < size; i++) {
                 void* p1 = memory + i;
                 ::new(p1) T();
@@ -41,7 +44,8 @@ namespace boost {
         }
         
         template<typename T>
-        inline void array_value(T* memory, std::size_t size, boost::false_type) {
+        inline void array_value(T* memory, std::size_t size, 
+            boost::false_type) {
 #if !defined(BOOST_NO_EXCEPTIONS)
             std::size_t i = 0;
             try {
@@ -68,7 +72,8 @@ namespace boost {
         }
 
         template<typename T, std::size_t N>
-        inline void array_init(T* memory, std::size_t size, const T* list) {
+        inline void array_init(T* memory, std::size_t size, 
+            const T* list) {            
 #if !defined(BOOST_NO_EXCEPTIONS)
             std::size_t i = 0;
             try {
@@ -89,11 +94,13 @@ namespace boost {
         }
 
         template<typename T>
-        inline void array_default(T*, std::size_t, boost::true_type) {
+        inline void array_default(T*, std::size_t, 
+            boost::true_type) {
         }
 
         template<typename T>
-        inline void array_default(T* memory, std::size_t size, boost::false_type) {
+        inline void array_default(T* memory, std::size_t size, 
+            boost::false_type) {
 #if !defined(BOOST_NO_EXCEPTIONS)
             std::size_t i = 0;
             try {

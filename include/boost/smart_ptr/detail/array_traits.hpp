@@ -9,13 +9,13 @@
 #ifndef BOOST_SMART_PTR_DETAIL_ARRAY_TRAITS_HPP
 #define BOOST_SMART_PTR_DETAIL_ARRAY_TRAITS_HPP
 
-#include <boost/type_traits/remove_cv.hpp>
+#include <cstddef>
 
 namespace boost {
     namespace detail {
         template<typename T>
         struct array_base {
-            typedef typename boost::remove_cv<T>::type type;
+            typedef T type;
         };
 
         template<typename T>

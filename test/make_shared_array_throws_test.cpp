@@ -84,8 +84,7 @@ int main() {
     try {
         boost::make_shared_noinit<type[6]>();
         BOOST_ERROR("make_shared_noinit did not throw");
-    }
-    catch (...) {
+    } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
 
@@ -93,8 +92,7 @@ int main() {
     try {
         boost::make_shared_noinit<type[3][2]>();
         BOOST_ERROR("make_shared_noinit did not throw");
-    }
-    catch (...) {
+    } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
 

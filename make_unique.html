@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>make_unique</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  </head>
+  <body text="#000000" bgcolor="#ffffff" link="#0000ff" vlink="#0000ff">
+    <h1><img height="86" alt="boost.png (6897 bytes)" src="../../boost.png" 
+      width="277" align="middle" border="0">make_unique</h1>
+    <p><a href="#Introduction">Introduction</a><br>
+      <a href="#Synopsis">Synopsis</a><br>
+      <a href="#functions">Free Functions</a><br>
+      <a href="#example">Examples</a><br>
+      <a href="#history">History</a></p>
+    <h2><a name="Introduction">Introduction</a></h2>
+    <p>The header file &lt;boost/make_unique.hpp&gt; provides a family of 
+      overloaded function template <code>make_unique</code> for convenient 
+      creation of <code>unique_ptr</code> objects.</p>
+    <h2><a name="Synopsis">Synopsis</a></h2>
+    <pre>namespace boost {
+    template&lt;typename U&gt; // U is not array
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>();
+
+#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+    template&lt;typename U, typename... Args&gt; // U is not array
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(Args&amp;&amp;... args);
+#endif
+
+    template&lt;typename U&gt; // U is not array
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique_noinit</a>();
+
+    template&lt;typename U&gt; // U is T[]
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(size_t size);
+
+    template&lt;typename U&gt; // U is T[]
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique_noinit</a>(size_t size);
+}</pre>
+    <h2><a name="functions">Free Functions</a></h2>
+    <pre>template&lt;typename U&gt; // U is not array
+unique_ptr&lt;U&gt; make_unique();</pre> 
+    <blockquote>
+      <p><b>Requires:</b> The expression <code>new U()</code> shall be 
+        well-formed.</p>
+      <p><b>Effects:</b> Constructs an object of type <code>U</code> via the 
+        expression <code>new U()</code>.</p>
+      <p><b>Returns:</b> A <code>unique_ptr</code> instance that stores and 
+        owns the address of the newly constructed object.</p>
+      <p><b>Postconditions:</b> <code>get() != 0</code>.</p>
+      <p><b>Throws:</b> <code>bad_alloc</code>, or an exception thrown from 
+        the constructor of <code>U</code>.</p>
+    </blockquote>
+    <pre>template&lt;typename U, typename... Args&gt; // U is not array
+unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre>
+    <blockquote>
+      <p><b>Requires:</b> The expression 
+        <code>new U(forward&lt;Args&gt;(args)...)</code> shall be 
+        well-formed.</p>
+      <p><b>Effects:</b> Constructs an object of type <code>U</code> via the 
+        expression <code>new U(forward&lt;Args&gt;(args)...)</code>.</p>
+    </blockquote>
+    <pre>template&lt;typename U&gt; // U is not array
+unique_ptr&lt;U&gt; make_unique_noinit();</pre>
+    <blockquote>
+      <p><b>Requires:</b> The expression <code>new U</code> shall be 
+        well-formed.</p>
+      <p><b>Effects:</b> Constructs an object of type <code>U</code> via the 
+        expression <code>new U</code>.</p>
+    </blockquote>
+    <pre>template&lt;typename U&gt; // U is T[]
+unique_ptr&lt;U&gt; make_unique(size_t size);</pre>
+    <blockquote>
+      <p><b>Requires:</b> The expression <code>new U()</code> shall be 
+        well-formed.</p>
+      <p><b>Effects:</b> Constructs an array of objects of type 
+        <code>U</code> and size <code>size</code> via the expression 
+        <code>new U[size]()</code>.</p>
+    </blockquote>
+    <pre>template&lt;typename U&gt; // U is T[]
+unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre>
+    <blockquote>
+      <p><b>Requires:</b> The expression <code>new U</code> shall be 
+        well-formed.</p>
+      <p><b>Effects:</b> Constructs an array of objects of type 
+        <code>U</code> and size <code>size</code> via the expression 
+        <code>new U[size]</code>.</p>
+    </blockquote>    
+    <h2><a name="example">Examples</a></h2>
+    <p>For objects with value-initialization.</p>
+    <blockquote>
+      <pre>std::unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();
+std::unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;();</pre>
+    </blockquote>
+    <p>For objects with construction arguments.</p>
+    <blockquote>
+      <pre>std::unique_ptr&lt;float&gt; p3 = boost::make_unique&lt;float&gt;(1.5);
+std::unique_ptr&lt;point&gt; p4 = boost::make_unique&lt;point&gt;(x, y);</pre>
+    </blockquote>
+    <p>For objects with default-initialization.</p>
+    <blockquote>
+      <pre>std::unique_ptr&lt;float&gt; p4 = boost::make_unique_noinit&lt;float&gt;();
+std::unique_ptr&lt;point&gt; p5 = boost::make_unique_noinit&lt;point&gt;();</pre>
+    </blockquote>
+    <p>For arrays with value-initialization.</p>
+    <blockquote>
+      <pre>std::unique_ptr&lt;double[]&gt; a1 = boost::make_unique&lt;double[]&gt;();
+std::unique_ptr&lt;int[][4]&gt; a2 = boost::make_unique&lt;int[][4]&gt;();</pre>
+    </blockquote>
+    <p>For arrays with default-initialization.</p>
+    <blockquote>
+      <pre>std::unique_ptr&lt;double[]&gt; a3 = boost::make_unique_noinit&lt;double[]&gt;();
+std::unique_ptr&lt;int[][4]&gt; a4 = boost::make_unique_noinit&lt;int[][4]&gt;();</pre>
+    </blockquote>   
+    <h2><a name="history">History</a></h2>
+    <p>January 2014. Glen Fernandes contributed implementations of 
+      make_unique for objects and arrays.</p>
+    <hr>
+    <p>$Date: 2014-01-20 11:10:00 -0800 (Mon, 20 Jan 2014) $</p>
+    <p><small>Copyright 2012-2014 Glen Fernandes. Distributed under the 
+      Boost Software License, Version 1.0. See accompanying file 
+      <a href="../../LICENSE_1_0.txt">LICENSE_1_0.txt</a> or copy at 
+      <a href="http://www.boost.org/LICENSE_1_0.txt">
+      http://www.boost.org/LICENSE_1_0.txt</a>.</small></p>
+  </body>
+</html>

@@ -75,6 +75,11 @@
 					<td><a href="../../boost/make_shared.hpp">&lt;boost/make_shared.hpp&gt;</a></td>
 					<td>Efficient creation of <code>shared_ptr</code> arrays.</td>
 				</tr>
+				<tr>
+					<td><a href="make_unique.html"><b>make_unique</b></a></td>
+					<td><a href="../../boost/make_unique.hpp">&lt;boost/make_unique.hpp&gt;</a></td>
+					<td>Creation of <code>unique_ptr</code> objects and arrays.</td>
+				</tr>
 			</table>
 		</div>
 		<p>A test program, <a href="test/smart_ptr_test.cpp">smart_ptr_test.cpp</a>, is
@@ -131,6 +136,9 @@
 		<p>Functions which destroy objects of the pointed to type are prohibited from
 			throwing exceptions by the <a href="#common_requirements">common requirements</a>.</p>
 		<h2><a name="History">History</a> and Acknowledgements</h2>
+		<p>January 2014. Glen Fernandes confined the overloads of <b>make_shared</b> 
+		  and <b>allocate_shared</b> for arrays to the specification in N3870 and 
+		  implemented <b>make_unique</b> for arrays and objects.</p>
 		<p>November 2012. Glen Fernandes provided implementations of <b>make_shared</b> 
 		  and <b>allocate_shared</b> for arrays. They achieve a single allocation for an
 		  array that can be initialized with constructor arguments or initializer lists 

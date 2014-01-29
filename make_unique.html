@@ -13,9 +13,9 @@
       <a href="#example">Examples</a><br>
       <a href="#history">History</a></p>
     <h2><a name="Introduction">Introduction</a></h2>
-    <p>The header file &lt;boost/make_unique.hpp&gt; provides a family of 
-      overloaded function template <code>make_unique</code> for convenient 
-      creation of <code>unique_ptr</code> objects.</p>
+    <p>The header file &lt;boost/make_unique.hpp&gt; provides overloaded 
+      function template <code>make_unique</code> for convenient creation of 
+      <code>unique_ptr</code> objects.</p>
     <h2><a name="Synopsis">Synopsis</a></h2>
     <pre>namespace boost {
     template&lt;typename U&gt; // U is not array
@@ -69,20 +69,20 @@ unique_ptr&lt;U&gt; make_unique_noinit();</pre>
     <pre>template&lt;typename U&gt; // U is T[]
 unique_ptr&lt;U&gt; make_unique(size_t size);</pre>
     <blockquote>
-      <p><b>Requires:</b> The expression <code>new U()</code> shall be 
+      <p><b>Requires:</b> The expression <code>new T[size]()</code> shall be 
         well-formed.</p>
       <p><b>Effects:</b> Constructs an array of objects of type 
         <code>U</code> and size <code>size</code> via the expression 
-        <code>new U[size]()</code>.</p>
+        <code>new T[size]()</code>.</p>
     </blockquote>
     <pre>template&lt;typename U&gt; // U is T[]
 unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre>
     <blockquote>
-      <p><b>Requires:</b> The expression <code>new U</code> shall be 
+      <p><b>Requires:</b> The expression <code>new T[size]</code> shall be 
         well-formed.</p>
       <p><b>Effects:</b> Constructs an array of objects of type 
         <code>U</code> and size <code>size</code> via the expression 
-        <code>new U[size]</code>.</p>
+        <code>new T[size]</code>.</p>
     </blockquote>    
     <h2><a name="example">Examples</a></h2>
     <p>For objects with value-initialization.</p>

@@ -11,6 +11,7 @@
 
 #include <boost/config.hpp>
 #include <boost/smart_ptr/detail/up_if_not_array.hpp>
+#include <utility>
 
 namespace boost {
     template<typename T>
@@ -27,6 +28,12 @@ namespace boost {
     }
 #endif
     
+    template<typename T>
+    inline typename boost::detail::up_if_not_array<T>::type
+    make_unique(T&& value) {
+        return std::unique_ptr<T>(new T(std::move(value)));
+    }
+
     template<typename T>
     inline typename boost::detail::up_if_not_array<T>::type
     make_unique_noinit() {

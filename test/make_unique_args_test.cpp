@@ -53,7 +53,7 @@ int main() {
 
 #if !defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES )
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1);
@@ -62,7 +62,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2);
@@ -71,7 +71,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3);
@@ -80,7 +80,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4);
@@ -89,7 +89,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4 + 5);
@@ -98,7 +98,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4 + 5 + 6);
@@ -107,7 +107,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4 + 5 + 6 + 7);
@@ -116,7 +116,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7, 8);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7, 8);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8);
@@ -125,7 +125,7 @@ int main() {
     }
 
     {
-        std::unique_ptr<const type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        std::unique_ptr<type> a1 = boost::make_unique<type>(1, 2, 3, 4, 5, 6, 7, 8, 9);
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         BOOST_TEST(a1->sum == 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9);

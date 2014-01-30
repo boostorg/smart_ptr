@@ -151,6 +151,7 @@ import testing ;
 
           [ run make_unique_test.cpp ]
           [ run make_unique_args_test.cpp ]
+          [ run make_unique_value_test.cpp ]
           [ run make_unique_noinit_test.cpp ]
           [ run make_unique_throws_test.cpp ]
           [ run make_unique_array_test.cpp ]

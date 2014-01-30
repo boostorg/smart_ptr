@@ -35,11 +35,6 @@ int main() {
         BOOST_TEST(a1.get() != 0);
     }
 
-    {
-        std::unique_ptr<const int> a1 = boost::make_unique_noinit<const int>();
-        BOOST_TEST(a1.get() != 0);
-    }
-
     BOOST_TEST(type::instances == 0);
     {
         std::unique_ptr<type> a1 = boost::make_unique_noinit<type>();
@@ -52,7 +47,6 @@ int main() {
     BOOST_TEST(type::instances == 0);
     {
         std::unique_ptr<const type> a1 = boost::make_unique_noinit<const type>();
-        const type* a2 = a1.get();
         BOOST_TEST(a1.get() != 0);
         BOOST_TEST(type::instances == 1);
         a1.reset();

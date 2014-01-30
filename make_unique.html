@@ -27,6 +27,9 @@
 #endif
 
     template&lt;typename U&gt; // U is not array
+    unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(U&amp;&amp; value);
+
+    template&lt;typename U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique_noinit</a>();
 
     template&lt;typename U&gt; // U is T[]
@@ -59,6 +62,14 @@ unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre>
         expression <code>new U(forward&lt;Args&gt;(args)...)</code>.</p>
     </blockquote>
     <pre>template&lt;typename U&gt; // U is not array
+unique_ptr&lt;U&gt; make_unique(U&amp;&amp; value);</pre> 
+    <blockquote>
+      <p><b>Requires:</b> The expression <code>new U(move(value))</code> shall 
+        be well-formed.</p> 
+      <p><b>Effects:</b> Constructs an object of type <code>U</code> via the 
+        expression <code>new U(move(value))</code>.</p>
+    </blockquote>
+    <pre>template&lt;typename U&gt; // U is not array
 unique_ptr&lt;U&gt; make_unique_noinit();</pre>
     <blockquote>
       <p><b>Requires:</b> The expression <code>new U</code> shall be 
@@ -87,28 +98,33 @@ unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre>
     <h2><a name="example">Examples</a></h2>
     <p>For objects with value-initialization.</p>
     <blockquote>
-      <pre>std::unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();
-std::unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;();</pre>
+      <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();
+unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;();</pre>
     </blockquote>
     <p>For objects with construction arguments.</p>
     <blockquote>
-      <pre>std::unique_ptr&lt;float&gt; p3 = boost::make_unique&lt;float&gt;(1.5);
-std::unique_ptr&lt;point&gt; p4 = boost::make_unique&lt;point&gt;(x, y);</pre>
+      <pre>unique_ptr&lt;float&gt; p3 = boost::make_unique&lt;float&gt;(1.0f);
+unique_ptr&lt;point&gt; p4 = boost::make_unique&lt;point&gt;(x, y);</pre>
+    </blockquote>
+    <p>For objects with given value.</p>
+    <blockquote>
+      <pre>unique_ptr&lt;string&gt; p4 = boost::make_unique&lt;string&gt;({'a', 'b'});
+unique_ptr&lt;type&gt;   p5 = boost::make_unique&lt;type&gt;({3, 5, 4});</pre>
     </blockquote>
     <p>For objects with default-initialization.</p>
     <blockquote>
-      <pre>std::unique_ptr&lt;float&gt; p4 = boost::make_unique_noinit&lt;float&gt;();
-std::unique_ptr&lt;point&gt; p5 = boost::make_unique_noinit&lt;point&gt;();</pre>
+      <pre>unique_ptr&lt;float&gt; p6 = boost::make_unique_noinit&lt;float&gt;();
+unique_ptr&lt;point&gt; p7 = boost::make_unique_noinit&lt;point&gt;();</pre>
     </blockquote>
     <p>For arrays with value-initialization.</p>
     <blockquote>
-      <pre>std::unique_ptr&lt;double[]&gt; a1 = boost::make_unique&lt;double[]&gt;();
-std::unique_ptr&lt;int[][4]&gt; a2 = boost::make_unique&lt;int[][4]&gt;();</pre>
+      <pre>unique_ptr&lt;double[]&gt; a1 = boost::make_unique&lt;double[]&gt;();
+unique_ptr&lt;int[][4]&gt; a2 = boost::make_unique&lt;int[][4]&gt;();</pre>
     </blockquote>
     <p>For arrays with default-initialization.</p>
     <blockquote>
-      <pre>std::unique_ptr&lt;double[]&gt; a3 = boost::make_unique_noinit&lt;double[]&gt;();
-std::unique_ptr&lt;int[][4]&gt; a4 = boost::make_unique_noinit&lt;int[][4]&gt;();</pre>
+      <pre>unique_ptr&lt;double[]&gt; a3 = boost::make_unique_noinit&lt;double[]&gt;();
+unique_ptr&lt;int[][4]&gt; a4 = boost::make_unique_noinit&lt;int[][4]&gt;();</pre>
     </blockquote>   
     <h2><a name="history">History</a></h2>
     <p>January 2014. Glen Fernandes contributed implementations of 

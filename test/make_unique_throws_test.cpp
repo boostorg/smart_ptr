@@ -6,6 +6,8 @@
  * Version 1.0. (See accompanying file LICENSE_1_0.txt 
  * or copy at http://boost.org/LICENSE_1_0.txt)
  */
+#include <boost/config.hpp>
+#if !defined(BOOST_NO_CXX11_SMART_PTR)
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/smart_ptr/make_unique_object.hpp>
 
@@ -32,7 +34,6 @@ private:
 unsigned int type::instances = 0;
 
 int main() {
-#if !defined(BOOST_NO_CXX11_SMART_PTR)
     BOOST_TEST(type::instances == 0);
     try {
         boost::make_unique<type>();
@@ -40,7 +41,13 @@ int main() {
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
-#endif
 
     return boost::report_errors();
 }
+#else
+
+int main() {
+    return 0;
+}
+
+#endif

@@ -11,7 +11,6 @@
 
 #include <boost/smart_ptr/detail/allocate_array_helper.hpp>
 #include <boost/smart_ptr/detail/array_deleter.hpp>
-#include <boost/smart_ptr/detail/array_traits.hpp>
 #include <boost/smart_ptr/detail/sp_if_array.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 

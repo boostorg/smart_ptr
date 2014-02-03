@@ -15,13 +15,38 @@
 namespace boost {
     namespace detail {
         template<typename T>
-        class array_deleter;
+        struct array_count_base;
 
         template<typename T>
-        class array_deleter<T[]> {
+        struct array_count_base<T[]> {
+            array_count_base(std::size_t size_)
+                : size(size_) {
+            }
+
+            std::size_t size;
+        };
+
+        template<typename T, std::size_t N>
+        struct array_count_base<T[N]> {
+            enum {
+                size = N
+            };
+        };
+
+        template<typename T>
+        class array_deleter
+            : array_count_base<T> {
+            using array_count_base<T>::size;
+
         public:
+            typedef typename array_inner<T>::type type;
+        
+            array_deleter()
+                : object(0) {
+            }
+
             array_deleter(std::size_t size_)
-                : size(size_),
+                : array_count_base<T>(size_),
                   object(0) {
             }
 
@@ -31,18 +56,18 @@ namespace boost {
                 }
             }
 
-            void init(T* memory) {
+            void init(type* memory) {
                 array_init(memory, size);
                 object = memory;
             }
 
             template<std::size_t N>
-            void init(T* memory, const T* value) {
-                array_init<T, N>(memory, size, value);
+            void init(type* memory, const type* value) {
+                array_init<type, N>(memory, size, value);
                 object = memory;
             }
 
-            void noinit(T* memory) {
+            void noinit(type* memory) {
                 array_noinit(memory, size);
                 object = memory;
             }
@@ -55,49 +80,8 @@ namespace boost {
             }
 
         private:
-            std::size_t size;
-            T* object;
-        };
-
-        template<typename T, std::size_t N>
-        class array_deleter<T[N]> {
-        public:
-            array_deleter()
-                : object(0) {
-            }
-
-            ~array_deleter() {
-                if (object) {
-                    array_destroy(object, N);
-                }
-            }
-
-            void init(T* memory) {
-                array_init(memory, N);
-                object = memory;
-            }
-
-            template<std::size_t M>
-            void init(T* memory, const T* value) {
-                array_init<T, M>(memory, N, value);
-                object = memory;
-            }
-
-            void noinit(T* memory) {
-                array_noinit(memory, N);
-                object = memory;
-            }
-
-            void operator()(const void*) {
-                if (object) {
-                    array_destroy(object, N);
-                    object = 0;
-                }
-            }
-
-        private:
-            T* object;
-        };
+            type* object;
+        };        
     }
 }
 

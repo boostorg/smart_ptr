@@ -11,6 +11,7 @@
 
 #include <boost/config.hpp>
 #include <boost/smart_ptr/detail/array_traits.hpp>
+#include <boost/smart_ptr/detail/as_pair.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -46,54 +47,42 @@ namespace boost {
         public:
             typedef typename array_inner<T>::type type;
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-            as_deleter(const A& allocator_) 
-                : allocator(allocator_),
-                  object(0) {
+            as_deleter(const A& allocator) 
+                : pair(allocator, 0) {
             }
-#else
-            as_deleter(const A&)
-                : object(0) {
-            }
-#endif
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-            as_deleter(const A& allocator_, std::size_t size_)
+            as_deleter(const A& allocator, std::size_t size_)
                 : ms_deleter_base<T>(size_),
-                  allocator(allocator_),
-                  object(0) {
+                  pair(allocator, 0) {
             }
-#else
-            as_deleter(const A&, std::size_t size_)
-                : ms_deleter_base<T>(size_),
-                  object(0) {
-            }
-#endif
 
             void init(type* memory) {
                 value_init(memory);
-                object = memory;
+                pair.data = memory;
             }
 
             template<std::size_t N>
             void init(type* memory, const type* value) {
                 value_init<N>(memory, value);
-                object = memory;
+                pair.data = memory;
             }
 
             void operator()(const void*) {
-                if (object) {
-                    destroy(object, size);
+                if (pair.data) {
+                    destroy(pair.data, size);
                 }
             }
 
         private:
+
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
             typedef typename std::allocator_traits<A>::
-                template rebind_alloc<type>::other TA;
-
+                template rebind_alloc<type> TA;
             typedef typename std::allocator_traits<A>::
-                template rebind_traits<type>::other TT;
+                template rebind_traits<type> TT;
+#else
+            typedef typename A::
+                template rebind<type>::other TA;
 #endif
 
             void destroy(type*, std::size_t, boost::true_type) {
@@ -102,7 +91,7 @@ namespace boost {
             void destroy(type* memory, std::size_t n, boost::false_type) {
                 for (std::size_t i = n; i > 0;) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                    TT::destroy(allocator, &memory[--i]);
+                    TT::destroy(pair, &memory[--i]);
 #else
                     memory[--i].~type();
 #endif
@@ -117,7 +106,7 @@ namespace boost {
             void value_init(type* memory, boost::true_type) {
                 for (std::size_t i = 0; i < size; i++) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                    TT::construct(allocator, memory + i);
+                    TT::construct(pair, memory + i);
 #else
                     void* p1 = memory + i;
                     ::new(p1) type();
@@ -131,7 +120,7 @@ namespace boost {
                 try {
                     for (; i < size; i++) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                        TT::construct(allocator, memory + i);
+                        TT::construct(pair, memory + i);
 #else
                         void* p1 = memory + i;
                         ::new(p1) type();
@@ -144,7 +133,7 @@ namespace boost {
 #else
                 for (std::size_t i = 0; i < size; i++) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                    TT::construct(allocator, memory + i);
+                    TT::construct(pair, memory + i);
 #else
                     void* p1 = memory + i;
                     ::new(p1) type();
@@ -165,7 +154,7 @@ namespace boost {
                 try {
                     for (; i < size; i++) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                        TT::construct(allocator, memory + i, list[i % N]);
+                        TT::construct(pair, memory + i, list[i % N]);
 #else
                         void* p1 = memory + i;
                         ::new(p1) type(list[i % N]);
@@ -187,10 +176,7 @@ namespace boost {
 #endif
             }
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-            TA allocator;
-#endif
-            type* object;
+            as_pair<TA, type*> pair;
         };
 
         template<typename T>

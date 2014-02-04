@@ -10,6 +10,7 @@
 #define BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 
 #include <boost/smart_ptr/detail/array_traits.hpp>
+#include <boost/smart_ptr/detail/as_pair.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
 #include <memory>
@@ -54,8 +55,10 @@ namespace boost {
             typedef typename std::allocator_traits<A>::
                 template rebind_traits<char> CT;
 #else
-            typedef typename A::template rebind<Y>::other YA;
-            typedef typename A::template rebind<char>::other CA;
+            typedef typename A::
+                template rebind<Y>::other YA;
+            typedef typename A::
+                template rebind<char>::other CA;
 #endif
 
         public:
@@ -84,40 +87,37 @@ namespace boost {
                 typedef as_allocator<T, A, U> other;
             };
 
-            as_allocator(const A& allocator_, type** data_)
-                : allocator(allocator_),
-                  data(data_) {
+            as_allocator(const A& allocator, type** data)
+                : pair(allocator, data) {
             }
 
-            as_allocator(const A& allocator_, std::size_t size_, type** data_)
+            as_allocator(const A& allocator, std::size_t size_, type** data)
                 : ms_allocator_base<T>(size_),
-                  allocator(allocator_),
-                  data(data_) {
+                  pair(allocator, data) {
             }
 
             template<class U>
             as_allocator(const as_allocator<T, A, U>& other) 
                 : ms_allocator_base<T>(other),
-                  allocator(other.allocator),
-                  data(other.data) {
+                  pair(other.pair, other.pair.data) {
             }
 
             pointer address(reference value) const {
-                return allocator.address(value);
+                return pair.address(value);
             }
 
             const_pointer address(const_reference value) const {
-                return allocator.address(value);
+                return pair.address(value);
             }
 
             size_type max_size() const {
-                return allocator.max_size();
+                return pair.max_size();
             }
 
             pointer allocate(size_type count, const void* value = 0) {
                 std::size_t a1 = boost::alignment_of<type>::value;
                 std::size_t n1 = count * sizeof(Y) + a1 - 1;
-                CA ca(allocator);
+                CA ca(pair);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 char* p1 = CT::allocate(ca, size + n1, value);
 #else
@@ -127,7 +127,7 @@ namespace boost {
                 while (std::size_t(p2) % a1 != 0) {
                     p2--;
                 }
-                *data = reinterpret_cast<type*>(p2);
+                *pair.data = reinterpret_cast<type*>(p2);
                 return reinterpret_cast<Y*>(p1);
             }
 
@@ -135,7 +135,7 @@ namespace boost {
                 std::size_t a1 = boost::alignment_of<type>::value;
                 std::size_t n1 = count * sizeof(Y) + a1 - 1;
                 char* p1 = reinterpret_cast<char*>(memory);
-                CA ca(allocator);
+                CA ca(pair);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 CT::deallocate(ca, p1, size + n1);
 #else
@@ -145,23 +145,23 @@ namespace boost {
 
             void construct(pointer memory, const Y& value) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::construct(allocator, memory, value);
+                YT::construct(pair, memory, value);
 #else
-                allocator.construct(memory, value);
+                pair.construct(memory, value);
 #endif
             }
 
             void destroy(pointer memory) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::destroy(allocator, memory);
+                YT::destroy(pair, memory);
 #else
-                allocator.destroy(memory);
+                pair.destroy(memory);
 #endif
             }
 
             template<typename U>
             bool operator==(const as_allocator<T, A, U>& other) const {
-                return allocator == other.allocator;
+                return pair == other.pair;
             }
 
             template<typename U>
@@ -170,8 +170,7 @@ namespace boost {
             }
 
         private:
-            YA allocator;
-            type** data;
+            as_pair<YA, type**> pair;
         };
 
         template<typename T, typename Y = char>

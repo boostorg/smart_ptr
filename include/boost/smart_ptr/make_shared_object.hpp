@@ -131,26 +131,7 @@ template< class T, std::size_t N > struct sp_if_not_array< T[N] >
 # define BOOST_SP_MSD( T ) boost::detail::sp_ms_deleter< T >()
 #endif
 
-// Zero-argument versions
-//
-// Used even when variadic templates are available because of the new T() vs new T issue
-
-template< class T > typename boost::detail::sp_if_not_array< T >::type make_shared()
-{
-    boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ) );
-
-    boost::detail::sp_ms_deleter< T > * pd = static_cast<boost::detail::sp_ms_deleter< T > *>( pt._internal_get_untyped_deleter() );
-
-    void * pv = pd->address();
-
-    ::new( pv ) T();
-    pd->set_initialized();
-
-    T * pt2 = static_cast< T* >( pv );
-
-    boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
-    return boost::shared_ptr< T >( pt, pt2 );
-}
+// _noinit versions
 
 template< class T > typename boost::detail::sp_if_not_array< T >::type make_shared_noinit()
 {
@@ -161,23 +142,6 @@ template< class T > typename boost::detail::sp_if_not_array< T >::type make_shar
     void * pv = pd->address();
 
     ::new( pv ) T;
-    pd->set_initialized();
-
-    T * pt2 = static_cast< T* >( pv );
-
-    boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
-    return boost::shared_ptr< T >( pt, pt2 );
-}
-
-template< class T, class A > typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a )
-{
-    boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ), a );
-
-    boost::detail::sp_ms_deleter< T > * pd = static_cast<boost::detail::sp_ms_deleter< T > *>( pt._internal_get_untyped_deleter() );
-
-    void * pv = pd->address();
-
-    ::new( pv ) T();
     pd->set_initialized();
 
     T * pt2 = static_cast< T* >( pv );
@@ -207,7 +171,7 @@ template< class T, class A > typename boost::detail::sp_if_not_array< T >::type 
 
 // Variadic templates, rvalue reference
 
-template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type make_shared( Arg1 && arg1, Args && ... args )
+template< class T, class... Args > typename boost::detail::sp_if_not_array< T >::type make_shared( Args && ... args )
 {
     boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ) );
 
@@ -215,7 +179,7 @@ template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not
 
     void * pv = pd->address();
 
-    ::new( pv ) T( boost::detail::sp_forward<Arg1>( arg1 ), boost::detail::sp_forward<Args>( args )... );
+    ::new( pv ) T( boost::detail::sp_forward<Args>( args )... );
     pd->set_initialized();
 
     T * pt2 = static_cast< T* >( pv );
@@ -224,7 +188,7 @@ template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not
     return boost::shared_ptr< T >( pt, pt2 );
 }
 
-template< class T, class A, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a, Arg1 && arg1, Args && ... args )
+template< class T, class A, class... Args > typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a, Args && ... args )
 {
     boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ), a );
 
@@ -232,7 +196,7 @@ template< class T, class A, class Arg1, class... Args > typename boost::detail::
 
     void * pv = pd->address();
 
-    ::new( pv ) T( boost::detail::sp_forward<Arg1>( arg1 ), boost::detail::sp_forward<Args>( args )... );
+    ::new( pv ) T( boost::detail::sp_forward<Args>( args )... );
     pd->set_initialized();
 
     T * pt2 = static_cast< T* >( pv );
@@ -241,7 +205,45 @@ template< class T, class A, class Arg1, class... Args > typename boost::detail::
     return boost::shared_ptr< T >( pt, pt2 );
 }
 
-#elif !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+#else // !defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+// Common zero-argument versions
+
+template< class T > typename boost::detail::sp_if_not_array< T >::type make_shared()
+{
+    boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ) );
+
+    boost::detail::sp_ms_deleter< T > * pd = static_cast<boost::detail::sp_ms_deleter< T > *>( pt._internal_get_untyped_deleter() );
+
+    void * pv = pd->address();
+
+    ::new( pv ) T();
+    pd->set_initialized();
+
+    T * pt2 = static_cast< T* >( pv );
+
+    boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
+    return boost::shared_ptr< T >( pt, pt2 );
+}
+
+template< class T, class A > typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a )
+{
+    boost::shared_ptr< T > pt( static_cast< T* >( 0 ), BOOST_SP_MSD( T ), a );
+
+    boost::detail::sp_ms_deleter< T > * pd = static_cast<boost::detail::sp_ms_deleter< T > *>( pt._internal_get_untyped_deleter() );
+
+    void * pv = pd->address();
+
+    ::new( pv ) T();
+    pd->set_initialized();
+
+    T * pt2 = static_cast< T* >( pv );
+
+    boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
+    return boost::shared_ptr< T >( pt, pt2 );
+}
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 // For example MSVC 10.0
 
@@ -695,7 +697,7 @@ typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a,
     return boost::shared_ptr< T >( pt, pt2 );
 }
 
-#else
+#else // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 // C++03 version
 
@@ -1023,7 +1025,9 @@ typename boost::detail::sp_if_not_array< T >::type allocate_shared( A const & a,
     return boost::shared_ptr< T >( pt, pt2 );
 }
 
-#endif
+#endif // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+#endif // !defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 #undef BOOST_SP_MSD
 

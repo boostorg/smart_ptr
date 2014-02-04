@@ -97,8 +97,6 @@ template&lt;typename U, typename A&gt;
       <p><b>Throws:</b> <code>bad_alloc</code>, an exception thrown from 
         <code>A::allocate</code>, or from the initialization of the 
         object.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Remarks:</b></p>
       <blockquote>
         <p>This implementation performs no more than one memory 
@@ -115,18 +113,34 @@ template&lt;typename U, typename A&gt;
         <p>Array elements are initialized in ascending order of their 
           addresses.</p>
         <p>When a subobject of a non-array type <code>T</code> is specified to 
-          be initialized to a value <code>value</code>, or to 
-          <code>T(list...)</code>, where <code>list...</code> is a list of 
-          constructor arguments, <code>make_shared</code> shall perform this 
-          initialization via the expression <code>::new(ptr) T(value)</code> 
-          or <code>::new(ptr) T(list...)</code> respectively, where 
-          <code>ptr</code> has type <code>void*</code> and points to storage 
-          suitable to hold an object of type <code>T</code>.</p>
+          be initialized to a value <code>value</code>, 
+          <code>make_shared</code> shall perform this initialization via the 
+          expression <code>::new(ptr) T(value)</code>, where <code>ptr</code> 
+          has type <code>void*</code> and points to storage suitable to hold 
+          an object of type <code>T</code>.</p>
+        <p>When a subobject of non-array type <code>T</code> is specified to 
+          be initialized to a value <code>value</code>, 
+          <code>allocate_shared</code> shall perform this initialization via 
+          the expression <code>allocator_traits&lt;A2&gt;::construct(a2, ptr, 
+          value)</code>, where <code>ptr</code> points to storage suitable to 
+          hold an object of type <code>T</code> and <code>a2</code> of type A2 
+          is a rebound copy of the allocator <code>allocator</code> passed to
+          <code>allocate_shared</code> such that its <code>value_type</code> 
+          is <code>T</code>.</p>
         <p>When a subobject of non-array type <code>T</code> is specified to 
           be value-initialized, <code>make_shared</code> shall perform this 
           initialization via the expression <code>::new(ptr) T()</code>, where 
           <code>ptr</code> has type <code>void*</code> and points to storage 
           suitable to hold an object of type <code>T</code>.</p>
+        <p>When a subobject of non-array type <code>T</code> is specified to 
+          be value-initialized, <code>allocate_shared</code> shall perform 
+          this initialization via the expression
+          <code>allocator_traits&lt;A2&gt;::construct(a2, ptr)</code>, where 
+          <code>ptr</code> points to storage suitable to hold an object 
+          of type <code>T</code> and <code>a2</code> of type A2 is a rebound 
+          copy of the allocator <code>allocator</code> passed to
+          <code>allocate_shared</code> such that its <code>value_type</code> 
+          is <code>T</code>.</p>
         <p>When a subobject of non-array type <code>T</code> is specified to 
           be default-initialized, <code>make_shared_noinit</code> and 
           <code>allocate_shared_noinit</code> shall perform this 
@@ -138,6 +152,9 @@ template&lt;typename U, typename A&gt;
           the initialized elements should be destroyed in the reverse order 
           of their construction.</p>
       </blockquote>
+      <p><b>Notes:</b> These functions will typically allocate more memory 
+        than <code>sizeof(U)</code> to allow for internal bookkeeping 
+        structures such as the reference counts.</p>
     </blockquote>
     <h2><a name="functions">Free Functions</a></h2>
     <pre>template&lt;typename U&gt; 
@@ -149,8 +166,6 @@ template&lt;typename U, typename A&gt;
         object of type <code>T[size]</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>      
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[]&gt; a1 = boost::make_shared&lt;int[]&gt;(size);
@@ -166,8 +181,6 @@ template&lt;typename U, typename A&gt;
         object of type <code>T[N]</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[N]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[8]&gt; a1 = boost::make_shared&lt;int[8]&gt;();
@@ -184,8 +197,6 @@ template&lt;typename U, typename A&gt;
         is initialized to <code>value</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[]&gt; a1 = boost::make_shared&lt;int[]&gt;(size, 1);
@@ -202,8 +213,6 @@ template&lt;typename U, typename A&gt;
         initialized to <code>value</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[N]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[8]&gt; a1 = boost::make_shared&lt;int[8]&gt;(1);
@@ -219,8 +228,6 @@ template&lt;typename U, typename A&gt;
         object of type <code>T[size]</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[]&gt; a1 = boost::make_shared_noinit&lt;int[]&gt;(size);
@@ -236,8 +243,6 @@ template&lt;typename U, typename A&gt;
         object of type <code>T[N]</code>.</p>
       <p><b>Remarks:</b> These overloads shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[N]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>boost::shared_ptr&lt;int[8]&gt; a1 = boost::make_shared_noinit&lt;int[8]&gt;();

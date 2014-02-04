@@ -9,7 +9,7 @@
 #ifndef BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
-#include <boost/smart_ptr/detail/allocate_array_helper.hpp>
+#include <boost/smart_ptr/detail/array_allocator.hpp>
 #include <boost/smart_ptr/detail/array_deleter.hpp>
 #include <boost/smart_ptr/detail/sp_if_array.hpp>
 #include <boost/type_traits/remove_cv.hpp>
@@ -24,10 +24,10 @@ namespace boost {
         T1* p1 = 0;
         T3* p2 = 0;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
-        boost::detail::allocate_array_helper<A, T3[]> a1(allocator, n1, &p2);
-        boost::detail::array_deleter<T3[]> d1(n1);
+        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
+        boost::detail::as_deleter<T3[], A> d1(allocator, n1);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[]>* D2;
+        typedef boost::detail::as_deleter<T3[], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->init(p2);
@@ -45,10 +45,10 @@ namespace boost {
         };
         T1* p1 = 0;
         T3* p2 = 0;
-        boost::detail::allocate_array_helper<A, T3[N]> a1(allocator, &p2);
-        boost::detail::array_deleter<T3[N]> d1;
+        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
+        boost::detail::as_deleter<T3[N], A> d1(allocator);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[N]>* D2;
+        typedef boost::detail::as_deleter<T3[N], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->init(p2);
@@ -70,10 +70,10 @@ namespace boost {
         T3* p2 = 0;
         T4* p3 = reinterpret_cast<T4*>(&value);
         std::size_t n1 = M * size;
-        boost::detail::allocate_array_helper<A, T3[]> a1(allocator, n1, &p2);
-        boost::detail::array_deleter<T3[]> d1(n1);
+        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
+        boost::detail::as_deleter<T3[], A> d1(allocator, n1);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[]>* D2;
+        typedef boost::detail::as_deleter<T3[], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->template init<M>(p2, p3);
@@ -95,10 +95,10 @@ namespace boost {
         T1* p1 = 0;
         T3* p2 = 0;
         T4* p3 = reinterpret_cast<T4*>(&value);
-        boost::detail::allocate_array_helper<A, T3[N]> a1(allocator, &p2);
-        boost::detail::array_deleter<T3[N]> d1;
+        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
+        boost::detail::as_deleter<T3[N], A> d1(allocator);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[N]>* D2;
+        typedef boost::detail::as_deleter<T3[N], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->template init<M>(p2, p3);
@@ -114,10 +114,10 @@ namespace boost {
         T1* p1 = 0;
         T3* p2 = 0;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
-        boost::detail::allocate_array_helper<A, T3[]> a1(allocator, n1, &p2);
-        boost::detail::array_deleter<T3[]> d1(n1);
+        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
+        boost::detail::ms_deleter<T3[]> d1(n1);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[]>* D2;
+        typedef boost::detail::ms_deleter<T3[]>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->noinit(p2);
@@ -135,10 +135,10 @@ namespace boost {
         };
         T1* p1 = 0;
         T3* p2 = 0;
-        boost::detail::allocate_array_helper<A, T3[N]> a1(allocator, &p2);
-        boost::detail::array_deleter<T3[N]> d1;
+        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
+        boost::detail::ms_deleter<T3[N]> d1;
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::array_deleter<T3[N]>* D2;
+        typedef boost::detail::ms_deleter<T3[N]>* D2;
         p1 = reinterpret_cast<T1*>(p2);
         D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
         d2->noinit(p2);

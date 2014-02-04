@@ -56,8 +56,6 @@ template&lt;typename U&gt;
         <code>r</code> is the return value.</p>
       <p><b>Throws:</b> <code>bad_alloc</code>, or an exception thrown from 
         the initialization of the object.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Remarks:</b></p>
       <blockquote>
         <p>When an object of a non-array type <code>T</code> is specified to 
@@ -82,8 +80,6 @@ unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre>
         initialized to <code>U(forward&lt;Args&gt;(args)...)</code>.</p>
       <p><b>Remarks:</b> This overload shall only participate in overload 
         resolution when <code>U</code> is not an array type.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();
@@ -97,8 +93,6 @@ unique_ptr&lt;U&gt; make_unique(U&amp;&amp; value);</pre>
         initialized to <code>move(value)</code>.</p>
       <p><b>Remarks:</b> This overload shall only participate in overload 
         resolution when <code>U</code> is not an array type.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>unique_ptr&lt;string&gt; p1 = boost::make_unique&lt;string&gt;({'a', 'b'});
@@ -112,8 +106,6 @@ unique_ptr&lt;U&gt; make_unique(size_t size);</pre>
         <code>T[size]</code>.</p>
       <p><b>Remarks:</b> This overload shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique&lt;double[]&gt;(4);
@@ -127,8 +119,6 @@ unique_ptr&lt;U&gt; make_unique_noinit();</pre>
         type <code>U</code>.</p>
       <p><b>Remarks:</b> This overload shall only participate in overload 
         resolution when <code>U</code> is not an array type.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique_noinit&lt;float&gt;();
@@ -142,8 +132,6 @@ unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre>
         type <code>T[size]</code>.</p>
       <p><b>Remarks:</b> This overload shall only participate in overload 
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
-    </blockquote>
-    <blockquote>
       <p><b>Examples:</b></p>
       <blockquote>
         <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique_noinit&lt;double[]&gt;(4);

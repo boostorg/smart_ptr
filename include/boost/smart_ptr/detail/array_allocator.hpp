@@ -46,16 +46,13 @@ namespace boost {
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
             typedef typename std::allocator_traits<A>::
-                template rebind_alloc<Y>::other YA;
-
+                template rebind_alloc<Y> YA;
             typedef typename std::allocator_traits<A>::
-                template rebind_alloc<char>::other CA;
-
+                template rebind_alloc<char> CA;
             typedef typename std::allocator_traits<A>::
-                template rebind_traits<Y>::other YT;
-
+                template rebind_traits<Y> YT;
             typedef typename std::allocator_traits<A>::
-                template rebind_traits<char>::other CT;
+                template rebind_traits<char> CT;
 #else
             typedef typename A::template rebind<Y>::other YA;
             typedef typename A::template rebind<char>::other CA;

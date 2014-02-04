@@ -74,7 +74,6 @@ namespace boost {
             }
 
         private:
-
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<type> TA;
@@ -314,7 +313,6 @@ namespace boost {
 #endif
             }
 
-        private:
             type* object;
         };
     }

@@ -143,21 +143,32 @@ namespace boost {
 #endif
             }
 
-            void construct(pointer memory, const Y& value) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::construct(pair, memory, value);
+#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
+    !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)   
+            template<typename U, typename... Args>
+            void construct(U* memory, Args&&... args) {
+                YT::construct(pair, memory, std::forward<Args>(args)...);
+            }
 #else
-                pair.construct(memory, value);
+            template<typename U>
+            void construct(U* memory, const Y& value) {
+                YT::construct(pair, memory, value);
+            }
 #endif
+            template<typename U>
+            void destroy(U* memory) {
+                YT::destroy(pair, memory);
+            }
+#else
+            void construct(pointer memory, const Y& value) {
+                pair.construct(memory, value);
             }
 
             void destroy(pointer memory) {
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::destroy(pair, memory);
-#else
                 pair.destroy(memory);
-#endif
             }
+#endif
 
             template<typename U>
             bool operator==(const as_allocator<T, A, U>& other) const {

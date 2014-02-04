@@ -148,6 +148,7 @@ import testing ;
           [ run allocate_shared_array_esft_test.cpp ]
           [ run allocate_shared_array_noinit_test.cpp ]
           [ run allocate_shared_array_value_test.cpp ]
+          [ run allocate_shared_array_construct_test.cpp ]
 
           [ run make_unique_test.cpp ]
           [ run make_unique_args_test.cpp ]

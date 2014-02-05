@@ -213,7 +213,7 @@ public:
     {
     }
 
-    sp_counted_impl_pda( P p, A a ): p_( p ), d_(), a_( a )
+    sp_counted_impl_pda( P p, A a ): p_( p ), d_( a ), a_( a )
     {
     }
 

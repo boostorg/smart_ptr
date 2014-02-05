@@ -74,14 +74,17 @@ namespace boost {
             }
 
         private:
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
+    !defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<type> TA;
-            typedef typename std::allocator_traits<A>::
-                template rebind_traits<type> TT;
 #else
             typedef typename A::
                 template rebind<type>::other TA;
+#endif
+
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+            typedef std::allocator_traits<TA> TT;
 #endif
 
             void destroy(type*, std::size_t, boost::true_type) {

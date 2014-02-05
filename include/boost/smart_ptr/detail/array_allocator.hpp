@@ -12,7 +12,7 @@
 #include <boost/smart_ptr/detail/array_traits.hpp>
 #include <boost/smart_ptr/detail/as_pair.hpp>
 #include <boost/type_traits/alignment_of.hpp>
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)    
 #include <memory>
 #endif
 
@@ -45,20 +45,20 @@ namespace boost {
             template<typename T_, typename A_, typename Y_>
             friend class as_allocator;
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
+    !defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<Y> YA;
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<char> CA;
-            typedef typename std::allocator_traits<A>::
-                template rebind_traits<Y> YT;
-            typedef typename std::allocator_traits<A>::
-                template rebind_traits<char> CT;
 #else
-            typedef typename A::
-                template rebind<Y>::other YA;
-            typedef typename A::
-                template rebind<char>::other CA;
+            typedef typename A::template rebind<Y>::other YA;
+            typedef typename A::template rebind<char>::other CA;
+#endif
+
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+            typedef std::allocator_traits<YA> YT;
+            typedef std::allocator_traits<CA> CT;
 #endif
 
         public:

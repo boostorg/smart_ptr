@@ -116,7 +116,7 @@ namespace boost {
 
             pointer allocate(size_type count, const void* value = 0) {
                 std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(Y) + a1 - 1;
+                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
                 CA ca(pair);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 char* p1 = CT::allocate(ca, size + n1, value);
@@ -133,7 +133,7 @@ namespace boost {
 
             void deallocate(pointer memory, size_type count) {
                 std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(Y) + a1 - 1;
+                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
                 char* p1 = reinterpret_cast<char*>(memory);
                 CA ca(pair);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -143,30 +143,34 @@ namespace boost {
 #endif
             }
 
+            template<typename U>
+            void construct(U* memory, const_reference value) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
-    !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)   
-            template<typename U, typename... Args>
-            void construct(U* memory, Args&&... args) {
-                YT::construct(pair, memory, std::forward<Args>(args)...);
-            }
-#else
-            template<typename U>
-            void construct(U* memory, const Y& value) {
                 YT::construct(pair, memory, value);
-            }
-#endif
-            template<typename U>
-            void destroy(U* memory) {
-                YT::destroy(pair, memory);
-            }
+
 #else
-            void construct(pointer memory, const Y& value) {
                 pair.construct(memory, value);
+#endif
             }
 
-            void destroy(pointer memory) {
+            template<typename U>
+            void destroy(U* memory) {
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+                YT::destroy(pair, memory);
+#else
                 pair.destroy(memory);
+#endif
+            }
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
+    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+            template<typename U, typename... Args>
+            void construct(U* memory, Args&&... args) {
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+                YT::construct(pair, memory, std::forward<Args>(args)...);
+#else
+                pair.construct(memory, std::forward<Args>(args)...);
+#endif
             }
 #endif
 
@@ -213,13 +217,13 @@ namespace boost {
 
             ms_allocator(std::size_t size_, type** data_)
                 : ms_allocator_base<T>(size_),
-                data(data_) {
+                  data(data_) {
             }
 
             template<class U>
             ms_allocator(const ms_allocator<T, U>& other)
                 : ms_allocator_base<T>(other),
-                data(other.data) {
+                  data(other.data) {
             }
 
             pointer address(reference value) const {
@@ -236,9 +240,9 @@ namespace boost {
 
             pointer allocate(size_type count, const void* = 0) {
                 std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(Y)+a1 - 1;
+                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
                 void* p1 = ::operator new(n1 + size);
-                char* p2 = static_cast<char*>(p1)+n1;
+                char* p2 = static_cast<char*>(p1) + n1;
                 while (std::size_t(p2) % a1 != 0) {
                     p2--;
                 }
@@ -251,14 +255,25 @@ namespace boost {
                 ::operator delete(p1);
             }
 
-            void construct(pointer memory, const Y& value) {
+            template<typename U>
+            void construct(U* memory, const_reference value) {
                 void* p1 = memory;
-                ::new(p1) Y(value);
+                ::new(p1) U(value);
             }
 
-            void destroy(pointer memory) {
-                memory->~Y();
+            template<typename U>
+            void destroy(U* memory) {
+                memory->~U();
             }
+
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
+    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+            template<typename U, typename... Args>
+            void construct(U* memory, Args&&... args) {
+                void* p1 = memory;
+                ::new(p1) U(std::forward<Args>(args)...);
+            }
+#endif
 
             template<typename U>
             bool operator==(const ms_allocator<T, U>&) const {

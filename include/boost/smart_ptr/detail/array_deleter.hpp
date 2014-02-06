@@ -87,22 +87,14 @@ namespace boost {
             typedef std::allocator_traits<TA> TT;
 #endif
 
-            void destroy(type*, std::size_t, boost::true_type) {
-            }
-
-            void destroy(type* memory, std::size_t n, boost::false_type) {
-                for (std::size_t i = n; i > 0;) {
+            void destroy(type* memory, std::size_t count) {
+                for (std::size_t i = count; i > 0;) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                     TT::destroy(pair, &memory[--i]);
 #else
                     memory[--i].~type();
 #endif
                 }
-            }
-
-            void destroy(type* memory, std::size_t n) {
-                boost::has_trivial_destructor<type> tag;
-                destroy(memory, n, tag);
             }
 
             void value_init(type* memory, boost::true_type) {
@@ -224,15 +216,15 @@ namespace boost {
             void destroy(type*, std::size_t, boost::true_type) {
             }
 
-            void destroy(type* memory, std::size_t n, boost::false_type) {
-                for (std::size_t i = n; i > 0;) {
+            void destroy(type* memory, std::size_t count, boost::false_type) {
+                for (std::size_t i = count; i > 0;) {
                     memory[--i].~type();
                 }
             }
 
-            void destroy(type* memory, std::size_t n) {
+            void destroy(type* memory, std::size_t count) {
                 boost::has_trivial_destructor<type> tag;
-                destroy(memory, n, tag);
+                destroy(memory, count, tag);
             }
 
             void value_init(type* memory, boost::true_type) {
@@ -267,6 +259,27 @@ namespace boost {
                 value_init(memory, tag);
             }
 
+            template<std::size_t N>
+            void value_init(type* memory, const type* list) {
+#if !defined(BOOST_NO_EXCEPTIONS)
+                std::size_t i = 0;
+                try {
+                    for (; i < size; i++) {
+                        void* p1 = memory + i;
+                        ::new(p1) type(list[i % N]);
+                    }
+                } catch (...) {
+                    destroy(memory, i);
+                    throw;
+                }
+#else
+                for (std::size_t i = 0; i < size; i++) {
+                    void* p1 = memory + i;
+                    ::new(p1) type(list[i % N]);
+                }
+#endif
+            }
+
             void default_init(type*, boost::true_type) {
             }
 
@@ -293,27 +306,6 @@ namespace boost {
             void default_init(type* memory) {
                 boost::has_trivial_default_constructor<type> tag;
                 default_init(memory, tag);
-            }
-
-            template<std::size_t N>
-            void value_init(type* memory, const type* list) {
-#if !defined(BOOST_NO_EXCEPTIONS)
-                std::size_t i = 0;
-                try {
-                    for (; i < size; i++) {
-                        void* p1 = memory + i;
-                        ::new(p1) type(list[i % N]);
-                    }
-                } catch (...) {
-                    destroy(memory, i);
-                    throw;
-                }
-#else
-                for (std::size_t i = 0; i < size; i++) {
-                    void* p1 = memory + i;
-                    ::new(p1) type(list[i % N]);
-                }
-#endif
             }
 
             type* object;

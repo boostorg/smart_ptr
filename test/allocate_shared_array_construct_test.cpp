@@ -39,10 +39,10 @@ public:
         ::operator delete(p1);
     }
 
-    template<typename U, typename... Args>
-    void construct(U* memory, Args&&... args) {
+    template<typename U>
+    void construct(U* memory) {
         void* p1 = memory;
-        ::new(p1) U(std::forward<Args>(args)...);
+        ::new(p1) U();
     }
 
     template<typename U>

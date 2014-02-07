@@ -21,16 +21,18 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef typename boost::remove_cv<T2>::type T3;
+        typedef boost::detail::as_allocator<T3[], A> A1;
+        typedef boost::detail::as_deleter<T3[], A> D1;
         T1* p1 = 0;
         T3* p2 = 0;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
-        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
-        boost::detail::as_deleter<T3[], A> d1(allocator, n1);
+        D1 d1(allocator, n1);
+        A1 a1(allocator, n1, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::as_deleter<T3[], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->init(p2);
+        boost::detail::as_init(allocator, p2, n1);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 
@@ -43,15 +45,17 @@ namespace boost {
         enum {
             N = boost::detail::array_total<T>::size
         };
+        typedef boost::detail::as_allocator<T3[N], A> A1;
+        typedef boost::detail::as_deleter<T3[N], A> D1;
         T1* p1 = 0;
         T3* p2 = 0;
-        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
-        boost::detail::as_deleter<T3[N], A> d1(allocator);
+        D1 d1(allocator);
+        A1 a1(allocator, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::as_deleter<T3[N], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->init(p2);
+        boost::detail::as_init(allocator, p2, N);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 
@@ -63,6 +67,8 @@ namespace boost {
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef typename boost::remove_cv<T2>::type T3;
         typedef const T2 T4;
+        typedef boost::detail::as_allocator<T3[], A> A1;
+        typedef boost::detail::as_deleter<T3[], A> D1;
         enum {
             M = boost::detail::array_total<T1>::size
         };
@@ -70,13 +76,13 @@ namespace boost {
         T3* p2 = 0;
         T4* p3 = reinterpret_cast<T4*>(&value);
         std::size_t n1 = M * size;
-        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
-        boost::detail::as_deleter<T3[], A> d1(allocator, n1);
+        D1 d1(allocator, n1);
+        A1 a1(allocator, n1, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::as_deleter<T3[], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->template init<M>(p2, p3);
+        boost::detail::as_init<T3, A, M>(allocator, p2, n1, p3);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 
@@ -90,18 +96,20 @@ namespace boost {
         typedef const T2 T4;
         enum {
             M = boost::detail::array_total<T1>::size,
-            N = boost::detail::array_total<T>::size            
+            N = boost::detail::array_total<T>::size
         };
+        typedef boost::detail::as_allocator<T3[N], A> A1;
+        typedef boost::detail::as_deleter<T3[N], A> D1;
         T1* p1 = 0;
         T3* p2 = 0;
         T4* p3 = reinterpret_cast<T4*>(&value);
-        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
-        boost::detail::as_deleter<T3[N], A> d1(allocator);
+        D1 d1(allocator);
+        A1 a1(allocator, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::as_deleter<T3[N], A>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->template init<M>(p2, p3);
+        boost::detail::as_init<T3, A, M>(allocator, p2, N, p3);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 
@@ -111,16 +119,18 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef typename boost::remove_cv<T2>::type T3;
+        typedef boost::detail::as_allocator<T3[], A> A1;
+        typedef boost::detail::ms_deleter<T3[]> D1;
         T1* p1 = 0;
         T3* p2 = 0;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
-        boost::detail::as_allocator<T3[], A> a1(allocator, n1, &p2);
-        boost::detail::ms_deleter<T3[]> d1(n1);
+        D1 d1(n1);
+        A1 a1(allocator, n1, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::ms_deleter<T3[]>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->noinit(p2);
+        boost::detail::ms_noinit(p2, n1);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 
@@ -133,15 +143,17 @@ namespace boost {
         enum {
             N = boost::detail::array_total<T>::size
         };
+        typedef boost::detail::as_allocator<T3[N], A> A1;
+        typedef boost::detail::ms_deleter<T3[N]> D1;
         T1* p1 = 0;
         T3* p2 = 0;
-        boost::detail::as_allocator<T3[N], A> a1(allocator, &p2);
-        boost::detail::ms_deleter<T3[N]> d1;
+        D1 d1;
+        A1 a1(allocator, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
-        typedef boost::detail::ms_deleter<T3[N]>* D2;
         p1 = reinterpret_cast<T1*>(p2);
-        D2 d2 = static_cast<D2>(s1._internal_get_untyped_deleter());
-        d2->noinit(p2);
+        boost::detail::ms_noinit(p2, N);
+        D1* d2 = static_cast<D1*>(s1._internal_get_untyped_deleter());
+        d2->set(p2);
         return boost::shared_ptr<T>(s1, p1);
     }
 }

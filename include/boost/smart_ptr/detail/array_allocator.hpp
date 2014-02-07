@@ -9,10 +9,10 @@
 #ifndef BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 #define BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 
+#include <boost/smart_ptr/detail/allocator_pair.hpp>
 #include <boost/smart_ptr/detail/array_traits.hpp>
-#include <boost/smart_ptr/detail/as_pair.hpp>
 #include <boost/type_traits/alignment_of.hpp>
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)    
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
 #include <memory>
 #endif
 
@@ -45,20 +45,18 @@ namespace boost {
             template<typename T_, typename A_, typename Y_>
             friend class as_allocator;
 
-#if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
-    !defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<Y> YA;
             typedef typename std::allocator_traits<A>::
                 template rebind_alloc<char> CA;
+            typedef typename std::allocator_traits<A>::
+                template rebind_traits<Y> YT;
+            typedef typename std::allocator_traits<A>::
+                template rebind_traits<char> CT;
 #else
             typedef typename A::template rebind<Y>::other YA;
             typedef typename A::template rebind<char>::other CA;
-#endif
-
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-            typedef std::allocator_traits<YA> YT;
-            typedef std::allocator_traits<CA> CT;
 #endif
 
         public:
@@ -128,7 +126,7 @@ namespace boost {
                     p2--;
                 }
                 *pair.data = reinterpret_cast<type*>(p2);
-                return reinterpret_cast<Y*>(p1);
+                return reinterpret_cast<value_type*>(p1);
             }
 
             void deallocate(pointer memory, size_type count) {
@@ -162,15 +160,12 @@ namespace boost {
 #endif
             }
 
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
+    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
+    !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
             template<typename U, typename... Args>
             void construct(U* memory, Args&&... args) {
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 YT::construct(pair, memory, std::forward<Args>(args)...);
-#else
-                pair.construct(memory, std::forward<Args>(args)...);
-#endif
             }
 #endif
 
@@ -235,7 +230,10 @@ namespace boost {
             }
 
             size_type max_size() const {
-                return static_cast<std::size_t>(-1) / sizeof(Y);
+                enum {
+                    N = static_cast<std::size_t>(-1) / sizeof(value_type)
+                };
+                return N;
             }
 
             pointer allocate(size_type count, const void* = 0) {
@@ -247,7 +245,7 @@ namespace boost {
                     p2--;
                 }
                 *data = reinterpret_cast<type*>(p2);
-                return reinterpret_cast<Y*>(p1);
+                return reinterpret_cast<value_type*>(p1);
             }
 
             void deallocate(pointer memory, size_type) {
@@ -266,8 +264,9 @@ namespace boost {
                 memory->~U();
             }
 
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+#if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
+    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
+    !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
             template<typename U, typename... Args>
             void construct(U* memory, Args&&... args) {
                 void* p1 = memory;

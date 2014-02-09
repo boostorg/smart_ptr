@@ -27,7 +27,7 @@ namespace boost {
         T3* p2 = 0;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
         D1 d1(n1);
-        boost::detail::ms_allocator<T3[]> a1(n1, &p2);
+        A1 a1(n1, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
         p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_init(p2, n1);
@@ -50,7 +50,7 @@ namespace boost {
         T1* p1 = 0;
         T3* p2 = 0;
         D1 d1;
-        boost::detail::ms_allocator<T3[N]> a1(&p2);
+        A1 a1(&p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
         p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_init(p2, N);
@@ -77,7 +77,7 @@ namespace boost {
         T4* p3 = reinterpret_cast<T4*>(&value);
         std::size_t n1 = M * size;
         D1 d1(n1);
-        boost::detail::ms_allocator<T3[]> a1(n1, &p2);
+        A1 a1(n1, &p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
         p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_init<T3, M>(p2, n1, p3);
@@ -103,7 +103,7 @@ namespace boost {
         T3* p2 = 0;
         T4* p3 = reinterpret_cast<T4*>(&value);
         D1 d1;
-        boost::detail::ms_allocator<T3[N]> a1(&p2);
+        A1 a1(&p2);
         boost::shared_ptr<T> s1(p1, d1, a1);
         p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_init<T3, M>(p2, N, p3);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 Glen Joseph Fernandes 
+ * Copyright (c) 2012 Glen Joseph Fernandes 
  * glenfe at live dot com
  *
  * Distributed under the Boost Software License, 
@@ -14,15 +14,12 @@ class type
     : public boost::enable_shared_from_this<type> {
 public:
     static unsigned int instances;
-
     explicit type() {
         instances++;
     }
-
     ~type() {
         instances--;
     }
-
 private:
     type(const type&);
     type& operator=(const type&);
@@ -41,7 +38,6 @@ int main() {
             BOOST_TEST(type::instances == 3);
         }
     }
-
     BOOST_TEST(type::instances == 0);
     {
         boost::shared_ptr<type[]> a1 = boost::make_shared_noinit<type[]>(3);
@@ -52,6 +48,5 @@ int main() {
             BOOST_TEST(type::instances == 3);
         }
     }
-
     return boost::report_errors();
 }

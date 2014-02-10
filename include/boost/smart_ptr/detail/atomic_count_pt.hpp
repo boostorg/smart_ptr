@@ -11,6 +11,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <boost/assert.hpp>
 #include <pthread.h>
 
 //
@@ -37,12 +38,12 @@ private:
 
         scoped_lock(pthread_mutex_t & m): m_(m)
         {
-            pthread_mutex_lock(&m_);
+            BOOST_VERIFY( pthread_mutex_lock( &m_ ) == 0 );
         }
 
         ~scoped_lock()
         {
-            pthread_mutex_unlock(&m_);
+            BOOST_VERIFY( pthread_mutex_unlock( &m_ ) == 0 );
         }
 
     private:
@@ -54,12 +55,12 @@ public:
 
     explicit atomic_count(long v): value_(v)
     {
-        pthread_mutex_init(&mutex_, 0);
+        BOOST_VERIFY( pthread_mutex_init( &mutex_, 0 ) == 0 );
     }
 
     ~atomic_count()
     {
-        pthread_mutex_destroy(&mutex_);
+        BOOST_VERIFY( pthread_mutex_destroy( &mutex_ ) == 0 );
     }
 
     long operator++()

@@ -26,7 +26,7 @@ namespace boost {
         T2* p2 = 0;
         D1 d1;
         A1 a1(allocator, size, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init(allocator, p2, n1);
 #else
@@ -53,7 +53,7 @@ namespace boost {
         T2* p2 = 0;
         D1 d1;
         A1 a1(allocator, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init(allocator, p2, N);
 #else
@@ -84,7 +84,7 @@ namespace boost {
         T3* p3 = reinterpret_cast<T3*>(&value);
         D1 d1;
         A1 a1(allocator, size, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init<T2, A, M>(allocator, p2, n1, p3);
 #else
@@ -115,7 +115,7 @@ namespace boost {
         T3* p3 = reinterpret_cast<T3*>(&value);
         D1 d1;
         A1 a1(allocator, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init<T2, A, M>(allocator, p2, N, p3);
 #else
@@ -137,10 +137,10 @@ namespace boost {
         typedef boost::detail::ms_noop D1;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
         T1* p1 = 0;
-        T2* p2 = 0;        
+        T2* p2 = 0;
         D1 d1;
         A1 a1(allocator, size, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
         boost::detail::ms_noinit(p2, n1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);
@@ -163,7 +163,7 @@ namespace boost {
         T2* p2 = 0;
         D1 d1;
         A1 a1(allocator, &p2);
-        shared_ptr<T> s1(p1, d1, a1);        
+        shared_ptr<T> s1(p1, d1, a1);
         boost::detail::ms_noinit(p2, N);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);

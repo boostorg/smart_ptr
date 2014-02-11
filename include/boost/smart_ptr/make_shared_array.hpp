@@ -21,7 +21,7 @@ namespace boost {
         typedef boost::detail::ms_init_tag R1;
         typedef boost::detail::ms_allocator<T, R1> A1;
         typedef boost::detail::ms_noop D1;
-        std::size_t n1 = size * boost::detail::array_total<T1>::size; 
+        std::size_t n1 = size * boost::detail::array_total<T1>::size;
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
@@ -50,10 +50,10 @@ namespace boost {
         D1 d1;
         A1 a1(&p2);
         shared_ptr<T> s1(p1, d1, a1);
-        p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_init(p2, N);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);
+        p1 = reinterpret_cast<T1*>(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -96,7 +96,7 @@ namespace boost {
         enum {
             M = boost::detail::array_total<T1>::size,
             N = boost::detail::array_total<T>::size
-        };        
+        };
         T1* p1 = 0;
         T2* p2 = 0;
         T3* p3 = reinterpret_cast<T3*>(&value);
@@ -118,16 +118,16 @@ namespace boost {
         typedef boost::detail::ms_noinit_tag R1;
         typedef boost::detail::ms_allocator<T, R1> A1;
         typedef boost::detail::ms_noop D1;
-        std::size_t n1 = size * boost::detail::array_total<T1>::size; 
+        std::size_t n1 = size * boost::detail::array_total<T1>::size;
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
         A1 a1(n1, &p2);
         shared_ptr<T> s1(p1, d1, a1);
-        p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_noinit(p2, n1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);
+        p1 = reinterpret_cast<T1*>(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -147,10 +147,10 @@ namespace boost {
         D1 d1;
         A1 a1(&p2);
         shared_ptr<T> s1(p1, d1, a1);
-        p1 = reinterpret_cast<T1*>(p2);
         boost::detail::ms_noinit(p2, N);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);
+        p1 = reinterpret_cast<T1*>(p2);
         return shared_ptr<T>(s1, p1);
     }
 }

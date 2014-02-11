@@ -119,7 +119,7 @@ namespace boost {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init<T2, A, M>(allocator, p2, N, p3);
 #else
-        boost::detail::as_init<T2,  M>(p2, N, p3);
+        boost::detail::ms_init<T2,  M>(p2, N, p3);
 #endif
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
         a2->set(p2);

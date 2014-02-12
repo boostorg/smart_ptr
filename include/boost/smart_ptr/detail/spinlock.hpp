@@ -31,7 +31,10 @@
 #include <boost/config.hpp>
 #include <boost/smart_ptr/detail/sp_has_sync.hpp>
 
-#if defined( BOOST_SP_USE_PTHREADS )
+#if defined( BOOST_SP_USE_STD_ATOMIC )
+# include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
+
+#elif defined( BOOST_SP_USE_PTHREADS )
 #  include <boost/smart_ptr/detail/spinlock_pt.hpp>
 
 #elif defined(__GNUC__) && defined( __arm__ ) && !defined( __thumb__ )

@@ -372,7 +372,7 @@ namespace boost {
             type* object;
         };
 
-        class ms_noop {
+        class ms_in_allocator_tag {
         public:
             void operator()(const void*) {
             }

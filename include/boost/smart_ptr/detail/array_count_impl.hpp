@@ -14,14 +14,13 @@
 
 namespace boost {
     namespace detail {
-        template<class P, class T_, class R_, class A_>
-        class sp_counted_impl_pda<P, ms_noop, ms_allocator<T_, R_, A_> >
+        template<class P, class A>
+        class sp_counted_impl_pda<P, ms_in_allocator_tag, A>
             : public sp_counted_base {
-            typedef ms_noop D;
-            typedef ms_allocator<T_, R_, A_> A;
+            typedef ms_in_allocator_tag D;
             typedef sp_counted_impl_pda<P, D, A> Y;
         public:
-            sp_counted_impl_pda(const P&, const D&, const A& allocator_)
+            sp_counted_impl_pda(P, const D&, const A& allocator_)
                 : allocator(allocator_) {
             }
 

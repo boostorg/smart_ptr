@@ -21,7 +21,7 @@ namespace boost {
             typedef sp_counted_impl_pda<P, D, A> Y;
         public:
             sp_counted_impl_pda(P, const D&, const A& allocator_)
-                : allocator(allocator_, this, sizeof(Y)) {
+                : allocator(allocator_) {
             }
 
             virtual void dispose() {

@@ -25,17 +25,17 @@ namespace boost {
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
-        A1 a1(allocator, size);
+        A1 a1(allocator, size, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init(allocator, p2, n1);
 #else
         boost::detail::ms_init(p2, n1);
 #endif
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -53,17 +53,17 @@ namespace boost {
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
-        A1 a1(allocator);
+        A1 a1(allocator, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init(allocator, p2, N);
 #else
         boost::detail::ms_init(p2, N);
 #endif
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -85,17 +85,17 @@ namespace boost {
         T2* p2 = 0;
         T3* p3 = reinterpret_cast<T3*>(&value);
         D1 d1;
-        A1 a1(allocator, size);
+        A1 a1(allocator, size, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init<T2, A, M>(allocator, p2, n1, p3);
 #else
         boost::detail::ms_init<T2, M>(p2, n1, p3);
 #endif
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -117,17 +117,17 @@ namespace boost {
         T2* p2 = 0;
         T3* p3 = reinterpret_cast<T3*>(&value);
         D1 d1;
-        A1 a1(allocator);
+        A1 a1(allocator, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
         boost::detail::as_init<T2, A, M>(allocator, p2, N, p3);
 #else
         boost::detail::ms_init<T2,  M>(p2, N, p3);
 #endif
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -143,13 +143,13 @@ namespace boost {
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
-        A1 a1(allocator, size);
+        A1 a1(allocator, size, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
         boost::detail::ms_noinit(p2, n1);
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 
@@ -167,13 +167,13 @@ namespace boost {
         T1* p1 = 0;
         T2* p2 = 0;
         D1 d1;
-        A1 a1(allocator);
+        A1 a1(allocator, &p2);
         shared_ptr<T> s1(p1, d1, a1);
         A1* a2 = static_cast<A1*>(s1._internal_get_untyped_deleter());
-        a2->swap(p2);
+        a2->set(0);
         boost::detail::ms_noinit(p2, N);
+        a2->set(p2);
         p1 = reinterpret_cast<T1*>(p2);
-        a2->swap(p2);
         return shared_ptr<T>(s1, p1);
     }
 }

@@ -252,8 +252,9 @@ boost::shared_ptr&lt;int[4][2]&gt; a2 = boost::make_shared_noinit&lt;int[4][2]&g
     <h2><a name="history">History</a></h2>
     <p>February 2014. Glen Fernandes updated overloads of make_shared and 
       allocate_shared to conform to the specification in C++ standard paper 
-      <a href="#N3870">N3870</a> including resolving C++ standard library 
-      defect report 2070.</p>
+      <a href="#N3870">N3870</a>, including resolving C++ standard library 
+      defect report 2070, and reduced the spatial overhead of the internal
+      bookkeeping structures.</p>
     <p>November 2012. Glen Fernandes contributed implementations of 
       make_shared and allocate_shared for arrays.</p>
     <h2><a name="references">References</a></h2>

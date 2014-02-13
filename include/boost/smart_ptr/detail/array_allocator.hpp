@@ -103,14 +103,14 @@ namespace boost {
                   object(0) {
             }
 
-            template<class U>
-            as_allocator(const as_allocator& other, U* memory) 
+            as_allocator(const as_allocator& other, void* memory,
+                std::size_t offset)
                 : as_size_base<T, A>(other) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = sizeof(U) + M - 1;
-                char* p1 = reinterpret_cast<char*>(memory) + n1;
+                std::size_t n1 = offset + M - 1;
+                char* p1 = static_cast<char*>(memory) + n1;
                 while (std::size_t(p1) % M != 0) {
                     p1--;
                 }
@@ -138,11 +138,11 @@ namespace boost {
                 return ya.max_size();
             }
 
-            pointer allocate(size_type, const void* value = 0) {
+            pointer allocate(size_type count, const void* value = 0) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = sizeof(value_type) + M - 1;
+                std::size_t n1 = count * sizeof(value_type) + M - 1;
                 std::size_t n2 = size * sizeof(type);
                 CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -153,11 +153,11 @@ namespace boost {
                 return static_cast<value_type*>(p1);
             }
 
-            void deallocate(pointer memory, size_type) {
+            void deallocate(pointer memory, size_type count) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = sizeof(value_type) + M - 1;
+                std::size_t n1 = count * sizeof(value_type) + M - 1;
                 char* p1 = reinterpret_cast<char*>(memory);
                 CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -172,7 +172,6 @@ namespace boost {
                 YA ya(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 YT::construct(ya, memory, value);
-
 #else
                 ya.construct(memory, value);
 #endif
@@ -287,14 +286,14 @@ namespace boost {
                   object(0) {
             }
 
-            template<class U>
-            ms_allocator(const ms_allocator& other, U* memory)
+            ms_allocator(const ms_allocator& other, void* memory,
+                std::size_t offset)
                 : ms_size_base<T>(other) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = sizeof(U) + M - 1;
-                char* p1 = reinterpret_cast<char*>(memory) + n1;
+                std::size_t n1 = offset + M - 1;
+                char* p1 = static_cast<char*>(memory) + n1;
                 while (std::size_t(p1) % M != 0) {
                     p1--;
                 }
@@ -322,11 +321,11 @@ namespace boost {
                 return N;
             }
 
-            pointer allocate(size_type, const void* = 0) {
+            pointer allocate(size_type count, const void* = 0) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = sizeof(value_type) + M - 1;
+                std::size_t n1 = count * sizeof(value_type) + M - 1;
                 std::size_t n2 = size * sizeof(type);
                 void* p1 = ::operator new(n1 + n2);
                 return static_cast<value_type*>(p1);

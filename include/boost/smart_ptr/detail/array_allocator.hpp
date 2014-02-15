@@ -160,12 +160,13 @@ namespace boost {
                     M = boost::alignment_of<type>::value
                 };
                 std::size_t n1 = count * sizeof(value_type) + M - 1;
+                std::size_t n2 = size * sizeof(type);
                 char* p1 = reinterpret_cast<char*>(memory);
                 CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                CT::deallocate(ca, p1, size + n1);
+                CT::deallocate(ca, p1, n1 + n2);
 #else
-                ca.deallocate(p1, size + n1);
+                ca.deallocate(p1, n1 + n2);
 #endif
             }
 

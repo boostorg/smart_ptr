@@ -11,6 +11,7 @@
 
 #include <boost/smart_ptr/detail/array_traits.hpp>
 #include <boost/smart_ptr/detail/array_utility.hpp>
+#include <boost/smart_ptr/detail/sp_align.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <algorithm>
 
@@ -139,19 +140,17 @@ namespace boost {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = count * sizeof(value_type) + M - 1;
-                std::size_t n2 = size * sizeof(type);
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
                 CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 void* p1 = CT::allocate(ca, n1 + n2, value);
 #else
                 void* p1 = ca.allocate(n1 + n2, value);
 #endif
-                char* p2 = static_cast<char*>(p1) + n1;
-                while (std::size_t(p2) % M != 0) {
-                    p2--;
-                }
-                *data.result = reinterpret_cast<type*>(p2);
+                void* p2 = static_cast<char*>(p1) + n1;
+                p2 = sp_align(M, p2);
+                *data.result = static_cast<type*>(p2);
                 return static_cast<value_type*>(p1);
             }
 
@@ -159,8 +158,8 @@ namespace boost {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = count * sizeof(value_type) + M - 1;
-                std::size_t n2 = size * sizeof(type);
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
                 char* p1 = reinterpret_cast<char*>(memory);
                 CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -315,14 +314,12 @@ namespace boost {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
-                std::size_t n1 = count * sizeof(value_type) + M - 1;
-                std::size_t n2 = size * sizeof(type);
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
                 void* p1 = ::operator new(n1 + n2);
-                char* p2 = static_cast<char*>(p1) + n1;
-                while (std::size_t(p2) % M != 0) {
-                    p2--;
-                }
-                *data.result = reinterpret_cast<type*>(p2);
+                void* p2 = static_cast<char*>(p1) + n1;
+                p2 = sp_align(M, p2);
+                *data.result = static_cast<type*>(p2);
                 return static_cast<value_type*>(p1);
             }
 

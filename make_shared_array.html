@@ -30,50 +30,50 @@
       user-supplied allocator, allowing finer control.</p>
     <h2><a name="synopsis">Synopsis</a></h2>
     <pre>namespace boost {
-    template&lt;typename U&gt; // U is T[]
+    template&lt;class U&gt; // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared</a>(size_t size);
 
-    template&lt;typename U, typename A&gt; // U is T[]
+    template&lt;class U, class A&gt; // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared</a>(const A&amp; allocator, size_t size);
 
-    template&lt;typename U&gt; // U is T[N]
+    template&lt;class U&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared</a>();
 
-    template&lt;typename U, typename A&gt; // U is T[N]
+    template&lt;class U, class A&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared</a>(const A&amp; allocator);
 
-    template&lt;typename U&gt; // U is T[]
+    template&lt;class U&gt; // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared</a>(size_t size, const T&amp; value);
 
-    template&lt;typename U, typename A&gt;  // U is T[]
+    template&lt;class U, class A&gt;  // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared</a>(const A&amp; allocator, size_t size, const T&amp; value);
 
-    template&lt;typename U&gt; // U is T[N]
+    template&lt;class U&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared</a>(const T&amp; value);
 
-    template&lt;typename U, typename A&gt; // U is T[N]
+    template&lt;class U, class A&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared</a>(const A&amp; allocator, const T&amp; value);
 
-    template&lt;typename U&gt; // U is T[]
+    template&lt;class U&gt; // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared_noinit</a>(size_t size);
 
-    template&lt;typename U, typename A&gt; // U is T[]
+    template&lt;class U, class A&gt; // U is T[]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared_noinit</a>(const A&amp; allocator, size_t size);
 
-    template&lt;typename U&gt; // U is T[N]
+    template&lt;class U&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">make_shared_noinit</a>();
 
-    template&lt;typename U, typename A&gt; // U is T[N]
+    template&lt;class U, class A&gt; // U is T[N]
     shared_ptr&lt;U&gt; <a href="#functions">allocate_shared_noinit</a>(const A&amp; allocator);
 }</pre>
     <h2><a name="common">Common Requirements</a></h2>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
     shared_ptr&lt;U&gt; make_shared(<em>args</em>);
-template&lt;typename U, typename A&gt;
+template&lt;class U, class A&gt;
     shared_ptr&lt;U&gt; allocate_shared(const A&amp; allocator, <em>args</em>);
-template&lt;typename U&gt;
+template&lt;class U&gt;
     shared_ptr&lt;U&gt; make_shared_noinit(<em>args</em>);
-template&lt;typename U, typename A&gt;
+template&lt;class U, class A&gt;
     shared_ptr&lt;U&gt; allocate_shared_noinit(const A&amp; allocator, <em>args</em>);</pre>
     <blockquote>
       <p><b>Requires:</b> <code>U</code> is of the form <code>T[]</code> or 
@@ -157,9 +157,9 @@ template&lt;typename U, typename A&gt;
         structures such as the reference counts.</p>
     </blockquote>
     <h2><a name="functions">Free Functions</a></h2>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared(size_t size);
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared(const A&amp; allocator, size_t size);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to a value-initialized 
@@ -172,9 +172,9 @@ template&lt;typename U, typename A&gt;
 boost::shared_ptr&lt;int[][2]&gt; a2 = boost::make_shared&lt;int[][2]&gt;(size);</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared();
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared(const A&amp; allocator);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to a value-initialized 
@@ -187,9 +187,9 @@ template&lt;typename U, typename A&gt;
 boost::shared_ptr&lt;int[4][2]&gt; a2 = boost::make_shared&lt;int[4][2]&gt;();</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared(size_t size, const T&amp; value);
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared(const A&amp; allocator, size_t size, const T&amp; value);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to an object of type 
@@ -203,9 +203,9 @@ template&lt;typename U, typename A&gt;
 boost::shared_ptr&lt;int[][2]&gt; a2 = boost::make_shared&lt;int[][2]&gt;(size, {1, 2});</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared(const T&amp; value);
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared(const A&amp; allocator, const T&amp; value);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to an object of type 
@@ -219,9 +219,9 @@ template&lt;typename U, typename A&gt;
 boost::shared_ptr&lt;int[4][2]&gt; a2 = boost::make_shared&lt;int[4][2]&gt;({1, 2});</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared_noinit(size_t size);
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared_noinit(const A&amp; allocator, size_t size);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to a default-initialized 
@@ -234,9 +234,9 @@ template&lt;typename U, typename A&gt;
 boost::shared_ptr&lt;int[][2]&gt; a2 = boost::make_shared_noinit&lt;int[][2]&gt;(size);</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt; 
+    <pre>template&lt;class U&gt; 
     shared_ptr&lt;U&gt; make_shared_noinit();
-template&lt;typename U, typename A&gt; 
+template&lt;class U, class A&gt; 
     shared_ptr&lt;U&gt; allocate_shared_noinit(const A&amp; allocator);</pre>
     <blockquote>
       <p><b>Returns:</b> A <code>shared_ptr</code> to a default-initialized 

@@ -18,30 +18,30 @@
       <code>unique_ptr</code> objects.</p>
     <h2><a name="synopsis">Synopsis</a></h2>
     <pre>namespace boost {
-    template&lt;typename U&gt; // U is not array
+    template&lt;class U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>();
 
 #if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
-    template&lt;typename U, typename... Args&gt; // U is not array
+    template&lt;class U, class... Args&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(Args&amp;&amp;... args);
 #endif
 
-    template&lt;typename U&gt; // U is not array
+    template&lt;class U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(U&amp;&amp; value);
 
-    template&lt;typename U&gt; // U is T[]
+    template&lt;class U&gt; // U is T[]
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(size_t size);
 
-    template&lt;typename U&gt; // U is not array
+    template&lt;class U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique_noinit</a>();
 
-    template&lt;typename U&gt; // U is T[]
+    template&lt;class U&gt; // U is T[]
     unique_ptr&lt;U&gt; <a href="#functions">make_unique_noinit</a>(size_t size);
 }</pre>
     <h2><a name="common">Common Requirements</a></h2>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
     unique_ptr&lt;U&gt; make_unique(<em>args</em>);
-template&lt;typename U&gt;
+template&lt;class U&gt;
     unique_ptr&lt;U&gt; make_unique_noinit(<em>args</em>);</pre> 
     <blockquote>
       <p><b>Effects:</b> Allocates memory for an object of type <code>U</code> 
@@ -73,7 +73,7 @@ template&lt;typename U&gt;
       </blockquote>
     </blockquote>
     <h2><a name="functions">Free Functions</a></h2>
-    <pre>template&lt;typename U, typename... Args&gt;
+    <pre>template&lt;class U, class... Args&gt;
 unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre> 
     <blockquote>
       <p><b>Returns:</b> A unique_ptr to an object of type <code>U</code>, 
@@ -86,7 +86,7 @@ unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre>
 unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;(x, y);</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
 unique_ptr&lt;U&gt; make_unique(U&amp;&amp; value);</pre> 
     <blockquote>
       <p><b>Returns:</b> A unique_ptr to an object of type <code>U</code>, 
@@ -99,7 +99,7 @@ unique_ptr&lt;U&gt; make_unique(U&amp;&amp; value);</pre>
 unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;({-10, 25});</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
 unique_ptr&lt;U&gt; make_unique(size_t size);</pre> 
     <blockquote>
       <p><b>Returns:</b> A unique_ptr to a value-initialized object of type 
@@ -112,7 +112,7 @@ unique_ptr&lt;U&gt; make_unique(size_t size);</pre>
 unique_ptr&lt;int[][2]&gt; p2 = boost::make_unique&lt;int[][2]&gt;(2);</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
 unique_ptr&lt;U&gt; make_unique_noinit();</pre> 
     <blockquote>
       <p><b>Returns:</b> A unique_ptr to a default-initialized object of 
@@ -125,7 +125,7 @@ unique_ptr&lt;U&gt; make_unique_noinit();</pre>
 unique_ptr&lt;point&gt; p2 = boost::make_unique_noinit&lt;point&gt;();</pre>
       </blockquote>
     </blockquote>
-    <pre>template&lt;typename U&gt;
+    <pre>template&lt;class U&gt;
 unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre> 
     <blockquote>
       <p><b>Returns:</b> A unique_ptr to a default-initialized object of 

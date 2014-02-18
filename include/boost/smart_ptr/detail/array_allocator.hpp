@@ -28,6 +28,12 @@ namespace boost {
                   size(size_ * array_total<T>::size) {
             }
 
+            template<class U>
+            as_size_base(const as_size_base<T[], U>& other)
+                : A(other),
+                  size(other.size) {
+            }
+
             std::size_t size;
         };
 
@@ -36,6 +42,11 @@ namespace boost {
             : A {
             as_size_base(const A& allocator)
                 : A(allocator) {
+            }
+
+            template<class U>
+            as_size_base(const as_size_base<T[N], U>& other)
+                : A(other) {
             }
 
             enum {
@@ -58,9 +69,13 @@ namespace boost {
 
         template<class T, class R, class A, class Y = char>
         class as_allocator
-            : as_size_base<T, A> {
-            using as_size_base<T, A>::size;
-
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+            : as_size_base<T, typename std::allocator_traits<A>::
+                template rebind_alloc<Y> > {
+#else
+            : as_size_base<T, typename A::
+                template rebind<Y>::other> {
+#endif
             template<class T_, class R_, class A_, class Y_>
             friend class as_allocator;
 
@@ -77,6 +92,8 @@ namespace boost {
             typedef typename A::template rebind<Y>::other YA;
             typedef typename A::template rebind<char>::other CA;
 #endif
+
+            using as_size_base<T, YA>::size;
 
         public:
             typedef typename array_base<T>::type type;
@@ -105,36 +122,30 @@ namespace boost {
             };
 
             as_allocator(const A& allocator, type** result)
-                : as_size_base<T, A>(allocator),
+                : as_size_base<T, YA>(allocator),
                   data(result) {
             }
 
             as_allocator(const A& allocator, std::size_t size_, 
                 type** result)
-                : as_size_base<T, A>(allocator, size_),
+                : as_size_base<T, YA>(allocator, size_),
                   data(result) {
             }
 
             template<class U>
             as_allocator(const as_allocator<T, R, A, U>& other)
-                : as_size_base<T, A>(other),
+                : as_size_base<T, YA>(other),
                   data(other.data) {
             }
 
-            pointer address(reference value) const {
-                YA ya(*this);
-                return ya.address(value);
-            }
-
-            const_pointer address(const_reference value) const {
-                YA ya(*this);
-                return ya.address(value);
-            }
-
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
             size_type max_size() const {
-                YA ya(*this);
-                return ya.max_size();
+                return YT::max_size(*this);
             }
+#else
+            using YA::address;
+            using YA::max_size;
+#endif
 
             pointer allocate(size_type count, const void* value = 0) {
                 enum {
@@ -171,21 +182,19 @@ namespace boost {
 
             template<class U>
             void construct(U* memory, const_reference value) {
-                YA ya(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::construct(ya, memory, value);
+                YT::construct(*this, memory, value);
 #else
-                ya.construct(memory, value);
+                YA::construct(memory, value);
 #endif
             }
 
             template<class U>
             void destroy(U* memory) {
-                YA ya(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::destroy(ya, memory);
+                YT::destroy(*this, memory);
 #else
-                ya.destroy(memory);
+                YA::destroy(memory);
 #endif
             }
 
@@ -194,8 +203,7 @@ namespace boost {
     !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
             template<class U, class... Args>
             void construct(U* memory, Args&&... args) {
-                YA ya(*this);
-                YT::construct(ya, memory, std::forward<Args>(args)...);
+                YT::construct(*this, memory, std::forward<Args>(args)...);
             }
 #endif
 
@@ -223,8 +231,7 @@ namespace boost {
         private:
             void free(ms_init_tag) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                const A& a1(*this);
-                as_destroy(a1, data.object, size);
+                as_destroy(*this, data.object, size);
 #else
                 ms_destroy(data.object, size);
 #endif
@@ -295,6 +302,7 @@ namespace boost {
                   data(other.data) {
             }
 
+#if defined(BOOST_NO_CXX11_ALLOCATOR)
             pointer address(reference value) const {
                 return &value;
             }
@@ -302,6 +310,7 @@ namespace boost {
             const_pointer address(const_reference value) const {
                 return &value;
             }
+#endif
 
             size_type max_size() const {
                 enum {

@@ -13,16 +13,16 @@
 
 namespace boost {
     namespace detail {
-        template<typename T> 
+        template<class T> 
         struct up_if_not_array {
             typedef std::unique_ptr<T> type;
         };
 
-        template<typename T>
+        template<class T>
         struct up_if_not_array<T[]> {
         };
 
-        template<typename T, std::size_t N>
+        template<class T, std::size_t N>
         struct up_if_not_array<T[N]> {
         };
     }

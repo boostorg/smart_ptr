@@ -9,40 +9,74 @@
 #ifndef BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 #define BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 
-#include <boost/smart_ptr/detail/allocator_pair.hpp>
 #include <boost/smart_ptr/detail/array_traits.hpp>
+#include <boost/smart_ptr/detail/array_utility.hpp>
+#include <boost/smart_ptr/detail/sp_align.hpp>
 #include <boost/type_traits/alignment_of.hpp>
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-#include <memory>
-#endif
+#include <algorithm>
 
 namespace boost {
     namespace detail {
-        template<typename T>
-        struct ms_allocator_base;
+        template<class T, class A>
+        struct as_size_base;
 
-        template<typename T>
-        struct ms_allocator_base<T[]> {
-            ms_allocator_base(std::size_t size_)
-                : size(size_ * sizeof(T)) {
+        template<class T, class A>
+        struct as_size_base<T[], A> 
+            : A {
+            as_size_base(const A& allocator, std::size_t size_)
+                : A(allocator),
+                  size(size_ * array_total<T>::size) {
+            }
+
+            template<class U>
+            as_size_base(const as_size_base<T[], U>& other)
+                : A(other),
+                  size(other.size) {
             }
 
             std::size_t size;
         };
 
-        template<typename T, std::size_t N>
-        struct ms_allocator_base<T[N]> {
+        template<class T, std::size_t N, class A>
+        struct as_size_base<T[N], A> 
+            : A {
+            as_size_base(const A& allocator)
+                : A(allocator) {
+            }
+
+            template<class U>
+            as_size_base(const as_size_base<T[N], U>& other)
+                : A(other) {
+            }
+
             enum {
-                size = N * sizeof(T)
+                size = array_total<T[N]>::size
             };
         };
 
-        template<typename T, typename A, typename Y = char>
-        class as_allocator
-            : ms_allocator_base<T> {
-            using ms_allocator_base<T>::size;
+        struct ms_init_tag   { };
+        struct ms_noinit_tag { };
 
-            template<typename T_, typename A_, typename Y_>
+        template<class T>
+        union ms_allocator_state {
+            ms_allocator_state(T** result_)
+                : result(result_) {
+            }
+
+            T** result;
+            T* object;
+        };
+
+        template<class T, class R, class A, class Y = char>
+        class as_allocator
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+            : as_size_base<T, typename std::allocator_traits<A>::
+                template rebind_alloc<Y> > {
+#else
+            : as_size_base<T, typename A::
+                template rebind<Y>::other> {
+#endif
+            template<class T_, class R_, class A_, class Y_>
             friend class as_allocator;
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -59,8 +93,10 @@ namespace boost {
             typedef typename A::template rebind<char>::other CA;
 #endif
 
+            using as_size_base<T, YA>::size;
+
         public:
-            typedef typename array_inner<T>::type type;
+            typedef typename array_base<T>::type type;
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
             typedef typename YT::value_type value_type;
@@ -80,119 +116,164 @@ namespace boost {
             typedef typename YA::const_reference const_reference;
 #endif
 
-            template<typename U>
+            template<class U>
             struct rebind {
-                typedef as_allocator<T, A, U> other;
+                typedef as_allocator<T, R, A, U> other;
             };
 
-            as_allocator(const A& allocator, type** data)
-                : pair(allocator, data) {
+            as_allocator(const A& allocator, type** result)
+                : as_size_base<T, YA>(allocator),
+                  data(result) {
             }
 
-            as_allocator(const A& allocator, std::size_t size_, type** data)
-                : ms_allocator_base<T>(size_),
-                  pair(allocator, data) {
+            as_allocator(const A& allocator, std::size_t size_, 
+                type** result)
+                : as_size_base<T, YA>(allocator, size_),
+                  data(result) {
             }
 
             template<class U>
-            as_allocator(const as_allocator<T, A, U>& other) 
-                : ms_allocator_base<T>(other),
-                  pair(other.pair, other.pair.data) {
+            as_allocator(const as_allocator<T, R, A, U>& other)
+                : as_size_base<T, YA>(other),
+                  data(other.data) {
             }
 
-            pointer address(reference value) const {
-                return pair.address(value);
-            }
-
-            const_pointer address(const_reference value) const {
-                return pair.address(value);
-            }
-
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
             size_type max_size() const {
-                return pair.max_size();
+                return YT::max_size(*this);
             }
+#else
+            using YA::address;
+            using YA::max_size;
+#endif
 
             pointer allocate(size_type count, const void* value = 0) {
-                std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
-                CA ca(pair);
+                enum {
+                    M = boost::alignment_of<type>::value
+                };
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
+                CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                char* p1 = CT::allocate(ca, size + n1, value);
+                void* p1 = CT::allocate(ca, n1 + n2, value);
 #else
-                char* p1 = ca.allocate(size + n1, value);
+                void* p1 = ca.allocate(n1 + n2, value);
 #endif
-                char* p2 = p1 + n1;
-                while (std::size_t(p2) % a1 != 0) {
-                    p2--;
-                }
-                *pair.data = reinterpret_cast<type*>(p2);
-                return reinterpret_cast<value_type*>(p1);
+                void* p2 = static_cast<char*>(p1) + n1;
+                p2 = sp_align(M, p2);
+                *data.result = static_cast<type*>(p2);
+                return static_cast<value_type*>(p1);
             }
 
             void deallocate(pointer memory, size_type count) {
-                std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
+                enum {
+                    M = boost::alignment_of<type>::value
+                };
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
                 char* p1 = reinterpret_cast<char*>(memory);
-                CA ca(pair);
+                CA ca(*this);
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                CT::deallocate(ca, p1, size + n1);
+                CT::deallocate(ca, p1, n1 + n2);
 #else
-                ca.deallocate(p1, size + n1);
+                ca.deallocate(p1, n1 + n2);
 #endif
             }
 
-            template<typename U>
+            template<class U>
             void construct(U* memory, const_reference value) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::construct(pair, memory, value);
-
+                YT::construct(*this, memory, value);
 #else
-                pair.construct(memory, value);
+                YA::construct(memory, value);
 #endif
             }
 
-            template<typename U>
+            template<class U>
             void destroy(U* memory) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                YT::destroy(pair, memory);
+                YT::destroy(*this, memory);
 #else
-                pair.destroy(memory);
+                YA::destroy(memory);
 #endif
             }
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
     !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
     !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-            template<typename U, typename... Args>
+            template<class U, class... Args>
             void construct(U* memory, Args&&... args) {
-                YT::construct(pair, memory, std::forward<Args>(args)...);
+                YT::construct(*this, memory, std::forward<Args>(args)...);
             }
 #endif
 
-            template<typename U>
-            bool operator==(const as_allocator<T, A, U>& other) const {
-                return pair == other.pair;
+            template<class U>
+            bool operator==(const as_allocator<T, R, A, U>& other) const {
+                return true;
             }
 
-            template<typename U>
-            bool operator!=(const as_allocator<T, A, U>& other) const {
-                return !(*this == other); 
+            template<class U>
+            bool operator!=(const as_allocator<T, R, A, U>& other) const {
+                return !(*this == other);
+            }
+
+            void set(type* memory) {
+                data.object = memory;
+            }
+
+            void operator()() {
+                if (data.object) {
+                    R tag;
+                    free(tag);
+                }
             }
 
         private:
-            as_pair<YA, type**> pair;
+            void free(ms_init_tag) {
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
+                as_destroy(*this, data.object, size);
+#else
+                ms_destroy(data.object, size);
+#endif
+            }
+
+            void free(ms_noinit_tag) {
+                ms_destroy(data.object, size);
+            }
+
+            ms_allocator_state<type> data;
         };
 
-        template<typename T, typename Y = char>
-        class ms_allocator 
-            : ms_allocator_base<T> {
-            using ms_allocator_base<T>::size;
+        template<class T>
+        struct ms_size_base;
 
-            template<typename T_, typename Y_>
+        template<class T>
+        struct ms_size_base<T[]> {
+            ms_size_base(std::size_t size_)
+                : size(size_ * array_total<T>::size) {
+            }
+
+            std::size_t size;
+        };
+
+        template<class T, std::size_t N>
+        struct ms_size_base<T[N]> {
+            enum {
+                size = array_total<T[N]>::size
+            };
+        };
+
+        template<class T, class R, class Y = char>
+        class ms_allocator
+            : ms_size_base<T> {
+            using ms_size_base<T>::size;
+
+            template<class T_, class R_, class Y_>
             friend class ms_allocator;
 
         public:
-            typedef typename array_inner<T>::type type;
+            typedef typename array_base<T>::type type;
+
             typedef Y value_type;
             typedef Y* pointer;
             typedef const Y* const_pointer;
@@ -201,26 +282,27 @@ namespace boost {
             typedef Y& reference;
             typedef const Y& const_reference;
 
-            template<typename U>
+            template<class U>
             struct rebind {
-                typedef ms_allocator<T, U> other;
+                typedef ms_allocator<T, R, U> other;
             };
 
-            ms_allocator(type** data_)
-                : data(data_) {
+            ms_allocator(type** result)
+                : data(result) {
             }
 
-            ms_allocator(std::size_t size_, type** data_)
-                : ms_allocator_base<T>(size_),
-                  data(data_) {
+            ms_allocator(std::size_t size_, type** result)
+                : ms_size_base<T>(size_),
+                  data(result) {
             }
 
             template<class U>
-            ms_allocator(const ms_allocator<T, U>& other)
-                : ms_allocator_base<T>(other),
+            ms_allocator(const ms_allocator<T, R, U>& other)
+                : ms_size_base<T>(other),
                   data(other.data) {
             }
 
+#if defined(BOOST_NO_CXX11_ALLOCATOR)
             pointer address(reference value) const {
                 return &value;
             }
@@ -228,6 +310,7 @@ namespace boost {
             const_pointer address(const_reference value) const {
                 return &value;
             }
+#endif
 
             size_type max_size() const {
                 enum {
@@ -237,15 +320,16 @@ namespace boost {
             }
 
             pointer allocate(size_type count, const void* = 0) {
-                std::size_t a1 = boost::alignment_of<type>::value;
-                std::size_t n1 = count * sizeof(value_type) + a1 - 1;
-                void* p1 = ::operator new(n1 + size);
-                char* p2 = static_cast<char*>(p1) + n1;
-                while (std::size_t(p2) % a1 != 0) {
-                    p2--;
-                }
-                *data = reinterpret_cast<type*>(p2);
-                return reinterpret_cast<value_type*>(p1);
+                enum {
+                    M = boost::alignment_of<type>::value
+                };
+                std::size_t n1 = count * sizeof(value_type);
+                std::size_t n2 = size * sizeof(type) + M - 1;
+                void* p1 = ::operator new(n1 + n2);
+                void* p2 = static_cast<char*>(p1) + n1;
+                p2 = sp_align(M, p2);
+                *data.result = static_cast<type*>(p2);
+                return static_cast<value_type*>(p1);
             }
 
             void deallocate(pointer memory, size_type) {
@@ -253,13 +337,13 @@ namespace boost {
                 ::operator delete(p1);
             }
 
-            template<typename U>
+            template<class U>
             void construct(U* memory, const_reference value) {
                 void* p1 = memory;
                 ::new(p1) U(value);
             }
 
-            template<typename U>
+            template<class U>
             void destroy(U* memory) {
                 memory->~U();
             }
@@ -267,25 +351,41 @@ namespace boost {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR) && \
     !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
     !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-            template<typename U, typename... Args>
+            template<class U, class... Args>
             void construct(U* memory, Args&&... args) {
                 void* p1 = memory;
                 ::new(p1) U(std::forward<Args>(args)...);
             }
 #endif
 
-            template<typename U>
-            bool operator==(const ms_allocator<T, U>&) const {
+            template<class U>
+            bool operator==(const ms_allocator<T, R, U>&) const {
                 return true;
             }
 
-            template<typename U>
-            bool operator!=(const ms_allocator<T, U>& other) const {
+            template<class U>
+            bool operator!=(const ms_allocator<T, R, U>& other) const {
                 return !(*this == other);
             }
 
+            void set(type* memory) {
+                data.object = memory;
+            }
+
+            void operator()() {
+                if (data.object) {
+                    ms_destroy(data.object, size);
+                }
+            }
+
         private:
-            type** data;
+            ms_allocator_state<type> data;
+        };
+
+        class ms_in_allocator_tag {
+        public:
+            void operator()(const void*) {
+            }
         };
     }
 }

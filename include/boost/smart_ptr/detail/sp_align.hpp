@@ -9,20 +9,10 @@
 #ifndef BOOST_SMART_PTR_DETAIL_SP_ALIGN_HPP
 #define BOOST_SMART_PTR_DETAIL_SP_ALIGN_HPP
 
-#include <boost/config.hpp>
-#if !defined(BOOST_NO_CXX11_STD_ALIGN)
-#include <memory>
-#endif
+#include <cstddef>
 
 namespace boost {
     namespace detail {
-#if !defined(BOOST_NO_CXX11_STD_ALIGN)
-        inline void* sp_align(std::size_t alignment, void* ptr) {
-            std::size_t n1 = alignment - 1;
-            std::align(alignment, 0, ptr, n1);
-            return ptr;
-        }
-#else
         inline void* sp_align(std::size_t alignment, void* ptr) {
             std::size_t n1 = (std::size_t)ptr % alignment;
             if (n1 != 0) {
@@ -30,7 +20,6 @@ namespace boost {
             }
             return ptr;
         }
-#endif
     }
 }
 

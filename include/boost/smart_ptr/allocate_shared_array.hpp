@@ -19,7 +19,7 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef boost::detail::ms_init_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
         T1* p1 = 0;
@@ -45,7 +45,7 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef boost::detail::ms_init_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         enum {
             N = boost::detail::array_total<T>::size
@@ -75,7 +75,7 @@ namespace boost {
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef const T2 T3;
         typedef boost::detail::ms_init_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         enum {
             M = boost::detail::array_total<T1>::size
@@ -107,7 +107,7 @@ namespace boost {
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef const T2 T3;
         typedef boost::detail::ms_init_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         enum {
             N = boost::detail::array_total<T>::size,
@@ -137,7 +137,7 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef boost::detail::ms_noinit_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         std::size_t n1 = size * boost::detail::array_total<T1>::size;
         T1* p1 = 0;
@@ -159,7 +159,7 @@ namespace boost {
         typedef typename boost::detail::array_inner<T>::type T1;
         typedef typename boost::detail::array_base<T1>::type T2;
         typedef boost::detail::ms_noinit_tag R1;
-        typedef boost::detail::as_allocator<T, R1, A> A1;
+        typedef boost::detail::as_allocator<A, T, R1> A1;
         typedef boost::detail::ms_in_allocator_tag D1;
         enum {
             N = boost::detail::array_total<T>::size

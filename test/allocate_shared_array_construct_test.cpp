@@ -15,13 +15,6 @@ class creator {
 public:
     typedef T value_type;
 
-#if defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
-    template<typename U>
-    struct rebind {
-        typedef creator<U> other;
-    };
-#endif
-
     creator() {
     }
 

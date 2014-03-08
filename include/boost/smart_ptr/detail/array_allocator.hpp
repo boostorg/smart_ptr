@@ -20,7 +20,7 @@ namespace boost {
         struct ms_noinit_tag { };
 
         template<class T>
-        class ms_allocator_state;
+        struct ms_allocator_state;
 
         template<class T>
         struct ms_allocator_state<T[]> {

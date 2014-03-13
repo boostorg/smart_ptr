@@ -11,6 +11,7 @@
 
 #include <boost/config.hpp>
 #include <boost/smart_ptr/detail/up_if_not_array.hpp>
+#include <boost/type_traits/add_rvalue_reference.hpp>
 #include <utility>
 
 namespace boost {
@@ -30,7 +31,7 @@ namespace boost {
     
     template<class T>
     inline typename boost::detail::up_if_not_array<T>::type
-    make_unique(T&& value) {
+    make_unique(typename add_rvalue_reference<T>::type value) {
         return std::unique_ptr<T>(new T(std::move(value)));
     }
 

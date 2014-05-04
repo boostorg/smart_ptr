@@ -9,9 +9,9 @@
 #ifndef BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 #define BOOST_SMART_PTR_DETAIL_ARRAY_ALLOCATOR_HPP
 
+#include <boost/align/align.hpp>
 #include <boost/smart_ptr/detail/array_traits.hpp>
 #include <boost/smart_ptr/detail/array_utility.hpp>
-#include <boost/smart_ptr/detail/sp_align.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 
 namespace boost {
@@ -125,20 +125,17 @@ namespace boost {
                   data(other.data) {
             }
 
-            pointer allocate(size_type count, const_void_pointer hint = 0) {
+            pointer allocate(size_type count, const_void_pointer = 0) {
                 enum {
                     M = boost::alignment_of<type>::value
                 };
                 std::size_t n1 = count * sizeof(value_type);
-                std::size_t n2 = data.size * sizeof(type) + M;
+                std::size_t n2 = data.size * sizeof(type);
+                std::size_t n3 = n2 + M;
                 CA ca(allocator());
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-                void* p1 = CT::allocate(ca, n1 + n2, hint);
-#else
-                void* p1 = ca.allocate(n1 + n2, hint);
-#endif
+                void* p1 = ca.allocate(n1 + n3);
                 void* p2 = static_cast<char*>(p1) + n1;
-                p2 = sp_align(M, p2);
+                (void)boost::alignment::align(M, n2, p2, n3);
                 *data.result = static_cast<type*>(p2);
                 return static_cast<value_type*>(p1);
             }
@@ -243,10 +240,11 @@ namespace boost {
                     M = boost::alignment_of<type>::value
                 };
                 std::size_t n1 = count * sizeof(Y);
-                std::size_t n2 = data.size * sizeof(type) + M;
-                void* p1 = ::operator new(n1 + n2);
+                std::size_t n2 = data.size * sizeof(type);
+                std::size_t n3 = n2 + M;
+                void* p1 = ::operator new(n1 + n3);
                 void* p2 = static_cast<char*>(p1) + n1;
-                p2 = sp_align(M, p2);
+                (void)boost::alignment::align(M, n2, p2, n3);
                 *data.result = static_cast<type*>(p2);
                 return static_cast<Y*>(p1);
             }
@@ -278,6 +276,7 @@ namespace boost {
             }
 
             void destroy(pointer memory) {
+                (void)memory;
                 memory->~Y();
             }
 #endif

@@ -46,7 +46,7 @@ struct critical_section
 #endif
 };
 
-#if BOOST_PLAT_WINDOWS_RUNTIME 
+#if BOOST_PLAT_WINDOWS_RUNTIME
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSectionEx(critical_section *, unsigned long, unsigned long);
 #else
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(critical_section *);

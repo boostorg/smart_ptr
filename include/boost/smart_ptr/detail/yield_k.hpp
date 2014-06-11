@@ -59,7 +59,7 @@ namespace boost
 namespace detail
 {
 
-#if !defined( BOOST_USE_WINDOWS_H ) && BOOST_PLAT_WINDOWS_DESKTOP
+#if !defined( BOOST_USE_WINDOWS_H ) && !BOOST_PLAT_WINDOWS_RUNTIME
   extern "C" void __stdcall Sleep( unsigned long ms );
 #endif
 
@@ -74,7 +74,7 @@ inline void yield( unsigned k )
         BOOST_SMT_PAUSE
     }
 #endif
-#if BOOST_PLAT_WINDOWS_DESKTOP
+#if !BOOST_PLAT_WINDOWS_RUNTIME
     else if( k < 32 )
     {
         Sleep( 0 );

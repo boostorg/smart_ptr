@@ -44,10 +44,10 @@ struct critical_section
 #endif
 };
 
-#if BOOST_USE_WINAPI_VERSION < BOOST_WINAPI_VERSION_VISTA 
-extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(critical_section *);
-#else
+#if BOOST_PLAT_WINDOWS_RUNTIME 
 extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSectionEx(critical_section *, unsigned long, unsigned long);
+#else
+extern "C" __declspec(dllimport) void __stdcall InitializeCriticalSection(critical_section *);
 #endif
 extern "C" __declspec(dllimport) void __stdcall EnterCriticalSection(critical_section *);
 extern "C" __declspec(dllimport) void __stdcall LeaveCriticalSection(critical_section *);
@@ -72,10 +72,10 @@ public:
 
     lightweight_mutex()
     {
-#if BOOST_USE_WINAPI_VERSION < BOOST_WINAPI_VERSION_VISTA
-        InitializeCriticalSection(&cs_);
-#else
+#if BOOST_PLAT_WINDOWS_RUNTIME
         InitializeCriticalSectionEx(&cs_, 4000, 0);
+#else
+        InitializeCriticalSection(&cs_);
 #endif
     }
 

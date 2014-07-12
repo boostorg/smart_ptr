@@ -108,14 +108,14 @@ namespace boost {
 
             typedef typename array_base<T>::type type;
 
-            as_allocator(const A& allocator, type** result)
-                : A(allocator),
+            as_allocator(const A& allocator_, type** result)
+                : A(allocator_),
                   data(result) {
             }
 
-            as_allocator(const A& allocator, std::size_t size,
+            as_allocator(const A& allocator_, std::size_t size,
                 type** result)
-                : A(allocator),
+                : A(allocator_),
                   data(size, result) {
             }
 

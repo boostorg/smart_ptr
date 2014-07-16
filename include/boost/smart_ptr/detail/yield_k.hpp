@@ -98,7 +98,14 @@ inline void yield( unsigned k )
 
 #elif defined( BOOST_HAS_PTHREADS )
 
+#ifdef _AIX
+#define var xvarx
+#endif
 #include <sched.h>
+#ifdef _AIX
+#undef var
+#endif
+
 #include <time.h>
 
 namespace boost

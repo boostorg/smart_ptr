@@ -166,12 +166,12 @@ namespace boost {
             void operator()() {
                 if (data.object) {
                     R tag;
-                    free(tag);
+                    release(tag);
                 }
             }
 
         private:
-            void free(ms_init_tag) {
+            void release(ms_init_tag) {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
                 as_destroy(allocator(), data.object, data.size);
 #else
@@ -179,7 +179,7 @@ namespace boost {
 #endif
             }
 
-            void free(ms_noinit_tag) {
+            void release(ms_noinit_tag) {
                 ms_destroy(data.object, data.size);
             }
 

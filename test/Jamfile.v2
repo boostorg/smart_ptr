@@ -163,5 +163,10 @@ import testing ;
           [ run make_unique_array_test.cpp ]
           [ run make_unique_array_noinit_test.cpp ]
           [ run make_unique_array_throws_test.cpp ]
+
+          [ run shared_from_raw_test.cpp ]
+          [ run shared_from_raw_test2.cpp ]
+          [ run shared_from_raw_test3.cpp ]
+          [ run shared_from_raw_test4.cpp ]
         ;
 }

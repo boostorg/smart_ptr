@@ -17,19 +17,23 @@
 
 
 struct X: public boost::enable_shared_from_raw
-{};
+{
+	~X() { BOOST_TEST(boost::weak_from_raw(this).expired()); }
+};
 
 void basic_weak_from_raw_test()
 {
     X *p(new X);
     boost::weak_ptr<X> weak = boost::weak_from_raw(p);
-    BOOST_TEST(weak.expired());
-    boost::shared_ptr<X> shared(p);
-    weak = boost::weak_from_raw(p);
     BOOST_TEST(weak.expired() == false);
-    boost::shared_ptr<X> shared2(weak);
-    BOOST_TEST((shared < shared2 || shared2 < shared) == false);
-    BOOST_TEST(shared.get() == p);
+    {
+        boost::shared_ptr<X> shared(p);
+        BOOST_TEST(weak.expired() == false);
+        boost::shared_ptr<X> shared2(weak);
+        BOOST_TEST((shared < shared2 || shared2 < shared) == false);
+        BOOST_TEST(shared.get() == p);
+    }
+    BOOST_TEST(weak.expired());
 }
 
 int main()

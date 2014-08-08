@@ -55,7 +55,7 @@ private:
 
     void init_weak_once() const
     {
-        if( weak_this_.expired() )
+        if( weak_this_._empty() )
         {
             shared_this_.reset( static_cast<void*>(0), detail::esft2_deleter_wrapper() );
             weak_this_ = shared_this_;
@@ -123,6 +123,7 @@ template<typename T>
 boost::weak_ptr<T> weak_from_raw(T *p)
 {
     BOOST_ASSERT(p != 0);
+    p->enable_shared_from_raw::init_weak_once();
     boost::weak_ptr<T> result;
     result._internal_aliasing_assign(p->enable_shared_from_raw::weak_this_, p);
     return result;

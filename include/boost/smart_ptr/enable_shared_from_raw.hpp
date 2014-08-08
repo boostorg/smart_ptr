@@ -55,7 +55,7 @@ private:
 
     void init_weak_once() const
     {
-        if( weak_this_.expired() )
+        if( weak_this_._empty() )
         {
             shared_this_.reset( static_cast<void*>(0), detail::esft2_deleter_wrapper() );
             weak_this_ = shared_this_;

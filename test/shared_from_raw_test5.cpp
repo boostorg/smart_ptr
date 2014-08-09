@@ -1,9 +1,9 @@
 //
-//  esft_constructor_test.cpp
+//  shared_from_raw_test5.cpp - was esft_constructor_test.cpp
 //
-//  A test for the new enable_shared_from_this support for calling
-//  shared_from_this from constructors (that is, prior to the
-//  object's ownership being passed to an external shared_ptr).
+//  A test for calling shared_from_raw from constructors
+//  (that is, prior to the object's ownership being passed to
+//  an external shared_ptr).
 //
 //  Copyright (c) 2008 Frank Mori Hess
 //  Copyright (c) 2008 Peter Dimov
@@ -13,6 +13,7 @@
 //  See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
+
 #include <boost/smart_ptr/enable_shared_from_raw.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>

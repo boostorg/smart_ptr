@@ -168,6 +168,8 @@ import testing ;
           [ run shared_from_raw_test4.cpp ]
           [ run shared_from_raw_test5.cpp ]
           [ run shared_from_raw_test6.cpp ]
+
           [ run weak_from_raw_test.cpp ]
+          [ run weak_from_raw_test2.cpp ]
         ;
 }

@@ -1,5 +1,7 @@
 //
-// Copyright (c) 2012 Peter Dimov
+// Explicit instantiations are reported to exist in user code
+//
+// Copyright (c) 2014 Peter Dimov
 //
 // Distributed under the Boost Software License, Version 1.0.
 // See accompanying file LICENSE_1_0.txt or copy at
@@ -8,16 +10,14 @@
 
 #include <boost/shared_ptr.hpp>
 
+template class boost::shared_ptr< int >;
+
 struct X
 {
 };
 
-template<class T> void f( T & /*t*/ )
-{
-}
+template class boost::shared_ptr< X >;
 
 int main()
 {
-    boost::shared_ptr<X> px( new X );
-    f( px[ 0 ] );
 }

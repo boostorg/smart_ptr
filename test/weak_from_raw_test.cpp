@@ -12,7 +12,6 @@
 
 
 #include <boost/smart_ptr/enable_shared_from_raw.hpp>
-
 #include <boost/detail/lightweight_test.hpp>
 
 
@@ -23,7 +22,7 @@ void basic_weak_from_raw_test()
 {
     X *p(new X);
     boost::weak_ptr<X> weak = boost::weak_from_raw(p);
-    BOOST_TEST(weak.expired());
+    BOOST_TEST(!weak.expired());
     boost::shared_ptr<X> shared(p);
     weak = boost::weak_from_raw(p);
     BOOST_TEST(weak.expired() == false);

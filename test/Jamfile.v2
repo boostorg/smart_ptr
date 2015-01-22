@@ -171,6 +171,8 @@ import testing ;
 
           [ run weak_from_raw_test.cpp ]
           [ run weak_from_raw_test2.cpp ]
+          [ run weak_from_raw_test3.cpp ]
+          [ run weak_from_raw_test4.cpp ]
 
           [ compile sp_explicit_inst_test.cpp ]
         ;

@@ -1,7 +1,7 @@
 //
 //  weak_from_raw_test4.cpp
 //
-//  As weak_from_raw_test2.cpp, but uses weak_from_this
+//  As weak_from_raw_test2.cpp, but uses weak_from_raw
 //  in the constructor
 //
 //  Copyright (c) 2014, 2015 Peter Dimov

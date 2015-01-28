@@ -1,5 +1,5 @@
 //
-//  weak_from_raw_test4.cpp
+//  weak_from_raw_test5.cpp
 //
 //  Tests whether pointers returned from weak_from_raw
 //  expire properly

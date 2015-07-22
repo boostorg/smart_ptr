@@ -27,10 +27,6 @@
 #include <boost/config.hpp>
 #include <boost/predef.h>
 
-#if defined __MINGW32__
-#include <_mingw.h>
-#endif
-
 #if BOOST_PLAT_WINDOWS_RUNTIME
 #include <thread>
 #endif
@@ -64,10 +60,15 @@ namespace detail
 {
 
 #if !defined( BOOST_USE_WINDOWS_H ) && !BOOST_PLAT_WINDOWS_RUNTIME
-#if !BOOST_COMP_CLANG || (defined __MINGW32__ && !defined __MINGW64_VERSION_MAJOR)
+#if !BOOST_COMP_CLANG || !defined __MINGW32__
+  extern "C" void __stdcall Sleep( unsigned long ms );
+#else
+#include <_mingw.h>
+#if !defined __MINGW64_VERSION_MAJOR
   extern "C" void __stdcall Sleep( unsigned long ms );
 #else
   extern "C" __declspec(dllimport) void __stdcall Sleep( unsigned long ms );
+#endif
 #endif
 #endif
 

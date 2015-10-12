@@ -642,6 +642,14 @@ public:
         return *this;
     }
 
+    // aliasing move
+    template<class Y>
+    shared_ptr( shared_ptr<Y> && r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn()
+    {
+        pn.swap( r.pn );
+        r.px = 0;
+    }
+
 #endif
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )

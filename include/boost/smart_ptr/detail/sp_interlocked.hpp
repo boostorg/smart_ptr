@@ -22,7 +22,7 @@
 // BOOST_SP_HAS_INTRIN_H
 
 // VC9 has intrin.h, but it collides with <utility>
-#if defined( BOOST_MSVC ) && BOOST_MSVC >= 1400
+#if defined( BOOST_MSVC ) && BOOST_MSVC >= 1600
 
 # define BOOST_SP_HAS_INTRIN_H
 

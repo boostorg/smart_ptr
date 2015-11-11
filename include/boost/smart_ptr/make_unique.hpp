@@ -24,16 +24,13 @@ struct up_if_object {
 };
 
 template<class T>
-struct up_if_object<T[]> {
-};
+struct up_if_object<T[]> { };
 
 template<class T, std::size_t N>
-struct up_if_object<T[N]> {
-};
+struct up_if_object<T[N]> { };
 
 template<class T>
-struct up_if_array {
-};
+struct up_if_array { };
 
 template<class T>
 struct up_if_array<T[]> {
@@ -46,8 +43,7 @@ struct up_value {
 };
 
 template<class T>
-struct up_element {
-};
+struct up_element { };
 
 template<class T>
 struct up_element<T[]> {
@@ -56,8 +52,7 @@ struct up_element<T[]> {
 } /* detail */
 
 template<class T>
-inline typename detail::up_if_object<T>::type
-make_unique()
+inline typename detail::up_if_object<T>::type make_unique()
 {
     return std::unique_ptr<T>(new T());
 }
@@ -65,7 +60,7 @@ make_unique()
 #if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 template<class T, class... Args>
 inline typename detail::up_if_object<T>::type
-make_unique(Args&&... args)
+    make_unique(Args&&... args)
 {
     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
@@ -73,21 +68,19 @@ make_unique(Args&&... args)
 
 template<class T>
 inline typename detail::up_if_object<T>::type
-make_unique(typename detail::up_value<T>::type value)
+    make_unique(typename detail::up_value<T>::type value)
 {
     return std::unique_ptr<T>(new T(std::move(value)));
 }
 
 template<class T>
-inline typename detail::up_if_object<T>::type
-make_unique_noinit()
+inline typename detail::up_if_object<T>::type make_unique_noinit()
 {
     return std::unique_ptr<T>(new T);
 }
 
 template<class T>
-inline typename detail::up_if_array<T>::type
-make_unique(std::size_t n)
+inline typename detail::up_if_array<T>::type make_unique(std::size_t n)
 {
     return std::unique_ptr<T>(new
         typename detail::up_element<T>::type[n]());
@@ -95,7 +88,7 @@ make_unique(std::size_t n)
 
 template<class T>
 inline typename detail::up_if_array<T>::type
-make_unique_noinit(std::size_t n)
+    make_unique_noinit(std::size_t n)
 {
     return std::unique_ptr<T>(new
         typename detail::up_element<T>::type[n]);

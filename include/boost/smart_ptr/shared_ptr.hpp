@@ -1068,6 +1068,11 @@ template< class T > std::size_t hash_value( boost::shared_ptr<T> const & p ) BOO
     return boost::hash< T* >()( p.get() );
 }
 
+template< class T,std::size_t N > std::size_t hash_value( boost::shared_ptr<T[N]> const & p ) BOOST_NOEXCEPT
+{
+    return boost::hash_value(*((int(*)[N])  get_pointer(p)  ));
+}
+
 } // namespace boost
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )

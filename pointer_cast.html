@@ -9,7 +9,7 @@
             width="277" align="middle" border="0">pointer_cast</h1>
         <p>The pointer cast functions (<code>boost::static_pointer_cast</code> <code>boost::dynamic_pointer_cast</code>
             <code>boost::reinterpret_pointer_cast</code> <code>boost::const_pointer_cast</code>) 
-            provide a way to write generic pointer castings for raw pointers. The functions 
+            provide a way to write generic pointer castings for raw pointers and std::shared_ptr. The functions 
             are defined in <CITE><A href="../../boost/pointer_cast.hpp">boost/pointer_cast.hpp</A>.</CITE></p>
         <P>There is test/example code in <CITE><A href="test/pointer_cast_test.cpp">pointer_cast_test.cpp</A></CITE>.</p>
             <h2><a name="rationale">Rationale</a></h2>
@@ -23,7 +23,7 @@ template&lt;class T, class U&gt;
         <P>Pointer cast functions from <CITE><A href="../../boost/pointer_cast.hpp">boost/pointer_cast.hpp</A></CITE>
             are overloads of <code>boost::static_pointer_cast</code>, <code>boost::dynamic_pointer_cast</code>,
             <code>boost::reinterpret_pointer_cast</code> and <code>boost::const_pointer_cast</code>
-            for raw pointers. This way when developing pointer type independent classes, 
+            for raw pointers and std::shared_ptr. This way when developing pointer type independent classes, 
             for example, memory managers or shared memory compatible classes, the same code 
             can be used for raw and smart pointers.</p>
             <H2><A name="synopsis">Synopsis</A></H2>
@@ -46,6 +46,18 @@ inline T* const_pointer_cast(U *ptr)
 template&lt;class T, class U&gt;
 inline T* reinterpret_pointer_cast(U *ptr)
   { return reinterpret_cast&lt;T*&gt;(ptr); }
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; static_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; dynamic_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; const_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; reinterpret_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
   
 } // namespace boost
 </PRE>

@@ -11,10 +11,7 @@ http://boost.org/LICENSE_1_0.txt
 
 #include <boost/config.hpp>
 #include <memory>
-
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 #include <utility>
-#endif
 
 namespace boost {
 namespace detail {
@@ -38,8 +35,18 @@ struct up_if_array<T[]> {
 };
 
 template<class T>
-struct up_value {
-    typedef T&& type;
+struct up_remove_reference {
+    typedef T type;
+};
+
+template<class T>
+struct up_remove_reference<T&> {
+    typedef T type;
+};
+
+template<class T>
+struct up_remove_reference<T&&> {
+    typedef T type;
 };
 
 template<class T>
@@ -68,7 +75,7 @@ inline typename detail::up_if_object<T>::type
 
 template<class T>
 inline typename detail::up_if_object<T>::type
-    make_unique(typename detail::up_value<T>::type value)
+    make_unique(typename detail::up_remove_reference<T>::type&& value)
 {
     return std::unique_ptr<T>(new T(std::move(value)));
 }

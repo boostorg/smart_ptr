@@ -15,6 +15,8 @@
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
+class incomplete;
+
 struct X
 {
     static long instances;
@@ -42,6 +44,154 @@ long X::instances = 0;
 int main()
 {
     BOOST_TEST( X::instances == 0 );
+
+    {
+        int m = 0;
+        boost::shared_ptr< int > p;
+        boost::shared_ptr< int > p2( std::move( p ), &m );
+
+        BOOST_TEST( p2.get() == &m );
+        BOOST_TEST( p2? true: false );
+        BOOST_TEST( !!p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+
+        p2.reset( std::move( p ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2? false: true );
+        BOOST_TEST( !p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+    }
+
+    {
+        int m = 0;
+        boost::shared_ptr< int > p( new int );
+        boost::shared_ptr< int const > p2( std::move( p ), &m );
+
+        BOOST_TEST( p2.get() == &m );
+        BOOST_TEST( p2? true: false );
+        BOOST_TEST( !!p2 );
+        BOOST_TEST( p2.use_count() == 1 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+
+        boost::shared_ptr< int volatile > p3;
+        p2.reset( std::move( p3 ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2? false: true );
+        BOOST_TEST( !p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p3.get() == 0 );
+        BOOST_TEST( p3.use_count() == 0 );
+
+        boost::shared_ptr< int const volatile > p4( new int );
+        p2.reset( std::move( p4 ), &m );
+
+        BOOST_TEST( p2.get() == &m );
+        BOOST_TEST( p2.use_count() == 1 );
+
+        BOOST_TEST( p4.get() == 0 );
+        BOOST_TEST( p4.use_count() == 0 );
+    }
+
+    {
+        boost::shared_ptr< int > p( new int );
+        boost::shared_ptr< void const > p2( std::move( p ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2? false: true );
+        BOOST_TEST( !p2 );
+        BOOST_TEST( p2.use_count() == 1 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+
+        int m = 0;
+        boost::shared_ptr< void volatile > p3;
+
+        p2.reset( std::move( p3 ), &m );
+
+        BOOST_TEST( p2.get() == &m );
+        BOOST_TEST( p2? true: false );
+        BOOST_TEST( !!p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p3.get() == 0 );
+        BOOST_TEST( p3.use_count() == 0 );
+
+        boost::shared_ptr< void const volatile > p4( new int );
+        p2.reset( std::move( p4 ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.use_count() == 1 );
+
+        BOOST_TEST( p4.get() == 0 );
+        BOOST_TEST( p4.use_count() == 0 );
+    }
+
+    {
+        boost::shared_ptr< incomplete > p;
+        boost::shared_ptr< incomplete > p2( std::move( p ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2? false: true );
+        BOOST_TEST( !p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+
+        p2.reset( std::move( p ), 0 );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2? false: true );
+        BOOST_TEST( !p2 );
+        BOOST_TEST( p2.use_count() == 0 );
+
+        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.use_count() == 0 );
+    }
+
+    {
+        boost::shared_ptr< X > p( new X( 5 ) ), q( p );
+        boost::shared_ptr< int const > p2( std::move( q ), &q->v_ );
+
+        BOOST_TEST( p2.get() == &p->v_ );
+        BOOST_TEST( p2? true: false );
+        BOOST_TEST( !!p2 );
+        BOOST_TEST( p2.use_count() == p.use_count() );
+        BOOST_TEST( !( p < p2 ) && !( p2 < p ) );
+
+        BOOST_TEST( q.get() == 0 );
+        BOOST_TEST( q.use_count() == 0 );
+
+        p.reset();
+        BOOST_TEST( *p2 == 5 );
+
+        boost::shared_ptr< X const > p3( new X( 8 ) ), q3( p3 );
+        p2.reset( std::move( q3 ), &q3->v_ );
+
+        BOOST_TEST( p2.get() == &p3->v_ );
+        BOOST_TEST( p2? true: false );
+        BOOST_TEST( !!p2 );
+        BOOST_TEST( p2.use_count() == p3.use_count() );
+        BOOST_TEST( !( p3 < p2 ) && !( p2 < p3 ) );
+
+        BOOST_TEST( q3.get() == 0 );
+        BOOST_TEST( q3.use_count() == 0 );
+
+        p3.reset();
+        BOOST_TEST( *p2 == 8 );
+    }
 
     {
         boost::shared_ptr< X > p( new X( 5 ) );

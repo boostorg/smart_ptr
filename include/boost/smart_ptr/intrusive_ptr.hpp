@@ -59,7 +59,7 @@ public:
 
     typedef T element_type;
 
-    intrusive_ptr() BOOST_NOEXCEPT : px( 0 )
+    BOOST_CONSTEXPR intrusive_ptr() BOOST_NOEXCEPT : px( 0 )
     {
     }
 

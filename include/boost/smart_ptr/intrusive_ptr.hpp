@@ -122,6 +122,20 @@ public:
         return *this;
     }
 
+#if !defined(BOOST_NO_MEMBER_TEMPLATES) || defined(BOOST_MSVC6_MEMBER_TEMPLATES)
+    template<class U> friend class intrusive_ptr;
+    template<class U>
+#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
+    intrusive_ptr(intrusive_ptr<U> && rhs, typename boost::detail::sp_enable_if_convertible<U,T>::type = boost::detail::sp_empty())
+#else
+    intrusive_ptr(intrusive_ptr<U> && rhs)
+#endif        
+    : px( rhs.px )
+    {
+        rhs.px = 0;
+    }
+#endif
+
 #endif
 
     intrusive_ptr & operator=(intrusive_ptr const & rhs)

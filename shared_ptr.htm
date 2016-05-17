@@ -139,6 +139,8 @@ void bad()
 
       template&lt;class Y&gt; <a href="#aliasing_constructor" >shared_ptr</a>(shared_ptr&lt;Y&gt; const &amp; r, element_type * p); // never throws
 
+      template&lt;class Y&gt; <a href="#aliasing_move_constructor" >shared_ptr</a>(shared_ptr&lt;Y&gt; &amp;&amp; r, element_type * p); // never throws
+
       template&lt;class Y&gt; explicit <a href="#weak_ptr_constructor" >shared_ptr</a>(<a href="weak_ptr.htm" >weak_ptr</a>&lt;Y&gt; const &amp; r);
 
       template&lt;class Y&gt; explicit <a href="#auto_ptr_constructor" >shared_ptr</a>(std::auto_ptr&lt;Y&gt; &amp; r);
@@ -350,6 +352,16 @@ template&lt;class Y&gt; shared_ptr(shared_ptr&lt;Y&gt; &amp;&amp; r); // never t
             <p><b>Effects:</b> constructs a <code>shared_ptr</code> that <em>shares ownership</em> with
                 <code>r</code> and stores <code>p</code>.</p>
             <p><b>Postconditions:</b> <code>get() == p &amp;&amp; use_count() == r.use_count()</code>.</p>
+            <p><b>Throws:</b> nothing.</p>
+        </blockquote>
+        <h3 id="aliasing_move_constructor">aliasing move constructor</h3>
+        <pre>template&lt;class Y&gt; shared_ptr(shared_ptr&lt;Y&gt; &amp;&amp; r, element_type * p); // never throws</pre>
+        <blockquote>
+            <p>
+                <b>Effects:</b> Move-constructs a <code>shared_ptr</code> from <code>r</code>, while
+                storing <code>p</code> instead.
+            </p>
+            <p><b>Postconditions:</b> <code>get() == p</code> and <code>use_count()</code> equals the old count of <code>r</code>. <code>r</code> is <em>empty</em> and <code>r.get() == 0</code>.</p>
             <p><b>Throws:</b> nothing.</p>
         </blockquote>
         <h3 id="weak_ptr_constructor">weak_ptr constructor</h3>

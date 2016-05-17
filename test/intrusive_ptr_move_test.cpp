@@ -182,6 +182,33 @@ int main()
         BOOST_TEST( N::base::instances == 0 );
     }
 
+    {
+        boost::intrusive_ptr<Y> p( new Y );
+        BOOST_TEST( N::base::instances == 1 );
+
+        boost::intrusive_ptr<X> p2;
+        p2 = std::move( p );
+        BOOST_TEST( N::base::instances == 1 );
+        BOOST_TEST( p.get() == 0 );
+
+        p2.reset();
+        BOOST_TEST( N::base::instances == 0 );
+    }
+
+    {
+        boost::intrusive_ptr<Y> p( new Y );
+        BOOST_TEST( N::base::instances == 1 );
+
+        boost::intrusive_ptr<X> p2( new X );
+        BOOST_TEST( N::base::instances == 2 );
+        p2 = std::move( p );
+        BOOST_TEST( N::base::instances == 1 );
+        BOOST_TEST( p.get() == 0 );
+
+        p2.reset();
+        BOOST_TEST( N::base::instances == 0 );
+    }
+
     return boost::report_errors();
 }
 

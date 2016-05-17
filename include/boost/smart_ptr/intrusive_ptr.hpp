@@ -139,6 +139,13 @@ public:
         rhs.px = 0;
     }
 
+    template<class U>
+    intrusive_ptr & operator=(intrusive_ptr<U> && rhs) BOOST_NOEXCEPT
+    {
+        this_type( static_cast< intrusive_ptr<U> && >( rhs ) ).swap(*this);
+        return *this;
+    }
+
 #endif
 
     intrusive_ptr & operator=(intrusive_ptr const & rhs)

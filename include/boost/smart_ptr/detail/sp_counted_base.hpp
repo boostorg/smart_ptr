@@ -44,6 +44,9 @@
 #elif defined( BOOST_SP_HAS_CLANG_C11_ATOMICS )
 # include <boost/smart_ptr/detail/sp_counted_base_clang.hpp>
 
+#elif !defined( BOOST_NO_CXX11_HDR_ATOMIC )
+# include <boost/smart_ptr/detail/sp_counted_base_std_atomic.hpp>
+
 #elif defined( __SNC__ )
 # include <boost/smart_ptr/detail/sp_counted_base_snc_ps3.hpp>
 

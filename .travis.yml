@@ -46,3 +46,7 @@ script:
   - TOOLSET=gcc,clang
   - if [ $TRAVIS_OS_NAME == osx ]; then TOOLSET=clang; fi
   - ./b2 libs/smart_ptr/test toolset=$TOOLSET
+
+notifications:
+  email:
+    on_success: always

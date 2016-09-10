@@ -47,6 +47,7 @@ import testing ;
           [ run spinlock_try_test.cpp : : : <threading>multi : spinlock_try_test.mt ]
           [ run spinlock_pool_test.cpp ]
           [ run make_shared_test.cpp ]
+          [ run make_shared_move_emulation_test.cpp ]
           [ run make_shared_perfect_forwarding_test.cpp ]
           [ run shared_ptr_convertible_test.cpp ]
           [ run wp_convertible_test.cpp ]

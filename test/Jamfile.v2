@@ -189,5 +189,17 @@ import testing ;
 
           [ run pointer_cast_test2.cpp ]
           [ run pointer_cast_test3.cpp ]
+
+          [ compile-fail pointer_cast_st_fail.cpp ]
+          [ compile-fail pointer_cast_st_fail2.cpp ]
+          [ compile-fail pointer_cast_st_fail3.cpp ]
+
+          [ compile-fail pointer_cast_co_fail.cpp ]
+          [ compile-fail pointer_cast_co_fail2.cpp ]
+          [ compile-fail pointer_cast_co_fail3.cpp ]
+
+          [ compile-fail pointer_cast_dy_fail.cpp ]
+          [ compile-fail pointer_cast_dy_fail2.cpp ]
+          [ compile-fail pointer_cast_dy_fail3.cpp ]
         ;
 }

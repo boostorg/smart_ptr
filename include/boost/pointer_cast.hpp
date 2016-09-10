@@ -7,10 +7,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <boost/config.hpp>
-
 #ifndef BOOST_POINTER_CAST_HPP
 #define BOOST_POINTER_CAST_HPP
+
+#include <boost/config.hpp>
 
 namespace boost { 
 
@@ -90,8 +90,11 @@ template<class T, class U> std::shared_ptr<T> reinterpret_pointer_cast(const std
 //static_pointer_cast overload for std::unique_ptr
 template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
 {
+   typedef typename std::unique_ptr<T>::element_type E;
+
    detail::assert_safe_moving_upcast<T, U>();
-   return std::unique_ptr<T>( static_cast<T*>( r.release() ) );
+
+   return std::unique_ptr<T>( static_cast<E*>( r.release() ) );
 }
 
 //dynamic_pointer_cast overload for std::unique_ptr
@@ -107,13 +110,17 @@ template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_
 //const_pointer_cast overload for std::unique_ptr
 template<class T, class U> std::unique_ptr<T> const_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
 {
-   return std::unique_ptr<T>( const_cast<T*>( r.release() ) );
+   typedef typename std::unique_ptr<T>::element_type E;
+
+   return std::unique_ptr<T>( const_cast<E*>( r.release() ) );
 }
 
 //reinterpret_pointer_cast overload for std::unique_ptr
 template<class T, class U> std::unique_ptr<T> reinterpret_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
 {
-   return std::unique_ptr<T>( reinterpret_cast<T*>( r.release() ) );
+   typedef typename std::unique_ptr<T>::element_type E;
+
+   return std::unique_ptr<T>( reinterpret_cast<E*>( r.release() ) );
 }
 
 } // namespace boost

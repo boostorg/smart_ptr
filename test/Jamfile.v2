@@ -186,5 +186,8 @@ import testing ;
 
           [ run sp_hash_test2.cpp ]
           [ run sp_hash_test3.cpp ]
+
+          [ run pointer_cast_test2.cpp ]
+          [ run pointer_cast_test3.cpp ]
         ;
 }

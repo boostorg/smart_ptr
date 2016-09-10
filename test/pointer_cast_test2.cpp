@@ -119,7 +119,21 @@ static void test_const_cast()
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
+#if !defined( BOOST_MSVC ) || BOOST_MSVC >= 1900
+
     {
+        std::unique_ptr<int const[]> p1( new int[ 1 ] );
+        int const * q1 = p1.get();
+
+        std::unique_ptr<int[]> p2 = boost::const_pointer_cast<int[]>( std::move( p1 ) );
+
+        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST_EQ( p2.get(), q1 );
+    }
+
+#endif
+
+	{
         std::unique_ptr<int[]> p1( new int[ 1 ] );
         int * q1 = p1.get();
 
@@ -150,6 +164,16 @@ static void test_dynamic_cast()
 
         BOOST_TEST( p1.get() == 0 );
         BOOST_TEST_EQ( p2.get(), q1 );
+    }
+
+    {
+        std::unique_ptr<B> p1( new B );
+        B * q1 = p1.get();
+
+        std::unique_ptr<D> p2 = boost::dynamic_pointer_cast<D>( std::move( p1 ) );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST_EQ( p1.get(), q1 );
     }
 }
 

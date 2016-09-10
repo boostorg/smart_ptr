@@ -95,16 +95,6 @@ static void test_static_cast()
 static void test_const_cast()
 {
     {
-        std::unique_ptr<int const> p1( new int );
-        int const * q1 = p1.get();
-
-        std::unique_ptr<int> p2 = boost::const_pointer_cast<int>( std::move( p1 ) );
-
-        BOOST_TEST( p1.get() == 0 );
-        BOOST_TEST_EQ( p2.get(), q1 );
-    }
-
-    {
         std::unique_ptr<int> p1( new int );
         int * q1 = p1.get();
 
@@ -112,21 +102,12 @@ static void test_const_cast()
 
         BOOST_TEST( p1.get() == 0 );
         BOOST_TEST_EQ( p2.get(), q1 );
+
+        std::unique_ptr<int> p3 = boost::const_pointer_cast<int>( std::move( p2 ) );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST_EQ( p3.get(), q1 );
     }
-
-#if !defined( BOOST_MSVC ) || BOOST_MSVC >= 1900
-
-    {
-        std::unique_ptr<int const[]> p1( new int[ 1 ] );
-        int const * q1 = p1.get();
-
-        std::unique_ptr<int[]> p2 = boost::const_pointer_cast<int[]>( std::move( p1 ) );
-
-        BOOST_TEST( p1.get() == 0 );
-        BOOST_TEST_EQ( p2.get(), q1 );
-    }
-
-#endif
 
     {
         std::unique_ptr<int[]> p1( new int[ 1 ] );
@@ -136,7 +117,12 @@ static void test_const_cast()
 
         BOOST_TEST( p1.get() == 0 );
         BOOST_TEST_EQ( p2.get(), q1 );
-    }
+
+        std::unique_ptr<int[]> p3 = boost::const_pointer_cast<int[]>( std::move( p2 ) );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST_EQ( p3.get(), q1 );
+	}
 }
 
 struct B2

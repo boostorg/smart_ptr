@@ -46,26 +46,11 @@ inline T* reinterpret_pointer_cast(U *ptr)
 
 #if !defined( BOOST_NO_CXX11_SMART_PTR )
 
-#include <boost/static_assert.hpp>
-
-#include <boost/type_traits/is_base_of.hpp>
-#include <boost/type_traits/is_pod.hpp>
 #include <boost/type_traits/has_virtual_destructor.hpp>
-
+#include <boost/static_assert.hpp>
 #include <memory>
 
 namespace boost {
-
-namespace detail {
-
-template<class T, class U>
-void assert_safe_moving_upcast() {
-   BOOST_STATIC_ASSERT_MSG( !(boost::is_base_of<T, U>::value && !boost::is_pod<U>::value && !boost::has_virtual_destructor<T>::value)
-     , "Upcast from a non-POD child to a base without virtual destructor is unsafe, because the child's destructor "
-       "will not be called when the base pointer is deleted. Consider using shared_ptr for such types.");
-}
-
-}
 
 //static_pointer_cast overload for std::shared_ptr
 using std::static_pointer_cast;
@@ -102,7 +87,7 @@ template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
-    detail::assert_safe_moving_upcast<T, U>();
+    BOOST_STATIC_ASSERT_MSG( boost::has_virtual_destructor<T>::value, "The target of dynamic_pointer_cast must have a virtual destructor." );
 
     T * p = dynamic_cast<T*>( r.get() );
     if( p ) r.release();

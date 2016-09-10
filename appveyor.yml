@@ -12,8 +12,9 @@ branches:
     - develop
 
 install:
-  - git clone -b %APPVEYOR_REPO_BRANCH% https://github.com/boostorg/boost.git boost
-  - cd boost
+  - cd ..
+  - git clone -b %APPVEYOR_REPO_BRANCH% https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
   - git submodule init libs/align
   - git submodule init libs/assert
   - git submodule init libs/atomic
@@ -25,16 +26,13 @@ install:
   - git submodule init libs/move
   - git submodule init libs/predef
   - git submodule init libs/preprocessor
-  - git submodule init libs/smart_ptr
   - git submodule init libs/static_assert
   - git submodule init libs/throw_exception
   - git submodule init libs/type_traits
   - git submodule init tools/build
   - git submodule init tools/inspect
   - git submodule update
-  - cd libs\smart_ptr
-  - git checkout -q %APPVEYOR_REPO_COMMIT%
-  - cd ..\..
+  - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr
   - bootstrap
   - b2 headers
 

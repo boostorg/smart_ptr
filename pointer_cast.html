@@ -9,7 +9,7 @@
             width="277" align="middle" border="0">pointer_cast</h1>
         <p>The pointer cast functions (<code>boost::static_pointer_cast</code> <code>boost::dynamic_pointer_cast</code>
             <code>boost::reinterpret_pointer_cast</code> <code>boost::const_pointer_cast</code>) 
-            provide a way to write generic pointer castings for raw pointers. The functions 
+            provide a way to write generic pointer castings for raw pointers, std::shared_ptr and std::unique_ptr. The functions 
             are defined in <CITE><A href="../../boost/pointer_cast.hpp">boost/pointer_cast.hpp</A>.</CITE></p>
         <P>There is test/example code in <CITE><A href="test/pointer_cast_test.cpp">pointer_cast_test.cpp</A></CITE>.</p>
             <h2><a name="rationale">Rationale</a></h2>
@@ -23,7 +23,7 @@ template&lt;class T, class U&gt;
         <P>Pointer cast functions from <CITE><A href="../../boost/pointer_cast.hpp">boost/pointer_cast.hpp</A></CITE>
             are overloads of <code>boost::static_pointer_cast</code>, <code>boost::dynamic_pointer_cast</code>,
             <code>boost::reinterpret_pointer_cast</code> and <code>boost::const_pointer_cast</code>
-            for raw pointers. This way when developing pointer type independent classes, 
+            for raw pointers, std::shared_ptr and std::unique_ptr. This way when developing pointer type independent classes, 
             for example, memory managers or shared memory compatible classes, the same code 
             can be used for raw and smart pointers.</p>
             <H2><A name="synopsis">Synopsis</A></H2>
@@ -46,12 +46,83 @@ inline T* const_pointer_cast(U *ptr)
 template&lt;class T, class U&gt;
 inline T* reinterpret_pointer_cast(U *ptr)
   { return reinterpret_cast&lt;T*&gt;(ptr); }
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; static_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; dynamic_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; const_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::shared_ptr&lt;U&gt; reinterpret_pointer_cast(std::shared_ptr&lt;T&gt; ptr);
+
+template&lt;class T, class U&gt;
+inline std::unique_ptr&lt;U&gt; static_pointer_cast(std::unique_ptr&lt;T&gt; &amp;&amp;ptr);
+
+template&lt;class T, class U&gt;
+inline std::unique_ptr&lt;U&gt; dynamic_pointer_cast(std::unique_ptr&lt;T&gt; &amp;&amp;ptr);
+
+template&lt;class T, class U&gt;
+inline std::unique_ptr&lt;U&gt; const_pointer_cast(std::unique_ptr&lt;T&gt; &amp;&amp;ptr);
+
+template&lt;class T, class U&gt;
+inline std::unique_ptr&lt;U&gt; reinterpret_pointer_cast(std::unique_ptr&lt;T&gt; &amp;&amp;ptr);
   
 } // namespace boost
 </PRE>
             </BLOCKQUOTE>
-        <P>As you can see from the above synopsis, the pointer cast functions are just 
-            wrappers around standard C++ cast operators.</P>
+        <P>As you can see from the above synopsis, the pointer cast functions for raw pointers are just 
+           wrappers around standard C++ cast operators.</P>
+
+        <H2><A name="memory_safety">Memory Safety</A></H2>
+        <P>It is possible to write unsafe code, when upcasting to a base type without virtual destructor.
+           Consider the following example:</P>
+<PRE>
+#include &lt;memory&gt;
+#include &lt;utility&gt;
+#include &lt;boost/pointer_cast.hpp&gt;
+#include &lt;boost/make_unique.hpp&gt;
+
+int destructed = 0;
+
+struct base {
+  ~base() {
+    // ...
+  }
+};
+
+struct child : base {
+  virtual ~child() {
+    destructed++;
+  }
+}
+
+int main() {
+  {
+    std::unique_ptr<child> tmp = boost::make_unique<child>();
+    std::unique_ptr<base> sink = boost::static_pointer_cast<base>( std::move(tmp) );
+  }
+
+  // child::~child was never called
+  assert(destructed == 0);
+
+  return 0;
+}
+</PRE>
+        <P>In this example, the child destructor child::~child was never called, because the child* in tmp
+           was downcast to a base* and moved into sink. The destructor of tmp did essentially nothing, because
+           it contained nullptr during destruction; sink deleted the pointer, but since base::~base is non-virtual
+           the child destructor was never called.</P>
+        <P>boost::static_pointer_cast and boost::dynamic_pointer_cast for std::unique_ptr prevent the above scenario
+           by raising a compiler error when such a cast is detected.</P>
+        <P>The overloads for std::shared_ptr and boost::shared_ptr are not prone to this problem, since they internally
+           always store the original pointer with the original type.</P>
+        <P>The plain pointer casts are in principle also prone to that problem, but it is assumed that raw pointers
+           are non-owning, so no checking is performed.</P>
+
         <H2><A name="example">Example</A></H2>
         <BLOCKQUOTE>
             <PRE>

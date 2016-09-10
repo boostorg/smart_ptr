@@ -7,6 +7,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#include <boost/config.hpp>
+
 #ifndef BOOST_POINTER_CAST_HPP
 #define BOOST_POINTER_CAST_HPP
 
@@ -41,5 +43,81 @@ inline T* reinterpret_pointer_cast(U *ptr)
 }
 
 } // namespace boost
+
+#if !defined( BOOST_NO_CXX11_SMART_PTR )
+
+#include <boost/static_assert.hpp>
+
+#include <boost/type_traits/is_base_of.hpp>
+#include <boost/type_traits/is_pod.hpp>
+#include <boost/type_traits/has_virtual_destructor.hpp>
+
+#include <memory>
+
+namespace boost {
+
+namespace detail {
+
+template<class T, class U>
+void assert_safe_moving_upcast() {
+   BOOST_STATIC_ASSERT_MSG( !(boost::is_base_of<T, U>::value && !boost::is_pod<U>::value && !boost::has_virtual_destructor<T>::value)
+     , "Upcast from a non-POD child to a base without virtual destructor is unsafe, because the child's destructor "
+       "will not be called when the base pointer is deleted. Consider using shared_ptr for such types.");
+}
+
+}
+
+//static_pointer_cast overload for std::shared_ptr
+using std::static_pointer_cast;
+
+//dynamic_pointer_cast overload for std::shared_ptr
+using std::dynamic_pointer_cast;
+
+//const_pointer_cast overload for std::shared_ptr
+using std::const_pointer_cast;
+
+//reinterpret_pointer_cast overload for std::shared_ptr
+template<class T, class U> std::shared_ptr<T> reinterpret_pointer_cast(const std::shared_ptr<U> & r ) BOOST_NOEXCEPT
+{
+   (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
+
+   typedef typename std::shared_ptr<T>::element_type E;
+
+   E * p = reinterpret_cast< E* >( r.get() );
+   return std::shared_ptr<T>( r, p );
+}
+
+//static_pointer_cast overload for std::unique_ptr
+template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+{
+   detail::assert_safe_moving_upcast<T, U>();
+   return std::unique_ptr<T>( static_cast<T*>( r.release() ) );
+}
+
+//dynamic_pointer_cast overload for std::unique_ptr
+template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+{
+   detail::assert_safe_moving_upcast<T, U>();
+
+   T * p = dynamic_cast<T*>( r.get() );
+   if( p ) r.release();
+   return std::unique_ptr<T>( p );
+}
+
+//const_pointer_cast overload for std::unique_ptr
+template<class T, class U> std::unique_ptr<T> const_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+{
+   return std::unique_ptr<T>( const_cast<T*>( r.release() ) );
+}
+
+//reinterpret_pointer_cast overload for std::unique_ptr
+template<class T, class U> std::unique_ptr<T> reinterpret_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+{
+   return std::unique_ptr<T>( reinterpret_cast<T*>( r.release() ) );
+}
+
+} // namespace boost
+
+#endif // #if !defined( BOOST_NO_CXX11_SMART_PTR )
 
 #endif   //BOOST_POINTER_CAST_HPP

@@ -94,8 +94,6 @@ template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_p
 
     typedef typename std::unique_ptr<T>::element_type E;
 
-    detail::assert_safe_moving_upcast<T, U>();
-
     return std::unique_ptr<T>( static_cast<E*>( r.release() ) );
 }
 

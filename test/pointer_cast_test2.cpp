@@ -23,15 +23,15 @@ int main()
 #include <boost/core/lightweight_test.hpp>
 #include <memory>
 
-struct B
+struct B1
 {
-    virtual ~B()
-    {
-    }
 };
 
-struct D: B
+struct D1: B1
 {
+    ~D1()
+    {
+    }
 };
 
 static void test_static_cast()
@@ -77,23 +77,18 @@ static void test_static_cast()
     }
 
     {
-        std::unique_ptr<D> p1( new D );
-        D * q1 = p1.get();
+        std::unique_ptr<D1> p1( new D1 );
+        D1 * q1 = p1.get();
 
-        std::unique_ptr<B> p2 = boost::static_pointer_cast<B>( std::move( p1 ) );
-
-        BOOST_TEST( p1.get() == 0 );
-        BOOST_TEST_EQ( p2.get(), q1 );
-    }
-
-    {
-        std::unique_ptr<B> p1( new D );
-        B * q1 = p1.get();
-
-        std::unique_ptr<D> p2 = boost::static_pointer_cast<D>( std::move( p1 ) );
+        std::unique_ptr<B1> p2 = boost::static_pointer_cast<B1>( std::move( p1 ) );
 
         BOOST_TEST( p1.get() == 0 );
         BOOST_TEST_EQ( p2.get(), q1 );
+
+        std::unique_ptr<D1> p3 = boost::static_pointer_cast<D1>( std::move( p2 ) );
+
+        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST_EQ( p3.get(), q1 );
     }
 }
 
@@ -133,7 +128,7 @@ static void test_const_cast()
 
 #endif
 
-	{
+    {
         std::unique_ptr<int[]> p1( new int[ 1 ] );
         int * q1 = p1.get();
 
@@ -144,36 +139,64 @@ static void test_const_cast()
     }
 }
 
+struct B2
+{
+    virtual ~B2()
+    {
+    }
+};
+
+struct C2
+{
+    virtual ~C2()
+    {
+    }
+};
+
+struct D2: B2, C2
+{
+};
+
 static void test_dynamic_cast()
 {
     {
-        std::unique_ptr<D> p1( new D );
-        D * q1 = p1.get();
+        std::unique_ptr<D2> p1( new D2 );
+        D2 * q1 = p1.get();
 
-        std::unique_ptr<B> p2 = boost::dynamic_pointer_cast<B>( std::move( p1 ) );
-
-        BOOST_TEST( p1.get() == 0 );
-        BOOST_TEST_EQ( p2.get(), q1 );
-    }
-
-    {
-        std::unique_ptr<B> p1( new D );
-        B * q1 = p1.get();
-
-        std::unique_ptr<D> p2 = boost::dynamic_pointer_cast<D>( std::move( p1 ) );
+        std::unique_ptr<B2> p2 = boost::dynamic_pointer_cast<B2>( std::move( p1 ) );
 
         BOOST_TEST( p1.get() == 0 );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
     {
-        std::unique_ptr<B> p1( new B );
-        B * q1 = p1.get();
+        std::unique_ptr<B2> p1( new D2 );
+        B2 * q1 = p1.get();
 
-        std::unique_ptr<D> p2 = boost::dynamic_pointer_cast<D>( std::move( p1 ) );
+        std::unique_ptr<D2> p2 = boost::dynamic_pointer_cast<D2>( std::move( p1 ) );
+
+        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST_EQ( p2.get(), q1 );
+    }
+
+    {
+        std::unique_ptr<B2> p1( new B2 );
+        B2 * q1 = p1.get();
+
+        std::unique_ptr<D2> p2 = boost::dynamic_pointer_cast<D2>( std::move( p1 ) );
 
         BOOST_TEST( p2.get() == 0 );
         BOOST_TEST_EQ( p1.get(), q1 );
+    }
+
+    {
+        D2 * q1 = new D2;
+        std::unique_ptr<B2> p1( q1 );
+
+        std::unique_ptr<C2> p2 = boost::dynamic_pointer_cast<C2>( std::move( p1 ) );
+
+        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST_EQ( p2.get(), q1 );
     }
 }
 

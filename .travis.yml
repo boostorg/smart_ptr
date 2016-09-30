@@ -16,8 +16,9 @@ branches:
     - develop
 
 install:
-  - git clone -b $TRAVIS_BRANCH https://github.com/boostorg/boost.git boost
-  - cd boost
+  - cd ..
+  - git clone -b $TRAVIS_BRANCH https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
   - git submodule init libs/align
   - git submodule init libs/assert
   - git submodule init libs/atomic
@@ -29,16 +30,13 @@ install:
   - git submodule init libs/move
   - git submodule init libs/predef
   - git submodule init libs/preprocessor
-  - git submodule init libs/smart_ptr
   - git submodule init libs/static_assert
   - git submodule init libs/throw_exception
   - git submodule init libs/type_traits
   - git submodule init tools/build
   - git submodule init tools/inspect
   - git submodule update
-  - cd libs/smart_ptr
-  - git checkout -q $TRAVIS_COMMIT
-  - cd ../..
+  - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
   - ./bootstrap.sh
   - ./b2 headers
 
@@ -46,3 +44,7 @@ script:
   - TOOLSET=gcc,clang
   - if [ $TRAVIS_OS_NAME == osx ]; then TOOLSET=clang; fi
   - ./b2 libs/smart_ptr/test toolset=$TOOLSET
+
+notifications:
+  email:
+    on_success: always

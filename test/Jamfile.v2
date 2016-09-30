@@ -29,6 +29,7 @@ import testing ;
           [ compile-fail shared_ptr_compare_fail.cpp ]
           [ run shared_ptr_alloc2_test.cpp ]
           [ run pointer_cast_test.cpp ]
+          [ run cpp11_pointer_cast_test.cpp ]
           [ compile pointer_to_other_test.cpp ]
           [ run auto_ptr_rv_test.cpp ]
           [ run shared_ptr_alias_test.cpp ]
@@ -47,6 +48,7 @@ import testing ;
           [ run spinlock_try_test.cpp : : : <threading>multi : spinlock_try_test.mt ]
           [ run spinlock_pool_test.cpp ]
           [ run make_shared_test.cpp ]
+          [ run make_shared_move_emulation_test.cpp ]
           [ run make_shared_perfect_forwarding_test.cpp ]
           [ run shared_ptr_convertible_test.cpp ]
           [ run wp_convertible_test.cpp ]
@@ -185,5 +187,19 @@ import testing ;
 
           [ run sp_hash_test2.cpp ]
           [ run sp_hash_test3.cpp ]
+
+          [ run pointer_cast_test2.cpp ]
+
+          [ compile-fail pointer_cast_st_fail.cpp ]
+          [ compile-fail pointer_cast_st_fail2.cpp ]
+          [ compile-fail pointer_cast_st_fail3.cpp ]
+
+          [ compile-fail pointer_cast_co_fail.cpp ]
+          [ compile-fail pointer_cast_co_fail2.cpp ]
+          [ compile-fail pointer_cast_co_fail3.cpp ]
+
+          [ compile-fail pointer_cast_dy_fail.cpp ]
+          [ compile-fail pointer_cast_dy_fail2.cpp ]
+          [ compile-fail pointer_cast_dy_fail3.cpp ]
         ;
 }

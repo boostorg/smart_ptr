@@ -29,14 +29,14 @@ namespace detail
 
 // GCC 4.4 supports an outdated version of rvalue references and creates a copy of the forwarded object.
 // This results in warnings 'returning reference to temporary'. Therefore we use a special version similar to std::forward.
-template< class T > T&& sp_forward( T && t ) BOOST_NOEXCEPT
+template< class T > T&& sp_forward( T && t ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return t;
 }
 
 #else
 
-template< class T > T&& sp_forward( T & t ) BOOST_NOEXCEPT
+template< class T > T&& sp_forward( T & t ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return static_cast< T&& >( t );
 }

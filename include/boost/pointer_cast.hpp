@@ -62,7 +62,7 @@ using std::dynamic_pointer_cast;
 using std::const_pointer_cast;
 
 //reinterpret_pointer_cast overload for std::shared_ptr
-template<class T, class U> std::shared_ptr<T> reinterpret_pointer_cast(const std::shared_ptr<U> & r ) BOOST_NOEXCEPT
+template<class T, class U> std::shared_ptr<T> reinterpret_pointer_cast(const std::shared_ptr<U> & r ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -73,7 +73,7 @@ template<class T, class U> std::shared_ptr<T> reinterpret_pointer_cast(const std
 }
 
 //static_pointer_cast overload for std::unique_ptr
-template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     (void) static_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -83,7 +83,7 @@ template<class T, class U> std::unique_ptr<T> static_pointer_cast( std::unique_p
 }
 
 //dynamic_pointer_cast overload for std::unique_ptr
-template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -95,7 +95,7 @@ template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_
 }
 
 //const_pointer_cast overload for std::unique_ptr
-template<class T, class U> std::unique_ptr<T> const_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+template<class T, class U> std::unique_ptr<T> const_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     (void) const_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -105,7 +105,7 @@ template<class T, class U> std::unique_ptr<T> const_pointer_cast( std::unique_pt
 }
 
 //reinterpret_pointer_cast overload for std::unique_ptr
-template<class T, class U> std::unique_ptr<T> reinterpret_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT
+template<class T, class U> std::unique_ptr<T> reinterpret_pointer_cast( std::unique_ptr<U> && r ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
 

@@ -71,7 +71,7 @@ public:
 
 #ifndef BOOST_NO_AUTO_PTR
 
-    explicit scoped_ptr( std::auto_ptr<T> p ) BOOST_NOEXCEPT : px( p.release() )
+    explicit scoped_ptr( std::auto_ptr<T> p ) BOOST_NOEXCEPT_OR_NOTHROW : px( p.release() )
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_scalar_constructor_hook( px );
@@ -106,7 +106,7 @@ public:
         return px;
     }
 
-    T * get() const BOOST_NOEXCEPT
+    T * get() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return px;
     }
@@ -114,7 +114,7 @@ public:
 // implicit conversion to "bool"
 #include <boost/smart_ptr/detail/operator_bool.hpp>
 
-    void swap(scoped_ptr & b) BOOST_NOEXCEPT
+    void swap(scoped_ptr & b) BOOST_NOEXCEPT_OR_NOTHROW
     {
         T * tmp = b.px;
         b.px = px;
@@ -124,36 +124,36 @@ public:
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-template<class T> inline bool operator==( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT
+template<class T> inline bool operator==( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_NOEXCEPT
+template<class T> inline bool operator==( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT
+template<class T> inline bool operator!=( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_NOEXCEPT
+template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return p.get() != 0;
 }
 
 #endif
 
-template<class T> inline void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) BOOST_NOEXCEPT
+template<class T> inline void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) BOOST_NOEXCEPT_OR_NOTHROW
 {
     a.swap(b);
 }
 
 // get_pointer(p) is a generic way to say p.get()
 
-template<class T> inline T * get_pointer(scoped_ptr<T> const & p) BOOST_NOEXCEPT
+template<class T> inline T * get_pointer(scoped_ptr<T> const & p) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return p.get();
 }

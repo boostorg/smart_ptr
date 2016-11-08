@@ -70,16 +70,16 @@ private:
 
 public:
 
-    sp_ms_deleter() BOOST_NOEXCEPT : initialized_( false )
+    sp_ms_deleter() BOOST_NOEXCEPT_OR_NOTHROW : initialized_( false )
     {
     }
 
-    template<class A> explicit sp_ms_deleter( A const & ) BOOST_NOEXCEPT : initialized_( false )
+    template<class A> explicit sp_ms_deleter( A const & ) BOOST_NOEXCEPT_OR_NOTHROW : initialized_( false )
     {
     }
 
     // optimization: do not copy storage_
-    sp_ms_deleter( sp_ms_deleter const & ) BOOST_NOEXCEPT : initialized_( false )
+    sp_ms_deleter( sp_ms_deleter const & ) BOOST_NOEXCEPT_OR_NOTHROW : initialized_( false )
     {
     }
 
@@ -142,12 +142,12 @@ private:
 
 public:
 
-    sp_as_deleter( A const & a ) BOOST_NOEXCEPT : a_( a ), initialized_( false )
+    sp_as_deleter( A const & a ) BOOST_NOEXCEPT_OR_NOTHROW : a_( a ), initialized_( false )
     {
     }
 
     // optimization: do not copy storage_
-    sp_as_deleter( sp_as_deleter const & r ) BOOST_NOEXCEPT : a_( r.a_), initialized_( false )
+    sp_as_deleter( sp_as_deleter const & r ) BOOST_NOEXCEPT_OR_NOTHROW : a_( r.a_), initialized_( false )
     {
     }
 

@@ -54,7 +54,7 @@ public:
 
     typedef T element_type;
 
-    explicit scoped_array( T * p = 0 ) BOOST_NOEXCEPT : px( p )
+    explicit scoped_array( T * p = 0 ) BOOST_NOEXCEPT_OR_NOTHROW : px( p )
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_array_constructor_hook( px );

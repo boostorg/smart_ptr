@@ -53,13 +53,13 @@ public:
 
     typedef T element_type;
 
-    shared_array() BOOST_NOEXCEPT : px( 0 ), pn()
+    shared_array() BOOST_NOEXCEPT_OR_NOTHROW : px( 0 ), pn()
     {
     }
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    shared_array( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT : px( 0 ), pn()
+    shared_array( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT_OR_NOTHROW : px( 0 ), pn()
     {
     }
 
@@ -95,11 +95,11 @@ public:
 
 // ... except in C++0x, move disables the implicit copy
 
-    shared_array( shared_array const & r ) BOOST_NOEXCEPT : px( r.px ), pn( r.pn )
+    shared_array( shared_array const & r ) BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn( r.pn )
     {
     }
 
-    shared_array( shared_array && r ) BOOST_NOEXCEPT : px( r.px ), pn()
+    shared_array( shared_array && r ) BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn()
     {
         pn.swap( r.pn );
         r.px = 0;
@@ -119,7 +119,7 @@ public:
     shared_array( shared_array<Y> const & r )
 
 #endif
-    BOOST_NOEXCEPT : px( r.px ), pn( r.pn ) // never throws
+    BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn( r.pn ) // never throws
     {
         boost::detail::sp_assert_convertible< Y[], T[] >();
     }
@@ -127,13 +127,13 @@ public:
     // aliasing
 
     template< class Y >
-    shared_array( shared_array<Y> const & r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn( r.pn )
+    shared_array( shared_array<Y> const & r, element_type * p ) BOOST_NOEXCEPT_OR_NOTHROW : px( p ), pn( r.pn )
     {
     }
 
     // assignment
 
-    shared_array & operator=( shared_array const & r ) BOOST_NOEXCEPT
+    shared_array & operator=( shared_array const & r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( r ).swap( *this );
         return *this;
@@ -142,7 +142,7 @@ public:
 #if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1400)
 
     template<class Y>
-    shared_array & operator=( shared_array<Y> const & r ) BOOST_NOEXCEPT
+    shared_array & operator=( shared_array<Y> const & r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( r ).swap( *this );
         return *this;
@@ -152,14 +152,14 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    shared_array & operator=( shared_array && r ) BOOST_NOEXCEPT
+    shared_array & operator=( shared_array && r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< shared_array && >( r ) ).swap( *this );
         return *this;
     }
 
     template<class Y>
-    shared_array & operator=( shared_array<Y> && r ) BOOST_NOEXCEPT
+    shared_array & operator=( shared_array<Y> && r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< shared_array<Y> && >( r ) ).swap( *this );
         return *this;

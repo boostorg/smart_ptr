@@ -344,13 +344,13 @@ public:
 
     typedef typename boost::detail::sp_element< T >::type element_type;
 
-    shared_ptr() BOOST_NOEXCEPT : px( 0 ), pn() // never throws in 1.30+
+    shared_ptr() BOOST_NOEXCEPT_OR_NOTHROW : px( 0 ), pn() // never throws in 1.30+
     {
     }
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    shared_ptr( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT : px( 0 ), pn() // never throws
+    shared_ptr( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT_OR_NOTHROW : px( 0 ), pn() // never throws
     {
     }
 
@@ -402,7 +402,7 @@ public:
 
 // ... except in C++0x, move disables the implicit copy
 
-    shared_ptr( shared_ptr const & r ) BOOST_NOEXCEPT : px( r.px ), pn( r.pn )
+    shared_ptr( shared_ptr const & r ) BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn( r.pn )
     {
     }
 
@@ -419,7 +419,7 @@ public:
 
     template<class Y>
     shared_ptr( weak_ptr<Y> const & r, boost::detail::sp_nothrow_tag )
-    BOOST_NOEXCEPT : px( 0 ), pn( r.pn, boost::detail::sp_nothrow_tag() )
+    BOOST_NOEXCEPT_OR_NOTHROW : px( 0 ), pn( r.pn, boost::detail::sp_nothrow_tag() )
     {
         if( !pn.empty() )
         {
@@ -437,14 +437,14 @@ public:
     shared_ptr( shared_ptr<Y> const & r )
 
 #endif
-    BOOST_NOEXCEPT : px( r.px ), pn( r.pn )
+    BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y, T >();
     }
 
     // aliasing
     template< class Y >
-    shared_ptr( shared_ptr<Y> const & r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn( r.pn )
+    shared_ptr( shared_ptr<Y> const & r, element_type * p ) BOOST_NOEXCEPT_OR_NOTHROW : px( p ), pn( r.pn )
     {
     }
 
@@ -521,7 +521,7 @@ public:
 
     // assignment
 
-    shared_ptr & operator=( shared_ptr const & r ) BOOST_NOEXCEPT
+    shared_ptr & operator=( shared_ptr const & r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type(r).swap(*this);
         return *this;
@@ -530,7 +530,7 @@ public:
 #if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1400)
 
     template<class Y>
-    shared_ptr & operator=(shared_ptr<Y> const & r) BOOST_NOEXCEPT
+    shared_ptr & operator=(shared_ptr<Y> const & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type(r).swap(*this);
         return *this;
@@ -605,7 +605,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    shared_ptr( shared_ptr && r ) BOOST_NOEXCEPT : px( r.px ), pn()
+    shared_ptr( shared_ptr && r ) BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn()
     {
         pn.swap( r.pn );
         r.px = 0;
@@ -621,7 +621,7 @@ public:
     shared_ptr( shared_ptr<Y> && r )
 
 #endif
-    BOOST_NOEXCEPT : px( r.px ), pn()
+    BOOST_NOEXCEPT_OR_NOTHROW : px( r.px ), pn()
     {
         boost::detail::sp_assert_convertible< Y, T >();
 
@@ -629,14 +629,14 @@ public:
         r.px = 0;
     }
 
-    shared_ptr & operator=( shared_ptr && r ) BOOST_NOEXCEPT
+    shared_ptr & operator=( shared_ptr && r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< shared_ptr && >( r ) ).swap( *this );
         return *this;
     }
 
     template<class Y>
-    shared_ptr & operator=( shared_ptr<Y> && r ) BOOST_NOEXCEPT
+    shared_ptr & operator=( shared_ptr<Y> && r ) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< shared_ptr<Y> && >( r ) ).swap( *this );
         return *this;
@@ -644,7 +644,7 @@ public:
 
     // aliasing move
     template<class Y>
-    shared_ptr( shared_ptr<Y> && r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn()
+    shared_ptr( shared_ptr<Y> && r, element_type * p ) BOOST_NOEXCEPT_OR_NOTHROW : px( p ), pn()
     {
         pn.swap( r.pn );
         r.px = 0;
@@ -654,7 +654,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    shared_ptr & operator=( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT // never throws
+    shared_ptr & operator=( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT_OR_NOTHROW // never throws
     {
         this_type().swap(*this);
         return *this;

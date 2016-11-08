@@ -59,7 +59,7 @@ public:
 
     typedef T element_type;
 
-    BOOST_CONSTEXPR intrusive_ptr() BOOST_NOEXCEPT : px( 0 )
+    BOOST_CONSTEXPR intrusive_ptr() BOOST_NOEXCEPT_OR_NOTHROW : px( 0 )
     {
     }
 
@@ -111,12 +111,12 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    intrusive_ptr(intrusive_ptr && rhs) BOOST_NOEXCEPT : px( rhs.px )
+    intrusive_ptr(intrusive_ptr && rhs) BOOST_NOEXCEPT_OR_NOTHROW : px( rhs.px )
     {
         rhs.px = 0;
     }
 
-    intrusive_ptr & operator=(intrusive_ptr && rhs) BOOST_NOEXCEPT
+    intrusive_ptr & operator=(intrusive_ptr && rhs) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< intrusive_ptr && >( rhs ) ).swap(*this);
         return *this;
@@ -140,7 +140,7 @@ public:
     }
 
     template<class U>
-    intrusive_ptr & operator=(intrusive_ptr<U> && rhs) BOOST_NOEXCEPT
+    intrusive_ptr & operator=(intrusive_ptr<U> && rhs) BOOST_NOEXCEPT_OR_NOTHROW
     {
         this_type( static_cast< intrusive_ptr<U> && >( rhs ) ).swap(*this);
         return *this;

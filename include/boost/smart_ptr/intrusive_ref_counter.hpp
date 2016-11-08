@@ -121,7 +121,7 @@ public:
      *
      * \post <tt>use_count() == 0</tt>
      */
-    intrusive_ref_counter() BOOST_NOEXCEPT : m_ref_counter(0)
+    intrusive_ref_counter() BOOST_NOEXCEPT_OR_NOTHROW : m_ref_counter(0)
     {
     }
 
@@ -130,7 +130,7 @@ public:
      *
      * \post <tt>use_count() == 0</tt>
      */
-    intrusive_ref_counter(intrusive_ref_counter const&) BOOST_NOEXCEPT : m_ref_counter(0)
+    intrusive_ref_counter(intrusive_ref_counter const&) BOOST_NOEXCEPT_OR_NOTHROW : m_ref_counter(0)
     {
     }
 
@@ -139,7 +139,7 @@ public:
      *
      * \post The reference counter is not modified after assignment
      */
-    intrusive_ref_counter& operator= (intrusive_ref_counter const&) BOOST_NOEXCEPT { return *this; }
+    intrusive_ref_counter& operator= (intrusive_ref_counter const&) BOOST_NOEXCEPT_OR_NOTHROW { return *this; }
 
     /*!
      * \return The reference counter

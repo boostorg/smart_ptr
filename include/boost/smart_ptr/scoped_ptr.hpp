@@ -71,7 +71,7 @@ public:
 
 #ifndef BOOST_NO_AUTO_PTR
 
-    explicit scoped_ptr( std::auto_ptr<T> p ) BOOST_NOEXCEPT : px( p.release() )
+    explicit scoped_ptr( std::auto_ptr<T> p ) BOOST_NOEXCEPT_OR_NOTHROW : px( p.release() )
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_scalar_constructor_hook( px );

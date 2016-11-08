@@ -30,6 +30,7 @@
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
+#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 
 #if !defined(BOOST_SP_NO_ATOMIC_ACCESS)
 #include <boost/smart_ptr/detail/spinlock_pool.hpp>
@@ -344,13 +345,13 @@ public:
 
     typedef typename boost::detail::sp_element< T >::type element_type;
 
-    shared_ptr() BOOST_NOEXCEPT : px( 0 ), pn() // never throws in 1.30+
+    shared_ptr() BOOST_SP_NOEXCEPT : px( 0 ), pn() // never throws in 1.30+
     {
     }
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    shared_ptr( boost::detail::sp_nullptr_t ) BOOST_NOEXCEPT : px( 0 ), pn() // never throws
+    shared_ptr( boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn() // never throws
     {
     }
 
@@ -402,7 +403,7 @@ public:
 
 // ... except in C++0x, move disables the implicit copy
 
-    shared_ptr( shared_ptr const & r ) BOOST_NOEXCEPT : px( r.px ), pn( r.pn )
+    shared_ptr( shared_ptr const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
     }
 
@@ -521,7 +522,7 @@ public:
 
     // assignment
 
-    shared_ptr & operator=( shared_ptr const & r ) BOOST_NOEXCEPT
+    shared_ptr & operator=( shared_ptr const & r ) BOOST_SP_NOEXCEPT
     {
         this_type(r).swap(*this);
         return *this;
@@ -605,7 +606,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    shared_ptr( shared_ptr && r ) BOOST_NOEXCEPT : px( r.px ), pn()
+    shared_ptr( shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn()
     {
         pn.swap( r.pn );
         r.px = 0;
@@ -629,7 +630,7 @@ public:
         r.px = 0;
     }
 
-    shared_ptr & operator=( shared_ptr && r ) BOOST_NOEXCEPT
+    shared_ptr & operator=( shared_ptr && r ) BOOST_SP_NOEXCEPT
     {
         this_type( static_cast< shared_ptr && >( r ) ).swap( *this );
         return *this;

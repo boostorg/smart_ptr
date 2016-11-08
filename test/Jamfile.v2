@@ -201,5 +201,7 @@ import testing ;
           [ compile-fail pointer_cast_dy_fail.cpp ]
           [ compile-fail pointer_cast_dy_fail2.cpp ]
           [ compile-fail pointer_cast_dy_fail3.cpp ]
+
+          [ run sp_nothrow_test.cpp ]
         ;
 }

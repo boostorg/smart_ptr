@@ -883,6 +883,50 @@ template<class T, class U> shared_ptr<T> reinterpret_pointer_cast( shared_ptr<U>
     return shared_ptr<T>( r, p );
 }
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+template<class T, class U> shared_ptr<T> static_pointer_cast( shared_ptr<U> && r ) BOOST_NOEXCEPT
+{
+    (void) static_cast< T* >( static_cast< U* >( 0 ) );
+
+    typedef typename shared_ptr<T>::element_type E;
+
+    E * p = static_cast< E* >( r.get() );
+    return shared_ptr<T>( std::move(r), p );
+}
+
+template<class T, class U> shared_ptr<T> const_pointer_cast( shared_ptr<U> && r ) BOOST_NOEXCEPT
+{
+    (void) const_cast< T* >( static_cast< U* >( 0 ) );
+
+    typedef typename shared_ptr<T>::element_type E;
+
+    E * p = const_cast< E* >( r.get() );
+    return shared_ptr<T>( std::move(r), p );
+}
+
+template<class T, class U> shared_ptr<T> dynamic_pointer_cast( shared_ptr<U> && r ) BOOST_NOEXCEPT
+{
+    (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
+
+    typedef typename shared_ptr<T>::element_type E;
+
+    E * p = dynamic_cast< E* >( r.get() );
+    return p? shared_ptr<T>( std::move(r), p ): shared_ptr<T>();
+}
+
+template<class T, class U> shared_ptr<T> reinterpret_pointer_cast( shared_ptr<U> && r ) BOOST_NOEXCEPT
+{
+    (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
+
+    typedef typename shared_ptr<T>::element_type E;
+
+    E * p = reinterpret_cast< E* >( r.get() );
+    return shared_ptr<T>( std::move(r), p );
+}
+
+#endif // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
 // get_pointer() enables boost::mem_fn to recognize shared_ptr
 
 template<class T> inline typename shared_ptr<T>::element_type * get_pointer(shared_ptr<T> const & p) BOOST_NOEXCEPT

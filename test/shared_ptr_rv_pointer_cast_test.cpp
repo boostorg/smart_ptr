@@ -58,6 +58,19 @@ int main()
         BOOST_TEST(px3.use_count() == 2);
     }
 
+    {
+        boost::shared_ptr<char> pv(reinterpret_cast<char*>(new Y));
+
+        boost::shared_ptr<Y> py1 = boost::reinterpret_pointer_cast<Y>(pv);
+        boost::shared_ptr<Y> py2 = boost::reinterpret_pointer_cast<Y>(std::move(pv));
+        BOOST_TEST(!pv);
+        BOOST_TEST(pv.use_count() == 0);
+        BOOST_TEST(py1.get() == py2.get());
+        BOOST_TEST(!(py1 < py2 || py2 < py1));
+        BOOST_TEST(py1.use_count() == 2);
+        BOOST_TEST(py2.use_count() == 2);
+    }
+
 #if !defined( BOOST_NO_RTTI )
     {
         boost::shared_ptr<U> pu(new V);
@@ -90,7 +103,4 @@ int main()
     return 0;
 }
 
-
 #endif // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
-

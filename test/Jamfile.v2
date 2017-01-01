@@ -34,8 +34,10 @@ import testing ;
           [ run auto_ptr_rv_test.cpp ]
           [ run shared_ptr_alias_test.cpp ]
           [ run shared_ptr_rv_test.cpp ]
+          [ run shared_ptr_rv_pointer_cast_test.cpp ]
           [ run shared_ptr_move_test.cpp ]
           [ run shared_ptr_alias_move_test.cpp ]
+          [ run shared_ptr_reinterpret_pointer_cast_test.cpp ]
           [ compile-fail shared_ptr_pv_fail.cpp ]
           [ run sp_unary_addr_test.cpp ]
           [ compile-fail scoped_ptr_eq_fail.cpp ]
@@ -201,5 +203,7 @@ import testing ;
           [ compile-fail pointer_cast_dy_fail.cpp ]
           [ compile-fail pointer_cast_dy_fail2.cpp ]
           [ compile-fail pointer_cast_dy_fail3.cpp ]
+
+          [ run sp_nothrow_test.cpp ]
         ;
 }

@@ -30,7 +30,6 @@ install:
   - git submodule init libs/throw_exception
   - git submodule init libs/type_traits
   - git submodule init tools/build
-  - git submodule init tools/inspect
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr
   - bootstrap

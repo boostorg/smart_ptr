@@ -259,7 +259,6 @@ install:
   - git submodule init libs/throw_exception
   - git submodule init libs/type_traits
   - git submodule init tools/build
-  - git submodule init tools/inspect
   - git submodule update
   - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
   - ./bootstrap.sh

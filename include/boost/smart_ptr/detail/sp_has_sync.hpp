@@ -26,7 +26,7 @@
 
 # define BOOST_SP_HAS_SYNC
 
-#elif defined( __IBMCPP__ ) && ( __IBMCPP__ >= 1210 )
+#elif defined( __IBMCPP__ ) && ( __IBMCPP__ >= 1210 ) && !defined( __COMPILER_VER__ )
 
 # define BOOST_SP_HAS_SYNC
 

@@ -748,8 +748,8 @@ public:
     }
 
     void destroy() {
-        this->~type();
         deallocator allocator(allocator_);
+        this->~type();
         allocator.deallocate(this, 1);
     }
 
@@ -789,8 +789,8 @@ public:
     }
 
     void destroy() {
-        this->~type();
         deallocator allocator(deleter_.allocator());
+        this->~type();
         allocator.deallocate(this, 1);
     }
 
@@ -835,8 +835,8 @@ public:
     }
 
     void destroy() {
-        this->~type();
         deallocator allocator(allocator_, deleter_.size());
+        this->~type();
         allocator.deallocate(this, 1);
     }
 
@@ -880,8 +880,8 @@ public:
     }
 
     void destroy() {
-        this->~type();
         deallocator allocator(deleter_.allocator(), deleter_.size());
+        this->~type();
         allocator.deallocate(this, 1);
     }
 

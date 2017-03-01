@@ -352,7 +352,7 @@ sp_array_default(T* storage, std::size_t size)
 template<class T, class U>
 struct sp_less_align {
     enum {
-        value = (boost::alignment_of<T>::value <
+        value = ((boost::alignment_of<T>::value) <
             boost::alignment_of<U>::value)
     };
 };

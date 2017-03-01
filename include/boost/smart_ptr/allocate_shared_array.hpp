@@ -93,13 +93,16 @@ struct sp_array_scalar<const volatile T[]> {
 
 template<class T>
 struct sp_array_count {
-    BOOST_STATIC_CONSTEXPR std::size_t value = 1;
+    enum {
+        value = 1
+    };
 };
 
 template<class T, std::size_t N>
 struct sp_array_count<T[N]> {
-    BOOST_STATIC_CONSTEXPR std::size_t value = N *
-        sp_array_count<T>::value;
+    enum {
+        value = N * sp_array_count<T>::value
+    };
 };
 
 template<class T>
@@ -122,7 +125,9 @@ struct sp_array_storage {
 
 template<std::size_t N, std::size_t M>
 struct sp_max_size {
-    BOOST_STATIC_CONSTEXPR std::size_t value = N < M ? M : N;
+    enum {
+        value = N < M ? M : N
+    };
 };
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
@@ -138,12 +143,12 @@ struct sp_bind_allocator {
 };
 #endif
 
-template<bool>
+template<bool, class = void>
 struct sp_enable { };
 
-template<>
-struct sp_enable<true> {
-    typedef void type;
+template<class T>
+struct sp_enable<true, T> {
+    typedef T type;
 };
 
 template<class T>
@@ -344,6 +349,14 @@ sp_array_default(T* storage, std::size_t size)
 }
 #endif
 
+template<class T, class U>
+struct sp_less_align {
+    enum {
+        value = (boost::alignment_of<T>::value <
+            boost::alignment_of<U>::value)
+    };
+};
+
 template<class T>
 BOOST_CONSTEXPR inline std::size_t
 sp_objects(std::size_t size) BOOST_NOEXCEPT
@@ -352,10 +365,19 @@ sp_objects(std::size_t size) BOOST_NOEXCEPT
 }
 
 template<class T, class U>
-BOOST_CONSTEXPR inline std::size_t
+BOOST_CONSTEXPR inline
+typename sp_enable<sp_less_align<T, U>::value, std::size_t>::type
 sp_align(std::size_t size) BOOST_NOEXCEPT
 {
     return (sizeof(T) * size + sizeof(U) - 1) & ~(sizeof(U) - 1);
+}
+
+template<class T, class U>
+BOOST_CONSTEXPR inline
+typename sp_enable<!sp_less_align<T, U>::value, std::size_t>::type
+sp_align(std::size_t size) BOOST_NOEXCEPT
+{
+    return sizeof(T) * size;
 }
 
 template<class T, std::size_t N>

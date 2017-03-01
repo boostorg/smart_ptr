@@ -205,5 +205,7 @@ import testing ;
           [ compile-fail pointer_cast_dy_fail3.cpp ]
 
           [ run sp_nothrow_test.cpp ]
+
+          [ compile make_shared_msvc_test.cpp ]
         ;
 }

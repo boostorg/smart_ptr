@@ -352,8 +352,8 @@ sp_array_default(T* storage, std::size_t size)
 template<class T, class U>
 struct sp_less_align {
     enum {
-        value = ((boost::alignment_of<T>::value) <
-            boost::alignment_of<U>::value)
+        value = (boost::alignment_of<T>::value) <
+            (boost::alignment_of<U>::value)
     };
 };
 
@@ -664,7 +664,7 @@ public:
           size_(other.size_),
           result_(other.result_) { }
 
-    value_type* allocate(std::size_t count, const void* = 0) {
+    value_type* allocate(std::size_t count) {
         type_allocator allocator(allocator_);
         std::size_t head = sp_align<value_type, type>(count);
         std::size_t tail = sp_align<T, type>(size_);

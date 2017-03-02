@@ -84,6 +84,7 @@ import testing ;
           [ run sa_nullptr_test.cpp ]
           [ run shared_ptr_alloc3_test.cpp ]
           [ run shared_ptr_alloc11_test.cpp ]
+          [ run shared_ptr_alloc_construct11_test.cpp ]
           [ run allocate_shared_alloc11_test.cpp ]
           [ run allocate_shared_construct11_test.cpp ]
           [ run sp_interlocked_test.cpp ]

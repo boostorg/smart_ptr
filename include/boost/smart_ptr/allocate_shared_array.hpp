@@ -110,7 +110,8 @@ struct sp_array_count<T[]> { };
 
 template<class D, class T>
 inline D*
-sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_NOEXCEPT
+sp_get_deleter(const
+    boost::shared_ptr<T>& value) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return static_cast<D*>(value._internal_get_untyped_deleter());
 }

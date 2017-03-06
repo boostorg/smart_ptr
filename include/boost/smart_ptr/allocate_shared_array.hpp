@@ -666,19 +666,17 @@ public:
 
     value_type* allocate(std::size_t count) {
         type_allocator allocator(allocator_);
-        std::size_t head = sp_align<value_type, alignment>(count);
-        std::size_t tail = sizeof(T) * size_;
-        std::size_t size = sp_types<type>(head + tail);
+        std::size_t node = sp_align<value_type, alignment>(count);
+        std::size_t size = sp_types<type>(node + sizeof(T) * size_);
         type* address = allocator.allocate(size);
-        *result_ = reinterpret_cast<char*>(address) + head;
+        *result_ = reinterpret_cast<char*>(address) + node;
         return reinterpret_cast<value_type*>(address);
     }
 
     void deallocate(value_type* value, std::size_t count) {
         type_allocator allocator(allocator_);
-        std::size_t head = sp_align<value_type, alignment>(count);
-        std::size_t tail = sizeof(T) * size_;
-        std::size_t size = sp_types<type>(head + tail);
+        std::size_t node = sp_align<value_type, alignment>(count);
+        std::size_t size = sp_types<type>(node + sizeof(T) * size_);
         allocator.deallocate(reinterpret_cast<type*>(value), size);
     }
 

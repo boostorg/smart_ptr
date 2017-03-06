@@ -367,10 +367,20 @@ sp_objects(std::size_t size) BOOST_NOEXCEPT
 
 template<class T, class U>
 BOOST_CONSTEXPR inline
-typename sp_enable<sp_less_align<T, U>::value, std::size_t>::type
-sp_align(std::size_t size) BOOST_NOEXCEPT
+typename sp_enable<sp_less_align<T, U>::value &&
+    (sizeof(U) % 2 == 0), std::size_t>::type
+sp_align(std::size_t size) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return (sizeof(T) * size + sizeof(U) - 1) & ~(sizeof(U) - 1);
+}
+
+template<class T, class U>
+BOOST_CONSTEXPR inline
+typename sp_enable<sp_less_align<T, U>::value &&
+    (sizeof(U) % 2 != 0), std::size_t>::type
+sp_align(std::size_t size) BOOST_NOEXCEPT_OR_NOTHROW
+{
+    return (sizeof(T) * size + sizeof(U) - 1) / sizeof(U) * sizeof(U);
 }
 
 template<class T, class U>

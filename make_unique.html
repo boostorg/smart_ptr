@@ -21,10 +21,8 @@
     template&lt;class U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>();
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
     template&lt;class U, class... Args&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(Args&amp;&amp;... args);
-#endif
 
     template&lt;class U&gt; // U is not array
     unique_ptr&lt;U&gt; <a href="#functions">make_unique</a>(U&amp;&amp; value);
@@ -40,9 +38,9 @@
 }</pre>
     <h2><a name="common">Common Requirements</a></h2>
     <pre>template&lt;class U&gt;
-    unique_ptr&lt;U&gt; make_unique(<em>args</em>);
-template&lt;class U&gt;
-    unique_ptr&lt;U&gt; make_unique_noinit(<em>args</em>);</pre> 
+unique_ptr&lt;U&gt; make_unique(<em>args</em>);</pre>
+    <pre>template&lt;class U&gt;
+unique_ptr&lt;U&gt; make_unique_noinit(<em>args</em>);</pre>
     <blockquote>
       <p><b>Effects:</b> Allocates memory for an object of type <code>U</code> 
         (or <code>T[size]</code> when <code>U</code> is <code>T[]</code>, 
@@ -82,8 +80,8 @@ unique_ptr&lt;U&gt; make_unique(Args&amp;&amp;... args);</pre>
         resolution when <code>U</code> is not an array type.</p>
       <p><b>Examples:</b></p>
       <blockquote>
-        <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();
-unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;(x, y);</pre>
+        <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique&lt;float&gt;();</pre>
+        <pre>unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;(x, y);</pre>
       </blockquote>
     </blockquote>
     <pre>template&lt;class U&gt;
@@ -95,8 +93,8 @@ unique_ptr&lt;U&gt; make_unique(U&amp;&amp; value);</pre>
         resolution when <code>U</code> is not an array type.</p>
       <p><b>Examples:</b></p>
       <blockquote>
-        <pre>unique_ptr&lt;string&gt; p1 = boost::make_unique&lt;string&gt;({'a', 'b'});
-unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;({-10, 25});</pre>
+        <pre>unique_ptr&lt;string&gt; p1 = boost::make_unique&lt;string&gt;({'a', 'b'});</pre>
+        <pre>unique_ptr&lt;point&gt; p2 = boost::make_unique&lt;point&gt;({-10, 25});</pre>
       </blockquote>
     </blockquote>
     <pre>template&lt;class U&gt;
@@ -108,8 +106,8 @@ unique_ptr&lt;U&gt; make_unique(size_t size);</pre>
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
       <p><b>Examples:</b></p>
       <blockquote>
-        <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique&lt;double[]&gt;(4);
-unique_ptr&lt;int[][2]&gt; p2 = boost::make_unique&lt;int[][2]&gt;(2);</pre>
+        <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique&lt;double[]&gt;(4);</pre>
+        <pre>unique_ptr&lt;int[][2]&gt; p2 = boost::make_unique&lt;int[][2]&gt;(2);</pre>
       </blockquote>
     </blockquote>
     <pre>template&lt;class U&gt;
@@ -121,8 +119,8 @@ unique_ptr&lt;U&gt; make_unique_noinit();</pre>
         resolution when <code>U</code> is not an array type.</p>
       <p><b>Examples:</b></p>
       <blockquote>
-        <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique_noinit&lt;float&gt;();
-unique_ptr&lt;point&gt; p2 = boost::make_unique_noinit&lt;point&gt;();</pre>
+        <pre>unique_ptr&lt;float&gt; p1 = boost::make_unique_noinit&lt;float&gt;();</pre>
+        <pre>unique_ptr&lt;point&gt; p2 = boost::make_unique_noinit&lt;point&gt;();</pre>
       </blockquote>
     </blockquote>
     <pre>template&lt;class U&gt;
@@ -134,8 +132,8 @@ unique_ptr&lt;U&gt; make_unique_noinit(size_t size);</pre>
         resolution when <code>U</code> is of the form <code>T[]</code>.</p>
       <p><b>Examples:</b></p>
       <blockquote>
-        <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique_noinit&lt;double[]&gt;(4);
-unique_ptr&lt;int[][2]&gt; p2 = boost::make_unique_noinit&lt;int[][2]&gt;(2);</pre>
+        <pre>unique_ptr&lt;double[]&gt; p1 = boost::make_unique_noinit&lt;double[]&gt;(4);</pre>
+        <pre>unique_ptr&lt;int[][2]&gt; p2 = boost::make_unique_noinit&lt;int[][2]&gt;(2);</pre>
       </blockquote>
     </blockquote>
     <h2><a name="history">History</a></h2>

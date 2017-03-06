@@ -358,13 +358,6 @@ struct sp_less_align {
     };
 };
 
-template<class T>
-BOOST_CONSTEXPR inline std::size_t
-sp_objects(std::size_t size) BOOST_NOEXCEPT
-{
-    return size / sizeof(T);
-}
-
 template<class T, class U>
 BOOST_CONSTEXPR inline
 typename sp_enable<sp_less_align<T, U>::value &&
@@ -679,9 +672,9 @@ public:
         type_allocator allocator(allocator_);
         std::size_t head = sp_align<value_type, type>(count);
         std::size_t tail = sp_align<T, type>(size_);
-        std::size_t size = sp_objects<type>(head + tail);
+        std::size_t size = (head + tail) / sizeof(type);
         type* address = allocator.allocate(size);
-        *result_ = address + sp_objects<type>(head);
+        *result_ = address + head / sizeof(type);
         return reinterpret_cast<value_type*>(address);
     }
 
@@ -689,7 +682,7 @@ public:
         type_allocator allocator(allocator_);
         std::size_t head = sp_align<value_type, type>(count);
         std::size_t tail = sp_align<T, type>(size_);
-        std::size_t size = sp_objects<type>(head + tail);
+        std::size_t size = (head + tail) / sizeof(type);
         allocator.deallocate(reinterpret_cast<type*>(value), size);
     }
 

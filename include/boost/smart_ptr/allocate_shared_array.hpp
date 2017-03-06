@@ -350,35 +350,34 @@ sp_array_default(T* storage, std::size_t size)
 }
 #endif
 
-template<class T, class U>
+template<class T, std::size_t N>
 struct sp_less_align {
     enum {
-        value = (boost::alignment_of<T>::value) <
-            (boost::alignment_of<U>::value)
+        value = (boost::alignment_of<T>::value) < N
     };
 };
 
-template<class T>
-BOOST_CONSTEXPR inline std::size_t
-sp_objects(std::size_t size) BOOST_NOEXCEPT
-{
-    return size / sizeof(T);
-}
-
-template<class T, class U>
+template<class T, std::size_t N>
 BOOST_CONSTEXPR inline
-typename sp_enable<sp_less_align<T, U>::value, std::size_t>::type
+typename sp_enable<sp_less_align<T, N>::value, std::size_t>::type
 sp_align(std::size_t size) BOOST_NOEXCEPT
 {
-    return (sizeof(T) * size + sizeof(U) - 1) & ~(sizeof(U) - 1);
+    return (sizeof(T) * size + N - 1) & ~(N - 1);
 }
 
-template<class T, class U>
+template<class T, std::size_t N>
 BOOST_CONSTEXPR inline
-typename sp_enable<!sp_less_align<T, U>::value, std::size_t>::type
+typename sp_enable<!sp_less_align<T, N>::value, std::size_t>::type
 sp_align(std::size_t size) BOOST_NOEXCEPT
 {
     return sizeof(T) * size;
+}
+
+template<class T>
+BOOST_CONSTEXPR inline std::size_t
+sp_types(std::size_t size) BOOST_NOEXCEPT
+{
+    return (size + sizeof(T) - 1) / sizeof(T);
 }
 
 template<class T, std::size_t N>
@@ -667,19 +666,17 @@ public:
 
     value_type* allocate(std::size_t count) {
         type_allocator allocator(allocator_);
-        std::size_t head = sp_align<value_type, type>(count);
-        std::size_t tail = sp_align<T, type>(size_);
-        std::size_t size = sp_objects<type>(head + tail);
+        std::size_t node = sp_align<value_type, alignment>(count);
+        std::size_t size = sp_types<type>(node + sizeof(T) * size_);
         type* address = allocator.allocate(size);
-        *result_ = address + sp_objects<type>(head);
+        *result_ = reinterpret_cast<char*>(address) + node;
         return reinterpret_cast<value_type*>(address);
     }
 
     void deallocate(value_type* value, std::size_t count) {
         type_allocator allocator(allocator_);
-        std::size_t head = sp_align<value_type, type>(count);
-        std::size_t tail = sp_align<T, type>(size_);
-        std::size_t size = sp_objects<type>(head + tail);
+        std::size_t node = sp_align<value_type, alignment>(count);
+        std::size_t size = sp_types<type>(node + sizeof(T) * size_);
         allocator.deallocate(reinterpret_cast<type*>(value), size);
     }
 

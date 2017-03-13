@@ -105,8 +105,7 @@ const <em>E</em>&amp; v);</code>
 <div id="requirements">
 <h2>Common Requirements</h2>
 <h3><code>template&lt;class T, class A&gt;<br>shared_ptr&lt;T&gt;
-<a href="#functions">allocate_shared</a>(const A&amp; a,
-<em>args</em>);</code></h3>
+allocate_shared(const A&amp; a, <em>args</em>);</code></h3>
 <dl>
 <dt><strong>Requires:</strong></dt>
 <dd><code>T</code> is of the form <code>E[N]</code> or
@@ -190,6 +189,9 @@ allocate_shared(const A&amp; a, std::size_t n);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared&lt;int[]<!--
+-->&gt;(std::allocator&lt;int&gt;(), 8);</code></dd>
 </dl>
 </div>
 <div>
@@ -202,6 +204,9 @@ allocate_shared(const A&amp; a);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared&lt;int[8]<!--
+-->&gt;(std::allocator&lt;int&gt;());</code></dd>
 </dl>
 </div>
 <div>
@@ -216,6 +221,9 @@ initialized to <code>v</code>.</dd>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared&lt;double[]<!--
+-->&gt;(std::allocator&lt;double&gt;(), 8, 1.0);</code></dd>
 </dl>
 </div>
 <div>
@@ -229,6 +237,9 @@ where each array element of type <code>E</code> is initialized to
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared&lt;double[8]<!--
+-->&gt;(std::allocator&lt;double&gt;(), 1.0);</code></dd>
 </dl>
 </div>
 <div>
@@ -241,6 +252,9 @@ allocate_shared_noinit(const A&amp; a, std::size_t n);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared_noinit&lt;int[]<!--
+-->&gt;(std::allocator&lt;int&gt;(), 8);</code></dd>
 </dl>
 </div>
 <div>
@@ -253,6 +267,9 @@ allocate_shared_noinit(const A&amp; a);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::allocate_shared_noinit&lt;int[8]<!--
+-->&gt;(std::allocator&lt;int&gt;());</code></dd>
 </dl>
 </div>
 <div>
@@ -265,6 +282,8 @@ make_shared(std::size_t n);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared&lt;int[]&gt;(8);</code></dd>
 </dl>
 </div>
 <div>
@@ -277,6 +296,8 @@ make_shared();</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared&lt;int[8]&gt;();</code></dd>
 </dl>
 </div>
 <div>
@@ -289,6 +310,8 @@ make_shared(std::size_t n, const <em>E</em>&amp; v);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared&lt;double[]&gt;(8, 1.0);</code></dd>
 </dl>
 </div>
 <div>
@@ -301,7 +324,8 @@ make_shared(const <em>E</em>&amp; v);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N].</code></dd>
-</dl>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared&lt;double[8]&gt;(1.0);</code></dd></dl>
 </div>
 <div>
 <h3><code>template&lt;class T&gt;<br>shared_ptr&lt;T&gt;
@@ -313,6 +337,8 @@ make_shared_noinit(std::size_t n);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared_noinit&lt;int[]&gt;(8);</code></dd>
 </dl>
 </div>
 <div>
@@ -325,6 +351,8 @@ make_shared_noinit();</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[N]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_shared_noinit&lt;int[8]&gt;();</code></dd>
 </dl>
 </div>
 </div>

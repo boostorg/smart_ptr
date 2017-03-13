@@ -32,7 +32,7 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr
-  - cmd /d /c bootstrap || type bootstrap.log & color 00
+  - bootstrap
   - b2 headers
 
 build: off

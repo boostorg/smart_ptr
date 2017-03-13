@@ -58,8 +58,7 @@ function template <code>make_unique</code> for convenient creation of
 <div id="requirements">
 <h2>Common Requirements</h2>
 <h3><code>template&lt;class T, <em>Args</em>&gt;<br>
-std::unique_ptr&lt;T&gt;
-<a href="#functions">make_unique</a>(<em>args</em>);</code></h3>
+std::unique_ptr&lt;T&gt; make_unique(<em>args</em>);</code></h3>
 <dl>
 <dt><strong>Effects:</strong></dt>
 <dd>Allocates storage for an object of type <code>T</code> (or
@@ -109,6 +108,8 @@ initialized to <code>std::forward&lt;Args&gt;(args)...</code>.</dd>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is not an array type.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_unique&lt;double&gt;(1.0);</code></dd>
 </dl>
 </div>
 <div>
@@ -121,7 +122,8 @@ initialized to <code>std::move(value)</code>.</dd>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is not an array type.</dd>
-</dl>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_unique&lt;point&gt;({1.0, -1.0});</code></dd></dl>
 </div>
 <div>
 <h3><code>template&lt;class T&gt;<br>std::unique_ptr&lt;T&gt;
@@ -133,6 +135,8 @@ make_unique(std::size_t size);</code></h3>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_unique&lt;int[]&gt;(8);</code></dd>
 </dl>
 </div>
 <div>
@@ -145,6 +149,8 @@ type <code>T</code>.</dd>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is not an array type.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_unique_noinit&lt;std::tm&gt;();</code></dd>
 </dl>
 </div>
 <div>
@@ -157,6 +163,8 @@ type <code>E[size]</code>.</dd>
 <dt><strong>Remarks:</strong></dt>
 <dd>This overload shall only participate in overload resolution when
 <code>T</code> is of the form <code>E[]</code>.</dd>
+<dt><strong>Example:</strong></dt>
+<dd><code>boost::make_unique_noinit&lt;char[]&gt;(64);</code></dd>
 </dl>
 </div>
 </div>

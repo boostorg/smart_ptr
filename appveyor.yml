@@ -32,13 +32,10 @@ install:
   - git submodule init tools/build
   - git submodule update
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr
-  - bootstrap
+  - cmd /d /c bootstrap || type bootstrap.log & color 00
   - b2 headers
 
 build: off
 
 test_script:
   - b2 libs/smart_ptr/test toolset=msvc-9.0,msvc-10.0,msvc-11.0,msvc-14.0
-
-artifacts:
-  - path: ..\boost-root\bootstrap.log

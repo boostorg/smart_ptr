@@ -208,5 +208,7 @@ import testing ;
           [ run sp_nothrow_test.cpp ]
 
           [ compile make_shared_msvc_test.cpp ]
+
+          [ compile lwm_win32_cs_test.cpp ]
         ;
 }

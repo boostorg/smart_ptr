@@ -9,9 +9,10 @@ Distributed under the Boost Software License, Version 1.0.
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/has_trivial_constructor.hpp>
-#include <boost/type_traits/has_trivial_destructor.hpp>
 #include <boost/type_traits/alignment_of.hpp>
+#include <boost/type_traits/has_trivial_constructor.hpp>
+#include <boost/type_traits/has_trivial_copy.hpp>
+#include <boost/type_traits/has_trivial_destructor.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 
 namespace boost {
@@ -173,7 +174,7 @@ inline void
 sp_array_destroy(A& allocator, T* storage, std::size_t size)
 {
     while (size > 0) {
-        std::allocator_traits<A>::destroy(allocator, &storage[--size]);
+        std::allocator_traits<A>::destroy(allocator, storage + --size);
     }
 }
 #endif
@@ -202,15 +203,27 @@ sp_array_construct(T* storage, std::size_t size)
             ::new(static_cast<void*>(storage + i)) T();
         }
     } catch (...) {
-        while (i > 0) {
-            storage[--i].~T();
-        }
+        sp_array_destroy(storage, i);
         throw;
     }
 }
 
 template<class T>
-inline void
+inline
+typename sp_enable<boost::has_trivial_copy_constructor<T>::value ||
+    boost::has_trivial_destructor<T>::value>::type
+sp_array_construct(T* storage, std::size_t size, const T* list,
+    std::size_t count)
+{
+    for (std::size_t i = 0; i < size; ++i) {
+        ::new(static_cast<void*>(storage + i)) T(list[i % count]);
+    }
+}
+
+template<class T>
+inline
+typename sp_enable<!boost::has_trivial_copy_constructor<T>::value &&
+    !boost::has_trivial_destructor<T>::value>::type
 sp_array_construct(T* storage, std::size_t size, const T* list,
     std::size_t count)
 {
@@ -220,9 +233,7 @@ sp_array_construct(T* storage, std::size_t size, const T* list,
             ::new(static_cast<void*>(storage + i)) T(list[i % count]);
         }
     } catch (...) {
-        while (i > 0) {
-            storage[--i].~T();
-        }
+        sp_array_destroy(storage, i);
         throw;
     }
 }
@@ -332,9 +343,7 @@ sp_array_default(T* storage, std::size_t size)
             ::new(static_cast<void*>(storage + i)) T;
         }
     } catch (...) {
-        while (i > 0) {
-            storage[--i].~T();
-        }
+        sp_array_destroy(storage, i);
         throw;
     }
 }

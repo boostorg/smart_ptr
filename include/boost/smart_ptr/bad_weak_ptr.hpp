@@ -36,9 +36,11 @@ namespace boost
 # pragma option push -pc
 #endif
 
+#if defined(BOOST_CLANG)
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 #endif
 
 class bad_weak_ptr: public std::exception
@@ -51,8 +53,10 @@ public:
     }
 };
 
+#if defined(BOOST_CLANG)
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#endif
 #endif
 
 #if defined(__BORLANDC__) && __BORLANDC__ <= 0x564

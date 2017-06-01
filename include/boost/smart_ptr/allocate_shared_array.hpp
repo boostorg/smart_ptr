@@ -111,8 +111,7 @@ struct sp_array_count<T[]> { };
 
 template<class D, class T>
 inline D*
-sp_get_deleter(const
-    boost::shared_ptr<T>& value) BOOST_NOEXCEPT_OR_NOTHROW
+sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return static_cast<D*>(value._internal_get_untyped_deleter());
 }
@@ -135,8 +134,7 @@ struct sp_max_size {
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
 template<class A, class T>
 struct sp_bind_allocator {
-    typedef typename std::allocator_traits<A>::template
-        rebind_alloc<T> type;
+    typedef typename std::allocator_traits<A>::template rebind_alloc<T> type;
 };
 #else
 template<class A, class T>
@@ -154,13 +152,11 @@ struct sp_enable<true, T> {
 };
 
 template<class T>
-inline
-typename sp_enable<boost::has_trivial_destructor<T>::value>::type
+inline typename sp_enable<boost::has_trivial_destructor<T>::value>::type
 sp_array_destroy(T*, std::size_t) BOOST_NOEXCEPT { }
 
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_destructor<T>::value>::type
+inline typename sp_enable<!boost::has_trivial_destructor<T>::value>::type
 sp_array_destroy(T* storage, std::size_t size)
 {
     while (size > 0) {
@@ -181,8 +177,7 @@ sp_array_destroy(A& allocator, T* storage, std::size_t size)
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 template<class T>
-inline
-typename sp_enable<boost::has_trivial_constructor<T>::value ||
+inline typename sp_enable<boost::has_trivial_constructor<T>::value ||
     boost::has_trivial_destructor<T>::value>::type
 sp_array_construct(T* storage, std::size_t size)
 {
@@ -192,8 +187,7 @@ sp_array_construct(T* storage, std::size_t size)
 }
 
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_constructor<T>::value &&
+inline typename sp_enable<!boost::has_trivial_constructor<T>::value &&
     !boost::has_trivial_destructor<T>::value>::type
 sp_array_construct(T* storage, std::size_t size)
 {
@@ -209,8 +203,7 @@ sp_array_construct(T* storage, std::size_t size)
 }
 
 template<class T>
-inline
-typename sp_enable<boost::has_trivial_copy_constructor<T>::value ||
+inline typename sp_enable<boost::has_trivial_copy_constructor<T>::value ||
     boost::has_trivial_destructor<T>::value>::type
 sp_array_construct(T* storage, std::size_t size, const T* list,
     std::size_t count)
@@ -221,8 +214,7 @@ sp_array_construct(T* storage, std::size_t size, const T* list,
 }
 
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_copy_constructor<T>::value &&
+inline typename sp_enable<!boost::has_trivial_copy_constructor<T>::value &&
     !boost::has_trivial_destructor<T>::value>::type
 sp_array_construct(T* storage, std::size_t size, const T* list,
     std::size_t count)
@@ -315,14 +307,12 @@ sp_array_construct(A& allocator, T* storage, std::size_t size,
 #endif
 
 template<class T>
-inline
-typename sp_enable<boost::has_trivial_constructor<T>::value>::type
+inline typename sp_enable<boost::has_trivial_constructor<T>::value>::type
 sp_array_default(T*, std::size_t) BOOST_NOEXCEPT { }
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_constructor<T>::value &&
+inline typename sp_enable<!boost::has_trivial_constructor<T>::value &&
     boost::has_trivial_destructor<T>::value>::type
 sp_array_default(T* storage, std::size_t size)
 {
@@ -332,8 +322,7 @@ sp_array_default(T* storage, std::size_t size)
 }
 
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_constructor<T>::value &&
+inline typename sp_enable<!boost::has_trivial_constructor<T>::value &&
     !boost::has_trivial_destructor<T>::value>::type
 sp_array_default(T* storage, std::size_t size)
 {
@@ -349,8 +338,7 @@ sp_array_default(T* storage, std::size_t size)
 }
 #else
 template<class T>
-inline
-typename sp_enable<!boost::has_trivial_constructor<T>::value>::type
+inline typename sp_enable<!boost::has_trivial_constructor<T>::value>::type
 sp_array_default(T* storage, std::size_t size)
 {
     for (std::size_t i = 0; i < size; ++i) {
@@ -367,16 +355,16 @@ struct sp_less_align {
 };
 
 template<class T, std::size_t N>
-BOOST_CONSTEXPR inline
-typename sp_enable<sp_less_align<T, N>::value, std::size_t>::type
+BOOST_CONSTEXPR
+inline typename sp_enable<sp_less_align<T, N>::value, std::size_t>::type
 sp_align(std::size_t size) BOOST_NOEXCEPT
 {
     return (sizeof(T) * size + N - 1) & ~(N - 1);
 }
 
 template<class T, std::size_t N>
-BOOST_CONSTEXPR inline
-typename sp_enable<!sp_less_align<T, N>::value, std::size_t>::type
+BOOST_CONSTEXPR
+inline typename sp_enable<!sp_less_align<T, N>::value, std::size_t>::type
 sp_align(std::size_t size) BOOST_NOEXCEPT
 {
     return sizeof(T) * size;
@@ -426,8 +414,7 @@ public:
     }
 
     void* construct(const T* list, std::size_t count) {
-        sp_array_construct(reinterpret_cast<T*>(&storage_), N,
-            list, count);
+        sp_array_construct(reinterpret_cast<T*>(&storage_), N, list, count);
         enabled_ = true;
         return &storage_;
     }
@@ -463,30 +450,27 @@ public:
 
     ~sp_size_array_destroyer() {
         if (enabled_) {
-            sp_array_destroy(allocator_,
-                reinterpret_cast<T*>(&storage_), N);
+            sp_array_destroy(allocator_, reinterpret_cast<T*>(&storage_), N);
         }
     }
 
     template<class U>
     void operator()(U) {
         if (enabled_) {
-            sp_array_destroy(allocator_,
-                reinterpret_cast<T*>(&storage_), N);
+            sp_array_destroy(allocator_, reinterpret_cast<T*>(&storage_), N);
             enabled_ = false;
         }
     }
 
     void* construct() {
-        sp_array_construct(allocator_,
-            reinterpret_cast<T*>(&storage_), N);
+        sp_array_construct(allocator_, reinterpret_cast<T*>(&storage_), N);
         enabled_ = true;
         return &storage_;
     }
 
     void* construct(const T* list, std::size_t count) {
-        sp_array_construct(allocator_,
-            reinterpret_cast<T*>(&storage_), N, list, count);
+        sp_array_construct(allocator_, reinterpret_cast<T*>(&storage_), N,
+            list, count);
         enabled_ = true;
         return &storage_;
     }
@@ -573,8 +557,7 @@ public:
     static void operator_fn(U) BOOST_NOEXCEPT { }
 
     template<class U>
-    sp_array_destroyer(const U& allocator, std::size_t size)
-        BOOST_NOEXCEPT
+    sp_array_destroyer(const U& allocator, std::size_t size) BOOST_NOEXCEPT
         : allocator_(allocator),
           size_(size),
           address_(0) { }
@@ -592,16 +575,14 @@ public:
 
     ~sp_array_destroyer() {
         if (address_) {
-            sp_array_destroy(allocator_, static_cast<T*>(address_),
-                size_);
+            sp_array_destroy(allocator_, static_cast<T*>(address_), size_);
         }
     }
 
     template<class U>
     void operator()(U) {
         if (address_) {
-            sp_array_destroy(allocator_, static_cast<T*>(address_),
-                size_);
+            sp_array_destroy(allocator_, static_cast<T*>(address_), size_);
             address_ = 0;
         }
     }
@@ -655,20 +636,18 @@ public:
             typename sp_bind_allocator<A, U>::type> other;
     };
 
-    sp_array_allocator(const A& allocator, std::size_t size,
-        void** result) BOOST_NOEXCEPT
+    sp_array_allocator(const A& allocator, std::size_t size, void** result)
+        BOOST_NOEXCEPT
         : allocator_(allocator),
           size_(size),
           result_(result) { }
 
-    sp_array_allocator(const A& allocator, std::size_t size)
-        BOOST_NOEXCEPT
+    sp_array_allocator(const A& allocator, std::size_t size) BOOST_NOEXCEPT
         : allocator_(allocator),
           size_(size) { }
 
     template<class U>
-    sp_array_allocator(const sp_array_allocator<T, U>& other)
-        BOOST_NOEXCEPT
+    sp_array_allocator(const sp_array_allocator<T, U>& other) BOOST_NOEXCEPT
         : allocator_(other.allocator_),
           size_(other.size_),
           result_(other.result_) { }
@@ -956,8 +935,8 @@ allocate_shared(const A& allocator,
     shared_ptr<T> result(static_cast<type*>(0),
         detail::sp_inplace_tag<deleter>(), allocator);
     deleter* state = detail::sp_get_deleter<deleter>(result);
-    void* start = state->construct(reinterpret_cast<const
-        scalar*>(&value), detail::sp_array_count<type>::value);
+    void* start = state->construct(reinterpret_cast<const scalar*>(&value),
+        detail::sp_array_count<type>::value);
     return shared_ptr<T>(result, static_cast<type*>(start));
 }
 

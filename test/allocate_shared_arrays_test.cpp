@@ -66,8 +66,7 @@ int main()
     }
     {
         boost::shared_ptr<const int[][2]> result =
-            boost::allocate_shared<const
-                int[][2]>(creator<int>(), 2, {0, 1});
+            boost::allocate_shared<const int[][2]>(creator<int>(), 2, {0, 1});
         BOOST_TEST(result[0][0] == 0);
         BOOST_TEST(result[0][1] == 1);
         BOOST_TEST(result[1][0] == 0);
@@ -75,8 +74,7 @@ int main()
     }
     {
         boost::shared_ptr<const int[2][2]> result =
-            boost::allocate_shared<const
-                int[2][2]>(creator<int>(), {0, 1});
+            boost::allocate_shared<const int[2][2]>(creator<int>(), {0, 1});
         BOOST_TEST(result[0][0] == 0);
         BOOST_TEST(result[0][1] == 1);
         BOOST_TEST(result[1][0] == 0);

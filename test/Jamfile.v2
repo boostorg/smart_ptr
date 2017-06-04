@@ -210,5 +210,7 @@ import testing ;
           [ compile make_shared_msvc_test.cpp ]
 
           [ compile lwm_win32_cs_test.cpp ]
+
+          [ run local_sp_test.cpp ]
         ;
 }

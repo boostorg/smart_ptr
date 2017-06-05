@@ -35,33 +35,29 @@ long X::instances = 0;
 
 class incomplete;
 
+template<class T> static void test_empty( boost::local_shared_ptr<T> const & p )
+{
+    BOOST_TEST( p? false: true );
+    BOOST_TEST( !p );
+    BOOST_TEST( p.get() == 0 );
+    BOOST_TEST( p.local_use_count() == 0 );
+}
+
 static void default_constructor()
 {
     {
         boost::local_shared_ptr<int> p;
-
-        BOOST_TEST( p? false: true );
-        BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
-        BOOST_TEST( p.local_use_count() == 0 );
+        test_empty( p );
     }
 
     {
         boost::local_shared_ptr<void> p;
-
-        BOOST_TEST( p? false: true );
-        BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
-        BOOST_TEST( p.local_use_count() == 0 );
+        test_empty( p );
     }
 
     {
         boost::local_shared_ptr<incomplete> p;
-
-        BOOST_TEST( p? false: true );
-        BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
-        BOOST_TEST( p.local_use_count() == 0 );
+        test_empty( p );
     }
 
     BOOST_TEST( X::instances == 0 );
@@ -71,11 +67,40 @@ static void default_constructor()
 
         BOOST_TEST( X::instances == 0 );
 
-        BOOST_TEST( p? false: true );
-        BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
-        BOOST_TEST( p.local_use_count() == 0 );
+        test_empty( p );
     }
+}
+
+static void nullptr_constructor()
+{
+#if !defined( BOOST_NO_CXX11_NULLPTR )
+
+    {
+        boost::local_shared_ptr<int> p( nullptr );
+        test_empty( p );
+    }
+
+    {
+        boost::local_shared_ptr<void> p( nullptr );
+        test_empty( p );
+    }
+
+    {
+        boost::local_shared_ptr<incomplete> p( nullptr );
+        test_empty( p );
+    }
+
+    BOOST_TEST( X::instances == 0 );
+
+    {
+        boost::local_shared_ptr<X> p( nullptr );
+
+        BOOST_TEST( X::instances == 0 );
+
+        test_empty( p );
+    }
+
+#endif
 }
 
 template<class T, class U> static void pc0_test_()
@@ -182,14 +207,6 @@ static void deleter_constructor()
     deleter2_test_<void const volatile>();
 }
 
-template<class T> static void test_empty( boost::local_shared_ptr<T> const & p )
-{
-    BOOST_TEST( p? false: true );
-    BOOST_TEST( !p );
-    BOOST_TEST( p.get() == 0 );
-    BOOST_TEST( p.local_use_count() == 0 );
-}
-
 template<class T> static void empty_copy_test()
 {
     boost::local_shared_ptr<T> p1;
@@ -256,20 +273,154 @@ static void copy_constructor()
     empty_copy_test<int>();
     empty_copy_test<incomplete>();
     empty_copy_test<X>();
+    BOOST_TEST( X::instances == 0 );
 
     null_copy_test<int>();
     null_copy_test<X>();
+    BOOST_TEST( X::instances == 0 );
 
     new_copy_test<int>();
     new_copy_test<X>();
+    BOOST_TEST( X::instances == 0 );
+}
+
+template<class T, class U> void test_aliasing_( boost::local_shared_ptr<T> const & p1, U * p2 )
+{
+    boost::local_shared_ptr<U> p3( p1, p2 );
+
+    BOOST_TEST( p3.get() == p2 );
+    BOOST_TEST( p3.local_use_count() == p1.local_use_count() );
+    BOOST_TEST( !p3.owner_before( p1 ) && !p1.owner_before( p3 ) );
+}
+
+template<class T, class U> void test_01_aliasing_()
+{
+    U u;
+    boost::local_shared_ptr<T> p1;
+
+    test_aliasing_( p1, &u );
+}
+
+template<class T, class U> void test_01_aliasing()
+{
+    test_01_aliasing_<T, U>();
+    test_01_aliasing_<T const, U>();
+    test_01_aliasing_<T volatile, U>();
+    test_01_aliasing_<T const volatile, U>();
+
+    test_01_aliasing_<T, U volatile>();
+    test_01_aliasing_<T const, U volatile>();
+    test_01_aliasing_<T volatile, U volatile>();
+    test_01_aliasing_<T const volatile, U volatile>();
+}
+
+template<class T, class U> void test_10_aliasing_()
+{
+    boost::local_shared_ptr<T> p1( new T() );
+    test_aliasing_( p1, static_cast<U*>(0) );
+}
+
+template<class T, class U> void test_10_aliasing()
+{
+    test_10_aliasing_<T, U>();
+    test_10_aliasing_<T const, U>();
+    test_10_aliasing_<T volatile, U>();
+    test_10_aliasing_<T const volatile, U>();
+
+    test_10_aliasing_<T, U const>();
+    test_10_aliasing_<T const, U const>();
+    test_10_aliasing_<T volatile, U const>();
+    test_10_aliasing_<T const volatile, U const>();
+
+    test_10_aliasing_<T, U volatile>();
+    test_10_aliasing_<T const, U volatile>();
+    test_10_aliasing_<T volatile, U volatile>();
+    test_10_aliasing_<T const volatile, U volatile>();
+
+    test_10_aliasing_<T, U const volatile>();
+    test_10_aliasing_<T const, U const volatile>();
+    test_10_aliasing_<T volatile, U const volatile>();
+    test_10_aliasing_<T const volatile, U const volatile>();
+}
+
+template<class T, class U> void test_11_aliasing_()
+{
+    U u;
+    boost::local_shared_ptr<T> p1( new T() );
+
+    test_aliasing_( p1, &u );
+}
+
+template<class T, class U> void test_11_aliasing()
+{
+    test_11_aliasing_<T, U>();
+    test_11_aliasing_<T const, U>();
+    test_11_aliasing_<T volatile, U>();
+    test_11_aliasing_<T const volatile, U>();
+
+    test_11_aliasing_<T, U volatile>();
+    test_11_aliasing_<T const, U volatile>();
+    test_11_aliasing_<T volatile, U volatile>();
+    test_11_aliasing_<T const volatile, U volatile>();
+}
+
+static void aliasing_constructor()
+{
+    test_01_aliasing<int, int>();
+    test_10_aliasing<int, int>();
+    test_11_aliasing<int, int>();
+
+    test_01_aliasing<void, int>();
+
+    test_10_aliasing<int, void>();
+
+    test_10_aliasing<int, incomplete>();
+
+    test_01_aliasing<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing<void, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing<X, void>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing<X, incomplete>();
+    BOOST_TEST( X::instances == 0 );
 }
 
 int main()
 {
     default_constructor();
+    nullptr_constructor();
     pointer_constructor();
     deleter_constructor();
     copy_constructor();
+    aliasing_constructor();
 
     return boost::report_errors();
 }

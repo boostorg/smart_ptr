@@ -110,18 +110,28 @@ public:
 
     template<class Y> local_shared_ptr( shared_ptr<Y> const & r,
         typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() )
-        : px( r.get() ), pn( new boost::detail::local_counted_impl( r ) )
+        : px( r.get() ), pn( 0 )
     {
         boost::detail::sp_assert_convertible< Y, T >();
+
+        if( r.use_count() != 0 )
+        {
+            pn = new boost::detail::local_counted_impl( r );
+        }
     }
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y> local_shared_ptr( shared_ptr<Y> && r,
         typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() )
-        : px( r.get() ), pn( new boost::detail::local_counted_impl( std::move(r) ) )
+        : px( r.get() ), pn( 0 )
     {
         boost::detail::sp_assert_convertible< Y, T >();
+
+        if( r.use_count() != 0 )
+        {
+            pn = new boost::detail::local_counted_impl( std::move(r) );
+        }
     }
 
 #endif

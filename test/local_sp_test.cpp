@@ -790,6 +790,119 @@ static void shared_ptr_move_constructor()
 
 #endif
 
+// unique_ptr_constructor
+
+#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+template<class T, class U> static void test_null_unique_ptr( std::unique_ptr<U> && p1 )
+{
+    boost::local_shared_ptr<T> p2( std::move( p1 ) );
+
+    BOOST_TEST( p1.get() == 0 );
+
+    BOOST_TEST( p2.get() == 0 );
+    BOOST_TEST( p2.local_use_count() == 0 );
+}
+
+template<class T> static void null_unique_ptr_test()
+{
+    test_null_unique_ptr<T>( std::unique_ptr<T>() );
+
+    test_null_unique_ptr<T const>( std::unique_ptr<T>() );
+    test_null_unique_ptr<T volatile>( std::unique_ptr<T>() );
+    test_null_unique_ptr<T const volatile>( std::unique_ptr<T>() );
+
+    test_null_unique_ptr<T const>( std::unique_ptr<T const>() );
+    test_null_unique_ptr<T volatile>( std::unique_ptr<T volatile>() );
+    test_null_unique_ptr<T const volatile>( std::unique_ptr<T const volatile>() );
+
+    test_null_unique_ptr<void>( std::unique_ptr<T>() );
+
+    test_null_unique_ptr<void const>( std::unique_ptr<T>() );
+    test_null_unique_ptr<void volatile>( std::unique_ptr<T>() );
+    test_null_unique_ptr<void const volatile>( std::unique_ptr<T>() );
+
+    test_null_unique_ptr<void const>( std::unique_ptr<T const>() );
+    test_null_unique_ptr<void volatile>( std::unique_ptr<T volatile>() );
+    test_null_unique_ptr<void const volatile>( std::unique_ptr<T const volatile>() );
+}
+
+template<class T, class U, class D> static void test_nonempty_unique_ptr( std::unique_ptr<U, D> && p1 )
+{
+    U * q = p1.get();
+
+    boost::local_shared_ptr<T> p2( std::move(p1) );
+
+    BOOST_TEST( p2.get() == q );
+    BOOST_TEST( p2.local_use_count() == 1 );
+
+    BOOST_TEST( p1.get() == 0 );
+}
+
+template<class T> static void new_unique_ptr_test()
+{
+    test_nonempty_unique_ptr<T>( std::unique_ptr<T>( new T() ) );
+
+    test_nonempty_unique_ptr<T const>( std::unique_ptr<T>( new T() ) );
+    test_nonempty_unique_ptr<T volatile>( std::unique_ptr<T>( new T() ) );
+    test_nonempty_unique_ptr<T const volatile>( std::unique_ptr<T>( new T() ) );
+
+    test_nonempty_unique_ptr<T const>( std::unique_ptr<T const>( new T() ) );
+    test_nonempty_unique_ptr<T volatile>( std::unique_ptr<T volatile>( new T() ) );
+    test_nonempty_unique_ptr<T const volatile>( std::unique_ptr<T const volatile>( new T() ) );
+
+    test_nonempty_unique_ptr<void>( std::unique_ptr<T>( new T() ) );
+
+    test_nonempty_unique_ptr<void const>( std::unique_ptr<T>( new T() ) );
+    test_nonempty_unique_ptr<void volatile>( std::unique_ptr<T>( new T() ) );
+    test_nonempty_unique_ptr<void const volatile>( std::unique_ptr<T>( new T() ) );
+
+    test_nonempty_unique_ptr<void const>( std::unique_ptr<T const>( new T() ) );
+    test_nonempty_unique_ptr<void volatile>( std::unique_ptr<T volatile>( new T() ) );
+    test_nonempty_unique_ptr<void const volatile>( std::unique_ptr<T const volatile>( new T() ) );
+}
+
+template<class T> static void test_deleter_unique_ptr()
+{
+    m = 0;
+
+    test_nonempty_unique_ptr<T>( std::unique_ptr<int, void(*)(int*)>( &m, deleter2 ) );
+
+    BOOST_TEST( m == 1 );
+}
+
+template<class T> static void deleter_unique_ptr_test()
+{
+    test_deleter_unique_ptr<T>();
+    test_deleter_unique_ptr<T const>();
+    test_deleter_unique_ptr<T volatile>();
+    test_deleter_unique_ptr<T const volatile>();
+}
+
+static void unique_ptr_constructor()
+{
+    null_unique_ptr_test<int>();
+    null_unique_ptr_test<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    new_unique_ptr_test<int>();
+    new_unique_ptr_test<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    deleter_unique_ptr_test<int>();
+    deleter_unique_ptr_test<void>();
+}
+
+#else
+
+static void unique_ptr_constructor()
+{
+}
+
+#endif
+
 // copy assignment
 
 template<class T> static void empty_copy_assign_test()
@@ -1139,7 +1252,7 @@ int main()
     nullptr_allocator_constructor();
     shared_ptr_copy_constructor();
     shared_ptr_move_constructor();
-    // unique_ptr_constructor();
+    unique_ptr_constructor();
 
     copy_assignment();
     move_assignment();

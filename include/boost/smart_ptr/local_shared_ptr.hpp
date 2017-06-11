@@ -141,10 +141,16 @@ public:
 #if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template< class Y, class D >
-    local_shared_ptr( std::unique_ptr< Y, D > && r )
-        : px( r.get() ), pn( new boost::detail::local_counted_impl( shared_ptr<T>( std::move(r) ) ) )
+    local_shared_ptr( std::unique_ptr< Y, D > && r,
+        typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() )
+        : px( r.get() ), pn( 0 )
     {
         boost::detail::sp_assert_convertible< Y, T >();
+
+        if( px )
+        {
+            pn = new boost::detail::local_counted_impl( shared_ptr<T>( std::move(r) ) );
+        }
     }
 
 #endif

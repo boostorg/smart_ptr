@@ -71,6 +71,12 @@ Greg Colvin, Beman Dawes, Rainer Deyke, Peter Dimov, John Maddock, Vladimir Prus
 Peter Dimov reworked all four classes, adding features, fixing bugs, splitting them into four separate headers, and adding
 `weak_ptr`.
 
+## March 2003
+
+Peter Dimov, Beman Dawes and Greg Colvin http://open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1450.html[proposed] `shared_ptr`
+and `weak_ptr` for inclusion in the Standard Library via the first Library Technical Report (known as TR1). The proposal was
+accepted and eventually went on to become a part of the {cpp} standard in its 2011 iteration.
+
 ## November 2012
 
 Glen Fernandes provided implementations of `make_shared` and `allocate_shared` for arrays. They achieve a single allocation

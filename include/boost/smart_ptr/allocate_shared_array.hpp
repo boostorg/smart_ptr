@@ -9,6 +9,7 @@ Distributed under the Boost Software License, Version 1.0.
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_copy.hpp>
@@ -111,7 +112,7 @@ struct sp_array_count<T[]> { };
 
 template<class D, class T>
 inline D*
-sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_NOEXCEPT_OR_NOTHROW
+sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_SP_NOEXCEPT
 {
     return static_cast<D*>(value._internal_get_untyped_deleter());
 }
@@ -153,7 +154,7 @@ struct sp_enable<true, T> {
 
 template<class T>
 inline typename sp_enable<boost::has_trivial_destructor<T>::value>::type
-sp_array_destroy(T*, std::size_t) BOOST_NOEXCEPT { }
+sp_array_destroy(T*, std::size_t) BOOST_SP_NOEXCEPT { }
 
 template<class T>
 inline typename sp_enable<!boost::has_trivial_destructor<T>::value>::type
@@ -308,7 +309,7 @@ sp_array_construct(A& allocator, T* storage, std::size_t size,
 
 template<class T>
 inline typename sp_enable<boost::has_trivial_constructor<T>::value>::type
-sp_array_default(T*, std::size_t) BOOST_NOEXCEPT { }
+sp_array_default(T*, std::size_t) BOOST_SP_NOEXCEPT { }
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 template<class T>
@@ -357,7 +358,7 @@ struct sp_less_align {
 template<class T, std::size_t N>
 BOOST_CONSTEXPR
 inline typename sp_enable<sp_less_align<T, N>::value, std::size_t>::type
-sp_align(std::size_t size) BOOST_NOEXCEPT
+sp_align(std::size_t size) BOOST_SP_NOEXCEPT
 {
     return (sizeof(T) * size + N - 1) & ~(N - 1);
 }
@@ -365,14 +366,14 @@ sp_align(std::size_t size) BOOST_NOEXCEPT
 template<class T, std::size_t N>
 BOOST_CONSTEXPR
 inline typename sp_enable<!sp_less_align<T, N>::value, std::size_t>::type
-sp_align(std::size_t size) BOOST_NOEXCEPT
+sp_align(std::size_t size) BOOST_SP_NOEXCEPT
 {
     return sizeof(T) * size;
 }
 
 template<class T>
 BOOST_CONSTEXPR inline std::size_t
-sp_types(std::size_t size) BOOST_NOEXCEPT
+sp_types(std::size_t size) BOOST_SP_NOEXCEPT
 {
     return (size + sizeof(T) - 1) / sizeof(T);
 }
@@ -381,16 +382,16 @@ template<class T, std::size_t N>
 class sp_size_array_deleter {
 public:
     template<class U>
-    static void operator_fn(U) BOOST_NOEXCEPT { }
+    static void operator_fn(U) BOOST_SP_NOEXCEPT { }
 
-    sp_size_array_deleter() BOOST_NOEXCEPT
+    sp_size_array_deleter() BOOST_SP_NOEXCEPT
         : enabled_(false) { }
 
     template<class A>
-    sp_size_array_deleter(const A&) BOOST_NOEXCEPT
+    sp_size_array_deleter(const A&) BOOST_SP_NOEXCEPT
         : enabled_(false) { }
 
-    sp_size_array_deleter(const sp_size_array_deleter&) BOOST_NOEXCEPT
+    sp_size_array_deleter(const sp_size_array_deleter&) BOOST_SP_NOEXCEPT
         : enabled_(false) { }
 
     ~sp_size_array_deleter() {
@@ -436,15 +437,15 @@ template<class T, std::size_t N, class A>
 class sp_size_array_destroyer {
 public:
     template<class U>
-    static void operator_fn(U) BOOST_NOEXCEPT { }
+    static void operator_fn(U) BOOST_SP_NOEXCEPT { }
 
     template<class U>
-    sp_size_array_destroyer(const U& allocator) BOOST_NOEXCEPT
+    sp_size_array_destroyer(const U& allocator) BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           enabled_(false) { }
 
     sp_size_array_destroyer(const sp_size_array_destroyer& other)
-        BOOST_NOEXCEPT
+        BOOST_SP_NOEXCEPT
         : allocator_(other.allocator_),
           enabled_(false) { }
 
@@ -475,7 +476,7 @@ public:
         return &storage_;
     }
 
-    const A& allocator() const BOOST_NOEXCEPT {
+    const A& allocator() const BOOST_SP_NOEXCEPT {
         return allocator_;
     }
 
@@ -491,23 +492,23 @@ template<class T>
 class sp_array_deleter {
 public:
     template<class U>
-    static void operator_fn(U) BOOST_NOEXCEPT { }
+    static void operator_fn(U) BOOST_SP_NOEXCEPT { }
 
-    sp_array_deleter(std::size_t size) BOOST_NOEXCEPT
+    sp_array_deleter(std::size_t size) BOOST_SP_NOEXCEPT
         : address_(0),
           size_(size) { }
 
     template<class A>
-    sp_array_deleter(const A& allocator) BOOST_NOEXCEPT
+    sp_array_deleter(const A& allocator) BOOST_SP_NOEXCEPT
         : address_(0),
           size_(allocator.size()) { }
 
     template<class A>
-    sp_array_deleter(const A&, std::size_t size) BOOST_NOEXCEPT
+    sp_array_deleter(const A&, std::size_t size) BOOST_SP_NOEXCEPT
         : address_(0),
           size_(size) { }
 
-    sp_array_deleter(const sp_array_deleter& other) BOOST_NOEXCEPT
+    sp_array_deleter(const sp_array_deleter& other) BOOST_SP_NOEXCEPT
         : address_(0),
           size_(other.size_) { }
 
@@ -540,7 +541,7 @@ public:
         address_ = address;
     }
 
-    std::size_t size() const BOOST_NOEXCEPT {
+    std::size_t size() const BOOST_SP_NOEXCEPT {
         return size_;
     }
 
@@ -554,21 +555,21 @@ template<class T, class A>
 class sp_array_destroyer {
 public:
     template<class U>
-    static void operator_fn(U) BOOST_NOEXCEPT { }
+    static void operator_fn(U) BOOST_SP_NOEXCEPT { }
 
     template<class U>
-    sp_array_destroyer(const U& allocator, std::size_t size) BOOST_NOEXCEPT
+    sp_array_destroyer(const U& allocator, std::size_t size) BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           size_(size),
           address_(0) { }
 
     template<class U>
-    sp_array_destroyer(const U& allocator) BOOST_NOEXCEPT
+    sp_array_destroyer(const U& allocator) BOOST_SP_NOEXCEPT
         : allocator_(allocator.allocator()),
           size_(allocator.size()),
           address_(0) { }
 
-    sp_array_destroyer(const sp_array_destroyer& other) BOOST_NOEXCEPT
+    sp_array_destroyer(const sp_array_destroyer& other) BOOST_SP_NOEXCEPT
         : allocator_(other.allocator_),
           size_(other.size_),
           address_(0) { }
@@ -597,11 +598,11 @@ public:
         address_ = address;
     }
 
-    const A& allocator() const BOOST_NOEXCEPT {
+    const A& allocator() const BOOST_SP_NOEXCEPT {
         return allocator_;
     }
 
-    std::size_t size() const BOOST_NOEXCEPT {
+    std::size_t size() const BOOST_SP_NOEXCEPT {
         return size_;
     }
 
@@ -637,17 +638,17 @@ public:
     };
 
     sp_array_allocator(const A& allocator, std::size_t size, void** result)
-        BOOST_NOEXCEPT
+        BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           size_(size),
           result_(result) { }
 
-    sp_array_allocator(const A& allocator, std::size_t size) BOOST_NOEXCEPT
+    sp_array_allocator(const A& allocator, std::size_t size) BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           size_(size) { }
 
     template<class U>
-    sp_array_allocator(const sp_array_allocator<T, U>& other) BOOST_NOEXCEPT
+    sp_array_allocator(const sp_array_allocator<T, U>& other) BOOST_SP_NOEXCEPT
         : allocator_(other.allocator_),
           size_(other.size_),
           result_(other.result_) { }
@@ -668,11 +669,11 @@ public:
         allocator.deallocate(reinterpret_cast<type*>(value), size);
     }
 
-    const A& allocator() const BOOST_NOEXCEPT {
+    const A& allocator() const BOOST_SP_NOEXCEPT {
         return allocator_;
     }
 
-    std::size_t size() const BOOST_NOEXCEPT {
+    std::size_t size() const BOOST_SP_NOEXCEPT {
         return size_;
     }
 
@@ -685,7 +686,7 @@ private:
 template<class T, class U, class V>
 inline bool
 operator==(const sp_array_allocator<T, U>& first,
-    const sp_array_allocator<T, V>& second) BOOST_NOEXCEPT
+    const sp_array_allocator<T, V>& second) BOOST_SP_NOEXCEPT
 {
     return first.allocator() == second.allocator() &&
         first.size() == second.size();
@@ -694,7 +695,7 @@ operator==(const sp_array_allocator<T, U>& first,
 template<class T, class U, class V>
 inline bool
 operator!=(const sp_array_allocator<T, U>& first,
-    const sp_array_allocator<T, V>& second) BOOST_NOEXCEPT
+    const sp_array_allocator<T, V>& second) BOOST_SP_NOEXCEPT
 {
     return !(first == second);
 }

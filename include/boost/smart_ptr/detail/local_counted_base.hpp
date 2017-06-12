@@ -44,7 +44,7 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR local_counted_base() BOOST_NOEXCEPT: local_use_count_( initial_ )
+    BOOST_CONSTEXPR local_counted_base() BOOST_SP_NOEXCEPT: local_use_count_( initial_ )
     {
     }
 
@@ -75,7 +75,7 @@ public:
         }
     }
 
-    long local_use_count() const BOOST_NOEXCEPT
+    long local_use_count() const BOOST_SP_NOEXCEPT
     {
         return local_use_count_;
     }

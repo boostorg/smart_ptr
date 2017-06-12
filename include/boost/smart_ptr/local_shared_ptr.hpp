@@ -50,7 +50,7 @@ public:
 
     // destructor
 
-    ~local_shared_ptr()
+    ~local_shared_ptr() BOOST_SP_NOEXCEPT
     {
         if( pn )
         {
@@ -217,7 +217,7 @@ public:
     // aliasing
 
     template<class Y>
-    local_shared_ptr( local_shared_ptr<Y> const & r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
     {
         if( pn )
         {
@@ -228,7 +228,7 @@ public:
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y>
-    local_shared_ptr( local_shared_ptr<Y> && r, element_type * p ) BOOST_NOEXCEPT : px( p ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
     {
         r.px = 0;
         r.pn = 0;
@@ -313,14 +313,14 @@ public:
         local_shared_ptr( p, d, a ).swap( *this );
     }
 
-    template<class Y> void reset( local_shared_ptr<Y> const & r, element_type * p )
+    template<class Y> void reset( local_shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr( r, p ).swap( *this );
     }
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    template<class Y> void reset( local_shared_ptr<Y> && r, element_type * p )
+    template<class Y> void reset( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr( std::move( r ), p ).swap( *this );
     }
@@ -339,8 +339,7 @@ public:
         return px;
     }
 
-    // never throws (but has a BOOST_ASSERT in it, so not marked with BOOST_NOEXCEPT)
-    typename boost::detail::sp_array_access< T >::type operator[] ( std::ptrdiff_t i ) const
+    typename boost::detail::sp_array_access< T >::type operator[] ( std::ptrdiff_t i ) const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
         BOOST_ASSERT( px != 0 );
         BOOST_ASSERT( i >= 0 && ( i < boost::detail::sp_extent< T >::value || boost::detail::sp_extent< T >::value == 0 ) );
@@ -348,7 +347,7 @@ public:
         return static_cast< typename boost::detail::sp_array_access< T >::type >( px[ i ] );
     }
 
-    element_type * get() const BOOST_NOEXCEPT
+    element_type * get() const BOOST_SP_NOEXCEPT
     {
         return px;
     }
@@ -523,7 +522,7 @@ template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< ( std:
 
 template< class T > struct hash;
 
-template< class T > std::size_t hash_value( local_shared_ptr<T> const & p ) BOOST_NOEXCEPT
+template< class T > std::size_t hash_value( local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return boost::hash< typename local_shared_ptr<T>::element_type* >()( p.get() );
 }

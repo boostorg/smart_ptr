@@ -59,12 +59,12 @@ public:
         return p;
     }
 
-    weak_ptr<T> weak_from_this() BOOST_NOEXCEPT
+    weak_ptr<T> weak_from_this() BOOST_SP_NOEXCEPT
     {
         return weak_this_;
     }
 
-    weak_ptr<T const> weak_from_this() const BOOST_NOEXCEPT
+    weak_ptr<T const> weak_from_this() const BOOST_SP_NOEXCEPT
     {
         return weak_this_;
     }
@@ -72,7 +72,7 @@ public:
 public: // actually private, but avoids compiler template friendship issues
 
     // Note: invoked automatically by shared_ptr; do not call
-    template<class X, class Y> void _internal_accept_owner( shared_ptr<X> const * ppx, Y * py ) const
+    template<class X, class Y> void _internal_accept_owner( shared_ptr<X> const * ppx, Y * py ) const BOOST_SP_NOEXCEPT
     {
         if( weak_this_.expired() )
         {

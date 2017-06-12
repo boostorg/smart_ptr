@@ -9,9 +9,10 @@ See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt
 ////
 
-[appendix,#history]
+[[history]]
+[appendix]
 # History and Acknowledgments
-:idprefix:
+:idprefix: history_
 
 ## Summer 1994
 

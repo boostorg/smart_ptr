@@ -8,8 +8,8 @@ http://www.boost.org/LICENSE_1_0.txt
 ////
 
 [#weak_ptr]
-# weak_ptr
+# weak_ptr: Non-owning Observer
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: weak_ptr_
 

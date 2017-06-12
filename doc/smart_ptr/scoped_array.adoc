@@ -8,8 +8,8 @@ http://www.boost.org/LICENSE_1_0.txt
 ////
 
 [#scoped_array]
-# scoped_array
+# scoped_array: Scoped Array Ownership
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: scoped_array_
 

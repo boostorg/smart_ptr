@@ -8,8 +8,8 @@ http://www.boost.org/LICENSE_1_0.txt
 ////
 
 [#shared_ptr]
-# shared_ptr
+# shared_ptr: Shared Ownership
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: shared_ptr_
 

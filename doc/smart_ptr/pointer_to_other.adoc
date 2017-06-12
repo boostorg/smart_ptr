@@ -11,5 +11,5 @@ http://www.boost.org/LICENSE_1_0.txt
 # pointer_to_other
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: pointer_to_other_
 

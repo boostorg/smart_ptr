@@ -7,9 +7,10 @@ See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt
 ////
 
-[appendix,#techniques]
+[[techniques]]
+[appendix]
 # Smart Pointer Programming Techniques
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: techniques_
 

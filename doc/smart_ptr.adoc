@@ -7,10 +7,10 @@ See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt
 ////
 
-# Boost.SmartPtr: Smart Pointer Library
+# Boost.SmartPtr: The Smart Pointer Library
 Greg Colvin, Beman Dawes, Peter Dimov, Glen Fernandes
 :toc: left
-:toclevels: 3
+:toclevels: 2
 :idprefix:
 :listing-caption: Code Example
 :table-caption: Illustration
@@ -53,6 +53,7 @@ include::smart_ptr/shared_array.adoc[]
 
 :leveloffset: -1
 
+[[copyright]]
 [appendix]
 ## Copyright and License
 

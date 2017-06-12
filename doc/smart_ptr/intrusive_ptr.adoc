@@ -8,8 +8,8 @@ http://www.boost.org/LICENSE_1_0.txt
 ////
 
 [#intrusive_ptr]
-# intrusive_ptr
+# intrusive_ptr: Managing Objects with Embedded Counts
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: intrusive_ptr_
 

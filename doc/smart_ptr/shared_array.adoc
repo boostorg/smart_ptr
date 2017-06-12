@@ -7,9 +7,10 @@ See accompanying file LICENSE_1_0.txt or copy at
 http://www.boost.org/LICENSE_1_0.txt
 ////
 
-[appendix,#shared_array]
+[[shared_array]]
+[appendix]
 # shared_array (deprecated)
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: shared_array_
 

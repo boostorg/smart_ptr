@@ -11,5 +11,5 @@ http://www.boost.org/LICENSE_1_0.txt
 # enable_shared_from_this
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: enable_shared_from_this_
 

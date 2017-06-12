@@ -11,5 +11,5 @@ http://www.boost.org/LICENSE_1_0.txt
 # intrusive_ref_counter
 :toc:
 :toc-title:
-:idprefix:
+:idprefix: intrusive_ref_counter_
 

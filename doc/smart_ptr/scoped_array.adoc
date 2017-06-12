@@ -43,6 +43,8 @@ The class template is parameterized on `T`, the type of the object pointed to.
 
 ## Synopsis
 
+`scoped_array` is defined in `<boost/smart_ptr/scoped_array.hpp>`.
+
 ```
 namespace boost
 {

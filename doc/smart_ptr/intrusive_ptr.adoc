@@ -13,7 +13,7 @@ http://www.boost.org/LICENSE_1_0.txt
 :toc-title:
 :idprefix: intrusive_ptr_
 
-## Introduction
+## Description
 
 The `intrusive_ptr` class template stores a pointer to an object with an embedded reference count.
 Every new `intrusive_ptr` instance increments the reference count by using an unqualified call to the
@@ -37,6 +37,8 @@ The main reasons to use `intrusive_ptr` are:
 As a general rule, if it isn't obvious whether `intrusive_ptr` better fits your needs than `shared_ptr`, try a `shared_ptr`-based design first.
 
 ## Synopsis
+
+`intrusive_ptr` is defined in `<boost/smart_ptr/intrusive_ptr.hpp>`.
 
 ```
 namespace boost

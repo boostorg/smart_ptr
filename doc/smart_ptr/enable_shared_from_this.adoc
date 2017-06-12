@@ -125,16 +125,14 @@ NOTE: These members throw `bad_weak_ptr` when `*this` is not owned by a `shared_
 `weak_this_` is initialized by `shared_ptr` to a copy of itself when it's constructed by a pointer to `*this`.
 For example, in the following code:
 ```
-class Y: public boost::enable_shared_from_this<Y>
-{
-};
+class Y: public boost::enable_shared_from_this<Y> {};
 
 int main()
 {
     boost::shared_ptr<Y> p(new Y);
 }
 ```
-the construction of `p` will automatically initialize `p->weak_this_` to `p`.
+the construction of `p` will automatically initialize `p\->weak_this_` to `p`.
 ====
 
 ```

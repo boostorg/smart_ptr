@@ -48,7 +48,7 @@ public:
     {
     }
 
-    virtual ~local_counted_base() BOOST_NOEXCEPT
+    virtual ~local_counted_base() /*BOOST_NOEXCEPT*/
     {
     }
 

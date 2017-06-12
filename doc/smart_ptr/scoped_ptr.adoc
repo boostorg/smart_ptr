@@ -75,6 +75,12 @@ public:
 
 template<class T> void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) noexcept;
 
+template<class T> bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+template<class T> bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+
+template<class T> bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+template<class T> bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+
 } // namespace boost
 ```
 
@@ -131,6 +137,8 @@ Returns the stored pointer. `T` need not be a complete type.
 
 Returns `get() != 0`.
 
+NOTE: On C++03 compilers, the return value is of an unspecified type.
+
 ### swap
 
     void swap(scoped_ptr & b) noexcept;
@@ -144,6 +152,20 @@ Exchanges the contents of the two smart pointers. `T` need not be a complete typ
     template<class T> void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) noexcept;
 
 Equivalent to `a.swap(b)`.
+
+### comparisons
+
+    template<class T> bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+
+    template<class T> bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+
+Returns `p.get() == nullptr`.
+
+    template<class T> bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+
+    template<class T> bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+
+Returns `p.get() != nullptr`.
 
 ## Example
 

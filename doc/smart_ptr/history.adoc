@@ -77,18 +77,30 @@ Peter Dimov, Beman Dawes and Greg Colvin http://open-std.org/jtc1/sc22/wg21/docs
 and `weak_ptr` for inclusion in the Standard Library via the first Library Technical Report (known as TR1). The proposal was
 accepted and eventually went on to become a part of the {cpp} standard in its 2011 iteration.
 
+## July 2007
+
+Peter Dimov and Beman Dawes http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2351.htm[proposed] a number of enhancements
+to `shared_ptr` as it was entering the working paper that eventually became the {cpp}11 standard.
+
 ## November 2012
 
 Glen Fernandes provided implementations of `make_shared` and `allocate_shared` for arrays. They achieve a single allocation
 for an array that can be initialized with constructor arguments or initializer lists as well as overloads for default initialization
 and no value initialization.
 
+Peter Dimov aided this development by extending `shared_ptr` to support arrays via the syntax `shared_ptr<T[]>` and `shared_ptr<T[N]>`.
+
+## April 2013
+
+Peter Dimov http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3640.html[proposed] the extension of `shared_ptr` to support
+arrays for inclusion into the standard, and it was accepted.
+
 ## February 2014
 
-Glen Fernandes updated overloads of `make_shared` and `allocate_shared` to conform to the specification in {cpp} standard paper
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3870.html[N3870],
-and implemented `make_unique` for arrays and objects. Peter Dimov and Glen Fernandes updated the scalar and array implementations,
-respectively, to resolve {cpp} standard library defect 2070.
+Glen Fernandes updated `make_shared` and `allocate_shared` to conform to the specification in {cpp} standard paper
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3870.html[N3870], and implemented `make_unique` for arrays and objects.
+
+Peter Dimov and Glen Fernandes updated the scalar and array implementations, respectively, to resolve {cpp} standard library defect 2070.
 
 ## February 2017
 

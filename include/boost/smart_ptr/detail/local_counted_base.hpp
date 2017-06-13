@@ -57,6 +57,8 @@ public:
 
     virtual void destroy() BOOST_SP_NOEXCEPT = 0;
 
+    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT = 0;
+
     void add_ref() BOOST_SP_NOEXCEPT
     {
 #if defined( __has_builtin )
@@ -114,6 +116,11 @@ public:
     {
         delete this;
     }
+
+    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    {
+        return const_pointer_cast<void>( pn_ );
+    }
 };
 
 class local_counted_impl_em: public local_counted_base
@@ -125,6 +132,11 @@ public:
     virtual void destroy() BOOST_SP_NOEXCEPT
     {
         pn_.reset();
+    }
+
+    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    {
+        return const_pointer_cast<void>( pn_ );
     }
 };
 

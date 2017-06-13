@@ -437,6 +437,36 @@ public:
         return pn? pn->local_use_count(): 0;
     }
 
+    // conversions to shared_ptr, weak_ptr
+
+    template<class Y> operator shared_ptr<Y>() const BOOST_SP_NOEXCEPT
+    {
+        boost::detail::sp_assert_convertible<T, Y>();
+
+        if( pn )
+        {
+            return static_pointer_cast<Y>( pn->get_shared_ptr() );
+        }
+        else
+        {
+            return shared_ptr<Y>();
+        }
+    }
+
+    template<class Y> operator weak_ptr<Y>() const BOOST_SP_NOEXCEPT
+    {
+        boost::detail::sp_assert_convertible<T, Y>();
+
+        if( pn )
+        {
+            return static_pointer_cast<Y>( pn->get_shared_ptr() );
+        }
+        else
+        {
+            return weak_ptr<Y>();
+        }
+    }
+
     // swap
 
     void swap( local_shared_ptr & r ) BOOST_SP_NOEXCEPT
@@ -486,6 +516,31 @@ template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, local_sha
 }
 
 #endif
+
+template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+{
+    return a.get() == b.get();
+}
+
+template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+{
+    return a.get() != b.get();
+}
+
+template<class T, class U> inline bool operator==( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+{
+    return a.get() == b.get();
+}
+
+template<class T, class U> inline bool operator!=( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+{
+    return a.get() != b.get();
+}
+
+template<class T, class U> inline bool operator<(local_shared_ptr<T> const & a, local_shared_ptr<U> const & b) BOOST_SP_NOEXCEPT
+{
+    return a.owner_before( b );
+}
 
 template<class T> inline void swap( local_shared_ptr<T> & a, local_shared_ptr<T> & b ) BOOST_SP_NOEXCEPT
 {

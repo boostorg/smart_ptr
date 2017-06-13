@@ -577,7 +577,7 @@ element_type * get() const noexcept;
 [none]
 * {blank}
 +
-Returns:: the stored pointer.
+Returns:: The stored pointer.
 
 ### unique
 ```
@@ -595,7 +595,7 @@ long use_count() const noexcept;
 [none]
 * {blank}
 +
-Returns:: the number of `shared_ptr` objects, `*this` included, that share ownership with `*this`, or 0 when `*this` is empty.
+Returns:: The number of `shared_ptr` objects, `*this` included, that share ownership with `*this`, or 0 when `*this` is empty.
 
 ### conversions
 ```
@@ -682,7 +682,7 @@ template<class T, class U>
 [none]
 * {blank}
 +
-Returns:: an unspecified value such that
+Returns:: An unspecified value such that
   - `operator<` is a strict weak ordering as described in section [lib.alg.sorting] of the {cpp} standard;
   - under the equivalence relation defined by `operator<`, `!(a < b) && !(b < a)`, two `shared_ptr` instances
     are equivalent if and only if they share ownership or are both empty.

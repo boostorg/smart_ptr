@@ -412,11 +412,11 @@ template<class Y, class D> shared_ptr(std::unique_ptr<Y, D> && r);
 +
 Requires:: `Y*` should be convertible to `T*`.
 
-Effects:: Equivalent to `shared_ptr(r.release(), r.get_deleter())` when `D` is not a reference type. Otherwise, equivalent to
-  `shared_ptr(r.release(), del)`, where `del` is a deleter that stores the reference `rd` returned from `r.get_deleter()` and
-  `del(p)` calls `rd(p)`.
-
-Postconditions:: `use_count() == 1`.
+Effects::
+- When `r.get() == 0`, equivalent to `shared_ptr()`;
+- When `D` is not a reference type, equivalent to `shared_ptr(r.release(), r.get_deleter())`;
+- Otherwise, equivalent to `shared_ptr(r.release(), del)`, where `del` is a deleter that stores the reference `rd` returned
+  from `r.get_deleter()` and `del(p)` calls `rd(p)`.
 
 Throws:: `std::bad_alloc`, or an implementation-defined exception when a resource other than memory could not be obtained.
 

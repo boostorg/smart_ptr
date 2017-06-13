@@ -502,9 +502,12 @@ public:
         boost::detail::sp_assert_convertible< Y, T >();
 
         typename std::unique_ptr< Y, D >::pointer tmp = r.get();
-        pn = boost::detail::shared_count( r );
 
-        boost::detail::sp_deleter_construct( this, tmp );
+        if( tmp != 0 )
+        {
+            pn = boost::detail::shared_count( r );
+            boost::detail::sp_deleter_construct( this, tmp );
+        }
     }
 
 #endif
@@ -515,9 +518,12 @@ public:
         boost::detail::sp_assert_convertible< Y, T >();
 
         typename boost::movelib::unique_ptr< Y, D >::pointer tmp = r.get();
-        pn = boost::detail::shared_count( r );
 
-        boost::detail::sp_deleter_construct( this, tmp );
+        if( tmp != 0 )
+        {
+            pn = boost::detail::shared_count( r );
+            boost::detail::sp_deleter_construct( this, tmp );
+        }
     }
 
     // assignment
@@ -592,10 +598,13 @@ public:
 
         shared_ptr tmp;
 
-        tmp.px = p;
-        tmp.pn = boost::detail::shared_count( r );
+        if( p != 0 )
+        {
+            tmp.px = p;
+            tmp.pn = boost::detail::shared_count( r );
 
-        boost::detail::sp_deleter_construct( &tmp, p );
+            boost::detail::sp_deleter_construct( &tmp, p );
+        }
 
         tmp.swap( *this );
 

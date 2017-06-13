@@ -32,7 +32,6 @@ class local_counted_base
 {
 private:
 
-    local_counted_base( local_counted_base const & );
     local_counted_base & operator= ( local_counted_base const & );
 
 private:
@@ -48,11 +47,17 @@ public:
     {
     }
 
-    virtual ~local_counted_base() /*BOOST_NOEXCEPT*/
+    BOOST_CONSTEXPR local_counted_base( local_counted_base const & ) BOOST_SP_NOEXCEPT: local_use_count_( initial_ )
     {
     }
 
-    void add_ref()
+    virtual ~local_counted_base() /*BOOST_SP_NOEXCEPT*/
+    {
+    }
+
+    virtual void destroy() BOOST_SP_NOEXCEPT = 0;
+
+    void add_ref() BOOST_SP_NOEXCEPT
     {
 #if defined( __has_builtin )
 # if __has_builtin( __builtin_assume )
@@ -65,13 +70,13 @@ public:
         local_use_count_ = static_cast<count_type>( local_use_count_ + 1 );
     }
 
-    void release()
+    void release() BOOST_SP_NOEXCEPT
     {
         local_use_count_ = static_cast<count_type>( local_use_count_ - 1 );
 
         if( local_use_count_ == 0 )
         {
-            delete this;
+            destroy();
         }
     }
 
@@ -83,6 +88,10 @@ public:
 
 class local_counted_impl: public local_counted_base
 {
+private:
+
+    local_counted_impl( local_counted_impl const & );
+
 private:
 
     boost::shared_ptr<void const volatile> pn_;
@@ -100,6 +109,23 @@ public:
     }
 
 #endif
+
+    virtual void destroy() BOOST_SP_NOEXCEPT
+    {
+        delete this;
+    }
+};
+
+class local_counted_impl_em: public local_counted_base
+{
+public:
+
+    boost::shared_ptr<void const volatile> pn_;
+
+    virtual void destroy() BOOST_SP_NOEXCEPT
+    {
+        pn_.reset();
+    }
 };
 
 } // namespace detail

@@ -17,8 +17,85 @@
 namespace boost
 {
 
+template<class T> class local_shared_ptr;
+
 namespace detail
 {
+
+template<class D> class local_sp_deleter: public local_counted_impl_em
+{
+private:
+
+    D d_;
+
+public:
+
+    local_sp_deleter(): d_()
+    {
+    }
+
+    explicit local_sp_deleter( D const& d ) BOOST_SP_NOEXCEPT: d_( d )
+    {
+    }
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    explicit local_sp_deleter( D&& d ) BOOST_SP_NOEXCEPT: d_( std::move(d) )
+    {
+    }
+
+#endif
+
+    template<class Y> void operator()( Y* p ) const BOOST_SP_NOEXCEPT
+    {
+        d_( p );
+    }
+};
+
+template< class E, class Y > inline void lsp_pointer_construct( boost::local_shared_ptr< E > * ppx, Y * p, boost::detail::local_counted_base * & pn )
+{
+    boost::detail::sp_assert_convertible< Y, E >();
+
+    typedef boost::detail::local_sp_deleter< boost::checked_deleter<Y> > D;
+
+    boost::shared_ptr<E> p2( p, D() );
+
+    D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
+
+    pd->pn_ = p2;
+
+    pn = pd;
+}
+
+template< class E, class Y > inline void lsp_pointer_construct( boost::local_shared_ptr< E[] > * ppx, Y * p, boost::detail::local_counted_base * & pn )
+{
+    boost::detail::sp_assert_convertible< Y[], E[] >();
+
+    typedef boost::detail::local_sp_deleter< boost::checked_array_deleter<E> > D;
+
+    boost::shared_ptr<E[]> p2( p, D() );
+
+    D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
+
+    pd->pn_ = p2;
+
+    pn = pd;
+}
+
+template< class E, std::size_t N, class Y > inline void lsp_pointer_construct( boost::local_shared_ptr< E[N] > * ppx, Y * p, boost::detail::local_counted_base * & pn )
+{
+    boost::detail::sp_assert_convertible< Y[N], E[N] >();
+
+    typedef boost::detail::local_sp_deleter< boost::checked_array_deleter<E> > D;
+
+    boost::shared_ptr<E[N]> p2( p, D() );
+
+    D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
+
+    pd->pn_ = p2;
+
+    pn = pd;
+}
 
 } // namespace detail
 
@@ -73,9 +150,9 @@ public:
 #endif
 
     template<class Y>
-    explicit local_shared_ptr( Y * p ): px( p ),
-        pn( new boost::detail::local_counted_impl( shared_ptr<T>( p ) ) )
+    explicit local_shared_ptr( Y * p ): px( p ), pn( 0 )
     {
+        boost::detail::lsp_pointer_construct( this, p, pn );
     }
 
     template<class Y, class D> local_shared_ptr( Y * p, D d ): px( p ),

@@ -40,23 +40,23 @@ feature with `std::make_unique`.
 [subs=+quotes]
 ```
 namespace boost {
-  // only if T is not an array type
+  `// only if T is not an array type`
   template<class T, class... Args>
     std::unique_ptr<T> make_unique(Args&&... args);
 
-  // only if T is not an array type
+  `// only if T is not an array type`
   template<class T>
     std::unique_ptr<T> make_unique(_see below_ v);
 
-  // only if T is an array type of the form U[]
+  `// only if T is an array type of the form U[]`
   template<class T>
     std::unique_ptr<T> make_unique(std::size_t n);
 
-  // only if T is not an array type
+  `// only if T is not an array type`
   template<class T>
     std::unique_ptr<T> make_unique_noinit();
 
-  // only if T is an array type of the form U[]
+  `// only if T is an array type of the form U[]`
   template<class T>
     std::unique_ptr<T> make_unique_noinit(std::size_t n);
 }

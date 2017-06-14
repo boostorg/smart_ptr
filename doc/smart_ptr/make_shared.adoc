@@ -271,10 +271,7 @@ Remarks::: These overloads shall only participate in overload resolution when
 `T` is not an array type, or an array type of the `__U__[__N__]`.
 Returns::: A `shared_ptr` to a default-initialized object of type `T`, or a
 sequence of `_N_` default-initialized objects of type `_U_`, respectively.
-Examples:::
-* `struct X { double data[1024]; }; +
-   auto p = make_shared_noinit<X>();`
-* `auto p = make_shared_noinit<double[1024]>();`
+Example::: `auto p = make_shared_noinit<double[1024]>();`
 
 ```
 template<class T>

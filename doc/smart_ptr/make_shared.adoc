@@ -55,36 +55,43 @@ types.
 [subs=+quotes]
 ```
 namespace boost {
+  // only if T is not an array type
   template<class T, class... Args>
     shared_ptr<T> make_shared(Args&&... args);
   template<class T, class A, class... Args>
     shared_ptr<T> allocate_shared(const A& a, Args&&... args);
 
+  // only if T is an array type of the form U[]
   template<class T>
     shared_ptr<T> make_shared(std::size_t n);
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a, std::size_t n);
 
+  // only if T is an array type of the form U[N]
   template<class T>
     shared_ptr<T> make_shared();
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a);
 
+  // only if T is an array type of the form U[]
   template<class T>
     shared_ptr<T> make_shared(std::size_t n, _see below_ v);
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a, std::size_t n, _see below_ v);
 
+  // only if T is an array type of the form U[N]
   template<class T>
     shared_ptr<T> make_shared(_see below_ v);
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a, _see below_ v);
 
+  // only if T is not an array type of the form U[]
   template<class T>
     shared_ptr<T> make_shared_noinit();
   template<class T, class A>
     shared_ptr<T> allocate_shared_noinit(const A& a);
 
+  // only if T is an array type of the form U[N]
   template<class T>
     shared_ptr<T> make_shared_noinit(std::size_t n);
   template<class T, class A>
@@ -92,7 +99,7 @@ namespace boost {
 }
 ```
 
-## Free Functions
+## Common Requirements
 
 The common requirements that apply to all `make_shared` and `allocate_shared`
 overloads, unless specified otherwise, are described below.
@@ -100,8 +107,8 @@ overloads, unless specified otherwise, are described below.
 Requires:: `A` shall be an _allocator_. The copy constructor and destructor
 of `A` shall not throw exceptions.
 
-Effects:: Allocates memory for an object of type `T`  or `n` objects of `_U_`
-(if `T` is an array type of the form `__U__[]` and  `n` is determined by
+Effects:: Allocates memory for an object of type `T`  or `n` objects of `U`
+(if `T` is an array type of the form `U[]` and  `n` is determined by
 arguments, as specified by the concrete overload). The object is initialized
 from arguments as specified by the concrete overload. Uses a rebound copy of
 `a` (for an unspecified `value_type`) to allocate memory. If an exception is
@@ -110,48 +117,49 @@ thrown, the functions have no effect.
 Returns:: A `shared_ptr` instance that stores and owns the address of the
 newly constructed object.
 
-Postconditions:: `__r__.get() != 0` and `__r__.use_count() == 1`, where `_r_`
+Postconditions:: `r.get() != 0` and `r.use_count() == 1`, where `r`
 is the return value.
 
-Throws:: An exception thrown from `A::allocate`, or from the initialization
-of the object.
+Throws:: `std::bad_alloc`, an exception thrown from `A::allocate`, or from the
+initialization of the object.
 
 Remarks::
 * Performs no more than one memory allocation. This provides efficiency
 equivalent to an intrusive smart pointer.
+* The type of `v` is equivalent to `const std::remove_extent_t<T>&`.
 * When an object of an array type is specified to be initialized to a value of
 the same type `v`, this shall be interpreted to mean that each array element
 of the object is initialized to the corresponding element from `v`.
 * When an object of an array type is specified to be value-initialized, this
 shall be interpreted to mean that each array element of the object is
 value-initialized.
-* When a (sub)object of non-array type `_U_` is specified to be initialized to
+* When a (sub)object of non-array type `U` is specified to be initialized to
 a value `v`, or constructed from `args$$...$$`, `make_shared` shall perform
-this initialization via the expression `::new(__p__) __U__(__expr__)` (where
-`_expr_` is `v` or `std::forward<Args>(args)$$...$$)` respectively) and `_p_`
+this initialization via the expression `::new(p) U(expr)` (where
+`_expr_` is `v` or `std::forward<Args>(args)$$...$$)` respectively) and `p`
 has type `void*` and points to storage suitable to hold an object of type
-`_U_`.
-* When a (sub)object of non-array type `_U_` is specified to be initialized to
+`U`.
+* When a (sub)object of non-array type `U` is specified to be initialized to
 a value `v`, or constructed from `args$$...$$`, `allocate_shared` shall
 perform this initialization via the expression
-`std::allocator_traits<__A2__>::construct(__a2__, __p__, __expr__)` (where
-`_expr_` is `v` or `std::forward<Args>(args)$$...$$)` respectively), `_p_`
-points to storage suitable to hold an object of type `_U_`, and `_a2_` of
-type `_A2_` is a rebound copy `a` such that its `value_type` is `_U_`.
-* When a (sub)object of non-array type `_U_` is specified to be
+`std::allocator_traits<A2>::construct(a2, p, expr)` (where
+`_expr_` is `v` or `std::forward<Args>(args)$$...$$)` respectively), `p`
+points to storage suitable to hold an object of type `U`, and `a2` of
+type `A2` is a rebound copy `a` such that its `value_type` is `U`.
+* When a (sub)object of non-array type `U` is specified to be
 default-initialized, `make_shared_noinit` and `allocate_shared_noinit` shall
-perform this initialization via the expression `::new(__p__) __U__`, where
-`_p_` has type `void*` and points to storage suitable to hold an object of
-type `_U_`.
-* When a (sub)object of non-array type `_U_` is specified to be
+perform this initialization via the expression `::new(p) U`, where
+`p` has type `void*` and points to storage suitable to hold an object of
+type `U`.
+* When a (sub)object of non-array type `U` is specified to be
 value-initialized, `make_shared` shall perform this initialization via the
-expression `::new(__p__) __U__()`, where `_p_` has type `void*` and points to
-storage suitable to hold an object of type `_U_`.
-* When a (sub)object of non-array type `_U_` is specified to be
+expression `::new(p) U()`, where `p` has type `void*` and points to
+storage suitable to hold an object of type `U`.
+* When a (sub)object of non-array type `U` is specified to be
 value-initialized, `allocate_shared` shall perform this initialization via the
-expression `std::allocator_traits<__A2__>::construct(__a2__, __p__)`, where
-`p` points to storage suitable to hold an object of type `_U_` and `_a2_` of
-type `_A2_` is a rebound copy of `a` such that its value_type is `_U_`.
+expression `std::allocator_traits<A2>::construct(a2, p)`, where
+`p` points to storage suitable to hold an object of type `U` and `a2` of
+type `A2` is a rebound copy of `a` such that its value_type is `U`.
 * Array elements are initialized in ascending order of their addresses.
 * When the lifetime of the object managed by the return value ends, or when
 the initialization of an array element throws an exception, the initialized
@@ -160,6 +168,8 @@ elements should be destroyed in the reverse order of their construction.
 NOTE: These functions will typically allocate more memory than the total size
 of the element objects to allow for internal bookkeeping structures such as
 the reference counts.
+
+## Free Functions
 
 ```
 template<class T, class... Args>
@@ -190,9 +200,9 @@ template<class T, class A>
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `__U__[]`.
+`T` is an array type of the form `U[]`.
 Returns::: A `shared_ptr` to a sequence of `n` value-initialized objects of
-type `_U_`.
+type `U`.
 Examples:::
 * `auto p = make_shared<double[]>(1024);`
 * `auto p = make_shared<double[][2][2]>(6);`
@@ -208,9 +218,9 @@ template<class T, class A>
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `__U__[__N__]`.
-Returns::: A `shared_ptr` to a sequence of `_N_` value-initialized objects of
-type `_U_`.
+`T` is an array type of the form `U[N]`.
+Returns::: A `shared_ptr` to a sequence of `N` value-initialized objects of
+type `U`.
 Examples:::
 * `auto p = make_shared<double[1024]>();`
 * `auto p = make_shared<double[6][2][2]>();`
@@ -218,18 +228,18 @@ Examples:::
 [subs=+quotes]
 ```
 template<class T>
-  shared_ptr<T> make_shared(std::size_t n, _see below_ v);
+  shared_ptr<T> make_shared(std::size_t n, _see above_ v);
 ```
 ::
 [subs=+quotes]
 ```
 template<class T, class A>
-  shared_ptr<T> allocate_shared(const A& a, std::size_t n, _see below_ v);
+  shared_ptr<T> allocate_shared(const A& a, std::size_t n, _see above_ v);
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `__U__[]`.
-Returns::: A `shared_ptr` to a sequence of `n` objects of type `_U_`, each
+`T` is an array type of the form `U[]`.
+Returns::: A `shared_ptr` to a sequence of `n` objects of type `U`, each
 initialized to `v`.
 Examples:::
 * `auto p = make_shared<double[]>(1024, 1.0);`
@@ -239,18 +249,18 @@ Examples:::
 [subs=+quotes]
 ```
 template<class T>
-  shared_ptr<T> make_shared(_see below_ v);
+  shared_ptr<T> make_shared(_see above_ v);
 ```
 ::
 [subs=+quotes]
 ```
 template<class T, class A>
-  shared_ptr<T> allocate_shared(const A& a, _see below_ v);
+  shared_ptr<T> allocate_shared(const A& a, _see above_ v);
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `__U__[__N__]`.
-Returns::: A `shared_ptr` to a sequence of `_N_` objects of type `_U_`, each
+`T` is an array type of the form `U[N]`.
+Returns::: A `shared_ptr` to a sequence of `N` objects of type `U`, each
 initialized to `v`.
 Examples:::
 * `auto p = make_shared<double[1024]>(1.0);`
@@ -268,9 +278,9 @@ template<class T, class A>
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is not an array type, or an array type of the `__U__[__N__]`.
+`T` is not an array type, or an array type of the `U[N]`.
 Returns::: A `shared_ptr` to a default-initialized object of type `T`, or a
-sequence of `_N_` default-initialized objects of type `_U_`, respectively.
+sequence of `N` default-initialized objects of type `U`, respectively.
 Example::: `auto p = make_shared_noinit<double[1024]>();`
 
 ```
@@ -284,7 +294,7 @@ template<class T, class A>
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `__U__[]`.
+`T` is an array type of the form `U[]`.
 Returns::: A `shared_ptr` to a sequence of `_n_` default-initialized objects
-of type `_U_`.
+of type `U`.
 Example::: `auto p = make_shared_noinit<double[]>(1024);`

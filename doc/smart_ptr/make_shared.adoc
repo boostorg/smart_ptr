@@ -74,11 +74,10 @@ namespace boost {
     shared_ptr<T> allocate_shared(const A& a);
 
   `// only if T is an array type of the form U[]`
-  template<class T>
-    shared_ptr<T> make_shared(std::size_t n, const remove_extent_t<T>& v);
-  template<class T, class A>
-    shared_ptr<T>
-      allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
+  template<class T> shared_ptr<T>
+    make_shared(std::size_t n, const remove_extent_t<T>& v);
+  template<class T, class A> shared_ptr<T>
+    allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 
   `// only if T is an array type of the form U[N]`
   template<class T>
@@ -226,14 +225,13 @@ Examples:::
 * `auto p = make_shared<double[6][2][2]>();`
 
 ```
-template<class T>
-  shared_ptr<T> make_shared(std::size_t n, const remove_extent_t<T>& v);
+template<class T> shared_ptr<T>
+  make_shared(std::size_t n, const remove_extent_t<T>& v);
 ```
 ::
 ```
-template<class T, class A>
-  shared_ptr<T>
-    allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
+template<class T, class A> shared_ptr<T>
+  allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when

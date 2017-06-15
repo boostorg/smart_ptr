@@ -79,9 +79,8 @@ template<class T>
   std::unique_ptr<T> make_unique(remove_reference_t<T>&& v);
 ```
 ::
-Remarks:::
-* These overloads shall only participate in overload resolution when `T` is
-not an array type.
+Remarks::: These overloads shall only participate in overload resolution when
+`T` is not an array type.
 Returns::: `std::unique_ptr<T>(new T(std::move(v))`.
 Example::: `auto p = make_unique<std::vector<int> >({1, 2});`
 

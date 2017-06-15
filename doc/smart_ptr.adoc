@@ -13,7 +13,6 @@ Greg Colvin, Beman Dawes, Peter Dimov, Glen Fernandes
 :toclevels: 2
 :idprefix:
 :listing-caption: Code Example
-:table-caption: Illustration
 :docinfo: private-footer
 
 :leveloffset: +1

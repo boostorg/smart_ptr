@@ -52,6 +52,7 @@ below.
 
 ```
 namespace boost {
+
   template<class T> class shared_array {
   public:
     typedef T element_type;
@@ -237,8 +238,12 @@ Effects::: Exchanges the contents of the two smart pointers.
 ```
 template<class T> bool
   operator==(const shared_array<T>& a, const shared_array<T>& b) noexcept;
+```
+```
 template<class T> bool
   operator!=(const shared_array<T>& a, const shared_array<T>& b) noexcept;
+```
+```
 template<class T> bool
   operator<(const shared_array<T>& a, const shared_array<T>& b) noexcept;
 ```
@@ -261,5 +266,5 @@ template<class T>
   void swap(shared_array<T>& a, shared_array<T>& b) noexcept;
 ```
 ::
-Returns::: `a.swap(b)`
+Returns::: `a.swap(b)`.
 Requires::: `T` is a complete type.

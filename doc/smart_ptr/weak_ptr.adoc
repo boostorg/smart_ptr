@@ -73,12 +73,10 @@ Now `r` holds a reference to the object that was pointed by `q`. Even if `p.rese
 `weak_ptr` is defined in `<boost/smart_ptr/weak_ptr.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-template<class T> class weak_ptr
-{
-public:
+  template<class T> class weak_ptr {
+  public:
 
     typedef /*see below*/ element_type;
 
@@ -108,14 +106,13 @@ public:
 
     template<class Y> bool owner_before( weak_ptr<Y> const & r ) const noexcept;
     template<class Y> bool owner_before( shared_ptr<Y> const & r ) const noexcept;
-};
+  };
 
-template<class T, class U>
+  template<class T, class U>
     bool operator<(weak_ptr<T> const & a, weak_ptr<U> const & b) noexcept;
 
-template<class T> void swap(weak_ptr<T> & a, weak_ptr<T> & b) noexcept;
-
-} // namespace boost
+  template<class T> void swap(weak_ptr<T> & a, weak_ptr<T> & b) noexcept;
+}
 ```
 
 ## Members
@@ -250,7 +247,7 @@ Returns:: See the description of `operator<`.
 ### comparison
 ```
 template<class T, class U>
-    bool operator<(weak_ptr<T> const & a, weak_ptr<U> const & b) noexcept;
+  bool operator<(weak_ptr<T> const & a, weak_ptr<U> const & b) noexcept;
 ```
 [none]
 * {blank}

@@ -46,12 +46,10 @@ The class template is parameterized on `T`, the type of the object pointed to.
 `scoped_array` is defined in `<boost/smart_ptr/scoped_array.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-template<class T> class scoped_array
-{
-private:
+  template<class T> class scoped_array {
+  private:
 
     scoped_array(scoped_array const &);
     scoped_array & operator=(scoped_array const &);
@@ -59,7 +57,7 @@ private:
     void operator==( scoped_array const& ) const;
     void operator!=( scoped_array const& ) const;
 
-public:
+  public:
 
     typedef T element_type;
 
@@ -74,17 +72,16 @@ public:
     explicit operator bool () const noexcept;
 
     void swap(scoped_array & b) noexcept;
-};
+  };
 
-template<class T> void swap(scoped_array<T> & a, scoped_array<T> & b) noexcept;
+  template<class T> void swap(scoped_array<T> & a, scoped_array<T> & b) noexcept;
 
-template<class T> bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
-template<class T> bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+  template<class T> bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+  template<class T> bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
 
-template<class T> bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
-template<class T> bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
-
-} // namespace boost
+  template<class T> bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+  template<class T> bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+}
 ```
 
 ## Members

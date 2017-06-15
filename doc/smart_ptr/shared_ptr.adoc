@@ -103,16 +103,14 @@ functions defined in `<boost/smart_ptr/make_shared.hpp>`. These factory function
 `shared_ptr` is defined in `<boost/smart_ptr/shared_ptr.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-class bad_weak_ptr: public std::exception;
+  class bad_weak_ptr: public std::exception;
 
-template<class T> class weak_ptr;
+  template<class T> class weak_ptr;
 
-template<class T> class shared_ptr
-{
-public:
+  template<class T> class shared_ptr {
+  public:
 
     typedef /*see below*/ element_type;
 
@@ -182,48 +180,47 @@ public:
 
     template<class Y> bool owner_before(shared_ptr<Y> const & rhs) const noexcept;
     template<class Y> bool owner_before(weak_ptr<Y> const & rhs) const noexcept;
-};
+  };
 
-template<class T, class U>
+  template<class T, class U>
     bool operator==(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     bool operator!=(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     bool operator<(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 
-template<class T> bool operator==(shared_ptr<T> const & p, std::nullptr_t) noexcept;
-template<class T> bool operator==(std::nullptr_t, shared_ptr<T> const & p) noexcept;
+  template<class T> bool operator==(shared_ptr<T> const & p, std::nullptr_t) noexcept;
+  template<class T> bool operator==(std::nullptr_t, shared_ptr<T> const & p) noexcept;
 
-template<class T> bool operator!=(shared_ptr<T> const & p, std::nullptr_t) noexcept;
-template<class T> bool operator!=(std::nullptr_t, shared_ptr<T> const & p) noexcept;
+  template<class T> bool operator!=(shared_ptr<T> const & p, std::nullptr_t) noexcept;
+  template<class T> bool operator!=(std::nullptr_t, shared_ptr<T> const & p) noexcept;
 
-template<class T> void swap(shared_ptr<T> & a, shared_ptr<T> & b) noexcept;
+  template<class T> void swap(shared_ptr<T> & a, shared_ptr<T> & b) noexcept;
 
-template<class T>
+  template<class T>
     typename shared_ptr<T>::element_type *
-    get_pointer(shared_ptr<T> const & p) noexcept;
+      get_pointer(shared_ptr<T> const & p) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     shared_ptr<T> const_pointer_cast(shared_ptr<U> const & r) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     shared_ptr<T> dynamic_pointer_cast(shared_ptr<U> const & r) noexcept;
 
-template<class T, class U>
+  template<class T, class U>
     shared_ptr<T> reinterpret_pointer_cast(shared_ptr<U> const & r) noexcept;
 
-template<class E, class T, class Y>
+  template<class E, class T, class Y>
     std::basic_ostream<E, T> &
-    operator<< (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
+      operator<< (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
 
-template<class D, class T> D * get_deleter(shared_ptr<T> const & p) noexcept;
-
-} // namespace boost
+  template<class D, class T> D * get_deleter(shared_ptr<T> const & p) noexcept;
+}
 ```
 
 ## Members
@@ -611,6 +608,8 @@ NOTE: This conversion operator allows `shared_ptr` objects to be used in boolean
 NOTE: The conversion to `bool` is not merely syntactic sugar. It allows `shared_ptr` variables to be declared in conditions when using
 `dynamic_pointer_cast` or `weak_ptr::lock`.
 
+NOTE: On C++03 compilers, the return value is of an unspecified type.
+
 ### swap
 ```
 void swap(shared_ptr & b) noexcept;
@@ -637,7 +636,7 @@ Effects:: See the description of `operator<`.
 ### comparison
 ```
 template<class T, class U>
-    bool operator==(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
+  bool operator==(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 ```
 [none]
 * {blank}
@@ -646,7 +645,7 @@ Returns:: `a.get() == b.get()`.
 
 ```
 template<class T, class U>
-    bool operator!=(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
+  bool operator!=(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 ```
 [none]
 * {blank}
@@ -677,7 +676,7 @@ Returns:: `p.get() != 0`.
 
 ```
 template<class T, class U>
-    bool operator<(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
+  bool operator<(shared_ptr<T> const & a, shared_ptr<U> const & b) noexcept;
 ```
 [none]
 * {blank}
@@ -703,7 +702,7 @@ Effects:: Equivalent to `a.swap(b)`.
 ### get_pointer
 ```
 template<class T>
-    typename shared_ptr<T>::element_type *
+  typename shared_ptr<T>::element_type *
     get_pointer(shared_ptr<T> const & p) noexcept;
 ```
 [none]
@@ -716,7 +715,7 @@ NOTE: Provided as an aid to generic programming. Used by `mem_fn`.
 ### static_pointer_cast
 ```
 template<class T, class U>
-    shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r) noexcept;
+  shared_ptr<T> static_pointer_cast(shared_ptr<U> const & r) noexcept;
 ```
 [none]
 * {blank}
@@ -730,7 +729,7 @@ result in undefined behavior, attempting to delete the same object twice.
 ### const_pointer_cast
 ```
 template<class T, class U>
-    shared_ptr<T> const_pointer_cast(shared_ptr<U> const & r) noexcept;
+  shared_ptr<T> const_pointer_cast(shared_ptr<U> const & r) noexcept;
 ```
 [none]
 * {blank}
@@ -754,7 +753,7 @@ Returns::
 ### reinterpret_pointer_cast
 ```
 template<class T, class U>
-    shared_ptr<T> reinterpret_pointer_cast(shared_ptr<U> const & r) noexcept;
+  shared_ptr<T> reinterpret_pointer_cast(shared_ptr<U> const & r) noexcept;
 ```
 [none]
 * {blank}
@@ -765,7 +764,7 @@ Returns:: `shared_ptr<T>( r, reinterpret_cast<typename shared_ptr<T>::element_ty
 ### operator<<
 ```
 template<class E, class T, class Y>
-    std::basic_ostream<E, T> &
+  std::basic_ostream<E, T> &
     operator<< (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
 ```
 [none]
@@ -777,7 +776,7 @@ Returns:: `os`.
 ### get_deleter
 ```
 template<class D, class T>
-    D * get_deleter(shared_ptr<T> const & p) noexcept;
+  D * get_deleter(shared_ptr<T> const & p) noexcept;
 ```
 [none]
 * {blank}

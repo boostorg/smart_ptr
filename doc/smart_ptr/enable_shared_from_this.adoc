@@ -55,17 +55,15 @@ int main()
 `enable_shared_from_this` is defined in `<boost/smart_ptr/enable_shared_from_this.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-template<class T> class enable_shared_from_this
-{
-private:
+  template<class T> class enable_shared_from_this {
+  private:
 
     // exposition only
     weak_ptr<T> weak_this_;
 
-protected:
+  protected:
 
     enable_shared_from_this() = default;
     ~enable_shared_from_this() = default;
@@ -73,16 +71,15 @@ protected:
     enable_shared_from_this(const enable_shared_from_this&) noexcept;
     enable_shared_from_this& operator=(const enable_shared_from_this&) noexcept;
 
-public:
+  public:
 
     shared_ptr<T> shared_from_this();
     shared_ptr<T const> shared_from_this() const;
 
     weak_ptr<T> weak_from_this() noexcept;
     weak_ptr<T const> weak_from_this() const noexcept;
+  }
 }
-
-} // namespace boost
 ```
 
 ## Members

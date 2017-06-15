@@ -44,39 +44,37 @@ template <class IntPtr> class FloatPointerHolder
 `pointer_to_other` is defined in `<boost/smart_ptr/pointer_to_other.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-template<class T, class U> struct pointer_to_other;
+  template<class T, class U> struct pointer_to_other;
 
-template<class T, class U,
-  template <class> class Sp>
-    struct pointer_to_other< Sp<T>, U >
-{
-   typedef Sp<U> type;
-};
+  template<class T, class U,
+    template <class> class Sp>
+      struct pointer_to_other< Sp<T>, U >
+  {
+    typedef Sp<U> type;
+  };
 
-template<class T, class T2, class U,
-  template <class, class> class Sp>
-    struct pointer_to_other< Sp<T, T2>, U >
-{
+  template<class T, class T2, class U,
+    template <class, class> class Sp>
+      struct pointer_to_other< Sp<T, T2>, U >
+  {
     typedef Sp<U, T2> type;
-};
+  };
 
-template<class T, class T2, class T3, class U,
-  template <class, class, class> class Sp>
-    struct pointer_to_other< Sp<T, T2, T3>, U >
-{
+  template<class T, class T2, class T3, class U,
+    template <class, class, class> class Sp>
+      struct pointer_to_other< Sp<T, T2, T3>, U >
+  {
     typedef Sp<U, T2, T3> type;
-};
+  };
 
-template<class T, class U>
-  struct pointer_to_other< T*, U > 
-{
+  template<class T, class U>
+    struct pointer_to_other< T*, U > 
+  {
     typedef U* type;
-};
-
-} // namespace boost
+  };
+}
 ```
 
 If these definitions are not correct for a specific smart pointer, we can define a specialization of `pointer_to_other`.

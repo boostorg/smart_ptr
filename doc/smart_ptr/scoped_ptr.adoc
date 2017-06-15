@@ -42,12 +42,10 @@ and `T` must be complete at the point `scoped_ptr<T>::~scoped_ptr` is instantiat
 `scoped_ptr` is defined in `<boost/smart_ptr/scoped_ptr.hpp>`.
 
 ```
-namespace boost
-{
+namespace boost {
 
-template<class T> class scoped_ptr
-{
-private:
+  template<class T> class scoped_ptr {
+  private:
 
     scoped_ptr(scoped_ptr const&);
     scoped_ptr& operator=(scoped_ptr const&);
@@ -55,7 +53,7 @@ private:
     void operator==(scoped_ptr const&) const;
     void operator!=(scoped_ptr const&) const;
 
-public:
+  public:
 
     typedef T element_type;
 
@@ -71,17 +69,16 @@ public:
     explicit operator bool() const noexcept;
 
     void swap(scoped_ptr & b) noexcept;
-};
+  };
 
-template<class T> void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) noexcept;
+  template<class T> void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) noexcept;
 
-template<class T> bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
-template<class T> bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+  template<class T> bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+  template<class T> bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
 
-template<class T> bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
-template<class T> bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
-
-} // namespace boost
+  template<class T> bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+  template<class T> bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+}
 ```
 
 ## Members

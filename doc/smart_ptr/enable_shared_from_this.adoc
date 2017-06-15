@@ -105,10 +105,10 @@ Returns:: `*this`.
 NOTE: `weak_this_` is unchanged.
 
 ```
-template<class T> shared_ptr<T> enable_shared_from_this<T>::shared_from_this();
+template<class T> shared_ptr<T> shared_from_this();
 ```
 ```
-template<class T> shared_ptr<T const> enable_shared_from_this<T>::shared_from_this() const;
+template<class T> shared_ptr<T const> shared_from_this() const;
 ```
 [none]
 * {blank}
@@ -133,10 +133,10 @@ the construction of `p` will automatically initialize `p\->weak_this_` to `p`.
 ====
 
 ```
-template<class T> weak_ptr<T> enable_shared_from_this<T>::weak_from_this() noexcept;
+template<class T> weak_ptr<T> weak_from_this() noexcept;
 ```
 ```
-template<class T> weak_ptr<T const> enable_shared_from_this<T>::weak_from_this() const noexcept;
+template<class T> weak_ptr<T const> weak_from_this() const noexcept;
 ```
 [none]
 * {blank}

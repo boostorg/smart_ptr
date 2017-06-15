@@ -73,11 +73,15 @@ namespace boost {
 
   template<class T> void swap(scoped_ptr<T> & a, scoped_ptr<T> & b) noexcept;
 
-  template<class T> bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
-  template<class T> bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+  template<class T>
+    bool operator==( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+  template<class T>
+    bool operator==( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
 
-  template<class T> bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
-  template<class T> bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
+  template<class T>
+    bool operator!=( scoped_ptr<T> const & p, std::nullptr_t ) noexcept;
+  template<class T>
+    bool operator!=( std::nullptr_t, scoped_ptr<T> const & p ) noexcept;
 }
 ```
 

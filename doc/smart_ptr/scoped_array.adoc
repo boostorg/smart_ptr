@@ -76,11 +76,15 @@ namespace boost {
 
   template<class T> void swap(scoped_array<T> & a, scoped_array<T> & b) noexcept;
 
-  template<class T> bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
-  template<class T> bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+  template<class T>
+    bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+  template<class T>
+    bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
 
-  template<class T> bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
-  template<class T> bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+  template<class T>
+    bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+  template<class T>
+    bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
 }
 ```
 
@@ -154,14 +158,18 @@ Equivalent to `a.swap(b)`.
 
 ### comparisons
 
-    template<class T> bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+    template<class T>
+      bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept;
 
-    template<class T> bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+    template<class T>
+      bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept;
 
 Returns `p.get() == nullptr`.
 
-    template<class T> bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
+    template<class T>
+      bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept;
 
-    template<class T> bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
+    template<class T>
+      bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept;
 
 Returns `p.get() != nullptr`.

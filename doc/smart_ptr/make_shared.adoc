@@ -75,15 +75,16 @@ namespace boost {
 
   `// only if T is an array type of the form U[]`
   template<class T>
-    shared_ptr<T> make_shared(std::size_t n, _see below_ v);
+    shared_ptr<T> make_shared(std::size_t n, const remove_extent_t<T>& v);
   template<class T, class A>
-    shared_ptr<T> allocate_shared(const A& a, std::size_t n, _see below_ v);
+    shared_ptr<T>
+      allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 
   `// only if T is an array type of the form U[N]`
   template<class T>
-    shared_ptr<T> make_shared(_see below_ v);
+    shared_ptr<T> make_shared(const remove_extent_t<T>& v);
   template<class T, class A>
-    shared_ptr<T> allocate_shared(const A& a, _see below_ v);
+    shared_ptr<T> allocate_shared(const A& a, const remove_extent_t<T>& v);
 
   `// only if T is not an array type of the form U[]`
   template<class T>
@@ -126,7 +127,6 @@ initialization of the object.
 Remarks::
 * Performs no more than one memory allocation. This provides efficiency
 equivalent to an intrusive smart pointer.
-* The type of `v` is equivalent to `const std::remove_extent_t<T>&`.
 * When an object of an array type is specified to be initialized to a value of
 the same type `v`, this shall be interpreted to mean that each array element
 of the object is initialized to the corresponding element from `v`.
@@ -225,16 +225,15 @@ Examples:::
 * `auto p = make_shared<double[1024]>();`
 * `auto p = make_shared<double[6][2][2]>();`
 
-[subs=+quotes]
 ```
 template<class T>
-  shared_ptr<T> make_shared(std::size_t n, _see above_ v);
+  shared_ptr<T> make_shared(std::size_t n, const remove_extent_t<T>& v);
 ```
 ::
-[subs=+quotes]
 ```
 template<class T, class A>
-  shared_ptr<T> allocate_shared(const A& a, std::size_t n, _see above_ v);
+  shared_ptr<T>
+    allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when
@@ -246,16 +245,14 @@ Examples:::
 * `auto p = make_shared<double[][2]>(6, {1.0, 0.0});`
 * `auto p = make_shared<std::vector<int>[]>(4, {1, 2});`
 
-[subs=+quotes]
 ```
 template<class T>
-  shared_ptr<T> make_shared(_see above_ v);
+  shared_ptr<T> make_shared(const remove_extent_t<T>& v);
 ```
 ::
-[subs=+quotes]
 ```
 template<class T, class A>
-  shared_ptr<T> allocate_shared(const A& a, _see above_ v);
+  shared_ptr<T> allocate_shared(const A& a, const remove_extent_t<T>& v);
 ```
 ::
 Remarks::: These overloads shall only participate in overload resolution when

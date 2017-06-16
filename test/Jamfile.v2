@@ -1,6 +1,6 @@
 #  Boost.SmartPtr Library test Jamfile
 #
-#  Copyright (c) 2003-2013 Peter Dimov
+#  Copyright (c) 2003-2017 Peter Dimov
 #  Copyright (c) 2003 Dave Abrahams
 #
 #  Distributed under the Boost Software License, Version 1.0. (See
@@ -210,6 +210,8 @@ import testing ;
           [ compile make_shared_msvc_test.cpp ]
 
           [ compile lwm_win32_cs_test.cpp ]
+
+          [ run atomic_sp_test.cpp ]
 
           [ run local_sp_test.cpp ]
         ;

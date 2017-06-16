@@ -41,6 +41,8 @@ include::smart_ptr/pointer_cast.adoc[]
 
 include::smart_ptr/pointer_to_other.adoc[]
 
+include::smart_ptr/atomic_shared_ptr.adoc[]
+
 // appendix
 include::smart_ptr/techniques.adoc[]
 

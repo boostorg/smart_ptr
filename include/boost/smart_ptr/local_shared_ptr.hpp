@@ -3,13 +3,13 @@
 
 //  local_shared_ptr.hpp
 //
-//  http://www.boost.org/libs/smart_ptr/
-//
 //  Copyright 2017 Peter Dimov
 //
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
+//
+//  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
 #include <boost/smart_ptr/detail/local_counted_base.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>

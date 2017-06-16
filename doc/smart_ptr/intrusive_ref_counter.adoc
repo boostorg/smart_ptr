@@ -107,7 +107,7 @@ intrusive_ref_counter& operator=(const intrusive_ref_counter& v) noexcept;
 ```
 ::
 Effects::: Does nothing, reference counter is not modified.
-y
+
 ### use_count
 
 ```

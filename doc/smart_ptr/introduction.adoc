@@ -42,6 +42,7 @@ In addition, the library contains the following supporting utility functions and
 * `<<pointer_to_other,pointer_to_other>>`, a helper trait for converting one smart pointer type to another;
 * `<<pointer_cast,static_pointer_cast>>` and companions, generic smart pointer casts;
 * `<<intrusive_ref_counter,intrusive_ref_counter>>`, a helper base class containing a reference count.
+* `<<atomic_shared_ptr,atomic_shared_ptr>>`, a helper class implementing the interface of `std::atomic` for a value of type `shared_ptr`.
 
 As a general rule, the destructor or `operator delete` for an object managed by pointers in the library
 are not allowed to throw exceptions.

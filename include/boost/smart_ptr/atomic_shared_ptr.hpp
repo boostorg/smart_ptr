@@ -33,7 +33,12 @@ public:
     {
     }
 
-    BOOST_CONSTEXPR atomic_shared_ptr( shared_ptr<T> p ) BOOST_SP_NOEXCEPT: p_( p )
+    BOOST_CONSTEXPR atomic_shared_ptr( shared_ptr<T> p ) BOOST_SP_NOEXCEPT
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+        : p_( std::move( p ) )
+#else
+        : p_( p )
+#endif
     {
     }
 
@@ -114,7 +119,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    bool compare_exchange_weak( shared_ptr<T>& v, shared_ptr<T>&& w, int,  int ) BOOST_SP_NOEXCEPT
+    bool compare_exchange_weak( shared_ptr<T>& v, shared_ptr<T>&& w, int, int ) BOOST_SP_NOEXCEPT
     {
         return atomic_compare_exchange( &p_, &v, std::move( w ) );
     }

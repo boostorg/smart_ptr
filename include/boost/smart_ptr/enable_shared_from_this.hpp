@@ -26,11 +26,11 @@ template<class T> class enable_shared_from_this
 {
 protected:
 
-    enable_shared_from_this() BOOST_SP_NOEXCEPT
+    BOOST_CONSTEXPR enable_shared_from_this() BOOST_SP_NOEXCEPT
     {
     }
 
-    enable_shared_from_this(enable_shared_from_this const &) BOOST_SP_NOEXCEPT
+    BOOST_CONSTEXPR enable_shared_from_this(enable_shared_from_this const &) BOOST_SP_NOEXCEPT
     {
     }
 

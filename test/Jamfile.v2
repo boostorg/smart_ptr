@@ -214,5 +214,9 @@ import testing ;
           [ run atomic_sp_test.cpp ]
 
           [ run local_sp_test.cpp ]
+          [ run lsp_array_test.cpp ]
+          [ run lsp_array_n_test.cpp ]
+          [ run lsp_array_cv_test.cpp ]
+          [ run lsp_array_cast_test.cpp ]
         ;
 }

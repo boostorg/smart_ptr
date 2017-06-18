@@ -22,7 +22,6 @@
 #endif
 
 #if defined(__clang__) && defined( BOOST_NO_CXX14_CONSTEXPR )
-// Clang 4+ in C++11 mode works too, but how to detect it?
 # undef HAVE_CONSTEXPR_INIT
 #endif
 

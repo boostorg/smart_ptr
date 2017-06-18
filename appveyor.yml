@@ -56,4 +56,4 @@ install:
 build: off
 
 test_script:
-  - b2 libs/system/test toolset=%TOOLSET%
+  - b2 libs/smart_ptr/test toolset=%TOOLSET%

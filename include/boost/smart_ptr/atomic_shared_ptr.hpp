@@ -57,11 +57,21 @@ private:
 
 public:
 
+#if !defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX ) && !defined( BOOST_NO_CXX11_CONSTEXPR )
+
+    constexpr atomic_shared_ptr() BOOST_SP_NOEXCEPT: l_ BOOST_DETAIL_SPINLOCK_INIT
+    {
+    }
+
+#else
+
     atomic_shared_ptr() BOOST_SP_NOEXCEPT
     {
         boost::detail::spinlock init = BOOST_DETAIL_SPINLOCK_INIT;
         std::memcpy( &l_, &init, sizeof( init ) );
     }
+
+#endif
 
     atomic_shared_ptr( shared_ptr<T> p ) BOOST_SP_NOEXCEPT
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )

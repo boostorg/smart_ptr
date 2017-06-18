@@ -35,7 +35,7 @@ namespace boost {
 
   public:
 
-    atomic_shared_ptr() noexcept = default;
+    constexpr atomic_shared_ptr() noexcept;
     atomic_shared_ptr( shared_ptr<T> p ) noexcept;
 
     atomic_shared_ptr& operator=( shared_ptr<T> r ) noexcept;
@@ -63,6 +63,14 @@ namespace boost {
 ```
 
 ## Members
+
+```
+constexpr atomic_shared_ptr() noexcept;
+```
+[none]
+* {blank}
++
+Effects:: Default-initializes `p_`.
 
 ```
 atomic_shared_ptr( shared_ptr<T> p ) noexcept;

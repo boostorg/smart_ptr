@@ -9,8 +9,24 @@
 //
 
 #include <boost/config.hpp>
+#include <boost/detail/workaround.hpp>
+
+#define HAVE_CONSTEXPR_INIT
 
 #if defined( BOOST_NO_CXX11_CONSTEXPR )
+# undef HAVE_CONSTEXPR_INIT
+#endif
+
+#if BOOST_WORKAROUND( BOOST_MSVC, <= 1910 )
+# undef HAVE_CONSTEXPR_INIT
+#endif
+
+#if defined(__clang__) && defined( BOOST_NO_CXX14_CONSTEXPR )
+// Clang 4+ in C++11 mode works too, but how to detect it?
+# undef HAVE_CONSTEXPR_INIT
+#endif
+
+#if !defined( HAVE_CONSTEXPR_INIT )
 
 int main()
 {

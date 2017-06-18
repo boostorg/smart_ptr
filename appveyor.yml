@@ -12,6 +12,7 @@ branches:
     - develop
     - /feature\/.*/
 
+environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       TOOLSET: msvc-9.0

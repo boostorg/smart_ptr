@@ -46,14 +46,14 @@ public:
 
 #endif
 
-    template<class Y> void operator()( Y* p ) const BOOST_SP_NOEXCEPT
+    template<class Y> void operator()( Y* p ) BOOST_SP_NOEXCEPT
     {
         d_( p );
     }
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    void operator()( boost::detail::sp_nullptr_t p ) const BOOST_SP_NOEXCEPT
+    void operator()( boost::detail::sp_nullptr_t p ) BOOST_SP_NOEXCEPT
     {
         d_( p );
     }

@@ -32,7 +32,7 @@ public:
 
     typedef typename boost::detail::sp_element< T >::type element_type;
 
-    weak_ptr() BOOST_SP_NOEXCEPT : px(0), pn()
+    BOOST_CONSTEXPR weak_ptr() BOOST_SP_NOEXCEPT : px(0), pn()
     {
     }
 

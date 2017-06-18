@@ -54,7 +54,7 @@ namespace boost
 namespace movelib
 {
 
-    template< class T, class D > class unique_ptr;
+template< class T, class D > class unique_ptr;
 
 } // namespace movelib
 
@@ -118,7 +118,7 @@ private:
 
 public:
 
-    shared_count(): pi_(0) // nothrow
+    BOOST_CONSTEXPR shared_count(): pi_(0) // nothrow
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
@@ -517,7 +517,7 @@ private:
 
 public:
 
-    weak_count(): pi_(0) // nothrow
+    BOOST_CONSTEXPR weak_count(): pi_(0) // nothrow
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif

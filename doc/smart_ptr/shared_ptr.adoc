@@ -220,6 +220,30 @@ namespace boost {
       operator<< (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
 
   template<class D, class T> D * get_deleter(shared_ptr<T> const & p) noexcept;
+
+  template<class T> bool atomic_is_lock_free( shared_ptr<T> const * p ) noexcept;
+
+  template<class T> shared_ptr<T> atomic_load( shared_ptr<T> const * p ) noexcept;
+  template<class T>
+    shared_ptr<T> atomic_load_explicit( shared_ptr<T> const * p, int ) noexcept;
+
+  template<class T>
+    void atomic_store( shared_ptr<T> * p, shared_ptr<T> r ) noexcept;
+  template<class T>
+    void atomic_store_explicit( shared_ptr<T> * p, shared_ptr<T> r, int ) noexcept;
+
+  template<class T>
+    shared_ptr<T> atomic_exchange( shared_ptr<T> * p, shared_ptr<T> r ) noexcept;
+  template<class T>
+    shared_ptr<T> atomic_exchange_explicit(
+      shared_ptr<T> * p, shared_ptr<T> r, int ) noexcept;
+
+  template<class T>
+    bool atomic_compare_exchange(
+      shared_ptr<T> * p, shared_ptr<T> * v, shared_ptr<T> w ) noexcept;
+  template<class T>
+    bool atomic_compare_exchange_explicit(
+      shared_ptr<T> * p, shared_ptr<T> * v, shared_ptr<T> w, int, int ) noexcept;
 }
 ```
 
@@ -782,6 +806,82 @@ template<class D, class T>
 * {blank}
 +
 Returns:: If `*this` owns a deleter `d` of type (cv-unqualified) `D`, returns `&d`; otherwise returns 0.
+
+### Atomic Access
+
+NOTE: The function in this section are atomic with respect to the first `shared_ptr` argument,
+  identified by `*p`. Concurrent access to the same `shared_ptr` instance is not a data race, if
+  done exclusively by the functions in this section.
+
+```
+template<class T> bool atomic_is_lock_free( shared_ptr<T> const * p ) noexcept;
+```
+[none]
+* {blank}
++
+Returns:: `false`.
+
+NOTE: This implementation is not lock-free.
+
+```
+template<class T> shared_ptr<T> atomic_load( shared_ptr<T> const * p ) noexcept;
+```
+```
+template<class T> shared_ptr<T> atomic_load_explicit( shared_ptr<T> const * p, int ) noexcept;
+```
+[none]
+* {blank}
++
+Returns:: `*p`.
+
+NOTE: The `int` argument is the `memory_order`, but this implementation does not use it, as it's lock-based
+  and therefore always sequentially consistent.
+
+```
+template<class T>
+  void atomic_store( shared_ptr<T> * p, shared_ptr<T> r ) noexcept;
+```
+```
+template<class T>
+  void atomic_store_explicit( shared_ptr<T> * p, shared_ptr<T> r, int ) noexcept;
+```
+[none]
+* {blank}
++
+Effects:: `p\->swap(r)`.
+
+```
+template<class T>
+  shared_ptr<T> atomic_exchange( shared_ptr<T> * p, shared_ptr<T> r ) noexcept;
+```
+```
+template<class T>
+  shared_ptr<T> atomic_exchange_explicit(
+    shared_ptr<T> * p, shared_ptr<T> r, int ) noexcept;
+```
+[none]
+* {blank}
++
+Effects:: `p\->swap(r)`.
+Returns:: The old value of `*p`.
+
+```
+template<class T>
+  bool atomic_compare_exchange(
+    shared_ptr<T> * p, shared_ptr<T> * v, shared_ptr<T> w ) noexcept;
+```
+```
+template<class T>
+  bool atomic_compare_exchange_explicit(
+    shared_ptr<T> * p, shared_ptr<T> * v, shared_ptr<T> w, int, int ) noexcept;
+```
+[none]
+* {blank}
++
+Effects:: If `*p` is equivalent to `*v`, assigns `w` to `*p`, otherwise assigns `*p` to `*v`.
+Returns:: `true` if `*p` was equivalent to `*v`, `false` otherwise.
+Remarks:: Two `shared_ptr` instances are equivalent if they store the same pointer value and _share ownership_.
+
 
 ## Example
 

@@ -1090,7 +1090,7 @@ template<class T> shared_ptr<T> atomic_exchange( shared_ptr<T> * p, shared_ptr<T
     return r; // return std::move( r )
 }
 
-template<class T> shared_ptr<T> atomic_exchange_explicit( shared_ptr<T> * p, shared_ptr<T> r, /*memory_order mo*/ int ) BOOST_SP_NOEXCEPT
+template<class T> shared_ptr<T> inline atomic_exchange_explicit( shared_ptr<T> * p, shared_ptr<T> r, /*memory_order mo*/ int ) BOOST_SP_NOEXCEPT
 {
     return atomic_exchange( p, r ); // std::move( r )
 }

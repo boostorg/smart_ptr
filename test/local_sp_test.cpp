@@ -1993,6 +1993,315 @@ static void deleter_reset()
     BOOST_TEST( X::instances == 0 );
 }
 
+// allocator reset
+
+template<class T, class U> static void test_allocator_reset( boost::local_shared_ptr<U> p2 )
+{
+    T * q = new T();
+
+    bool called = false;
+
+    p2.reset( q, deleter<T>( &called ), std::allocator<T>() );
+
+    BOOST_TEST_EQ( p2.get(), q );
+    BOOST_TEST_EQ( p2.local_use_count(), 1 );
+
+    boost::shared_ptr<U> p3( p2 );
+
+    // BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
+
+    p3.reset();
+    BOOST_TEST( !called );
+
+    p2.reset();
+    BOOST_TEST( called );
+}
+
+template<class T> static void empty_allocator_reset_test()
+{
+    test_allocator_reset<T>( boost::local_shared_ptr<T>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<T volatile>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const volatile>() );
+
+    test_allocator_reset<T>( boost::local_shared_ptr<void>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<void volatile>() );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const volatile>() );
+}
+
+template<class T> static void null_allocator_reset_test()
+{
+    test_allocator_reset<T>( boost::local_shared_ptr<T>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T volatile>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const volatile>( static_cast<T*>(0) ) );
+
+    test_allocator_reset<T>( boost::local_shared_ptr<void>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void volatile>( static_cast<T*>(0) ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const volatile>( static_cast<T*>(0) ) );
+}
+
+template<class T> static void new_allocator_reset_test()
+{
+    test_allocator_reset<T>( boost::local_shared_ptr<T>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T volatile>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<T const volatile>( new T() ) );
+
+    test_allocator_reset<T>( boost::local_shared_ptr<void>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void volatile>( new T() ) );
+    test_allocator_reset<T>( boost::local_shared_ptr<void const volatile>( new T() ) );
+}
+
+static void allocator_reset()
+{
+    empty_allocator_reset_test<int>();
+    empty_allocator_reset_test<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    null_allocator_reset_test<int>();
+    null_allocator_reset_test<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    new_allocator_reset_test<int>();
+    new_allocator_reset_test<X>();
+
+    BOOST_TEST( X::instances == 0 );
+}
+
+// aliasing reset
+
+struct null_deleter
+{
+    void operator()( void const volatile* ) {}
+};
+
+template<class T, class U> void test_aliasing_reset_( boost::local_shared_ptr<T> const & p1, U * p2 )
+{
+    boost::local_shared_ptr<U> p3( static_cast<U*>(0), null_deleter() );
+
+    p3.reset( p1, p2 );
+
+    BOOST_TEST( p3.get() == p2 );
+    BOOST_TEST( p3.local_use_count() == p1.local_use_count() );
+    BOOST_TEST( !p3.owner_before( p1 ) && !p1.owner_before( p3 ) );
+}
+
+template<class T, class U> void test_01_aliasing_reset_()
+{
+    U u;
+    boost::local_shared_ptr<T> p1;
+
+    test_aliasing_reset_( p1, &u );
+}
+
+template<class T, class U> void test_01_aliasing_reset()
+{
+    test_01_aliasing_reset_<T, U>();
+    test_01_aliasing_reset_<T const, U>();
+    test_01_aliasing_reset_<T volatile, U>();
+    test_01_aliasing_reset_<T const volatile, U>();
+
+    test_01_aliasing_reset_<T, U volatile>();
+    test_01_aliasing_reset_<T const, U volatile>();
+    test_01_aliasing_reset_<T volatile, U volatile>();
+    test_01_aliasing_reset_<T const volatile, U volatile>();
+}
+
+template<class T, class U> void test_10_aliasing_reset_()
+{
+    boost::local_shared_ptr<T> p1( new T() );
+    test_aliasing_reset_( p1, static_cast<U*>(0) );
+}
+
+template<class T, class U> void test_10_aliasing_reset()
+{
+    test_10_aliasing_reset_<T, U>();
+    test_10_aliasing_reset_<T const, U>();
+    test_10_aliasing_reset_<T volatile, U>();
+    test_10_aliasing_reset_<T const volatile, U>();
+
+    test_10_aliasing_reset_<T, U const>();
+    test_10_aliasing_reset_<T const, U const>();
+    test_10_aliasing_reset_<T volatile, U const>();
+    test_10_aliasing_reset_<T const volatile, U const>();
+
+    test_10_aliasing_reset_<T, U volatile>();
+    test_10_aliasing_reset_<T const, U volatile>();
+    test_10_aliasing_reset_<T volatile, U volatile>();
+    test_10_aliasing_reset_<T const volatile, U volatile>();
+
+    test_10_aliasing_reset_<T, U const volatile>();
+    test_10_aliasing_reset_<T const, U const volatile>();
+    test_10_aliasing_reset_<T volatile, U const volatile>();
+    test_10_aliasing_reset_<T const volatile, U const volatile>();
+}
+
+template<class T, class U> void test_11_aliasing_reset_()
+{
+    U u;
+    boost::local_shared_ptr<T> p1( new T() );
+
+    test_aliasing_reset_( p1, &u );
+}
+
+template<class T, class U> void test_11_aliasing_reset()
+{
+    test_11_aliasing_reset_<T, U>();
+    test_11_aliasing_reset_<T const, U>();
+    test_11_aliasing_reset_<T volatile, U>();
+    test_11_aliasing_reset_<T const volatile, U>();
+
+    test_11_aliasing_reset_<T, U volatile>();
+    test_11_aliasing_reset_<T const, U volatile>();
+    test_11_aliasing_reset_<T volatile, U volatile>();
+    test_11_aliasing_reset_<T const volatile, U volatile>();
+}
+
+static void aliasing_reset()
+{
+    test_01_aliasing_reset<int, int>();
+    test_10_aliasing_reset<int, int>();
+    test_11_aliasing_reset<int, int>();
+
+    test_01_aliasing_reset<void, int>();
+
+    test_10_aliasing_reset<int, void>();
+
+    test_10_aliasing_reset<int, incomplete>();
+
+    test_01_aliasing_reset<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing_reset<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing_reset<X, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing_reset<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing_reset<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing_reset<int, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing_reset<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing_reset<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_11_aliasing_reset<X, int>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_01_aliasing_reset<void, X>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing_reset<X, void>();
+    BOOST_TEST( X::instances == 0 );
+
+    test_10_aliasing_reset<X, incomplete>();
+    BOOST_TEST( X::instances == 0 );
+}
+
+// element access
+
+template<class T> static void empty_element_access_()
+{
+    boost::local_shared_ptr<T> p1;
+
+    BOOST_TEST_EQ( p1.operator->(), static_cast<T*>(0) );
+    BOOST_TEST_EQ( p1.get(), static_cast<T*>(0) );
+    BOOST_TEST( p1? false: true );
+    BOOST_TEST( !p1 );
+    BOOST_TEST_EQ( p1.local_use_count(), 0 );
+}
+
+template<class T> static void empty_element_access()
+{
+    empty_element_access_<T>();
+    empty_element_access_<T const>();
+    empty_element_access_<T volatile>();
+    empty_element_access_<T const volatile>();
+}
+
+template<class T> static void new_element_access_()
+{
+    {
+        T * p0 = new T();
+        boost::local_shared_ptr<T> p1( p0 );
+
+        BOOST_TEST_EQ( p1.operator->(), p0 );
+        BOOST_TEST_EQ( p1.get(), p0 );
+        BOOST_TEST_EQ( &*p1, p0 );
+        BOOST_TEST( p1? true: false );
+        BOOST_TEST_NOT( !p1 );
+        BOOST_TEST_EQ( p1.local_use_count(), 1 );
+    }
+
+    {
+        T * p0 = new T[3]();
+        boost::local_shared_ptr<T[]> p1( p0 );
+
+        BOOST_TEST_EQ( p1.get(), p0 );
+
+        BOOST_TEST_EQ( &p1[0], &p0[0] );
+        BOOST_TEST_EQ( &p1[1], &p0[1] );
+        BOOST_TEST_EQ( &p1[2], &p0[2] );
+
+        BOOST_TEST( p1? true: false );
+        BOOST_TEST_NOT( !p1 );
+        BOOST_TEST_EQ( p1.local_use_count(), 1 );
+    }
+
+    {
+        T * p0 = new T[3]();
+        boost::local_shared_ptr<T[3]> p1( p0 );
+
+        BOOST_TEST_EQ( p1.get(), p0 );
+
+        BOOST_TEST_EQ( &p1[0], &p0[0] );
+        BOOST_TEST_EQ( &p1[1], &p0[1] );
+        BOOST_TEST_EQ( &p1[2], &p0[2] );
+
+        BOOST_TEST( p1? true: false );
+        BOOST_TEST_NOT( !p1 );
+        BOOST_TEST_EQ( p1.local_use_count(), 1 );
+    }
+}
+
+template<class T> static void new_element_access()
+{
+    new_element_access_<T>();
+    new_element_access_<T const>();
+    new_element_access_<T volatile>();
+    new_element_access_<T const volatile>();
+}
+
+static void element_access()
+{
+    empty_element_access<int>();
+    empty_element_access<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    empty_element_access<incomplete>();
+    empty_element_access<void>();
+
+    new_element_access<int>();
+    new_element_access<X>();
+
+    BOOST_TEST( X::instances == 0 );
+}
+
 // main
 
 int main()
@@ -2021,10 +2330,10 @@ int main()
     default_reset();
     pointer_reset();
     deleter_reset();
-    // allocator_reset();
-    // aliasing_reset();
+    allocator_reset();
+    aliasing_reset();
 
-    // element_access();
+    element_access();
     // swap_test();
     // owner_before_test();
     // equal_test();

@@ -226,5 +226,7 @@ import testing ;
           
           [ run make_local_shared_test.cpp ]
           [ run make_local_shared_esft_test.cpp ]
+          [ run allocate_local_shared_test.cpp ]
+          [ run allocate_local_shared_esft_test.cpp ]
         ;
 }

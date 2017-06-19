@@ -223,5 +223,8 @@ import testing ;
           [ run lsp_array_n_test.cpp ]
           [ run lsp_array_cv_test.cpp ]
           [ run lsp_array_cast_test.cpp ]
+          
+          [ run make_local_shared_test.cpp ]
+          [ run make_local_shared_esft_test.cpp ]
         ;
 }

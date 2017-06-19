@@ -9,6 +9,8 @@
 //
 
 #include <boost/smart_ptr/local_shared_ptr.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/weak_ptr.hpp>
 #include <boost/core/lightweight_test.hpp>
 
 struct X
@@ -2302,6 +2304,186 @@ static void element_access()
     BOOST_TEST( X::instances == 0 );
 }
 
+// shared_ptr conversion
+
+template<class T, class U> static void empty_shared_ptr_conversion_()
+{
+    boost::local_shared_ptr<T> p1;
+    boost::shared_ptr<U> p2( p1 );
+
+    BOOST_TEST_EQ( p2.get(), static_cast<U*>(0) );
+    BOOST_TEST_EQ( p2.use_count(), 0 );
+}
+
+template<class T> static void empty_shared_ptr_conversion()
+{
+    empty_shared_ptr_conversion_<T, T>();
+    empty_shared_ptr_conversion_<T, T const>();
+    empty_shared_ptr_conversion_<T, T volatile>();
+    empty_shared_ptr_conversion_<T, T const volatile>();
+
+    empty_shared_ptr_conversion_<T const, T const>();
+    empty_shared_ptr_conversion_<T volatile, T volatile>();
+    empty_shared_ptr_conversion_<T const volatile, T const volatile>();
+
+    empty_shared_ptr_conversion_<T, void>();
+    empty_shared_ptr_conversion_<T, void const>();
+    empty_shared_ptr_conversion_<T, void volatile>();
+    empty_shared_ptr_conversion_<T, void const volatile>();
+
+    empty_shared_ptr_conversion_<T const, void const>();
+    empty_shared_ptr_conversion_<T volatile, void volatile>();
+    empty_shared_ptr_conversion_<T const volatile, void const volatile>();
+}
+
+template<class T, class U> static void new_shared_ptr_conversion_()
+{
+    boost::local_shared_ptr<T> p1( new T() );
+    boost::shared_ptr<U> p2( p1 );
+
+    BOOST_TEST_EQ( p2.get(), p1.get() );
+    BOOST_TEST_EQ( p2.use_count(), 2 );
+
+    boost::shared_ptr<U> p3( p1 );
+
+    BOOST_TEST_EQ( p3.get(), p1.get() );
+    BOOST_TEST_EQ( p3.use_count(), 3 );
+    BOOST_TEST( !(p2 < p3) && !(p3 < p2) );
+
+    BOOST_TEST_EQ( p1.local_use_count(), 1 );
+
+    p1.reset();
+
+    BOOST_TEST_EQ( p2.use_count(), 2 );
+    BOOST_TEST_EQ( p3.use_count(), 2 );
+}
+
+template<class T> static void new_shared_ptr_conversion()
+{
+    new_shared_ptr_conversion_<T, T>();
+    new_shared_ptr_conversion_<T, T const>();
+    new_shared_ptr_conversion_<T, T volatile>();
+    new_shared_ptr_conversion_<T, T const volatile>();
+
+    new_shared_ptr_conversion_<T const, T const>();
+    new_shared_ptr_conversion_<T volatile, T volatile>();
+    new_shared_ptr_conversion_<T const volatile, T const volatile>();
+
+    new_shared_ptr_conversion_<T, void>();
+    new_shared_ptr_conversion_<T, void const>();
+    new_shared_ptr_conversion_<T, void volatile>();
+    new_shared_ptr_conversion_<T, void const volatile>();
+
+    new_shared_ptr_conversion_<T const, void const>();
+    new_shared_ptr_conversion_<T volatile, void volatile>();
+    new_shared_ptr_conversion_<T const volatile, void const volatile>();
+}
+
+static void shared_ptr_conversion()
+{
+    empty_shared_ptr_conversion<void>();
+    empty_shared_ptr_conversion<incomplete>();
+    empty_shared_ptr_conversion<int>();
+    empty_shared_ptr_conversion<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    new_shared_ptr_conversion<int>();
+    new_shared_ptr_conversion<X>();
+
+    BOOST_TEST( X::instances == 0 );
+}
+
+// weak_ptr conversion
+
+template<class T, class U> static void empty_weak_ptr_conversion_()
+{
+    boost::local_shared_ptr<T> p1;
+    boost::weak_ptr<U> p2( p1 );
+
+    BOOST_TEST_EQ( p2.lock().get(), static_cast<U*>(0) );
+    BOOST_TEST_EQ( p2.use_count(), 0 );
+}
+
+template<class T> static void empty_weak_ptr_conversion()
+{
+    empty_weak_ptr_conversion_<T, T>();
+    empty_weak_ptr_conversion_<T, T const>();
+    empty_weak_ptr_conversion_<T, T volatile>();
+    empty_weak_ptr_conversion_<T, T const volatile>();
+
+    empty_weak_ptr_conversion_<T const, T const>();
+    empty_weak_ptr_conversion_<T volatile, T volatile>();
+    empty_weak_ptr_conversion_<T const volatile, T const volatile>();
+
+    empty_weak_ptr_conversion_<T, void>();
+    empty_weak_ptr_conversion_<T, void const>();
+    empty_weak_ptr_conversion_<T, void volatile>();
+    empty_weak_ptr_conversion_<T, void const volatile>();
+
+    empty_weak_ptr_conversion_<T const, void const>();
+    empty_weak_ptr_conversion_<T volatile, void volatile>();
+    empty_weak_ptr_conversion_<T const volatile, void const volatile>();
+}
+
+template<class T, class U> static void new_weak_ptr_conversion_()
+{
+    boost::local_shared_ptr<T> p1( new T() );
+    boost::weak_ptr<U> p2( p1 );
+
+    BOOST_TEST_EQ( p2.lock().get(), p1.get() );
+    BOOST_TEST_EQ( p2.use_count(), 1 );
+
+    boost::weak_ptr<U> p3( p1 );
+
+    BOOST_TEST_EQ( p3.lock().get(), p1.get() );
+    BOOST_TEST_EQ( p3.use_count(), 1 );
+    BOOST_TEST( !(p2 < p3) && !(p3 < p2) );
+
+    BOOST_TEST_EQ( p1.local_use_count(), 1 );
+
+    p1.reset();
+
+    BOOST_TEST_EQ( p2.use_count(), 0 );
+    BOOST_TEST_EQ( p3.use_count(), 0 );
+}
+
+template<class T> static void new_weak_ptr_conversion()
+{
+    new_weak_ptr_conversion_<T, T>();
+    new_weak_ptr_conversion_<T, T const>();
+    new_weak_ptr_conversion_<T, T volatile>();
+    new_weak_ptr_conversion_<T, T const volatile>();
+
+    new_weak_ptr_conversion_<T const, T const>();
+    new_weak_ptr_conversion_<T volatile, T volatile>();
+    new_weak_ptr_conversion_<T const volatile, T const volatile>();
+
+    new_weak_ptr_conversion_<T, void>();
+    new_weak_ptr_conversion_<T, void const>();
+    new_weak_ptr_conversion_<T, void volatile>();
+    new_weak_ptr_conversion_<T, void const volatile>();
+
+    new_weak_ptr_conversion_<T const, void const>();
+    new_weak_ptr_conversion_<T volatile, void volatile>();
+    new_weak_ptr_conversion_<T const volatile, void const volatile>();
+}
+
+static void weak_ptr_conversion()
+{
+    empty_weak_ptr_conversion<void>();
+    empty_weak_ptr_conversion<incomplete>();
+    empty_weak_ptr_conversion<int>();
+    empty_weak_ptr_conversion<X>();
+
+    BOOST_TEST( X::instances == 0 );
+
+    new_weak_ptr_conversion<int>();
+    new_weak_ptr_conversion<X>();
+
+    BOOST_TEST( X::instances == 0 );
+}
+
 // main
 
 int main()
@@ -2334,9 +2516,16 @@ int main()
     aliasing_reset();
 
     element_access();
+    shared_ptr_conversion();
+    weak_ptr_conversion();
     // swap_test();
     // owner_before_test();
     // equal_test();
+    // operator< ?
+    // casts
+    // get_pointer
+    // operator<<
+    // hash
 
     return boost::report_errors();
 }

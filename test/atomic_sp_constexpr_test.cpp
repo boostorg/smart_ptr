@@ -25,7 +25,7 @@
 # undef HAVE_CONSTEXPR_INIT
 #endif
 
-#if !defined( HAVE_CONSTEXPR_INIT ) || !defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )
+#if !defined( HAVE_CONSTEXPR_INIT ) || defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )
 
 int main()
 {
@@ -33,7 +33,7 @@ int main()
 
 #else
 
-#include <boost/atomic_shared_ptr.hpp>
+#include <boost/smart_ptr/atomic_shared_ptr.hpp>
 #include <boost/core/lightweight_test.hpp>
 
 struct X
@@ -56,10 +56,10 @@ Z::Z()
 
 int main()
 {
-    bost::shared_ptr<X> p2 = p1;
+    boost::shared_ptr<X> p2 = p1;
 
     BOOST_TEST( p2.get() != 0 );
-    BOOST_TEST_EQ( p2.use_count(), 1 );
+    BOOST_TEST_EQ( p2.use_count(), 2 );
 
     return boost::report_errors();
 }

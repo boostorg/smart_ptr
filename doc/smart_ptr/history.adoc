@@ -106,3 +106,8 @@ Peter Dimov and Glen Fernandes updated the scalar and array implementations, res
 
 Glen Fernandes rewrote `allocate_shared` and `make_shared` for arrays for a more optimal and more maintainable implementation.
 
+## June 2017
+
+Peter Dimov and Glen Fernandes rewrote the documentation in Asciidoc format.
+
+Peter Dimov added `atomic_shared_ptr`.

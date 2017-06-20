@@ -146,7 +146,7 @@ template<class T, class A, class... Args> typename boost::detail::lsp_if_not_arr
     T * pt2 = static_cast< T* >( pv );
     boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
 
-    pd->pn_ = boost::shared_ptr<T>( pt, pt2 );
+    pd->pn_ = pt._internal_count();
 
     return boost::local_shared_ptr<T>( boost::detail::lsp_internal_constructor_tag(), pt2, pd );
 }
@@ -179,7 +179,7 @@ template<class T, class A> typename boost::detail::lsp_if_not_array<T>::type all
     T * pt2 = static_cast< T* >( pv );
     boost::detail::sp_enable_shared_from_this( &pt, pt2, pt2 );
 
-    pd->pn_ = boost::shared_ptr<T>( pt, pt2 );
+    pd->pn_ = pt._internal_count();
 
     return boost::local_shared_ptr<T>( boost::detail::lsp_internal_constructor_tag(), pt2, pd );
 }

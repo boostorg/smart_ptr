@@ -31,7 +31,7 @@ template< class E, class Y > inline void lsp_pointer_construct( boost::local_sha
 
     D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
 
-    pd->pn_ = p2;
+    pd->pn_ = p2._internal_count();
 
     pn = pd;
 }
@@ -46,7 +46,7 @@ template< class E, class Y > inline void lsp_pointer_construct( boost::local_sha
 
     D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
 
-    pd->pn_ = p2;
+    pd->pn_ = p2._internal_count();
 
     pn = pd;
 }
@@ -61,7 +61,7 @@ template< class E, std::size_t N, class Y > inline void lsp_pointer_construct( b
 
     D * pd = static_cast< D * >( p2._internal_get_untyped_deleter() );
 
-    pd->pn_ = p2;
+    pd->pn_ = p2._internal_count();
 
     pn = pd;
 }
@@ -74,7 +74,7 @@ template< class E, class P, class D > inline void lsp_deleter_construct( boost::
 
     D2 * pd = static_cast< D2 * >( p2._internal_get_untyped_deleter() );
 
-    pd->pn_ = p2;
+    pd->pn_ = p2._internal_count();
 
     pn = pd;
 }
@@ -87,7 +87,7 @@ template< class E, class P, class D, class A > inline void lsp_allocator_constru
 
     D2 * pd = static_cast< D2 * >( p2._internal_get_untyped_deleter() );
 
-    pd->pn_ = p2;
+    pd->pn_ = p2._internal_count();
 
     pn = pd;
 }
@@ -197,7 +197,7 @@ public:
 
         if( r.use_count() != 0 )
         {
-            pn = new boost::detail::local_counted_impl( r );
+            pn = new boost::detail::local_counted_impl( r._internal_count() );
         }
     }
 
@@ -211,7 +211,8 @@ public:
 
         if( r.use_count() != 0 )
         {
-            pn = new boost::detail::local_counted_impl( std::move(r) );
+            pn = new boost::detail::local_counted_impl( r._internal_count() );
+            r.reset();
         }
     }
 
@@ -230,7 +231,7 @@ public:
 
         if( px )
         {
-            pn = new boost::detail::local_counted_impl( shared_ptr<T>( std::move(r) ) );
+            pn = new boost::detail::local_counted_impl( shared_ptr<T>( std::move(r) )._internal_count() );
         }
     }
 
@@ -453,7 +454,7 @@ public:
 
         if( pn )
         {
-            return static_pointer_cast<Y>( pn->local_cb_get_shared_ptr() );
+            return shared_ptr<Y>( boost::detail::sp_internal_constructor_tag(), px, pn->local_cb_get_shared_count() );
         }
         else
         {
@@ -471,7 +472,7 @@ public:
 
         if( pn )
         {
-            return static_pointer_cast<Y>( pn->local_cb_get_shared_ptr() );
+            return shared_ptr<Y>( boost::detail::sp_internal_constructor_tag(), px, pn->local_cb_get_shared_count() );
         }
         else
         {

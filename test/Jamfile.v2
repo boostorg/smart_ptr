@@ -218,6 +218,8 @@ import testing ;
 
           [ run atomic_sp_constexpr_test.cpp ]
 
+          [ run shared_ptr_fn_test.cpp ]
+
           [ run get_deleter_test2.cpp ]
           [ run get_deleter_test3.cpp ]
           [ run get_deleter_array_test2.cpp ]

@@ -25,6 +25,11 @@
 # undef HAVE_CONSTEXPR_INIT
 #endif
 
+#if defined( _LIBCPP_VERSION ) && ( _LIBCPP_VERSION < 5000 )
+// in libc++, atomic_flag has a non-constexpr constructor from bool
+# undef HAVE_CONSTEXPR_INIT
+#endif
+
 #if !defined( HAVE_CONSTEXPR_INIT ) || defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )
 
 int main()

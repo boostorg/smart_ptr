@@ -766,6 +766,10 @@ public:
         return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
     }
 
+    void* get_local_deleter(const sp_typeinfo&) {
+        return 0;
+    }
+
     void* get_untyped_deleter() {
         return &reinterpret_cast<char&>(deleter_);
     }
@@ -805,6 +809,10 @@ public:
 
     void* get_deleter(const sp_typeinfo& ti) {
         return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    }
+
+    void* get_local_deleter(const sp_typeinfo&) {
+        return 0;
     }
 
     void* get_untyped_deleter() {
@@ -853,6 +861,10 @@ public:
         return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
     }
 
+    void* get_local_deleter(const sp_typeinfo&) {
+        return 0;
+    }
+
     void* get_untyped_deleter() {
         return &reinterpret_cast<char&>(deleter_);
     }
@@ -896,6 +908,10 @@ public:
 
     void* get_deleter(const sp_typeinfo& ti) {
         return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    }
+
+    void* get_local_deleter(const sp_typeinfo&) {
+        return 0;
     }
 
     void* get_untyped_deleter() {

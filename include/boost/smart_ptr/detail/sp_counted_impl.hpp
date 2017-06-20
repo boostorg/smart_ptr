@@ -26,6 +26,7 @@
 
 #include <boost/checked_delete.hpp>
 #include <boost/smart_ptr/detail/sp_counted_base.hpp>
+#include <boost/core/addressof.hpp>
 
 #if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
 #include <boost/smart_ptr/detail/quick_allocator.hpp>
@@ -54,7 +55,7 @@ namespace detail
 
 template<class D> class local_sp_deleter;
 
-template<class D> D * get_local_deleter( D * p )
+template<class D> D * get_local_deleter( D * /*p*/ )
 {
     return 0;
 }
@@ -178,7 +179,7 @@ public:
 
     virtual void * get_local_deleter( sp_typeinfo const & ti )
     {
-        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( &reinterpret_cast<char&>( del ) ): 0;
+        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( boost::addressof( del ) ): 0;
     }
 
     virtual void * get_untyped_deleter()
@@ -271,7 +272,7 @@ public:
 
     virtual void * get_local_deleter( sp_typeinfo const & ti )
     {
-        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( &reinterpret_cast<char&>( d_ ) ): 0;
+        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( boost::addressof( d_ ) ): 0;
     }
 
     virtual void * get_untyped_deleter()

@@ -70,9 +70,18 @@ public:
 #endif
 };
 
+template<> class local_sp_deleter<void>
+{
+};
+
 template<class D> D * get_local_deleter( local_sp_deleter<D> * p )
 {
-	return &p->deleter();
+    return &p->deleter();
+}
+
+inline void * get_local_deleter( local_sp_deleter<void> * /*p*/ )
+{
+    return 0;
 }
 
 } // namespace detail

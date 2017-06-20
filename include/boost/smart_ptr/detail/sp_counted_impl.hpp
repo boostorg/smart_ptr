@@ -50,6 +50,19 @@ void sp_scalar_destructor_hook( void * px, std::size_t size, void * pn );
 namespace detail
 {
 
+// get_local_deleter
+
+template<class D> class local_sp_deleter;
+
+template<class D> D * get_local_deleter( D * p )
+{
+    return 0;
+}
+
+template<class D> D * get_local_deleter( local_sp_deleter<D> * p );
+
+//
+
 template<class X> class sp_counted_impl_p: public sp_counted_base
 {
 private:
@@ -79,6 +92,11 @@ public:
     }
 
     virtual void * get_deleter( sp_typeinfo const & )
+    {
+        return 0;
+    }
+
+    virtual void * get_local_deleter( sp_typeinfo const & )
     {
         return 0;
     }
@@ -156,6 +174,11 @@ public:
     virtual void * get_deleter( sp_typeinfo const & ti )
     {
         return ti == BOOST_SP_TYPEID(D)? &reinterpret_cast<char&>( del ): 0;
+    }
+
+    virtual void * get_local_deleter( sp_typeinfo const & ti )
+    {
+        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( &reinterpret_cast<char&>( del ) ): 0;
     }
 
     virtual void * get_untyped_deleter()
@@ -244,6 +267,11 @@ public:
     virtual void * get_deleter( sp_typeinfo const & ti )
     {
         return ti == BOOST_SP_TYPEID( D )? &reinterpret_cast<char&>( d_ ): 0;
+    }
+
+    virtual void * get_local_deleter( sp_typeinfo const & ti )
+    {
+        return ti == BOOST_SP_TYPEID(D)? boost::detail::get_local_deleter( &reinterpret_cast<char&>( d_ ) ): 0;
     }
 
     virtual void * get_untyped_deleter()

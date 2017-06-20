@@ -766,6 +766,11 @@ public:
         return pn.get_deleter( ti );
     }
 
+    void * _internal_get_local_deleter( boost::detail::sp_typeinfo const & ti ) const BOOST_SP_NOEXCEPT
+    {
+        return pn.get_local_deleter( ti );
+    }
+
     void * _internal_get_untyped_deleter() const BOOST_SP_NOEXCEPT
     {
         return pn.get_untyped_deleter();
@@ -980,27 +985,13 @@ template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< (std::
 namespace detail
 {
 
-#if ( defined(__GNUC__) && BOOST_WORKAROUND(__GNUC__, < 3) ) || \
-    ( defined(__EDG_VERSION__) && BOOST_WORKAROUND(__EDG_VERSION__, <= 238) ) || \
-    ( defined(__HP_aCC) && BOOST_WORKAROUND(__HP_aCC, <= 33500) )
-
-// g++ 2.9x doesn't allow static_cast<X const *>(void *)
-// apparently EDG 2.38 and HP aCC A.03.35 also don't accept it
-
-template<class D, class T> D * basic_get_deleter(shared_ptr<T> const & p)
-{
-    void const * q = p._internal_get_deleter(BOOST_SP_TYPEID(D));
-    return const_cast<D *>(static_cast<D const *>(q));
-}
-
-#else
-
 template<class D, class T> D * basic_get_deleter( shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return static_cast<D *>( p._internal_get_deleter(BOOST_SP_TYPEID(D)) );
 }
 
-#endif
+template<class D, class T> D * basic_get_local_deleter( D *, shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT;
+template<class D, class T> D const * basic_get_local_deleter( D const *, shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT;
 
 class esft2_deleter_wrapper
 {
@@ -1035,17 +1026,22 @@ public:
 
 template<class D, class T> D * get_deleter( shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    D *del = boost::detail::basic_get_deleter<D>(p);
+    D * d = boost::detail::basic_get_deleter<D>( p );
 
-    if(del == 0)
+    if( d == 0 )
+    {
+        d = boost::detail::basic_get_local_deleter( d, p );
+    }
+
+    if( d == 0 )
     {
         boost::detail::esft2_deleter_wrapper *del_wrapper = boost::detail::basic_get_deleter<boost::detail::esft2_deleter_wrapper>(p);
 // The following get_deleter method call is fully qualified because
 // older versions of gcc (2.95, 3.2.3) fail to compile it when written del_wrapper->get_deleter<D>()
-        if(del_wrapper) del = del_wrapper->::boost::detail::esft2_deleter_wrapper::get_deleter<D>();
+        if(del_wrapper) d = del_wrapper->::boost::detail::esft2_deleter_wrapper::get_deleter<D>();
     }
 
-    return del;
+    return d;
 }
 
 // atomic access
@@ -1135,6 +1131,28 @@ template< class T > std::size_t hash_value( boost::shared_ptr<T> const & p ) BOO
 {
     return boost::hash< typename boost::shared_ptr<T>::element_type* >()( p.get() );
 }
+
+} // namespace boost
+
+#include <boost/smart_ptr/detail/local_sp_deleter.hpp>
+
+namespace boost
+{
+
+namespace detail
+{
+
+template<class D, class T> D * basic_get_local_deleter( D *, shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+{
+    return static_cast<D *>( p._internal_get_local_deleter( BOOST_SP_TYPEID(local_sp_deleter<D>) ) );
+}
+
+template<class D, class T> D const * basic_get_local_deleter( D const *, shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+{
+    return static_cast<D *>( p._internal_get_local_deleter( BOOST_SP_TYPEID(local_sp_deleter<D>) ) );
+}
+
+} // namespace detail
 
 } // namespace boost
 

@@ -12,7 +12,6 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
 #include <boost/smart_ptr/local_shared_ptr.hpp>
-#include <boost/smart_ptr/detail/local_counted_base.hpp>
 #include <boost/smart_ptr/make_shared.hpp>
 #include <boost/config.hpp>
 #include <utility>

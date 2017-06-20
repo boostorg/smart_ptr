@@ -1929,7 +1929,7 @@ template<class T, class U> static void test_deleter_reset( boost::local_shared_p
 
     boost::shared_ptr<U> p3( p2 );
 
-    // BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
+    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
 
     p3.reset();
     BOOST_TEST( !called );
@@ -2010,7 +2010,7 @@ template<class T, class U> static void test_allocator_reset( boost::local_shared
 
     boost::shared_ptr<U> p3( p2 );
 
-    // BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
+    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
 
     p3.reset();
     BOOST_TEST( !called );

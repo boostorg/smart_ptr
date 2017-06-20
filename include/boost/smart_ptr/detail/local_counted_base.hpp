@@ -17,7 +17,6 @@
 //
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
-#include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/config.hpp>
 #include <utility>
 #include <climits>

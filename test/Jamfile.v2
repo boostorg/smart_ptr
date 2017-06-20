@@ -218,12 +218,23 @@ import testing ;
 
           [ run atomic_sp_constexpr_test.cpp ]
 
+          [ run get_deleter_test2.cpp ]
+          [ run get_deleter_test3.cpp ]
+          [ run get_deleter_array_test2.cpp ]
+          [ run get_deleter_array_test3.cpp ]
+
           [ run local_sp_test.cpp ]
           [ run lsp_array_test.cpp ]
           [ run lsp_array_n_test.cpp ]
           [ run lsp_array_cv_test.cpp ]
           [ run lsp_array_cast_test.cpp ]
-          
+
+          [ run get_local_deleter_test.cpp ]
+          [ run get_local_deleter_test2.cpp ]
+          [ run get_local_deleter_test3.cpp ]
+          [ run get_local_deleter_array_test.cpp ]
+          [ run get_local_deleter_array_test2.cpp ]
+
           [ run make_local_shared_test.cpp ]
           [ run make_local_shared_esft_test.cpp ]
           [ run allocate_local_shared_test.cpp ]

@@ -28,12 +28,12 @@ template<class T> struct lsp_if_array
 
 template<class T> struct lsp_if_array<T[]>
 {
-    typedef boost::local_shared_ptr<T> type;
+    typedef boost::local_shared_ptr<T[]> type;
 };
 
 template<class T, std::size_t N> struct lsp_if_array<T[N]>
 {
-    typedef boost::local_shared_ptr<T> type;
+    typedef boost::local_shared_ptr<T[N]> type;
 };
 
 } // namespace detail

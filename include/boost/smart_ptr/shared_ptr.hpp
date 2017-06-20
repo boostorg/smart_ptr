@@ -323,6 +323,10 @@ template< class T, std::size_t N, class Y > inline void sp_deleter_construct( bo
 
 #endif // !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 
+struct sp_internal_constructor_tag
+{
+};
+
 } // namespace detail
 
 
@@ -352,6 +356,18 @@ public:
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
     BOOST_CONSTEXPR shared_ptr( boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn()
+    {
+    }
+
+#endif
+
+    BOOST_CONSTEXPR shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count const & pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
+    {
+    }
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    BOOST_CONSTEXPR shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count && pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( std::move( pn_ ) )
     {
     }
 
@@ -779,6 +795,11 @@ public:
     bool _internal_equiv( shared_ptr const & r ) const BOOST_SP_NOEXCEPT
     {
         return px == r.px && pn == r.pn;
+    }
+
+    boost::detail::shared_count _internal_count() const BOOST_NOEXCEPT
+    {
+        return pn;
     }
 
 // Tasteless as this may seem, making all members public allows member templates

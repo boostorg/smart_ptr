@@ -113,7 +113,16 @@ public:
 
 template<class T, class A, class... Args> typename boost::detail::lsp_if_not_array<T>::type allocate_local_shared( A const & a, Args&&... args )
 {
+#if !defined( BOOST_NO_CXX11_ALLOCATOR )
+
     typedef typename std::allocator_traits<A>::template rebind_alloc<T> A2;
+
+#else
+
+    typedef typename A::template rebind<T>::other A2;
+
+#endif
+
     A2 a2( a );
 
     typedef boost::detail::lsp_ms_deleter<T, A2> D;
@@ -145,7 +154,16 @@ template<class T, class A, class... Args> typename boost::detail::lsp_if_not_arr
 
 template<class T, class A> typename boost::detail::lsp_if_not_array<T>::type allocate_local_shared_noinit( A const & a )
 {
+#if !defined( BOOST_NO_CXX11_ALLOCATOR )
+
     typedef typename std::allocator_traits<A>::template rebind_alloc<T> A2;
+
+#else
+
+    typedef typename A::template rebind<T>::other A2;
+
+#endif
+
     A2 a2( a );
 
     typedef boost::detail::lsp_ms_deleter<T, A2> D;

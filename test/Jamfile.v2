@@ -218,6 +218,8 @@ import testing ;
 
           [ run atomic_sp_constexpr_test.cpp ]
 
+          [ run get_deleter_test2.cpp ]
+
           [ run local_sp_test.cpp ]
           [ run lsp_array_test.cpp ]
           [ run lsp_array_n_test.cpp ]

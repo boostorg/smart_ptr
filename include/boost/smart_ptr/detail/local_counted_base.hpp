@@ -55,9 +55,9 @@ public:
     {
     }
 
-    virtual void destroy() BOOST_SP_NOEXCEPT = 0;
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT = 0;
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT = 0;
+    virtual boost::shared_ptr<void> local_cb_get_shared_ptr() const BOOST_SP_NOEXCEPT = 0;
 
     void add_ref() BOOST_SP_NOEXCEPT
     {
@@ -78,7 +78,7 @@ public:
 
         if( local_use_count_ == 0 )
         {
-            destroy();
+            local_cb_destroy();
         }
     }
 
@@ -112,12 +112,12 @@ public:
 
 #endif
 
-    virtual void destroy() BOOST_SP_NOEXCEPT
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT
     {
         delete this;
     }
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    virtual boost::shared_ptr<void> local_cb_get_shared_ptr() const BOOST_SP_NOEXCEPT
     {
         return const_pointer_cast<void>( pn_ );
     }
@@ -129,12 +129,12 @@ public:
 
     boost::shared_ptr<void const volatile> pn_;
 
-    virtual void destroy() BOOST_SP_NOEXCEPT
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT
     {
         pn_.reset();
     }
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    virtual boost::shared_ptr<void> local_cb_get_shared_ptr() const BOOST_SP_NOEXCEPT
     {
         return const_pointer_cast<void>( pn_ );
     }

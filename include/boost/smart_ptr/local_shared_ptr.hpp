@@ -132,6 +132,10 @@ template< class E, class P, class D, class A > inline void lsp_allocator_constru
     pn = pd;
 }
 
+struct lsp_internal_constructor_tag
+{
+};
+
 } // namespace detail
 
 //
@@ -183,6 +187,11 @@ public:
     }
 
 #endif
+
+    // internal constructor, used by make_shared
+    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, T * px_, boost::detail::local_counted_base * pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
+    {
+    }
 
     template<class Y>
     explicit local_shared_ptr( Y * p ): px( p ), pn( 0 )
@@ -484,7 +493,7 @@ public:
 
         if( pn )
         {
-            return static_pointer_cast<Y>( pn->get_shared_ptr() );
+            return static_pointer_cast<Y>( pn->local_cb_get_shared_ptr() );
         }
         else
         {
@@ -502,7 +511,7 @@ public:
 
         if( pn )
         {
-            return static_pointer_cast<Y>( pn->get_shared_ptr() );
+            return static_pointer_cast<Y>( pn->local_cb_get_shared_ptr() );
         }
         else
         {

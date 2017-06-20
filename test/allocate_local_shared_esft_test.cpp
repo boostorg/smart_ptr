@@ -48,21 +48,21 @@ int X::instances = 0;
 
 int main()
 {
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>() );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -70,21 +70,43 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
+
+    {
+        boost::shared_ptr< X > px = boost::allocate_local_shared_noinit< X >( std::allocator<void>() );
+        BOOST_TEST_EQ( X::instances, 1 );
+
+        try
+        {
+            boost::shared_ptr< X > qx = px->shared_from_this();
+
+            BOOST_TEST_EQ( px, qx );
+            BOOST_TEST( !( px < qx ) && !( qx < px ) );
+
+            px.reset();
+            BOOST_TEST_EQ( X::instances, 1 );
+        }
+        catch( boost::bad_weak_ptr const& )
+        {
+            BOOST_ERROR( "px->shared_from_this() failed" );
+        }
+    }
+
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -92,21 +114,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -114,21 +136,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -136,21 +158,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -158,21 +180,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -180,21 +202,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -202,21 +224,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -224,21 +246,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -246,21 +268,21 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     {
         boost::shared_ptr< X > px = boost::allocate_local_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8, 9 );
-        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST_EQ( X::instances, 1 );
 
         try
         {
             boost::shared_ptr< X > qx = px->shared_from_this();
 
-            BOOST_TEST( px == qx );
+            BOOST_TEST_EQ( px, qx );
             BOOST_TEST( !( px < qx ) && !( qx < px ) );
 
             px.reset();
-            BOOST_TEST( X::instances == 1 );
+            BOOST_TEST_EQ( X::instances, 1 );
         }
         catch( boost::bad_weak_ptr const& )
         {
@@ -268,7 +290,7 @@ int main()
         }
     }
 
-    BOOST_TEST( X::instances == 0 );
+    BOOST_TEST_EQ( X::instances, 0 );
 
     return boost::report_errors();
 }

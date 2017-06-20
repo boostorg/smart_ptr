@@ -114,8 +114,8 @@ namespace boost {
 
     typedef /*see below*/ element_type;
 
-    shared_ptr() noexcept;
-    shared_ptr(std::nullptr_t) noexcept;
+    constexpr shared_ptr() noexcept;
+    constexpr shared_ptr(std::nullptr_t) noexcept;
 
     template<class Y> explicit shared_ptr(Y * p);
     template<class Y, class D> shared_ptr(Y * p, D d);
@@ -162,6 +162,7 @@ namespace boost {
     template<class Y, class D, class A> void reset(Y * p, D d, A a);
 
     template<class Y> void reset(shared_ptr<Y> const & r, element_type * p) noexcept;
+    template<class Y> void reset(shared_ptr<Y> && r, element_type * p) noexcept;
 
     T & operator*() const noexcept; // only valid when T is not an array type
     T * operator->() const noexcept; // only valid when T is not an array type
@@ -257,10 +258,10 @@ typedef ... element_type;
 
 ### default constructor
 ```
-shared_ptr() noexcept;
+constexpr shared_ptr() noexcept;
 ```
 ```
-shared_ptr(std::nullptr_t) noexcept;
+constexpr shared_ptr(std::nullptr_t) noexcept;
 ```
 [none]
 * {blank}
@@ -372,7 +373,7 @@ template<class Y> shared_ptr(shared_ptr<Y> const & r, element_type * p) noexcept
 [none]
 * {blank}
 +
-Effects:: constructs a shared_ptr that shares ownership with r and stores p.
+Effects:: constructs a `shared_ptr` that shares ownership with `r` and stores `p`.
 
 Postconditions:: `get() == p && use_count() == r.use_count()`.
 

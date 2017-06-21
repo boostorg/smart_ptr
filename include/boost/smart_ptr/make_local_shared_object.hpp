@@ -165,7 +165,7 @@ template<class T, class A> typename boost::detail::lsp_if_not_array<T>::type all
 
     A2 a2( a );
 
-    typedef boost::detail::lsp_ms_deleter<T, A2> D;
+    typedef boost::detail::lsp_ms_deleter< T, std::allocator<T> > D;
 
     boost::shared_ptr<T> pt( static_cast< T* >( 0 ), boost::detail::sp_inplace_tag<D>(), a2 );
 

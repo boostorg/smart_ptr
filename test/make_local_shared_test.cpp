@@ -1,14 +1,24 @@
-// allocate_shared_test.cpp
+// make_local_shared_test.cpp
 //
-// Copyright 2007-2009 Peter Dimov
+// Copyright 2007-2009, 2017 Peter Dimov
 //
 // Distributed under the Boost Software License, Version 1.0.
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 
-#include <boost/detail/lightweight_test.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
+#include <boost/config.hpp>
+
+#if defined( BOOST_NO_CXX11_RVALUE_REFERENCES ) || defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES )
+
+int main()
+{
+}
+
+#else
+
+#include <boost/core/lightweight_test.hpp>
+#include <boost/smart_ptr/make_local_shared.hpp>
+#include <boost/smart_ptr/local_shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <cstddef>
 
@@ -55,20 +65,20 @@ int X::instances = 0;
 int main()
 {
     {
-        boost::shared_ptr< int > pi = boost::allocate_shared< int >( std::allocator<int>() );
+        boost::local_shared_ptr< int > pi = boost::make_local_shared< int >();
 
         BOOST_TEST( pi.get() != 0 );
         BOOST_TEST( *pi == 0 );
     }
 
     {
-        boost::shared_ptr< int > pi = boost::allocate_shared_noinit< int >( std::allocator<int>() );
+        boost::local_shared_ptr< int > pi = boost::make_local_shared_noinit< int >();
 
         BOOST_TEST( pi.get() != 0 );
     }
 
     {
-        boost::shared_ptr< int > pi = boost::allocate_shared< int >( std::allocator<int>(), 5 );
+        boost::local_shared_ptr< int > pi = boost::make_local_shared< int >( 5 );
 
         BOOST_TEST( pi.get() != 0 );
         BOOST_TEST( *pi == 5 );
@@ -77,7 +87,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>() );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >();
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -90,7 +100,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared_noinit< X >( std::allocator<void>() );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared_noinit< X >();
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -103,7 +113,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -116,7 +126,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -129,7 +139,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -142,7 +152,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -155,7 +165,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4, 5 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -168,7 +178,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -181,7 +191,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -194,7 +204,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -207,7 +217,7 @@ int main()
     }
 
     {
-        boost::shared_ptr< X > pi = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+        boost::local_shared_ptr< X > pi = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
@@ -221,3 +231,5 @@ int main()
 
     return boost::report_errors();
 }
+
+#endif

@@ -1,16 +1,25 @@
-//  allocate_shared_esft_test.cpp
+//  make_local_shared_esft_test.cpp
 //
-//  Copyright 2007-2009 Peter Dimov
+//  Copyright 2007-2009, 2017 Peter Dimov
 //
 //  Distributed under the Boost Software License, Version 1.0.
 //  See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt
 
-#include <boost/detail/lightweight_test.hpp>
-#include <boost/make_shared.hpp>
+#include <boost/config.hpp>
+
+#if defined( BOOST_NO_CXX11_RVALUE_REFERENCES ) || defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES )
+
+int main()
+{
+}
+
+#else
+
+#include <boost/core/lightweight_test.hpp>
+#include <boost/smart_ptr/make_local_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <memory>
 
 class X: public boost::enable_shared_from_this<X>
 {
@@ -41,7 +50,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>() );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >();
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -63,7 +72,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared_noinit< X >( std::allocator<void>() );
+        boost::shared_ptr< X > px = boost::make_local_shared_noinit< X >();
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -85,7 +94,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -107,7 +116,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -129,7 +138,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -151,7 +160,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -173,7 +182,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -195,7 +204,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -217,7 +226,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -239,7 +248,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -261,7 +270,7 @@ int main()
     BOOST_TEST( X::instances == 0 );
 
     {
-        boost::shared_ptr< X > px = boost::allocate_shared< X >( std::allocator<void>(), 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+        boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -284,3 +293,5 @@ int main()
 
     return boost::report_errors();
 }
+
+#endif

@@ -24,13 +24,14 @@ deletion of the object when it is no longer needed. As such, they are examples o
 acquisition is initialization" idiom described in Bjarne Stroustrup's "The C++ Programming Language",
 3rd edition, Section 14.4, Resource Management.
 
-This library provides five smart pointer class templates:
+This library provides six smart pointer class templates:
 
 * `<<scoped_ptr,scoped_ptr>>`, used to contain ownership of a dynamically allocated object to the current scope;
 * `<<scoped_array,scoped_array>>`, which provides scoped ownership for a dynamically allocated array;
 * `<<shared_ptr,shared_ptr>>`, a versatile tool for managing shared ownership of an object or array;
 * `<<weak_ptr,weak_ptr>>`, a non-owning observer to a shared_ptr-managed object that can be promoted temporarily to shared_ptr;
-* `<<intrusive_ptr,intrusive_ptr>>`, a pointer to objects with an embedded reference count.
+* `<<intrusive_ptr,intrusive_ptr>>`, a pointer to objects with an embedded reference count;
+* `<<local_shared_ptr,local_shared_ptr>>`, providing shared ownership within a single thread.
 
 `shared_ptr` and `weak_ptr` are part of the {cpp} standard since its 2011 iteration.
 

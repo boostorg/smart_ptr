@@ -62,6 +62,12 @@ int main()
     }
 
     {
+        boost::shared_ptr< int > pi = boost::make_shared_noinit< int >();
+
+        BOOST_TEST( pi.get() != 0 );
+    }
+
+    {
         boost::shared_ptr< int > pi = boost::make_shared< int >( 5 );
 
         BOOST_TEST( pi.get() != 0 );
@@ -72,6 +78,19 @@ int main()
 
     {
         boost::shared_ptr< X > pi = boost::make_shared< X >();
+        boost::weak_ptr<X> wp( pi );
+
+        BOOST_TEST( X::instances == 1 );
+        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi->v == 0 );
+
+        pi.reset();
+
+        BOOST_TEST( X::instances == 0 );
+    }
+
+    {
+        boost::shared_ptr< X > pi = boost::make_shared_noinit< X >();
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );

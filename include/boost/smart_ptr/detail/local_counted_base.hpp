@@ -17,7 +17,7 @@
 //
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
-#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/detail/shared_count.hpp>
 #include <boost/config.hpp>
 #include <utility>
 #include <climits>
@@ -55,9 +55,9 @@ public:
     {
     }
 
-    virtual void destroy() BOOST_SP_NOEXCEPT = 0;
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT = 0;
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT = 0;
+    virtual boost::detail::shared_count local_cb_get_shared_count() const BOOST_SP_NOEXCEPT = 0;
 
     void add_ref() BOOST_SP_NOEXCEPT
     {
@@ -78,7 +78,7 @@ public:
 
         if( local_use_count_ == 0 )
         {
-            destroy();
+            local_cb_destroy();
         }
     }
 
@@ -96,30 +96,30 @@ private:
 
 private:
 
-    boost::shared_ptr<void const volatile> pn_;
+    shared_count pn_;
 
 public:
 
-    template<class T> explicit local_counted_impl( boost::shared_ptr<T> const& pn ): pn_( pn )
+    explicit local_counted_impl( shared_count const& pn ): pn_( pn )
     {
     }
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    template<class T> explicit local_counted_impl( boost::shared_ptr<T>&& pn ): pn_( std::move(pn) )
+    explicit local_counted_impl( shared_count && pn ): pn_( std::move(pn) )
     {
     }
 
 #endif
 
-    virtual void destroy() BOOST_SP_NOEXCEPT
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT
     {
         delete this;
     }
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    virtual boost::detail::shared_count local_cb_get_shared_count() const BOOST_SP_NOEXCEPT
     {
-        return const_pointer_cast<void>( pn_ );
+        return pn_;
     }
 };
 
@@ -127,16 +127,16 @@ class local_counted_impl_em: public local_counted_base
 {
 public:
 
-    boost::shared_ptr<void const volatile> pn_;
+    shared_count pn_;
 
-    virtual void destroy() BOOST_SP_NOEXCEPT
+    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT
     {
-        pn_.reset();
+        shared_count().swap( pn_ );
     }
 
-    virtual boost::shared_ptr<void> get_shared_ptr() const BOOST_SP_NOEXCEPT
+    virtual boost::detail::shared_count local_cb_get_shared_count() const BOOST_SP_NOEXCEPT
     {
-        return const_pointer_cast<void>( pn_ );
+        return pn_;
     }
 };
 

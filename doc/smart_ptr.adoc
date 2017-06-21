@@ -37,6 +37,8 @@ include::smart_ptr/intrusive_ptr.adoc[]
 
 include::smart_ptr/intrusive_ref_counter.adoc[]
 
+include::smart_ptr/local_shared_ptr.adoc[]
+
 include::smart_ptr/pointer_cast.adoc[]
 
 include::smart_ptr/pointer_to_other.adoc[]

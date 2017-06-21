@@ -8,7 +8,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/lightweight_test.hpp>
 #include <boost/smart_ptr/make_shared.hpp>
 
-template<class T>
+template<class T = void>
 struct creator {
     typedef T value_type;
 
@@ -82,37 +82,37 @@ int main()
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared<type[6]>(creator<type>());
+        boost::allocate_shared<type[6]>(creator<>());
         BOOST_ERROR("allocate_shared did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared<type[3][2]>(creator<type>());
+        boost::allocate_shared<type[3][2]>(creator<>());
         BOOST_ERROR("allocate_shared did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared_noinit<type[]>(creator<type>(), 6);
+        boost::allocate_shared_noinit<type[]>(creator<>(), 6);
         BOOST_ERROR("allocate_shared_noinit did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared_noinit<type[][2]>(creator<type>(), 3);
+        boost::allocate_shared_noinit<type[][2]>(creator<>(), 3);
         BOOST_ERROR("allocate_shared_noinit did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared_noinit<type[6]>(creator<type>());
+        boost::allocate_shared_noinit<type[6]>(creator<>());
         BOOST_ERROR("allocate_shared_noinit did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);
     }
     try {
-        boost::allocate_shared_noinit<type[3][2]>(creator<type>());
+        boost::allocate_shared_noinit<type[3][2]>(creator<>());
         BOOST_ERROR("allocate_shared_noinit did not throw");
     } catch (...) {
         BOOST_TEST(type::instances == 0);

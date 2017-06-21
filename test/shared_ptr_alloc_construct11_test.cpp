@@ -14,7 +14,7 @@ struct counters {
     unsigned construct;
 };
 
-template<class T>
+template<class T = void>
 class creator {
 public:
     typedef T value_type;
@@ -101,7 +101,7 @@ int main()
     {
         counters state = { };
         boost::shared_ptr<int[]> pointer =
-            boost::allocate_shared<int[]>(creator<int>(&state), 5);
+            boost::allocate_shared<int[]>(creator<>(&state), 5);
         BOOST_TEST(state.allocate == 1);
         BOOST_TEST(state.construct == 5);
         pointer.reset();
@@ -111,7 +111,7 @@ int main()
     {
         counters state = { };
         boost::shared_ptr<int[5]> pointer =
-            boost::allocate_shared<int[5]>(creator<int>(&state));
+            boost::allocate_shared<int[5]>(creator<>(&state));
         BOOST_TEST(state.allocate == 1);
         BOOST_TEST(state.construct == 5);
         pointer.reset();

@@ -11,7 +11,7 @@ Distributed under the Boost Software License, Version 1.0.
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
 struct allow { };
 
-template<class T>
+template<class T = void>
 struct creator {
     typedef T value_type;
 
@@ -100,7 +100,7 @@ int main()
     }
     {
         boost::shared_ptr<type[][2]> result =
-            boost::allocate_shared<type[][2]>(creator<type>(), 2);
+            boost::allocate_shared<type[][2]>(creator<>(), 2);
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 4);
@@ -109,7 +109,7 @@ int main()
     }
     {
         boost::shared_ptr<type[2][2]> result =
-            boost::allocate_shared<type[2][2]>(creator<type>());
+            boost::allocate_shared<type[2][2]>(creator<>());
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 4);
@@ -118,7 +118,7 @@ int main()
     }
     {
         boost::shared_ptr<const type[]> result =
-            boost::allocate_shared<const type[]>(creator<type>(), 3);
+            boost::allocate_shared<const type[]>(creator<>(), 3);
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 3);
@@ -127,7 +127,7 @@ int main()
     }
     {
         boost::shared_ptr<const type[3]> result =
-            boost::allocate_shared<const type[3]>(creator<type>());
+            boost::allocate_shared<const type[3]>(creator<>());
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 3);
@@ -136,7 +136,7 @@ int main()
     }
     {
         boost::shared_ptr<const type[][2]> result =
-            boost::allocate_shared<const type[][2]>(creator<type>(), 2);
+            boost::allocate_shared<const type[][2]>(creator<>(), 2);
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 4);
@@ -145,7 +145,7 @@ int main()
     }
     {
         boost::shared_ptr<const type[2][2]> result =
-            boost::allocate_shared<const type[2][2]>(creator<type>());
+            boost::allocate_shared<const type[2][2]>(creator<>());
         BOOST_TEST(result.get() != 0);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(type::instances == 4);

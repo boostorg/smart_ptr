@@ -9,7 +9,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/smart_ptr/enable_shared_from_this.hpp>
 #include <boost/smart_ptr/make_shared.hpp>
 
-template<class T>
+template<class T = void>
 struct creator {
     typedef T value_type;
 
@@ -82,7 +82,7 @@ int main()
     BOOST_TEST(type::instances == 0);
     {
         boost::shared_ptr<type[]> result =
-            boost::allocate_shared_noinit<type[]>(creator<type>(), 3);
+            boost::allocate_shared_noinit<type[]>(creator<>(), 3);
         try {
             result[0].shared_from_this();
             BOOST_ERROR("shared_from_this did not throw");

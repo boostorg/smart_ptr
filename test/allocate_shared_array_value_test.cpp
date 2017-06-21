@@ -8,7 +8,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/lightweight_test.hpp>
 #include <boost/smart_ptr/make_shared.hpp>
 
-template<class T>
+template<class T = void>
 struct creator {
     typedef T value_type;
 
@@ -65,7 +65,7 @@ int main()
     }
     {
         boost::shared_ptr<const int[]> result =
-            boost::allocate_shared<const int[]>(creator<int>(), 4, 1);
+            boost::allocate_shared<const int[]>(creator<>(), 4, 1);
         BOOST_TEST(result[0] == 1);
         BOOST_TEST(result[1] == 1);
         BOOST_TEST(result[2] == 1);
@@ -73,7 +73,7 @@ int main()
     }
     {
         boost::shared_ptr<const int[4]> result =
-            boost::allocate_shared<const int[4]>(creator<int>(), 1);
+            boost::allocate_shared<const int[4]>(creator<>(), 1);
         BOOST_TEST(result[0] == 1);
         BOOST_TEST(result[1] == 1);
         BOOST_TEST(result[2] == 1);

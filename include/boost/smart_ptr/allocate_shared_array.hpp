@@ -9,7 +9,6 @@ Distributed under the Boost Software License, Version 1.0.
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_copy.hpp>
@@ -112,7 +111,7 @@ struct sp_array_count<T[]> { };
 
 template<class D, class T>
 inline D*
-sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_SP_NOEXCEPT
+sp_get_deleter(const boost::shared_ptr<T>& value) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return static_cast<D*>(value._internal_get_untyped_deleter());
 }
@@ -648,7 +647,8 @@ public:
           size_(size) { }
 
     template<class U>
-    sp_array_allocator(const sp_array_allocator<T, U>& other) BOOST_SP_NOEXCEPT
+    sp_array_allocator(const sp_array_allocator<T, U>& other)
+        BOOST_SP_NOEXCEPT
         : allocator_(other.allocator_),
           size_(other.size_),
           result_(other.result_) { }
@@ -762,8 +762,9 @@ public:
         allocator.deallocate(this, 1);
     }
 
-    void* get_deleter(const sp_typeinfo& ti) {
-        return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    void* get_deleter(const sp_typeinfo& info) {
+        return info == BOOST_SP_TYPEID(deleter_type) ?
+            &reinterpret_cast<char&>(deleter_) : 0;
     }
 
     void* get_local_deleter(const sp_typeinfo&) {
@@ -807,8 +808,9 @@ public:
         allocator.deallocate(this, 1);
     }
 
-    void* get_deleter(const sp_typeinfo& ti) {
-        return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    void* get_deleter(const sp_typeinfo& info) {
+        return info == BOOST_SP_TYPEID(deleter_type) ?
+            &reinterpret_cast<char&>(deleter_) : 0;
     }
 
     void* get_local_deleter(const sp_typeinfo&) {
@@ -857,8 +859,9 @@ public:
         allocator.deallocate(this, 1);
     }
 
-    void* get_deleter(const sp_typeinfo& ti) {
-        return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    void* get_deleter(const sp_typeinfo& info) {
+        return info == BOOST_SP_TYPEID(deleter_type) ?
+            &reinterpret_cast<char&>(deleter_) : 0;
     }
 
     void* get_local_deleter(const sp_typeinfo&) {
@@ -906,8 +909,9 @@ public:
         allocator.deallocate(this, 1);
     }
 
-    void* get_deleter(const sp_typeinfo& ti) {
-        return ti == BOOST_SP_TYPEID(deleter_type)? &reinterpret_cast<char&>(deleter_): 0;
+    void* get_deleter(const sp_typeinfo& info) {
+        return info == BOOST_SP_TYPEID(deleter_type) ?
+            &reinterpret_cast<char&>(deleter_) : 0;
     }
 
     void* get_local_deleter(const sp_typeinfo&) {

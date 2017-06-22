@@ -125,6 +125,13 @@ public:
     {
     }
 
+    BOOST_CONSTEXPR explicit shared_count( sp_counted_base * pi ): pi_( pi ) // nothrow
+#if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
+        , id_(shared_count_id)
+#endif
+    {
+    }
+
     template<class Y> explicit shared_count( Y * p ): pi_( 0 )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)

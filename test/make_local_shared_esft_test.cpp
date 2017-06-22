@@ -51,6 +51,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >();
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -73,6 +74,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared_noinit< X >();
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -95,6 +97,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -117,6 +120,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -139,6 +143,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -161,6 +166,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -183,6 +189,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -205,6 +212,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -227,6 +235,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -249,6 +258,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try
@@ -271,6 +281,7 @@ int main()
 
     {
         boost::shared_ptr< X > px = boost::make_local_shared< X >( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+        BOOST_TEST( px.use_count() == 1 );
         BOOST_TEST( X::instances == 1 );
 
         try

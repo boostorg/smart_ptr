@@ -62,12 +62,20 @@ public:
 
 int X::instances = 0;
 
+template<class T> static long use_count( boost::local_shared_ptr<T> const & p )
+{
+    return boost::shared_ptr<T>( p ).use_count() - 1;
+}
+
 int main()
 {
     {
         boost::local_shared_ptr< int > pi = boost::make_local_shared< int >();
 
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
+
         BOOST_TEST( *pi == 0 );
     }
 
@@ -81,6 +89,9 @@ int main()
         boost::local_shared_ptr< int > pi = boost::make_local_shared< int >( 5 );
 
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
+
         BOOST_TEST( *pi == 5 );
     }
 
@@ -92,6 +103,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 0 );
 
         pi.reset();
@@ -105,6 +118,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 0 );
 
         pi.reset();
@@ -118,6 +133,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1 );
 
         pi.reset();
@@ -131,6 +148,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2 );
 
         pi.reset();
@@ -144,6 +163,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3 );
 
         pi.reset();
@@ -157,6 +178,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4 );
 
         pi.reset();
@@ -170,6 +193,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5 );
 
         pi.reset();
@@ -183,6 +208,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6 );
 
         pi.reset();
@@ -196,6 +223,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7 );
 
         pi.reset();
@@ -209,6 +238,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7+8 );
 
         pi.reset();
@@ -222,6 +253,8 @@ int main()
 
         BOOST_TEST( X::instances == 1 );
         BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.local_use_count() == 1 );
+        BOOST_TEST( use_count( pi ) == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7+8+9 );
 
         pi.reset();

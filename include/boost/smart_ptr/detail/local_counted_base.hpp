@@ -20,7 +20,6 @@
 #include <boost/smart_ptr/detail/shared_count.hpp>
 #include <boost/config.hpp>
 #include <utility>
-#include <climits>
 
 namespace boost
 {
@@ -37,7 +36,7 @@ private:
 private:
 
     // not 'int' or 'unsigned' to avoid aliasing and enable optimizations
-    enum count_type { min_ = 0, initial_ = 1, max_ = UINT_MAX };
+    enum count_type { min_ = 0, initial_ = 1, max_ = 2147483647 };
 
     count_type local_use_count_;
 

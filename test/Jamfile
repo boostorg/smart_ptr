@@ -242,6 +242,20 @@ run make_local_shared_esft_test.cpp ;
 run allocate_local_shared_test.cpp ;
 run allocate_local_shared_esft_test.cpp ;
 
+run make_local_shared_array_test.cpp ;
+run make_local_shared_arrays_test.cpp : : : <toolset>gcc-4.6.3_0x:<cxxflags>-fno-deduce-init-list ;
+run make_local_shared_array_throws_test.cpp ;
+run make_local_shared_array_esft_test.cpp ;
+run make_local_shared_array_noinit_test.cpp ;
+run make_local_shared_array_value_test.cpp ;
+run allocate_local_shared_array_test.cpp ;
+run allocate_local_shared_arrays_test.cpp : : : <toolset>gcc-4.6.3_0x:<cxxflags>-fno-deduce-init-list ;
+run allocate_local_shared_array_throws_test.cpp ;
+run allocate_local_shared_array_esft_test.cpp ;
+run allocate_local_shared_array_noinit_test.cpp ;
+run allocate_local_shared_array_value_test.cpp ;
+run allocate_local_shared_array_construct_test.cpp ;
+
 run local_sp_fn_test.cpp ;
 run lsp_convertible_test.cpp ;
 run lsp_convertible_test2.cpp ;

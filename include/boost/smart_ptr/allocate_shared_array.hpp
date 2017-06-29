@@ -502,6 +502,10 @@ public:
             state_.size());
     }
 
+    T& state() BOOST_SP_NOEXCEPT {
+        return state_;
+    }
+
     virtual void dispose() {
         sp_array_destroy<E>(state_.allocator(), sp_array_start<type>(this),
             state_.size());

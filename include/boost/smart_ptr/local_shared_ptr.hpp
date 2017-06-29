@@ -149,7 +149,7 @@ public:
 #endif
 
     // internal constructor, used by make_shared
-    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, T * px_, boost::detail::local_counted_base * pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
+    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
     {
     }
 

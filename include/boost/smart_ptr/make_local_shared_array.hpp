@@ -1,63 +1,67 @@
-#ifndef BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP_INCLUDED
-#define BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP_INCLUDED
+/*
+Copyright 2017 Peter Dimov
+Copyright 2017 Glen Joseph Fernandes
+(glenjofe@gmail.com)
 
-//  make_local_shared_array.hpp
-//
-//  Copyright 2017 Peter Dimov
-//
-//  Distributed under the Boost Software License, Version 1.0.
-//  See accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt
-//
-//  See http://www.boost.org/libs/smart_ptr/ for documentation.
+Distributed under the Boost Software License, Version 1.0.
+(http://www.boost.org/LICENSE_1_0.txt)
+*/
+#ifndef BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP
+#define BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP
 
-#include <boost/config.hpp>
-#include <boost/smart_ptr/make_shared.hpp>
-#include <utility>
-#include <cstddef>
+#include <boost/smart_ptr/allocate_local_shared_array.hpp>
 
-namespace boost
+namespace boost {
+
+template<class T>
+inline typename detail::lsp_if_size_array<T>::type
+make_local_shared()
 {
-
-namespace detail
-{
-
-template<class T> struct lsp_if_array
-{
-};
-
-template<class T> struct lsp_if_array<T[]>
-{
-    typedef boost::local_shared_ptr<T[]> type;
-};
-
-template<class T, std::size_t N> struct lsp_if_array<T[N]>
-{
-    typedef boost::local_shared_ptr<T[N]> type;
-};
-
-} // namespace detail
-
-template<class T, class... Args> typename boost::detail::lsp_if_array<T>::type make_local_shared( Args&&... args )
-{
-    return boost::make_shared<T>( std::forward<Args>(args)... );
+    return boost::allocate_local_shared<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>());
 }
 
-template<class T, class... Args> typename boost::detail::lsp_if_array<T>::type make_local_shared_noinit( Args&&... args )
+template<class T>
+inline typename detail::lsp_if_size_array<T>::type
+make_local_shared(const typename detail::sp_array_element<T>::type& value)
 {
-    return boost::make_shared_noinit<T>( std::forward<Args>(args)... );
+    return boost::allocate_local_shared<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>(), value);
 }
 
-template<class T, class A, class... Args> typename boost::detail::lsp_if_array<T>::type allocate_local_shared( A const & a, Args&&... args )
+template<class T>
+inline typename detail::lsp_if_array<T>::type
+make_local_shared(std::size_t size)
 {
-    return boost::allocate_shared<T>( a, std::forward<Args>(args)... );
+    return boost::allocate_local_shared<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>(), size);
 }
 
-template<class T, class A, class... Args> typename boost::detail::lsp_if_array<T>::type allocate_local_shared_noinit( A const & a, Args&&... args )
+template<class T>
+inline typename detail::lsp_if_array<T>::type
+make_local_shared(std::size_t size,
+    const typename detail::sp_array_element<T>::type& value)
 {
-    return boost::allocate_shared_noinit<T>( a, std::forward<Args>(args)... );
+    return boost::allocate_local_shared<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>(), size, value);
 }
 
-} // namespace boost
+template<class T>
+inline typename detail::lsp_if_size_array<T>::type
+make_local_shared_noinit()
+{
+    return allocate_local_shared_noinit<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>());
+}
 
-#endif // #ifndef BOOST_SMART_PTR_MAKE_SHARED_OBJECT_HPP_INCLUDED
+template<class T>
+inline typename detail::lsp_if_array<T>::type
+make_local_shared_noinit(std::size_t size)
+{
+    return allocate_local_shared_noinit<T>(std::allocator<typename
+        detail::sp_array_scalar<T>::type>(), size);
+}
+
+} /* boost */
+
+#endif

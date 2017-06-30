@@ -34,7 +34,7 @@ class lsp_array_base
     : public local_counted_base {
 public:
     void set(sp_counted_base* base) BOOST_SP_NOEXCEPT {
-        shared_count(base).swap(count_);
+        count_ = shared_count(base);
     }
 
     virtual void local_cb_destroy() BOOST_SP_NOEXCEPT {
@@ -55,7 +55,8 @@ class lsp_array_state
 public:
     typedef A type;
 
-    lsp_array_state(const A& allocator, std::size_t size) BOOST_SP_NOEXCEPT
+    template<class U>
+    lsp_array_state(const U& allocator, std::size_t size) BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           size_(size) { }
 
@@ -78,7 +79,8 @@ class lsp_size_array_state
 public:
     typedef A type;
 
-    lsp_size_array_state(const A& allocator, std::size_t) BOOST_SP_NOEXCEPT
+    template<class U>
+    lsp_size_array_state(const U& allocator, std::size_t) BOOST_SP_NOEXCEPT
         : allocator_(allocator) { }
 
     A& allocator() BOOST_SP_NOEXCEPT {
@@ -107,36 +109,36 @@ allocate_local_shared(const A& allocator, std::size_t count)
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
-    ::new(static_cast<void*>(node)) base(allocator, size);
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(allocator, size, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 template<class T, class A>
 inline typename detail::lsp_if_size_array<T>::type
 allocate_local_shared(const A& allocator)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::lsp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
-    ::new(static_cast<void*>(node)) base(allocator, size);
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(allocator, size, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 template<class T, class A>
@@ -152,15 +154,15 @@ allocate_local_shared(const A& allocator, std::size_t count,
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
-        detail::sp_array_count<type>::value);
+        detail::sp_array_count<type>::value, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 template<class T, class A>
@@ -168,25 +170,25 @@ inline typename detail::lsp_if_size_array<T>::type
 allocate_local_shared(const A& allocator,
     const typename detail::sp_array_element<T>::type& value)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::lsp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
-        detail::sp_array_count<type>::value);
+        detail::sp_array_count<type>::value, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 template<class T, class A>
@@ -201,38 +203,38 @@ allocate_local_shared_noinit(const A& allocator, std::size_t count)
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
-    ::new(static_cast<void*>(node)) base(detail::sp_default(),
-        allocator, size);
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
+        size, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 template<class T, class A>
 inline typename detail::lsp_if_size_array<T>::type
 allocate_local_shared_noinit(const A& allocator)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::lsp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state, false> base;
     detail::sp_array_result<other, base> result(allocator, size);
     base* node = result.get();
-    ::new(static_cast<void*>(node)) base(detail::sp_default(),
-        allocator, size);
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
+        size, start);
     detail::lsp_array_base& local = node->state();
     local.set(node);
-    void* start = detail::sp_array_start<scalar>(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
-        static_cast<type*>(start), &local);
+        reinterpret_cast<type*>(start), &local);
 }
 
 } /* boost */

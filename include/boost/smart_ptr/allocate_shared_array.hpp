@@ -353,7 +353,8 @@ class sp_array_state {
 public:
     typedef A type;
 
-    sp_array_state(const A& allocator, std::size_t size) BOOST_SP_NOEXCEPT
+    template<class U>
+    sp_array_state(const U& allocator, std::size_t size) BOOST_SP_NOEXCEPT
         : allocator_(allocator),
           size_(size) { }
 
@@ -375,7 +376,8 @@ class sp_size_array_state {
 public:
     typedef A type;
 
-    sp_size_array_state(const A& allocator, std::size_t) BOOST_SP_NOEXCEPT
+    template<class U>
+    sp_size_array_state(const U& allocator, std::size_t) BOOST_SP_NOEXCEPT
         : allocator_(allocator) { }
 
     A& allocator() BOOST_SP_NOEXCEPT {
@@ -429,13 +431,21 @@ struct sp_array_offset {
 };
 
 template<class T, class U>
-inline T*
-sp_array_start(U* base) BOOST_SP_NOEXCEPT
+struct sp_array_storage {
+    enum {
+        value = sp_array_alignment<T, U>::value
+    };
+    typedef typename boost::type_with_alignment<value>::type type;
+};
+
+template<class T, class U>
+inline U*
+sp_array_start(void* base) BOOST_SP_NOEXCEPT
 {
     enum {
-        size = sp_array_offset<U, T>::value
+        size = sp_array_offset<T, U>::value
     };
-    return reinterpret_cast<T*>(reinterpret_cast<char*>(base) + size);
+    return reinterpret_cast<U*>(static_cast<char*>(base) + size);
 }
 
 template<class A, class T>
@@ -443,13 +453,10 @@ class sp_array_creator {
     typedef typename A::value_type scalar;
 
     enum {
-        alignment = sp_array_alignment<T, scalar>::value
-    };
-    enum {
         offset = sp_array_offset<T, scalar>::value
     };
 
-    typedef typename boost::type_with_alignment<alignment>::type type;
+    typedef typename sp_array_storage<T, scalar>::type type;
 
 public:
     template<class U>
@@ -481,25 +488,23 @@ public:
     typedef typename allocator::value_type type;
 
     template<class A>
-    sp_array_base(const A& other, std::size_t size)
+    sp_array_base(const A& other, std::size_t size, type* start)
         : state_(other, size) {
-        sp_array_construct<E>(state_.allocator(), sp_array_start<type>(this),
-            state_.size());
+        sp_array_construct<E>(state_.allocator(), start, state_.size());
     }
 
     template<class A>
     sp_array_base(const A& other, std::size_t size, const type* list,
-        std::size_t count)
+        std::size_t count, type* start)
         : state_(other, size) {
-        sp_array_construct<E>(state_.allocator(), sp_array_start<type>(this),
-            state_.size(), list, count);
+        sp_array_construct<E>(state_.allocator(), start, state_.size(), list,
+            count);
     }
 
     template<class A>
-    sp_array_base(sp_default, const A& other, std::size_t size)
+    sp_array_base(sp_default, const A& other, std::size_t size, type* start)
         : state_(other, size) {
-        sp_array_default(state_.allocator(), sp_array_start<type>(this),
-            state_.size());
+        sp_array_default(state_.allocator(), start, state_.size());
     }
 
     T& state() BOOST_SP_NOEXCEPT {
@@ -507,8 +512,8 @@ public:
     }
 
     virtual void dispose() {
-        sp_array_destroy<E>(state_.allocator(), sp_array_start<type>(this),
-            state_.size());
+        sp_array_destroy<E>(state_.allocator(),
+            sp_array_start<sp_array_base, type>(this), state_.size());
     }
 
     virtual void destroy() {
@@ -552,10 +557,8 @@ public:
         return result_;
     }
 
-    T* release() {
-        T* value = result_;
+    void release() {
         result_ = 0;
-        return value;
     }
 
 private:
@@ -579,33 +582,33 @@ allocate_shared(const A& allocator, std::size_t count)
     typedef detail::sp_array_base<state> base;
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
-    ::new(static_cast<void*>(node)) base(allocator, size);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(allocator, size, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 template<class T, class A>
 inline typename detail::sp_if_size_array<T>::type
 allocate_shared(const A& allocator)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::sp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
-    ::new(static_cast<void*>(node)) base(allocator, size);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(allocator, size, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 template<class T, class A>
@@ -620,14 +623,14 @@ allocate_shared(const A& allocator, std::size_t count,
     typedef detail::sp_array_base<state> base;
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
-        detail::sp_array_count<type>::value);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+        detail::sp_array_count<type>::value, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 template<class T, class A>
@@ -635,23 +638,23 @@ inline typename detail::sp_if_size_array<T>::type
 allocate_shared(const A& allocator,
     const typename detail::sp_array_element<T>::type& value)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::sp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
-        detail::sp_array_count<type>::value);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+        detail::sp_array_count<type>::value, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 template<class T, class A>
@@ -665,35 +668,35 @@ allocate_shared_noinit(const A& allocator, std::size_t count)
     typedef detail::sp_array_base<state, false> base;
     std::size_t size = count * detail::sp_array_count<type>::value;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
-    ::new(static_cast<void*>(node)) base(detail::sp_default(),
-        allocator, size);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
+        size, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 template<class T, class A>
 inline typename detail::sp_if_size_array<T>::type
 allocate_shared_noinit(const A& allocator)
 {
-    typedef typename detail::sp_array_element<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     enum {
         size = detail::sp_array_count<T>::value
     };
+    typedef typename detail::sp_array_element<T>::type type;
+    typedef typename detail::sp_array_scalar<T>::type scalar;
+    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
     typedef detail::sp_size_array_state<other, size> state;
     typedef detail::sp_array_base<state, false> base;
     detail::sp_array_result<other, base> result(allocator, size);
-    base* node = result.get();
-    ::new(static_cast<void*>(node)) base(detail::sp_default(),
-        allocator, size);
-    void* start = detail::sp_array_start<scalar>(node);
-    detail::sp_counted_base* next = result.release();
+    detail::sp_counted_base* node = result.get();
+    scalar* start = detail::sp_array_start<base, scalar>(node);
+    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
+        size, start);
+    result.release();
     return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        static_cast<type*>(start), detail::shared_count(next));
+        reinterpret_cast<type*>(start), detail::shared_count(node));
 }
 
 } /* boost */

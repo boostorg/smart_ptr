@@ -51,48 +51,34 @@ private:
 
 template<class A>
 class lsp_array_state
-    : public lsp_array_base {
+    : public sp_array_state<A> {
 public:
-    typedef A type;
-
     template<class U>
-    lsp_array_state(const U& allocator, std::size_t size) BOOST_SP_NOEXCEPT
-        : allocator_(allocator),
-          size_(size) { }
+    lsp_array_state(const U& other, std::size_t size) BOOST_SP_NOEXCEPT
+        : sp_array_state<A>(other, size) { }
 
-    A& allocator() BOOST_SP_NOEXCEPT {
-        return allocator_;
-    }
-
-    std::size_t size() const BOOST_SP_NOEXCEPT {
-        return size_;
+    lsp_array_base& base() BOOST_SP_NOEXCEPT {
+        return base_;
     }
 
 private:
-    A allocator_;
-    std::size_t size_;
+    lsp_array_base base_;
 };
 
 template<class A, std::size_t N>
 class lsp_size_array_state
-    : public lsp_array_base {
+    : public sp_size_array_state<A, N> {
 public:
-    typedef A type;
-
     template<class U>
-    lsp_size_array_state(const U& allocator, std::size_t) BOOST_SP_NOEXCEPT
-        : allocator_(allocator) { }
+    lsp_size_array_state(const U& other, std::size_t size) BOOST_SP_NOEXCEPT
+        : sp_size_array_state<A, N>(other, size) { }
 
-    A& allocator() BOOST_SP_NOEXCEPT {
-        return allocator_;
-    }
-
-    BOOST_CONSTEXPR std::size_t size() const BOOST_SP_NOEXCEPT {
-        return N;
+    lsp_array_base& base() BOOST_SP_NOEXCEPT {
+        return base_;
     }
 
 private:
-    A allocator_;
+    lsp_array_base base_;
 };
 
 } /* detail */
@@ -111,7 +97,7 @@ allocate_local_shared(const A& allocator, std::size_t count)
     base* node = result.get();
     scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
@@ -134,7 +120,7 @@ allocate_local_shared(const A& allocator)
     base* node = result.get();
     scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(allocator, size, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
@@ -158,7 +144,7 @@ allocate_local_shared(const A& allocator, std::size_t count,
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
         detail::sp_array_count<type>::value, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
@@ -184,7 +170,7 @@ allocate_local_shared(const A& allocator,
     ::new(static_cast<void*>(node)) base(allocator, size,
         reinterpret_cast<const scalar*>(&value),
         detail::sp_array_count<type>::value, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
@@ -206,7 +192,7 @@ allocate_local_shared_noinit(const A& allocator, std::size_t count)
     scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
         size, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),
@@ -230,7 +216,7 @@ allocate_local_shared_noinit(const A& allocator)
     scalar* start = detail::sp_array_start<base, scalar>(node);
     ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
         size, start);
-    detail::lsp_array_base& local = node->state();
+    detail::lsp_array_base& local = node->state().base();
     local.set(node);
     result.release();
     return local_shared_ptr<T>(detail::lsp_internal_constructor_tag(),

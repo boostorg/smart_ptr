@@ -10,8 +10,8 @@ Distributed under the Boost Software License, Version 1.0.
 
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/type_traits/alignment_of.hpp>
+#include <boost/type_traits/has_trivial_assign.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
-#include <boost/type_traits/has_trivial_copy.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 
@@ -154,99 +154,103 @@ sp_array_destroy(A&, T*, std::size_t) BOOST_SP_NOEXCEPT { }
 template<bool E, class A, class T>
 inline typename sp_enable<!E &&
     !boost::has_trivial_destructor<T>::value>::type
-sp_array_destroy(A&, T* storage, std::size_t size)
+sp_array_destroy(A&, T* start, std::size_t size)
 {
     while (size > 0) {
-        storage[--size].~T();
+        start[--size].~T();
     }
 }
 
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
 template<bool E, class A, class T>
 inline typename sp_enable<E>::type
-sp_array_destroy(A& allocator, T* storage, std::size_t size)
+sp_array_destroy(A& allocator, T* start, std::size_t size)
 {
     while (size > 0) {
-        std::allocator_traits<A>::destroy(allocator, storage + --size);
+        std::allocator_traits<A>::destroy(allocator, start + --size);
     }
 }
 #endif
 
-#if !defined(BOOST_NO_EXCEPTIONS)
 template<bool E, class A, class T>
 inline typename sp_enable<!E &&
-    (boost::has_trivial_constructor<T>::value ||
-    boost::has_trivial_destructor<T>::value)>::type
-sp_array_construct(A&, T* storage, std::size_t size)
+    boost::has_trivial_constructor<T>::value &&
+    boost::has_trivial_assign<T>::value>::type
+sp_array_construct(A&, T* start, std::size_t size)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T();
+        start[i] = T();
     }
 }
 
 template<bool E, class A, class T>
 inline typename sp_enable<!E &&
-    !boost::has_trivial_constructor<T>::value &&
-    !boost::has_trivial_destructor<T>::value>::type
-sp_array_construct(A& none, T* storage, std::size_t size)
+    boost::has_trivial_constructor<T>::value &&
+    boost::has_trivial_assign<T>::value>::type
+sp_array_construct(A&, T* start, std::size_t size, const T* list,
+    std::size_t count)
+{
+    for (std::size_t i = 0; i < size; ++i) {
+        start[i] = list[i % count];
+    }
+}
+
+#if !defined(BOOST_NO_EXCEPTIONS)
+template<bool E, class A, class T>
+inline typename sp_enable<!E &&
+    !(boost::has_trivial_constructor<T>::value &&
+      boost::has_trivial_assign<T>::value)>::type
+sp_array_construct(A& none, T* start, std::size_t size)
 {
     std::size_t i = 0;
     try {
         for (; i < size; ++i) {
-            ::new(static_cast<void*>(storage + i)) T();
+            ::new(static_cast<void*>(start + i)) T();
         }
     } catch (...) {
-        sp_array_destroy<E>(none, storage, i);
+        sp_array_destroy<E>(none, start, i);
         throw;
     }
 }
 
 template<bool E, class A, class T>
 inline typename sp_enable<!E &&
-    (boost::has_trivial_copy_constructor<T>::value ||
-    boost::has_trivial_destructor<T>::value)>::type
-sp_array_construct(A&, T* storage, std::size_t size, const T* list,
-    std::size_t count)
-{
-    for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T(list[i % count]);
-    }
-}
-
-template<bool E, class A, class T>
-inline typename sp_enable<!E &&
-    !boost::has_trivial_copy_constructor<T>::value &&
-    !boost::has_trivial_destructor<T>::value>::type
-sp_array_construct(A& none, T* storage, std::size_t size, const T* list,
+    !(boost::has_trivial_constructor<T>::value &&
+      boost::has_trivial_assign<T>::value)>::type
+sp_array_construct(A& none, T* start, std::size_t size, const T* list,
     std::size_t count)
 {
     std::size_t i = 0;
     try {
         for (; i < size; ++i) {
-            ::new(static_cast<void*>(storage + i)) T(list[i % count]);
+            ::new(static_cast<void*>(start + i)) T(list[i % count]);
         }
     } catch (...) {
-        sp_array_destroy<E>(none, storage, i);
+        sp_array_destroy<E>(none, start, i);
         throw;
     }
 }
 #else
 template<bool E, class A, class T>
-inline typename sp_enable<!E>::type
-sp_array_construct(A&, T* storage, std::size_t size)
+inline typename sp_enable<!E &&
+    !(boost::has_trivial_constructor<T>::value &&
+      boost::has_trivial_assign<T>::value)>::type
+sp_array_construct(A&, T* start, std::size_t size)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T();
+        ::new(static_cast<void*>(start + i)) T();
     }
 }
 
 template<bool E, class A, class T>
-inline typename sp_enable<!E>::type
-sp_array_construct(A&, T* storage, std::size_t size, const T* list,
+inline typename sp_enable<!E &&
+    !(boost::has_trivial_constructor<T>::value &&
+      boost::has_trivial_assign<T>::value)>::type
+sp_array_construct(A&, T* start, std::size_t size, const T* list,
     std::size_t count)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T(list[i % count]);
+        ::new(static_cast<void*>(start + i)) T(list[i % count]);
     }
 }
 #endif
@@ -255,52 +259,52 @@ sp_array_construct(A&, T* storage, std::size_t size, const T* list,
 #if !defined(BOOST_NO_EXCEPTIONS)
 template<bool E, class A, class T>
 inline typename sp_enable<E>::type
-sp_array_construct(A& allocator, T* storage, std::size_t size)
+sp_array_construct(A& allocator, T* start, std::size_t size)
 {
     std::size_t i = 0;
     try {
         for (i = 0; i < size; ++i) {
-            std::allocator_traits<A>::construct(allocator, storage + i);
+            std::allocator_traits<A>::construct(allocator, start + i);
         }
     } catch (...) {
-        sp_array_destroy<E>(allocator, storage, i);
+        sp_array_destroy<E>(allocator, start, i);
         throw;
     }
 }
 
 template<bool E, class A, class T>
 inline typename sp_enable<E>::type
-sp_array_construct(A& allocator, T* storage, std::size_t size,
-    const T* list, std::size_t count)
+sp_array_construct(A& allocator, T* start, std::size_t size, const T* list,
+    std::size_t count)
 {
     std::size_t i = 0;
     try {
         for (i = 0; i < size; ++i) {
-            std::allocator_traits<A>::construct(allocator, storage + i,
+            std::allocator_traits<A>::construct(allocator, start + i,
                 list[i % count]);
         }
     } catch (...) {
-        sp_array_destroy<E>(allocator, storage, i);
+        sp_array_destroy<E>(allocator, start, i);
         throw;
     }
 }
 #else
 template<bool E, class A, class T>
 inline typename sp_enable<E>::type
-sp_array_construct(A& allocator, T* storage, std::size_t size)
+sp_array_construct(A& allocator, T* start, std::size_t size)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        std::allocator_traits<A>::construct(allocator, storage + i);
+        std::allocator_traits<A>::construct(allocator, start + i);
     }
 }
 
 template<bool E, class A, class T>
 inline typename sp_enable<E>::type
-sp_array_construct(A& allocator, T* storage, std::size_t size,
-    const T* list, std::size_t count)
+sp_array_construct(A& allocator, T* start, std::size_t size, const T* list,
+    std::size_t count)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        std::allocator_traits<A>::construct(allocator, storage + i,
+        std::allocator_traits<A>::construct(allocator, start + i,
             list[i % count]);
     }
 }
@@ -313,37 +317,26 @@ sp_array_default(A&, T*, std::size_t) BOOST_SP_NOEXCEPT { }
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 template<class A, class T>
-inline typename sp_enable<!boost::has_trivial_constructor<T>::value &&
-    boost::has_trivial_destructor<T>::value>::type
-sp_array_default(A&, T* storage, std::size_t size)
-{
-    for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T;
-    }
-}
-
-template<class A, class T>
-inline typename sp_enable<!boost::has_trivial_constructor<T>::value &&
-    !boost::has_trivial_destructor<T>::value>::type
-sp_array_default(A& none, T* storage, std::size_t size)
+inline typename sp_enable<!boost::has_trivial_constructor<T>::value>::type
+sp_array_default(A& none, T* start, std::size_t size)
 {
     std::size_t i = 0;
     try {
         for (; i < size; ++i) {
-            ::new(static_cast<void*>(storage + i)) T;
+            ::new(static_cast<void*>(start + i)) T;
         }
     } catch (...) {
-        sp_array_destroy<false>(none, storage, i);
+        sp_array_destroy<false>(none, start, i);
         throw;
     }
 }
 #else
 template<bool E, class A, class T>
 inline typename sp_enable<!boost::has_trivial_constructor<T>::value>::type
-sp_array_default(A&, T* storage, std::size_t size)
+sp_array_default(A&, T* start, std::size_t size)
 {
     for (std::size_t i = 0; i < size; ++i) {
-        ::new(static_cast<void*>(storage + i)) T;
+        ::new(static_cast<void*>(start + i)) T;
     }
 }
 #endif

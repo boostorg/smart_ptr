@@ -122,7 +122,7 @@ static void test_const_cast()
 
         BOOST_TEST( p2.get() == 0 );
         BOOST_TEST_EQ( p3.get(), q1 );
-	}
+    }
 }
 
 struct B2

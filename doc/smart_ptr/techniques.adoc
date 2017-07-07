@@ -251,7 +251,7 @@ Note, however, that `shared_ptr` copies created from `pw` will not "register" in
 they will share the single reference created in `make_shared_from_COM`. Weak pointers created from `pw` will be invalidated when the last
 `shared_ptr` is destroyed, regardless of whether the COM object itself is still alive.
 
-As link:../../libs/bind/mem_fn.html#Q3[explained] in the `mem_fn` documentation, you need to `#define BOOST_MEM_FN_ENABLE_STDCALL` first.
+As link:../../../../libs/bind/mem_fn.html#Q3[explained] in the `mem_fn` documentation, you need to `#define BOOST_MEM_FN_ENABLE_STDCALL` first.
 
 [#techniques_intrusive]
 ## Using a shared_ptr to hold a pointer to an object with an embedded reference count

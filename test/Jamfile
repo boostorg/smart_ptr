@@ -22,6 +22,7 @@ run intrusive_ptr_move_test.cpp ;
 run intrusive_ref_counter_test.cpp ;
 run atomic_count_test.cpp ;
 run lw_mutex_test.cpp ;
+run lw_mutex_test.cpp : : : <define>BOOST_USE_WINDOWS_H : lw_mutex_test.win_h ;
 compile-fail shared_ptr_assign_fail.cpp ;
 compile-fail shared_ptr_delete_fail.cpp ;
 compile-fail shared_ptr_compare_fail.cpp ;

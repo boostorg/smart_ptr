@@ -10,6 +10,10 @@
 # bring in rules for testing
 import testing ;
 
+# quick test (for CI)
+run quick.cpp ;
+
+# full test suite
 run smart_ptr_test.cpp ;
 run shared_ptr_basic_test.cpp : : : <toolset>gcc:<cxxflags>-Wno-non-virtual-dtor ;
 run shared_ptr_test.cpp : : : <toolset>gcc:<cxxflags>-Wno-non-virtual-dtor ;

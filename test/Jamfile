@@ -264,3 +264,5 @@ run allocate_local_shared_array_construct_test.cpp ;
 run local_sp_fn_test.cpp ;
 run lsp_convertible_test.cpp ;
 run lsp_convertible_test2.cpp ;
+
+run make_shared_array_tmp_test.cpp ;

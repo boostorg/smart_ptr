@@ -155,7 +155,7 @@ template<class Y> intrusive_ptr(intrusive_ptr<Y> const & r);
 [none]
 * {blank}
 +
-Effects:: `if(r.get() != 0) intrusive_ptr_add_ref(r.get());`.
+Effects:: `if(r.get() != 0) intrusive_ptr_add_ref(reinterpret_cast<T*>(r.get()));`.
 Postconditions:: `get() == r.get()`.
 
 ### destructor

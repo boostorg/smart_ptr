@@ -183,16 +183,15 @@ install:
   - git submodule init libs/assert
   - git submodule init libs/atomic
   - git submodule init libs/config
+  - git submodule init libs/container_hash
   - git submodule init libs/core
-  - git submodule init libs/detail
-  - git submodule init libs/functional
-  - git submodule init libs/integer
   - git submodule init libs/move
   - git submodule init libs/predef
-  - git submodule init libs/preprocessor
   - git submodule init libs/static_assert
   - git submodule init libs/throw_exception
   - git submodule init libs/type_traits
+  - git submodule init libs/detail
+  - git submodule init libs/integer
   - git submodule init tools/build
   - git submodule update
   - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
@@ -202,7 +201,7 @@ install:
 script:
   - |-
     echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j 3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD
+  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD
 
 notifications:
   email:

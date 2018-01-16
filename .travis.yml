@@ -1,4 +1,4 @@
-# Copyright 2016, 2017 Peter Dimov
+# Copyright 2016, 2017, 2018 Peter Dimov
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
 
@@ -169,6 +169,14 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
+
+    - os: linux
+      compiler: clang++-libc++
+      env: TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=11,14,1z
+      addons:
+        apt:
+          packages:
+            - libc++-dev
 
     - os: osx
       compiler: clang++

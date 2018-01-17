@@ -1,7 +1,7 @@
 //
 // atomic_sp_constexpr_test.cpp
 //
-// Copyright 2017 Peter Dimov
+// Copyright 2017, 2018 Peter Dimov
 //
 // Distributed under the Boost Software License, Version 1.0.
 // See accompanying file LICENSE_1_0.txt or copy at
@@ -9,32 +9,36 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
-
-#define HAVE_CONSTEXPR_INIT
+#include <boost/config/workaround.hpp>
+#include <boost/config/pragma_message.hpp>
 
 #if defined( BOOST_NO_CXX11_CONSTEXPR )
-# undef HAVE_CONSTEXPR_INIT
-#endif
 
-#if BOOST_WORKAROUND( BOOST_MSVC, < 1920 )
-# undef HAVE_CONSTEXPR_INIT
-#endif
+BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_NO_CXX11_CONSTEXPR")
+int main() {}
 
-#if defined(__clang__) && defined( BOOST_NO_CXX14_CONSTEXPR )
-# undef HAVE_CONSTEXPR_INIT
-#endif
+#elif BOOST_WORKAROUND( BOOST_MSVC, < 1920 )
 
-#if defined( _LIBCPP_VERSION ) && ( _LIBCPP_VERSION < 5000 )
+// MSVC does not implement static initialization for constexpr
+BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_MSVC < 1920")
+int main() {}
+
+#elif defined(__clang__) && defined( BOOST_NO_CXX14_CONSTEXPR )
+
+// Clang only implements static initialization for constexpr in C++14 mode
+BOOST_PRAGMA_MESSAGE("Skipping test due to __clang__ and BOOST_NO_CXX14_CONSTEXPR")
+int main() {}
+
+#elif defined( _LIBCPP_VERSION ) && ( _LIBCPP_VERSION < 5000 )
+
 // in libc++, atomic_flag has a non-constexpr constructor from bool
-# undef HAVE_CONSTEXPR_INIT
-#endif
+BOOST_PRAGMA_MESSAGE("Skipping test due to _LIBCPP_VERSION < 5000")
+int main() {}
 
-#if !defined( HAVE_CONSTEXPR_INIT ) || defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )
+#elif defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )
 
-int main()
-{
-}
+BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX")
+int main() {}
 
 #else
 
@@ -69,4 +73,4 @@ int main()
     return boost::report_errors();
 }
 
-#endif // #if defined( BOOST_NO_CXX11_CONSEXPR )
+#endif

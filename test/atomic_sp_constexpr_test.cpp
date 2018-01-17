@@ -11,6 +11,7 @@
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
 #include <boost/config/pragma_message.hpp>
+#include <boost/config/helper_macros.hpp>
 
 #if defined( BOOST_NO_CXX11_CONSTEXPR )
 
@@ -29,10 +30,10 @@ int main() {}
 BOOST_PRAGMA_MESSAGE("Skipping test due to __clang__ and BOOST_NO_CXX14_CONSTEXPR")
 int main() {}
 
-#elif defined( _LIBCPP_VERSION ) && ( _LIBCPP_VERSION < 5000 )
+#elif defined( _LIBCPP_VERSION ) && ( _LIBCPP_VERSION < 6000 )
 
 // in libc++, atomic_flag has a non-constexpr constructor from bool
-BOOST_PRAGMA_MESSAGE("Skipping test due to _LIBCPP_VERSION < 5000")
+BOOST_PRAGMA_MESSAGE("Skipping test due to _LIBCPP_VERSION " BOOST_STRINGIZE(_LIBCPP_VERSION))
 int main() {}
 
 #elif defined( BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX )

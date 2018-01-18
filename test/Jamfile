@@ -68,7 +68,7 @@ run sp_recursive_assign_test.cpp ;
 run sp_recursive_assign2_test.cpp ;
 run sp_recursive_assign_rv_test.cpp ;
 run sp_recursive_assign2_rv_test.cpp ;
-compile-fail auto_ptr_lv_fail.cpp : <toolset>gcc-4.4:<build>no ;
+compile-fail auto_ptr_lv_fail.cpp : <toolset>gcc-4.4.7:<build>no ;
 run atomic_count_test2.cpp ;
 run sp_typeinfo_test.cpp ;
 compile make_shared_fp_test.cpp ;

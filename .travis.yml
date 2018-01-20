@@ -96,9 +96,18 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - os: linux
-      dist: trusty
       compiler: g++-7
       env: TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17
+      addons:
+        apt:
+          packages:
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-7
+      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17
       addons:
         apt:
           packages:
@@ -207,8 +216,27 @@ matrix:
             - llvm-toolchain-trusty-5.0
 
     - os: linux
+      compiler: clang++-5.0
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z
+      addons:
+        apt:
+          packages:
+            - clang-5.0
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+
+    - os: linux
       compiler: clang++-libc++
       env: TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z
+      addons:
+        apt:
+          packages:
+            - libc++-dev
+
+    - os: linux
+      compiler: clang++-libc++
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z
       addons:
         apt:
           packages:
@@ -245,7 +273,7 @@ install:
 script:
   - |-
     echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD
+  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD ${UBSAN:+cxxflags=-fsanitize=undefined} ${UBSAN:+cxxflags=-fno-sanitize-recover=undefined} ${UBSAN:+linkflags=-fsanitize=undefined}
 
 notifications:
   email:

@@ -51,4 +51,4 @@ build: off
 
 test_script:
   - if not "%CXXSTD%" == "" set CXXSTD=cxxstd=%CXXSTD%
-  - b2 -j3 libs/smart_ptr/test toolset=%TOOLSET% %CXXSTD%
+  - b2 -j3 libs/smart_ptr/test toolset=%TOOLSET% %CXXSTD% variant=debug,release

@@ -107,7 +107,7 @@ matrix:
 
     - os: linux
       compiler: g++-7
-      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17
+      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1
       addons:
         apt:
           packages:
@@ -217,7 +217,7 @@ matrix:
 
     - os: linux
       compiler: clang++-5.0
-      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
       addons:
         apt:
           packages:
@@ -236,7 +236,7 @@ matrix:
 
     - os: linux
       compiler: clang++-libc++
-      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
       addons:
         apt:
           packages:
@@ -273,7 +273,7 @@ install:
 script:
   - |-
     echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD ${UBSAN:+cxxflags=-fsanitize=undefined} ${UBSAN:+cxxflags=-fno-sanitize-recover=undefined} ${UBSAN:+linkflags=-fsanitize=undefined}
+  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined debug-symbols=on}
 
 notifications:
   email:

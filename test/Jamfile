@@ -51,7 +51,11 @@ run yield_k_test.cpp : : : <threading>multi : yield_k_test.mt ;
 run spinlock_test.cpp ;
 run spinlock_try_test.cpp ;
 run spinlock_try_test.cpp : : : <threading>multi : spinlock_try_test.mt ;
-run spinlock_pool_test.cpp : : : <toolset>msvc-8.0,<variant>release:<build>no ; # msvc-8.0 optimizer codegen bug for x % 41
+run spinlock_pool_test.cpp : : :
+    # msvc-8.0, 9.0 optimizer codegen bug for `x % 41`
+    <toolset>msvc-8.0,<variant>release:<build>no
+    <toolset>msvc-9.0,<variant>release:<build>no ;
+
 run make_shared_test.cpp ;
 run make_shared_move_emulation_test.cpp ;
 run make_shared_perfect_forwarding_test.cpp ;

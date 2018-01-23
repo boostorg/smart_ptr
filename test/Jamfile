@@ -1,6 +1,6 @@
 #  Boost.SmartPtr Library test Jamfile
 #
-#  Copyright (c) 2003-2017 Peter Dimov
+#  Copyright (c) 2003-2018 Peter Dimov
 #  Copyright (c) 2003 Dave Abrahams
 #
 #  Distributed under the Boost Software License, Version 1.0. (See
@@ -51,7 +51,7 @@ run yield_k_test.cpp : : : <threading>multi : yield_k_test.mt ;
 run spinlock_test.cpp ;
 run spinlock_try_test.cpp ;
 run spinlock_try_test.cpp : : : <threading>multi : spinlock_try_test.mt ;
-run spinlock_pool_test.cpp ;
+run spinlock_pool_test.cpp : : : <toolset>msvc-8.0,<variant>release:<build>no ; # msvc-8.0 optimizer codegen bug for x % 41
 run make_shared_test.cpp ;
 run make_shared_move_emulation_test.cpp ;
 run make_shared_perfect_forwarding_test.cpp ;

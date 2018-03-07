@@ -18,7 +18,7 @@ void f()
 int main()
 {
     int const N = 4;
-    pthread_t th[ N ] = {};
+    boost::detail::lw_thread_t th[ N ] = {};
 
     for( int i = 0; i < N; ++i )
     {
@@ -27,7 +27,7 @@ int main()
 
     for( int i = 0; i < N; ++i )
     {
-        pthread_join( th[ i ], 0 );
+        boost::detail::lw_thread_join( th[ i ] );
     }
 
     BOOST_TEST_EQ( count, N );

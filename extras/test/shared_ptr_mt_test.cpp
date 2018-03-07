@@ -62,7 +62,7 @@ int main()
 
     clock_t t = clock();
 
-    pthread_t a[ m ];
+    boost::detail::lw_thread_t a[ m ];
 
     for( int i = 0; i < m; ++i )
     {
@@ -71,7 +71,7 @@ int main()
 
     for( int j = 0; j < m; ++j )
     {
-        pthread_join( a[j], 0 );
+        boost::detail::lw_thread_join( a[j] );
     }
 
     t = clock() - t;

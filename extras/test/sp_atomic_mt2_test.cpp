@@ -228,7 +228,7 @@ int main( int ac, char const * av[] )
 
     clock_t t = clock();
 
-    std::vector<pthread_t> a( m );
+    std::vector<boost::detail::lw_thread_t> a( m );
 
     for( int i = 0; i < m; ++i )
     {
@@ -237,7 +237,7 @@ int main( int ac, char const * av[] )
 
     for( int j = 0; j < m; ++j )
     {
-        pthread_join( a[ j ], 0 );
+        boost::detail::lw_thread_join( a[ j ] );
     }
 
     t = clock() - t;

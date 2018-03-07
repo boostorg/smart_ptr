@@ -23,9 +23,6 @@ environment:
       TOOLSET: msvc-14.1
       CXXSTD: 14,17
       ADDRMD: 32,64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      TOOLSET: clang
-      CXXSTD: 14
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ADDPATH: C:\cygwin\bin;
       TOOLSET: gcc

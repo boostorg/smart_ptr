@@ -60,16 +60,27 @@ namespace detail
 {
 
 #if !defined( BOOST_USE_WINDOWS_H ) && !BOOST_PLAT_WINDOWS_RUNTIME
+
+#if defined(__clang__) && defined(__x86_64__)
+// clang x64 warns that __stdcall is ignored
+# define BOOST_SP_STDCALL
+#else
+# define BOOST_SP_STDCALL __stdcall
+#endif
+
 #if !BOOST_COMP_CLANG || !defined __MINGW32__
-  extern "C" void __stdcall Sleep( unsigned long ms );
+  extern "C" void BOOST_SP_STDCALL Sleep( unsigned long ms );
 #else
 #include <_mingw.h>
 #if !defined __MINGW64_VERSION_MAJOR
-  extern "C" void __stdcall Sleep( unsigned long ms );
+  extern "C" void BOOST_SP_STDCALL Sleep( unsigned long ms );
 #else
-  extern "C" __declspec(dllimport) void __stdcall Sleep( unsigned long ms );
+  extern "C" __declspec(dllimport) void BOOST_SP_STDCALL Sleep( unsigned long ms );
 #endif
 #endif
+
+#undef BOOST_SP_STDCALL
+
 #endif
 
 inline void yield( unsigned k )

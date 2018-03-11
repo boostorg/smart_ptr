@@ -272,3 +272,7 @@ run lsp_convertible_test2.cpp ;
 run make_shared_array_tmp_test.cpp ;
 
 run lw_thread_test.cpp : : : <threading>multi ;
+
+compile sp_windows_h_test.cpp ;
+compile spinlock_windows_h_test.cpp ;
+compile yield_k_windows_h_test.cpp ;

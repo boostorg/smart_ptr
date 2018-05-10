@@ -107,7 +107,7 @@ matrix:
 
     - os: linux
       compiler: g++-7
-      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1
+      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
       addons:
         apt:
           packages:
@@ -273,7 +273,7 @@ install:
 script:
   - |-
     echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD ${VARIANT:+variant=$VARIANT} ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined debug-symbols=on}
+  - ./b2 -j3 libs/smart_ptr/test toolset=$TOOLSET cxxstd=$CXXSTD ${VARIANT:+variant=$VARIANT} ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
 
 notifications:
   email:

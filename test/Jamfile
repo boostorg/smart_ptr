@@ -276,3 +276,8 @@ run lw_thread_test.cpp : : : <threading>multi ;
 compile sp_windows_h_test.cpp ;
 compile spinlock_windows_h_test.cpp ;
 compile yield_k_windows_h_test.cpp ;
+
+lib dll_test : dll_test_lib.cpp : <link>shared:<define>DLL_TEST_DYN_LINK=1 ;
+
+run dll_test_main.cpp dll_test : : : <link>static : dll_test_static ;
+run dll_test_main.cpp dll_test : : : <link>shared : dll_test_shared ;

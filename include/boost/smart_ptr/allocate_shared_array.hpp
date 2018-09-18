@@ -424,7 +424,7 @@ private:
 struct sp_default { };
 
 template<class T, bool E = sp_use_construct<T>::value>
-class sp_array_base
+class BOOST_SYMBOL_VISIBLE sp_array_base
     : public sp_counted_base {
     typedef typename T::type allocator;
 

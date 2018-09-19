@@ -30,7 +30,7 @@ struct lsp_if_size_array<T[N]> {
     typedef boost::local_shared_ptr<T[N]> type;
 };
 
-class lsp_array_base
+class BOOST_SYMBOL_VISIBLE lsp_array_base
     : public local_counted_base {
 public:
     void set(sp_counted_base* base) BOOST_SP_NOEXCEPT {

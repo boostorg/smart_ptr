@@ -283,3 +283,4 @@ run dll_test_main.cpp dll_test : : : <link>static : dll_test_static ;
 run dll_test_main.cpp dll_test : : : <link>shared : dll_test_shared ;
 
 run make_shared_const_test.cpp ;
+run make_local_shared_const_test.cpp ;

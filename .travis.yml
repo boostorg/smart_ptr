@@ -106,6 +106,16 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - os: linux
+      compiler: g++-8
+      env: TOOLSET=gcc COMPILER=g++-8 CXXSTD=03,11,14,17,2a
+      addons:
+        apt:
+          packages:
+            - g++-8
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
       compiler: g++-7
       env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
       addons:
@@ -214,6 +224,28 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
+
+    - os: linux
+      compiler: clang++-6.0
+      env: TOOLSET=clang COMPILER=clang++-6.0 CXXSTD=03,11,14,17,2a
+      addons:
+        apt:
+          packages:
+            - clang-6.0
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-6.0
+
+    - os: linux
+      compiler: clang++-7
+      env: TOOLSET=clang COMPILER=clang++-7 CXXSTD=03,11,14,17,2a
+      addons:
+        apt:
+          packages:
+            - clang-7
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-7
 
     - os: linux
       compiler: clang++-5.0

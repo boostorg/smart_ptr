@@ -281,3 +281,5 @@ lib dll_test : dll_test_lib.cpp : <link>shared:<define>DLL_TEST_DYN_LINK=1 ;
 
 run dll_test_main.cpp dll_test : : : <link>static : dll_test_static ;
 run dll_test_main.cpp dll_test : : : <link>shared : dll_test_shared ;
+
+run make_shared_const_test.cpp ;

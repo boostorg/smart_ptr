@@ -297,7 +297,9 @@ install:
   - git submodule init libs/detail
   - git submodule init libs/integer
   - git submodule init tools/build
-  - git submodule update
+  - git submodule init libs/headers
+  - git submodule init tools/boost_install
+  - git submodule update --jobs 3
   - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
   - ./bootstrap.sh
   - ./b2 headers

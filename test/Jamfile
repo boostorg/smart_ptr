@@ -278,9 +278,25 @@ compile spinlock_windows_h_test.cpp ;
 compile yield_k_windows_h_test.cpp ;
 
 lib dll_test : dll_test_lib.cpp : <link>shared:<define>DLL_TEST_DYN_LINK=1 ;
+explicit dll_test ;
 
 run dll_test_main.cpp dll_test : : : <link>static : dll_test_static ;
 run dll_test_main.cpp dll_test : : : <link>shared : dll_test_shared ;
 
 run make_shared_const_test.cpp ;
 run make_local_shared_const_test.cpp ;
+
+lib abi_test_mt : abi_test_lib.cpp : <link>static ;
+explicit abi_test_mt ;
+
+obj abi_test_lib_nt : abi_test_lib.cpp : <define>BOOST_DISABLE_THREADS ;
+explicit abi_test_lib_nt ;
+
+lib abi_test_nt : abi_test_lib_nt : <link>static ;
+explicit abi_test_nt ;
+
+run abi_test_main.cpp abi_test_mt : : : <define>BOOST_DISABLE_THREADS : abi_test_nt_mt ;
+run abi_test_main.cpp abi_test_nt : : : : abi_test_mt_nt ;
+
+run abi_test_main.cpp abi_test_mt/<cxxstd>11 : : : <cxxstd>03 : abi_test_03_11 ;
+run abi_test_main.cpp abi_test_mt/<cxxstd>03 : : : <cxxstd>11 : abi_test_11_03 ;

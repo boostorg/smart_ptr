@@ -20,6 +20,7 @@
 
 #include <boost/detail/sp_typeinfo.hpp>
 #include <boost/config.hpp>
+#include <boost/cstdint.hpp>
 
 namespace boost
 {
@@ -34,8 +35,8 @@ private:
     sp_counted_base( sp_counted_base const & );
     sp_counted_base & operator= ( sp_counted_base const & );
 
-    long use_count_;        // #shared
-    long weak_count_;       // #weak + (#shared != 0)
+    boost::int_least32_t use_count_;        // #shared
+    boost::int_least32_t weak_count_;       // #weak + (#shared != 0)
 
 public:
 

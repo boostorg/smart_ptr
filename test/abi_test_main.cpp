@@ -23,6 +23,7 @@ BOOST_PRAGMA_MESSAGE( "BOOST_NO_CXX11_HDR_ATOMIC is not defined" )
 
 void abi_test_1( boost::shared_ptr<void> & p );
 boost::shared_ptr<void> abi_test_2( boost::shared_ptr<void> const & p );
+boost::shared_ptr<void> abi_test_3();
 
 static int deleter_called;
 
@@ -65,6 +66,16 @@ int main()
         p2.reset();
 
         BOOST_TEST_EQ( deleter_called, 1 );
+    }
+
+    {
+        boost::shared_ptr<void> p = abi_test_3();
+
+        BOOST_TEST_EQ( p.use_count(), 1 );
+
+        p.reset();
+
+        BOOST_TEST_EQ( p.use_count(), 0 );
     }
 
     return boost::report_errors();

@@ -764,7 +764,7 @@ void weak_ptr_constructor()
             boost::shared_ptr<Y> p2(wp);
             BOOST_ERROR("shared_ptr<Y> p2(wp) failed to throw");
         }
-        catch(boost::bad_weak_ptr)
+        catch(boost::bad_weak_ptr const&)
         {
         }
 
@@ -773,7 +773,7 @@ void weak_ptr_constructor()
             boost::shared_ptr<X> p3(wp);
             BOOST_ERROR("shared_ptr<X> p3(wp) failed to throw");
         }
-        catch(boost::bad_weak_ptr)
+        catch(boost::bad_weak_ptr const&)
         {
         }
     }
@@ -829,7 +829,7 @@ void weak_ptr_constructor()
             boost::shared_ptr<Y> p2(wp);
             BOOST_ERROR("shared_ptr<Y> p2(wp) failed to throw");
         }
-        catch(boost::bad_weak_ptr)
+        catch(boost::bad_weak_ptr const&)
         {
         }
 
@@ -838,7 +838,7 @@ void weak_ptr_constructor()
             boost::shared_ptr<X> p3(wp);
             BOOST_ERROR("shared_ptr<X> p3(wp) failed to throw");
         }
-        catch(boost::bad_weak_ptr)
+        catch(boost::bad_weak_ptr const&)
         {
         }
     }

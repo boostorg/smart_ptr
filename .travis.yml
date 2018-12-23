@@ -254,6 +254,7 @@ matrix:
         apt:
           packages:
             - clang-7
+            - libstdc++-5-dev
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-7

@@ -248,15 +248,15 @@ matrix:
             - llvm-toolchain-trusty-7
 
     - os: linux
-      compiler: clang++-5.0
-      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
+      compiler: clang++-7
+      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-7 CXXSTD=03,11,14,17,2a UBSAN_OPTIONS=print_stacktrace=1
       addons:
         apt:
           packages:
-            - clang-5.0
+            - clang-7
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
+            - llvm-toolchain-trusty-7
 
     - os: linux
       compiler: clang++-libc++

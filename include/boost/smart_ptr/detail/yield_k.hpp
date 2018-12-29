@@ -25,7 +25,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/predef.h>
+#include <boost/predef/platform/windows_runtime.h>
 
 #if BOOST_PLAT_WINDOWS_RUNTIME
 #include <thread>

@@ -1,12 +1,12 @@
 # Copyright 2018 Mike Dev
 # Distributed under the Boost Software License, Version 1.0.
 # See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
-#
-# NOTE: CMake support for Boost.Smart_ptr is currently experimental at best
-#       and the interface is likely to change in the future
+
+# Partial (add_subdirectory only) and experimental CMake support
+# Subject to change; please do not rely on the contents of this file yet
 
 cmake_minimum_required(VERSION 3.5)
-project(BoostSmart_ptr)
+project(BoostSmartPtr LANGUAGES CXX)
 
 add_library(boost_smart_ptr INTERFACE)
 add_library(Boost::smart_ptr ALIAS boost_smart_ptr)
@@ -24,4 +24,3 @@ target_link_libraries(boost_smart_ptr
         Boost::throw_exception
         Boost::type_traits
 )
-

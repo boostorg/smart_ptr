@@ -283,7 +283,7 @@ matrix:
       compiler: g++
       env: CMAKE_SUBDIR_TEST=1
       script:
-      - cd test/cmake_subdir_test && mkdir __build__ && cd __build__
+      - cd libs/smart_ptr/test/cmake_subdir_test && mkdir __build__ && cd __build__
       - cmake ..
       - cmake --build .
       - cmake --build . --target check

@@ -455,27 +455,27 @@ public:
         return state_;
     }
 
-    virtual void dispose() {
+    virtual void dispose() BOOST_SP_NOEXCEPT {
         sp_array_destroy<E>(state_.allocator(),
             sp_array_start<sp_array_base, type>(this), state_.size());
     }
 
-    virtual void destroy() {
+    virtual void destroy() BOOST_SP_NOEXCEPT {
         sp_array_creator<allocator, sp_array_base> other(state_.allocator(),
             state_.size());
         this->~sp_array_base();
         other.destroy(this);
     }
 
-    virtual void* get_deleter(const sp_typeinfo&) {
+    virtual void* get_deleter(const sp_typeinfo&) BOOST_SP_NOEXCEPT {
         return 0;
     }
 
-    virtual void* get_local_deleter(const sp_typeinfo&) {
+    virtual void* get_local_deleter(const sp_typeinfo&) BOOST_SP_NOEXCEPT {
         return 0;
     }
 
-    virtual void* get_untyped_deleter() {
+    virtual void* get_untyped_deleter() BOOST_SP_NOEXCEPT {
         return 0;
     }
 

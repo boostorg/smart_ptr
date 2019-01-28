@@ -118,14 +118,14 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR shared_count(): pi_(0) // nothrow
+    BOOST_CONSTEXPR shared_count() BOOST_NOEXCEPT_OR_NOTHROW : pi_(0)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
     {
     }
 
-    BOOST_CONSTEXPR explicit shared_count( sp_counted_base * pi ): pi_( pi ) // nothrow
+    BOOST_CONSTEXPR explicit shared_count( sp_counted_base * pi ) BOOST_NOEXCEPT_OR_NOTHROW : pi_( pi )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
@@ -421,7 +421,7 @@ public:
         r.release();
     }
 
-    ~shared_count() // nothrow
+    ~shared_count() BOOST_NOEXCEPT_OR_NOTHROW
     {
         if( pi_ != 0 ) pi_->release();
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
@@ -429,7 +429,7 @@ public:
 #endif
     }
 
-    shared_count(shared_count const & r): pi_(r.pi_) // nothrow
+    shared_count(shared_count const & r) BOOST_NOEXCEPT_OR_NOTHROW : pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
@@ -439,7 +439,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    shared_count(shared_count && r): pi_(r.pi_) // nothrow
+    shared_count(shared_count && r) BOOST_NOEXCEPT_OR_NOTHROW : pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
@@ -452,7 +452,7 @@ public:
     explicit shared_count(weak_count const & r); // throws bad_weak_ptr when r.use_count() == 0
     shared_count( weak_count const & r, sp_nothrow_tag ); // constructs an empty *this when r.use_count() == 0
 
-    shared_count & operator= (shared_count const & r) // nothrow
+    shared_count & operator= (shared_count const & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         sp_counted_base * tmp = r.pi_;
 
@@ -466,24 +466,24 @@ public:
         return *this;
     }
 
-    void swap(shared_count & r) // nothrow
+    void swap(shared_count & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         sp_counted_base * tmp = r.pi_;
         r.pi_ = pi_;
         pi_ = tmp;
     }
 
-    long use_count() const // nothrow
+    long use_count() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return pi_ != 0? pi_->use_count(): 0;
     }
 
-    bool unique() const // nothrow
+    bool unique() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return use_count() == 1;
     }
 
-    bool empty() const // nothrow
+    bool empty() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return pi_ == 0;
     }
@@ -529,14 +529,14 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR weak_count(): pi_(0) // nothrow
+    BOOST_CONSTEXPR weak_count() BOOST_NOEXCEPT_OR_NOTHROW : pi_(0)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif
     {
     }
 
-    weak_count(shared_count const & r): pi_(r.pi_) // nothrow
+    weak_count(shared_count const & r) BOOST_NOEXCEPT_OR_NOTHROW : pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif
@@ -544,7 +544,7 @@ public:
         if(pi_ != 0) pi_->weak_add_ref();
     }
 
-    weak_count(weak_count const & r): pi_(r.pi_) // nothrow
+    weak_count(weak_count const & r) BOOST_NOEXCEPT_OR_NOTHROW : pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif
@@ -556,7 +556,7 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    weak_count(weak_count && r): pi_(r.pi_) // nothrow
+    weak_count(weak_count && r) BOOST_NOEXCEPT_OR_NOTHROW : pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif
@@ -566,7 +566,7 @@ public:
 
 #endif
 
-    ~weak_count() // nothrow
+    ~weak_count() BOOST_NOEXCEPT_OR_NOTHROW
     {
         if(pi_ != 0) pi_->weak_release();
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
@@ -574,7 +574,7 @@ public:
 #endif
     }
 
-    weak_count & operator= (shared_count const & r) // nothrow
+    weak_count & operator= (shared_count const & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         sp_counted_base * tmp = r.pi_;
 
@@ -588,7 +588,7 @@ public:
         return *this;
     }
 
-    weak_count & operator= (weak_count const & r) // nothrow
+    weak_count & operator= (weak_count const & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         sp_counted_base * tmp = r.pi_;
 
@@ -602,19 +602,19 @@ public:
         return *this;
     }
 
-    void swap(weak_count & r) // nothrow
+    void swap(weak_count & r) BOOST_NOEXCEPT_OR_NOTHROW
     {
         sp_counted_base * tmp = r.pi_;
         r.pi_ = pi_;
         pi_ = tmp;
     }
 
-    long use_count() const // nothrow
+    long use_count() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return pi_ != 0? pi_->use_count(): 0;
     }
 
-    bool empty() const // nothrow
+    bool empty() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return pi_ == 0;
     }

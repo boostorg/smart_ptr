@@ -84,7 +84,7 @@ public:
 #endif
     }
 
-    virtual void dispose() // nothrow
+    virtual void dispose() BOOST_NOEXCEPT_OR_NOTHROW
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_scalar_destructor_hook( px_, sizeof(X), this );
@@ -167,7 +167,7 @@ public:
     {
     }
 
-    virtual void dispose() // nothrow
+    virtual void dispose() BOOST_NOEXCEPT_OR_NOTHROW
     {
         del( ptr );
     }
@@ -241,12 +241,12 @@ public:
     {
     }
 
-    virtual void dispose() // nothrow
+    virtual void dispose() BOOST_NOEXCEPT_OR_NOTHROW
     {
         d_( p_ );
     }
 
-    virtual void destroy() // nothrow
+    virtual void destroy() BOOST_NOEXCEPT_OR_NOTHROW
     {
 #if !defined( BOOST_NO_CXX11_ALLOCATOR )
 

@@ -108,18 +108,18 @@ public:
     {
     }
 
-    virtual ~sp_counted_base() // nothrow
+    virtual ~sp_counted_base() BOOST_NOEXCEPT_OR_NOTHROW
     {
     }
 
     // dispose() is called when use_count_ drops to zero, to release
     // the resources managed by *this.
 
-    virtual void dispose() = 0; // nothrow
+    virtual void dispose() BOOST_NOEXCEPT_OR_NOTHROW = 0;
 
     // destroy() is called when weak_count_ drops to zero.
 
-    virtual void destroy() // nothrow
+    virtual void destroy() BOOST_NOEXCEPT_OR_NOTHROW
     {
         delete this;
     }
@@ -138,7 +138,7 @@ public:
         return atomic_conditional_increment( &use_count_ ) != 0;
     }
 
-    void release() // nothrow
+    void release() BOOST_NOEXCEPT_OR_NOTHROW
     {
         if( atomic_decrement( &use_count_ ) == 0 )
         {
@@ -147,12 +147,12 @@ public:
         }
     }
 
-    void weak_add_ref() // nothrow
+    void weak_add_ref() BOOST_NOEXCEPT_OR_NOTHROW
     {
         atomic_increment( &weak_count_ );
     }
 
-    void weak_release() // nothrow
+    void weak_release() BOOST_NOEXCEPT_OR_NOTHROW
     {
         if( atomic_decrement( &weak_count_ ) == 0 )
         {
@@ -160,7 +160,7 @@ public:
         }
     }
 
-    long use_count() const // nothrow
+    long use_count() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         return static_cast<long const volatile &>( use_count_ );
     }

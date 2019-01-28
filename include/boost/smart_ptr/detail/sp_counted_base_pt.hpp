@@ -55,7 +55,7 @@ public:
 #endif
     }
 
-    virtual ~sp_counted_base() // nothrow
+    virtual ~sp_counted_base() BOOST_NOEXCEPT_OR_NOTHROW
     {
         BOOST_VERIFY( pthread_mutex_destroy( &m_ ) == 0 );
     }
@@ -63,11 +63,11 @@ public:
     // dispose() is called when use_count_ drops to zero, to release
     // the resources managed by *this.
 
-    virtual void dispose() = 0; // nothrow
+    virtual void dispose() BOOST_NOEXCEPT_OR_NOTHROW = 0;
 
     // destroy() is called when weak_count_ drops to zero.
 
-    virtual void destroy() // nothrow
+    virtual void destroy() BOOST_NOEXCEPT_OR_NOTHROW
     {
         delete this;
     }
@@ -91,7 +91,7 @@ public:
         return r;
     }
 
-    void release() // nothrow
+    void release() BOOST_NOEXCEPT_OR_NOTHROW
     {
         BOOST_VERIFY( pthread_mutex_lock( &m_ ) == 0 );
         boost::int_least32_t new_use_count = --use_count_;
@@ -104,14 +104,14 @@ public:
         }
     }
 
-    void weak_add_ref() // nothrow
+    void weak_add_ref() BOOST_NOEXCEPT_OR_NOTHROW
     {
         BOOST_VERIFY( pthread_mutex_lock( &m_ ) == 0 );
         ++weak_count_;
         BOOST_VERIFY( pthread_mutex_unlock( &m_ ) == 0 );
     }
 
-    void weak_release() // nothrow
+    void weak_release() BOOST_NOEXCEPT_OR_NOTHROW
     {
         BOOST_VERIFY( pthread_mutex_lock( &m_ ) == 0 );
         boost::int_least32_t new_weak_count = --weak_count_;
@@ -123,7 +123,7 @@ public:
         }
     }
 
-    long use_count() const // nothrow
+    long use_count() const BOOST_NOEXCEPT_OR_NOTHROW
     {
         BOOST_VERIFY( pthread_mutex_lock( &m_ ) == 0 );
         boost::int_least32_t r = use_count_;

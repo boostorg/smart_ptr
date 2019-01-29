@@ -75,7 +75,7 @@ void * operator new(size_t n) throw(bad_alloc)
 
 #if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
 
-void * operator new(size_t n, nothrow_t const &) throw()
+void * operator new(size_t n, nothrow_t const &) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return allocate(n, allocated_scalar);
 }
@@ -97,7 +97,7 @@ void * operator new[](size_t n) throw(bad_alloc)
 
 #if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
 
-void * operator new[](size_t n, nothrow_t const &) throw()
+void * operator new[](size_t n, nothrow_t const &) BOOST_NOEXCEPT_OR_NOTHROW
 {
     return allocate(n, allocated_array);
 }
@@ -188,7 +188,7 @@ void sp_array_destructor_hook(void * /* p */)
 
 // operator delete
 
-void operator delete(void * p) throw()
+void operator delete(void * p) BOOST_NOEXCEPT_OR_NOTHROW
 {
     if(p == 0) return;
 
@@ -207,14 +207,14 @@ void operator delete(void * p) throw()
 
 #if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
 
-void operator delete(void * p, nothrow_t const &) throw()
+void operator delete(void * p, nothrow_t const &) BOOST_NOEXCEPT_OR_NOTHROW
 {
     ::operator delete(p);
 }
 
 #endif
 
-void operator delete[](void * p) throw()
+void operator delete[](void * p) BOOST_NOEXCEPT_OR_NOTHROW
 {
     if(p == 0) return;
 
@@ -233,7 +233,7 @@ void operator delete[](void * p) throw()
 
 #if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
 
-void operator delete[](void * p, nothrow_t const &) throw()
+void operator delete[](void * p, nothrow_t const &) BOOST_NOEXCEPT_OR_NOTHROW
 {
     ::operator delete[](p);
 }

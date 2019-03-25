@@ -716,4 +716,3 @@ template<class D, class T>
 * {blank}
 +
 Returns:: If `*this` owns a `shared_ptr` instance `p`, `get_deleter<D>( p )`, otherwise 0.
-

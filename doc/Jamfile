@@ -5,8 +5,6 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt
 
-project doc/smart_ptr ;
-
 import asciidoctor ;
 
 html smart_ptr.html : smart_ptr.adoc ;

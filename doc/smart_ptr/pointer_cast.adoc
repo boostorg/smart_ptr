@@ -78,23 +78,23 @@ namespace boost {
 ```
 template<class T, class U> T* static_pointer_cast(U* p) noexcept;
 ```
-::
-Returns::: `static_cast<T*>(p)`
+[horizontal]
+Returns:: `static_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   static_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-::
-Returns::: `std::static_pointer_cast<T>(p)`
+[horizontal]
+Returns:: `std::static_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   static_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-::
-Requires::: The expression `static_cast<T*>((U*)0)` must be well-formed.
-Returns::: `std::unique_ptr<T>(static_cast<typename
+[horizontal]
+Requires:: The expression `static_cast<T*>((U*)0)` must be well-formed.
+Returns:: `std::unique_ptr<T>(static_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.
 
 CAUTION: The seemingly equivalent expression
@@ -106,25 +106,25 @@ undefined behavior, attempting to delete the same object twice.
 ```
 template<class T, class U> T* dynamic_pointer_cast(U* p) noexcept;
 ```
-::
-Returns::: `dynamic_cast<T*>(p)`
+[horizontal]
+Returns:: `dynamic_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   dynamic_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-::
-Returns::: `std::dynamic_pointer_cast<T>(p)`
+[horizontal]
+Returns:: `std::dynamic_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   dynamic_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-::
-Requires:::
+[horizontal]
+Requires::
 * The expression `static_cast<T*>((U*)0)` must be well-formed.
 * `T` must have a virtual destructor.
-Returns:::
+Returns::
 * When `dynamic_cast<typename std::unique_ptr<T>::element_type*>(p.get())`
 returns a non-zero value, `std::unique_ptr<T>(dynamic_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()));`.
@@ -135,23 +135,23 @@ std::unique_ptr<T>::element_type*>(p.release()));`.
 ```
 template<class T, class U> T* const_pointer_cast(U* p) noexcept;
 ```
-::
-Returns::: `const_cast<T*>(p)`
+[horizontal]
+Returns:: `const_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   const_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-::
-Returns::: `std::const_pointer_cast<T>(p)`
+[horizontal]
+Returns:: `std::const_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   const_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-::
-Requires::: The expression `const_cast<T*>((U*)0)` must be well-formed.
-Returns::: `std::unique_ptr<T>(const_cast<typename
+[horizontal]
+Requires:: The expression `const_cast<T*>((U*)0)` must be well-formed.
+Returns:: `std::unique_ptr<T>(const_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.
 
 ### reinterpret_pointer_cast
@@ -159,23 +159,23 @@ std::unique_ptr<T>::element_type*>(p.release()))`.
 ```
 template<class T, class U> T* reinterpret_pointer_cast(U* p) noexcept;
 ```
-::
-Returns::: `reinterpret_cast<T*>(p)`
+[horizontal]
+Returns:: `reinterpret_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   reinterpret_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-::
-Returns::: `std::reinterpret_pointer_cast<T>(p)`
+[horizontal]
+Returns:: `std::reinterpret_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   reinterpret_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-::
-Requires::: The expression `reinterpret_cast<T*>((U*)0)` must be well-formed.
-Returns::: `std::unique_ptr<T>(reinterpret_cast<typename
+[horizontal]
+Requires:: The expression `reinterpret_cast<T*>((U*)0)` must be well-formed.
+Returns:: `std::unique_ptr<T>(reinterpret_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.
 
 ## Example

@@ -136,18 +136,14 @@ Provides the type of the template parameter T.
 intrusive_ptr() noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Postconditions:: `get() == 0`.
 
 ```
 intrusive_ptr(T * p, bool add_ref = true);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: `if(p != 0 && add_ref) intrusive_ptr_add_ref(p);`.
 Postconditions:: `get() == p`.
 
@@ -158,9 +154,7 @@ intrusive_ptr(intrusive_ptr const & r);
 template<class Y> intrusive_ptr(intrusive_ptr<Y> const & r);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: `T * p = r.get(); if(p != 0) intrusive_ptr_add_ref(p);`.
 Postconditions:: `get() == r.get()`.
 
@@ -171,9 +165,7 @@ intrusive_ptr(intrusive_ptr && r);
 template<class Y> intrusive_ptr(intrusive_ptr<Y> && r);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Postconditions:: `get()` equals the old value of `r.get()`. `r.get() == 0`.
 
 ### destructor
@@ -182,9 +174,7 @@ Postconditions:: `get()` equals the old value of `r.get()`. `r.get() == 0`.
 ~intrusive_ptr();
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: `if(get() != 0) intrusive_ptr_release(get());`.
 
 ### assignment
@@ -199,9 +189,7 @@ template<class Y> intrusive_ptr & operator=(intrusive_ptr<Y> const & r);
 intrusive_ptr & operator=(T * r);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `intrusive_ptr(r).swap(*this)`.
 Returns:: `*this`.
 
@@ -212,9 +200,7 @@ intrusive_ptr & operator=(intrusive_ptr && r);
 template<class Y> intrusive_ptr & operator=(intrusive_ptr<Y> && r);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `intrusive_ptr(std::move(r)).swap(*this)`.
 Returns:: `*this`.
 
@@ -224,27 +210,21 @@ Returns:: `*this`.
 void reset();
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `intrusive_ptr().swap(*this)`.
 
 ```
 void reset(T * r);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `intrusive_ptr(r).swap(*this)`.
 
 ```
 void reset(T * r, bool add_ref);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `intrusive_ptr(r, add_ref).swap(*this)`.
 
 ### indirection
@@ -253,9 +233,7 @@ Effects:: Equivalent to `intrusive_ptr(r, add_ref).swap(*this)`.
 T & operator*() const noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Requirements:: `get() != 0`.
 Returns:: `*get()`.
 
@@ -263,9 +241,7 @@ Returns:: `*get()`.
 T * operator->() const noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Requirements:: `get() != 0`.
 Returns:: `get()`.
 
@@ -275,9 +251,7 @@ Returns:: `get()`.
 T * get() const noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: the stored pointer.
 
 ### detach
@@ -286,9 +260,7 @@ Returns:: the stored pointer.
 T * detach() noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: the stored pointer.
 Postconditions:: `get() == 0`.
 
@@ -306,9 +278,7 @@ the implications are thoroughly understood.
 explicit operator bool () const noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `get() != 0`.
 
 NOTE: This conversion operator allows `intrusive_ptr` objects to be used in boolean contexts,
@@ -322,9 +292,7 @@ NOTE: On C++03 compilers, the return value is of an unspecified type.
 void swap(intrusive_ptr & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Exchanges the contents of the two smart pointers.
 
 ## Free Functions
@@ -336,9 +304,7 @@ template<class T, class U>
   bool operator==(intrusive_ptr<T> const & a, intrusive_ptr<U> const & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a.get() == b.get()`.
 
 ```
@@ -346,9 +312,7 @@ template<class T, class U>
   bool operator!=(intrusive_ptr<T> const & a, intrusive_ptr<U> const & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a.get() != b.get()`.
 
 ```
@@ -356,9 +320,7 @@ template<class T, class U>
   bool operator==(intrusive_ptr<T> const & a, U * b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a.get() == b`.
 
 ```
@@ -366,9 +328,7 @@ template<class T, class U>
   bool operator!=(intrusive_ptr<T> const & a, U * b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a.get() != b`.
 
 ```
@@ -376,9 +336,7 @@ template<class T, class U>
   bool operator==(T * a, intrusive_ptr<U> const & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a == b.get()`.
 
 ```
@@ -386,9 +344,7 @@ template<class T, class U>
   bool operator!=(T * a, intrusive_ptr<U> const & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `a != b.get()`.
 
 ```
@@ -396,9 +352,7 @@ template<class T>
   bool operator<(intrusive_ptr<T> const & a, intrusive_ptr<T> const & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `std::less<T *>()(a.get(), b.get())`.
 
 NOTE: Allows `intrusive_ptr` objects to be used as keys in associative containers.
@@ -409,9 +363,7 @@ NOTE: Allows `intrusive_ptr` objects to be used as keys in associative container
 template<class T> void swap(intrusive_ptr<T> & a, intrusive_ptr<T> & b) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: Equivalent to `a.swap(b)`.
 
 ### get_pointer
@@ -420,9 +372,7 @@ Effects:: Equivalent to `a.swap(b)`.
 template<class T> T * get_pointer(intrusive_ptr<T> const & p) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `p.get()`.
 
 NOTE: Provided as an aid to generic programming. Used by `mem_fn`.
@@ -434,9 +384,7 @@ template<class T, class U>
   intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const & r) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `intrusive_ptr<T>(static_cast<T*>(r.get()))`.
 
 ### const_pointer_cast
@@ -446,9 +394,7 @@ template<class T, class U>
   intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const & r) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `intrusive_ptr<T>(const_cast<T*>(r.get()))`.
 
 ### dynamic_pointer_cast
@@ -458,9 +404,7 @@ template<class T, class U>
   intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const & r) noexcept;
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Returns:: `intrusive_ptr<T>(dynamic_cast<T*>(r.get()))`.
 
 ### operator<<
@@ -471,8 +415,6 @@ template<class E, class T, class Y>
     intrusive_ptr<Y> const & p);
 ```
 
-[none]
-* {blank}
-+
+[horizontal]
 Effects:: `os << p.get();`.
 Returns:: `os`.

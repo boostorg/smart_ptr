@@ -178,7 +178,9 @@ template<class T, class... Args>
 template<class T, class A, class... Args>
   shared_ptr<T> allocate_shared(const A& a, Args&&... args);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is not an array type.
 Returns:: A `shared_ptr` to an object of type `T`, constructed from
@@ -195,7 +197,9 @@ template<class T>
 template<class T, class A>
   shared_ptr<T> allocate_shared(const A& a, std::size_t n);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[]`.
 Returns:: A `shared_ptr` to a sequence of `n` value-initialized objects of
@@ -212,7 +216,9 @@ template<class T>
 template<class T, class A>
   shared_ptr<T> allocate_shared(const A& a);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[N]`.
 Returns:: A `shared_ptr` to a sequence of `N` value-initialized objects of
@@ -229,7 +235,9 @@ template<class T> shared_ptr<T>
 template<class T, class A> shared_ptr<T>
   allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[]`.
 Returns:: A `shared_ptr` to a sequence of `n` objects of type `U`, each
@@ -247,7 +255,9 @@ template<class T>
 template<class T, class A>
   shared_ptr<T> allocate_shared(const A& a, const remove_extent_t<T>& v);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[N]`.
 Returns:: A `shared_ptr` to a sequence of `N` objects of type `U`, each
@@ -265,7 +275,9 @@ template<class T>
 template<class T, class A>
   shared_ptr<T> allocate_shared_noinit(const A& a);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is not an array type, or an array type of the `U[N]`.
 Returns:: A `shared_ptr` to a default-initialized object of type `T`, or a
@@ -280,7 +292,9 @@ template<class T>
 template<class T, class A>
   shared_ptr<T> allocate_shared_noinit(const A& a, std::size_t n);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[]`.
 Returns:: A `shared_ptr` to a sequence of `_n_` default-initialized objects

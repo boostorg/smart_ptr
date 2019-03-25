@@ -68,7 +68,9 @@ namespace boost {
 template<class T, class... Args>
   std::unique_ptr<T> make_unique(Args&&... args);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is not an array type.
 Returns:: `std::unique_ptr<T>(new T(std::forward<Args>(args)\...)`.
@@ -78,7 +80,9 @@ Example:: `auto p = make_unique<int>();`
 template<class T>
   std::unique_ptr<T> make_unique(remove_reference_t<T>&& v);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is not an array type.
 Returns:: `std::unique_ptr<T>(new T(std::move(v))`.
@@ -88,7 +92,9 @@ Example:: `auto p = make_unique<std::vector<int> >({1, 2});`
 template<class T>
   std::unique_ptr<T> make_unique(std::size_t n);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[]`.
 Returns:: `std::unique_ptr<U[]>(new U[n]())`.
@@ -98,7 +104,9 @@ Example:: `auto p = make_unique<double[]>(1024);`
 template<class T>
   std::unique_ptr<T> make_unique_noinit();
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is not an array type.
 Returns:: `std::unique_ptr<T>(new T)`.
@@ -108,7 +116,9 @@ Example:: `auto p = make_unique_noinit<double[1024]>();`
 template<class T>
   std::unique_ptr<T> make_unique_noinit(std::size_t n);
 ```
-[horizontal]
+[none]
+* {blank}
++
 Remarks:: These overloads shall only participate in overload resolution when
 `T` is an array type of the form `U[]`.
 Returns:: `std::unique_ptr<U[]>(new U[n])`.

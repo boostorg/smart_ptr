@@ -78,21 +78,27 @@ namespace boost {
 ```
 template<class T, class U> T* static_pointer_cast(U* p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `static_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   static_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `std::static_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   static_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Requires:: The expression `static_cast<T*>((U*)0)` must be well-formed.
 Returns:: `std::unique_ptr<T>(static_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.
@@ -106,21 +112,27 @@ undefined behavior, attempting to delete the same object twice.
 ```
 template<class T, class U> T* dynamic_pointer_cast(U* p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `dynamic_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   dynamic_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `std::dynamic_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   dynamic_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Requires::
 * The expression `static_cast<T*>((U*)0)` must be well-formed.
 * `T` must have a virtual destructor.
@@ -135,21 +147,27 @@ std::unique_ptr<T>::element_type*>(p.release()));`.
 ```
 template<class T, class U> T* const_pointer_cast(U* p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `const_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   const_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `std::const_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   const_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Requires:: The expression `const_cast<T*>((U*)0)` must be well-formed.
 Returns:: `std::unique_ptr<T>(const_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.
@@ -159,21 +177,27 @@ std::unique_ptr<T>::element_type*>(p.release()))`.
 ```
 template<class T, class U> T* reinterpret_pointer_cast(U* p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `reinterpret_cast<T*>(p)`
 
 ```
 template<class T, class U> std::shared_ptr<T>
   reinterpret_pointer_cast(const std::shared_ptr<U>& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Returns:: `std::reinterpret_pointer_cast<T>(p)`
 
 ```
 template<class T, class U> std::unique_ptr<T>
   reinterpret_pointer_cast(std::unique_ptr<U>&& p) noexcept;
 ```
-[horizontal]
+[none]
+* {blank}
++
 Requires:: The expression `reinterpret_cast<T*>((U*)0)` must be well-formed.
 Returns:: `std::unique_ptr<T>(reinterpret_cast<typename
 std::unique_ptr<T>::element_type*>(p.release()))`.

@@ -303,14 +303,211 @@ namespace n_assignment
 
 void copy_assignment()
 {
+    BOOST_TEST( N::base::instances == 0 );
+
+    {
+        boost::intrusive_ptr<X> p1;
+
+        p1 = p1;
+
+        BOOST_TEST(p1 == p1);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        boost::intrusive_ptr<X> p2;
+
+        p1 = p2;
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        boost::intrusive_ptr<X> p3(p1);
+
+        p1 = p3;
+
+        BOOST_TEST(p1 == p3);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        BOOST_TEST(N::base::instances == 0);
+
+        boost::intrusive_ptr<X> p4(new X);
+
+        BOOST_TEST(N::base::instances == 1);
+
+        p1 = p4;
+
+        BOOST_TEST(N::base::instances == 1);
+
+        BOOST_TEST(p1 == p4);
+
+        BOOST_TEST(p1->use_count() == 2);
+
+        p1 = p2;
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(N::base::instances == 1);
+
+        p4 = p3;
+
+        BOOST_TEST(p4 == p3);
+        BOOST_TEST(N::base::instances == 0);
+    }
 }
 
 void conversion_assignment()
 {
+    BOOST_TEST( N::base::instances == 0 );
+
+    {
+        boost::intrusive_ptr<X> p1;
+
+        boost::intrusive_ptr<Y> p2;
+
+        p1 = p2;
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        BOOST_TEST(N::base::instances == 0);
+
+        boost::intrusive_ptr<Y> p4(new Y);
+
+        BOOST_TEST(N::base::instances == 1);
+        BOOST_TEST(p4->use_count() == 1);
+
+        boost::intrusive_ptr<X> p5(p4);
+        BOOST_TEST(p4->use_count() == 2);
+
+        p1 = p4;
+
+        BOOST_TEST(N::base::instances == 1);
+
+        BOOST_TEST(p1 == p4);
+
+        BOOST_TEST(p1->use_count() == 3);
+        BOOST_TEST(p4->use_count() == 3);
+
+        p1 = p2;
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(N::base::instances == 1);
+        BOOST_TEST(p4->use_count() == 2);
+
+        p4 = p2;
+        p5 = p2;
+
+        BOOST_TEST(p4 == p2);
+        BOOST_TEST(N::base::instances == 0);
+    }
 }
 
 void pointer_assignment()
 {
+    BOOST_TEST( N::base::instances == 0 );
+
+    {
+        boost::intrusive_ptr<X> p1;
+
+        p1 = p1.get();
+
+        BOOST_TEST(p1 == p1);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        boost::intrusive_ptr<X> p2;
+
+        p1 = p2.get();
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        boost::intrusive_ptr<X> p3(p1);
+
+        p1 = p3.get();
+
+        BOOST_TEST(p1 == p3);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        BOOST_TEST(N::base::instances == 0);
+
+        boost::intrusive_ptr<X> p4(new X);
+
+        BOOST_TEST(N::base::instances == 1);
+
+        p1 = p4.get();
+
+        BOOST_TEST(N::base::instances == 1);
+
+        BOOST_TEST(p1 == p4);
+
+        BOOST_TEST(p1->use_count() == 2);
+
+        p1 = p2.get();
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(N::base::instances == 1);
+
+        p4 = p3.get();
+
+        BOOST_TEST(p4 == p3);
+        BOOST_TEST(N::base::instances == 0);
+    }
+
+    {
+        boost::intrusive_ptr<X> p1;
+
+        boost::intrusive_ptr<Y> p2;
+
+        p1 = p2.get();
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(p1? false: true);
+        BOOST_TEST(!p1);
+        BOOST_TEST(p1.get() == 0);
+
+        BOOST_TEST(N::base::instances == 0);
+
+        boost::intrusive_ptr<Y> p4(new Y);
+
+        BOOST_TEST(N::base::instances == 1);
+        BOOST_TEST(p4->use_count() == 1);
+
+        boost::intrusive_ptr<X> p5(p4);
+        BOOST_TEST(p4->use_count() == 2);
+
+        p1 = p4.get();
+
+        BOOST_TEST(N::base::instances == 1);
+
+        BOOST_TEST(p1 == p4);
+
+        BOOST_TEST(p1->use_count() == 3);
+        BOOST_TEST(p4->use_count() == 3);
+
+        p1 = p2.get();
+
+        BOOST_TEST(p1 == p2);
+        BOOST_TEST(N::base::instances == 1);
+        BOOST_TEST(p4->use_count() == 2);
+
+        p4 = p2.get();
+        p5 = p2.get();
+
+        BOOST_TEST(p4 == p2);
+        BOOST_TEST(N::base::instances == 0);
+    }
 }
 
 void test()

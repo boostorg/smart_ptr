@@ -18,10 +18,10 @@
 BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_NO_CXX11_CONSTEXPR")
 int main() {}
 
-#elif BOOST_WORKAROUND( BOOST_MSVC, < 1920 )
+#elif BOOST_WORKAROUND( BOOST_MSVC, < 1930 )
 
-// MSVC does not implement static initialization for constexpr
-BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_MSVC < 1920")
+// MSVC does not implement static initialization for constexpr constructors
+BOOST_PRAGMA_MESSAGE("Skipping test due to BOOST_MSVC < 1930")
 int main() {}
 
 #elif defined(__clang__) && defined( BOOST_NO_CXX14_CONSTEXPR )

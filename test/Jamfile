@@ -306,3 +306,6 @@ run abi_test_main.cpp abi_test_nt : : : : abi_test_mt_nt ;
 
 run abi_test_main.cpp abi_test_mt/<cxxstd>0x : : : <cxxstd>98 : abi_test_03_11 ;
 run abi_test_main.cpp abi_test_mt/<cxxstd>98 : : : <cxxstd>0x : abi_test_11_03 ;
+
+run weak_ptr_alias_test.cpp ;
+run weak_ptr_alias_move_test.cpp ;

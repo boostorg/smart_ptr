@@ -19,6 +19,8 @@ Greg Colvin, Beman Dawes, Peter Dimov, Glen Fernandes
 
 include::smart_ptr/introduction.adoc[]
 
+include::smart_ptr/changelog.adoc[]
+
 include::smart_ptr/scoped_ptr.adoc[]
 
 include::smart_ptr/scoped_array.adoc[]

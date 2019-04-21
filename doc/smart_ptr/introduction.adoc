@@ -11,7 +11,9 @@ http://www.boost.org/LICENSE_1_0.txt
 
 [#introduction]
 # Introduction
-:idprefix: intro
+:toc:
+:toc-title:
+:idprefix: intro_
 
 Smart pointers are objects which store pointers to dynamically allocated (heap) objects.
 They behave much like built-in {cpp} pointers except that they automatically delete the object

@@ -137,6 +137,23 @@ public:
         boost::detail::sp_assert_convertible< Y, T >();
     }
 
+    // aliasing
+    template<class Y> weak_ptr(shared_ptr<Y> const & r, element_type * p) BOOST_SP_NOEXCEPT: px( p ), pn( r.pn )
+    {
+    }
+
+    template<class Y> weak_ptr(weak_ptr<Y> const & r, element_type * p) BOOST_SP_NOEXCEPT: px( p ), pn( r.pn )
+    {
+    }
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class Y> weak_ptr(weak_ptr<Y> && r, element_type * p) BOOST_SP_NOEXCEPT: px( p ), pn( std::move( r.pn ) )
+    {
+    }
+
+#endif
+
 #if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
 
     template<class Y>
@@ -190,6 +207,11 @@ public:
     }
 
     bool _empty() const BOOST_SP_NOEXCEPT // extension, not in std::weak_ptr
+    {
+        return pn.empty();
+    }
+
+    bool empty() const BOOST_SP_NOEXCEPT // extension, not in std::weak_ptr
     {
         return pn.empty();
     }

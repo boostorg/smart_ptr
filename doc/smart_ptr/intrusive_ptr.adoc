@@ -77,7 +77,7 @@ namespace boost {
 
     explicit operator bool () const noexcept;
 
-    void swap(intrusive_ptr & b) noexept;
+    void swap(intrusive_ptr & b) noexcept;
   };
 
   template<class T, class U>

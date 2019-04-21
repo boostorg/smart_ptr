@@ -227,13 +227,6 @@ public:
         pn.swap(other.pn);
     }
 
-    template<typename Y>
-    void _internal_aliasing_assign(weak_ptr<Y> const & r, element_type * px2) BOOST_SP_NOEXCEPT
-    {
-        px = px2;
-        pn = r.pn;
-    }
-
     template<class Y> bool owner_before( weak_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
     {
         return pn < rhs.pn;

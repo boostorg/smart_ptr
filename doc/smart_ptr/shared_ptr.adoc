@@ -132,7 +132,6 @@ namespace boost {
     template<class Y> shared_ptr(shared_ptr<Y> && r) noexcept;
 
     template<class Y> shared_ptr(shared_ptr<Y> const & r, element_type * p) noexcept;
-
     template<class Y> shared_ptr(shared_ptr<Y> && r, element_type * p) noexcept;
 
     template<class Y> explicit shared_ptr(weak_ptr<Y> const & r);
@@ -373,7 +372,7 @@ template<class Y> shared_ptr(shared_ptr<Y> const & r, element_type * p) noexcept
 [none]
 * {blank}
 +
-Effects:: constructs a `shared_ptr` that shares ownership with `r` and stores `p`.
+Effects:: Copy-constructs a `shared_ptr` from `r`, while storing `p` instead.
 
 Postconditions:: `get() == p && use_count() == r.use_count()`.
 

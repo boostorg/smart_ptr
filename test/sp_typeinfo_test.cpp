@@ -8,19 +8,19 @@
 // http://www.boost.org/LICENSE_1_0.txt
 //
 
-#include <boost/detail/sp_typeinfo.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/detail/lightweight_test.hpp>
 #include <iostream>
 
 int main()
 {
-    BOOST_TEST( BOOST_SP_TYPEID( int ) == BOOST_SP_TYPEID( int ) );
-    BOOST_TEST( BOOST_SP_TYPEID( int ) != BOOST_SP_TYPEID( long ) );
-    BOOST_TEST( BOOST_SP_TYPEID( int ) != BOOST_SP_TYPEID( void ) );
+    BOOST_TEST( BOOST_SP_TYPEID_( int ) == BOOST_SP_TYPEID_( int ) );
+    BOOST_TEST( BOOST_SP_TYPEID_( int ) != BOOST_SP_TYPEID_( long ) );
+    BOOST_TEST( BOOST_SP_TYPEID_( int ) != BOOST_SP_TYPEID_( void ) );
 
-    boost::detail::sp_typeinfo const & ti = BOOST_SP_TYPEID( int );
+    boost::detail::sp_typeinfo_ const & ti = BOOST_SP_TYPEID_( int );
 
-    boost::detail::sp_typeinfo const * pti = &BOOST_SP_TYPEID( int );
+    boost::detail::sp_typeinfo_ const * pti = &BOOST_SP_TYPEID_( int );
     BOOST_TEST( *pti == ti );
 
     BOOST_TEST( ti == ti );
@@ -30,9 +30,9 @@ int main()
     char const * nti = ti.name();
     std::cout << nti << std::endl;
 
-    boost::detail::sp_typeinfo const & tv = BOOST_SP_TYPEID( void );
+    boost::detail::sp_typeinfo_ const & tv = BOOST_SP_TYPEID_( void );
 
-    boost::detail::sp_typeinfo const * ptv = &BOOST_SP_TYPEID( void );
+    boost::detail::sp_typeinfo_ const * ptv = &BOOST_SP_TYPEID_( void );
     BOOST_TEST( *ptv == tv );
 
     BOOST_TEST( tv == tv );

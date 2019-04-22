@@ -393,11 +393,11 @@ public:
         other.destroy(this);
     }
 
-    virtual void* get_deleter(const sp_typeinfo&) BOOST_SP_NOEXCEPT {
+    virtual void* get_deleter(const sp_typeinfo_&) BOOST_SP_NOEXCEPT {
         return 0;
     }
 
-    virtual void* get_local_deleter(const sp_typeinfo&) BOOST_SP_NOEXCEPT {
+    virtual void* get_local_deleter(const sp_typeinfo_&) BOOST_SP_NOEXCEPT {
         return 0;
     }
 

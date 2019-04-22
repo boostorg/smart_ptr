@@ -312,6 +312,6 @@ run weak_ptr_alias_move_test.cpp ;
 
 run sp_typeinfo_test.cpp : : : <rtti>off : sp_typeinfo_test_no_rtti ;
 
-run get_deleter_test.cpp : : : <rtti>off : get_deleter_test_no_rtti ;
-run get_deleter_test2.cpp : : : <rtti>off : get_deleter_test2_no_rtti ;
-run get_deleter_test3.cpp : : : <rtti>off : get_deleter_test3_no_rtti ;
+run get_deleter_test.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
+run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
+run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;

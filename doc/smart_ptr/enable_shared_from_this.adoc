@@ -142,3 +142,7 @@ template<class T> weak_ptr<T const> weak_from_this() const noexcept;
 * {blank}
 +
 Returns:: `weak_this_`.
+
+NOTE: Unlike `shared_from_this()`, `weak_from_this()` is valid in a destructor
+      and returns a `weak_ptr` that is `expired()` but still shares ownership
+      with other `weak_ptr` instances (if any) that refer to the object.

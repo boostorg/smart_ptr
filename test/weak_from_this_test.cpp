@@ -39,7 +39,7 @@ void test()
 
     *p = V();
 
-    boost::weak_ptr<V> q4 = p->shared_from_this();
+    boost::weak_ptr<V> q4 = p->weak_from_this();
     BOOST_TEST( !q4.expired() );
     BOOST_TEST( !(q < q4) && !(q4 < q) );
     BOOST_TEST( !(q2 < q4) && !(q4 < q2) );

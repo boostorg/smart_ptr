@@ -18,3 +18,8 @@ http://www.boost.org/LICENSE_1_0.txt
 * Added aliasing constructors to `weak_ptr`
 * Added `weak_ptr<T>::empty()`
 * Added `enable_shared_from`, `shared_from`, and `weak_from`
+
+## Changes in 1.65.0
+
+* Added `atomic_shared_ptr`
+* Added `local_shared_ptr`, `make_local_shared`

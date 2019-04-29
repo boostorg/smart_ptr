@@ -9,6 +9,7 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP
 #define BOOST_SMART_PTR_MAKE_LOCAL_SHARED_ARRAY_HPP
 
+#include <boost/core/default_allocator.hpp>
 #include <boost/smart_ptr/allocate_local_shared_array.hpp>
 
 namespace boost {
@@ -18,7 +19,7 @@ inline typename enable_if_<is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared()
 {
-    return boost::allocate_local_shared<T>(std::allocator<typename
+    return boost::allocate_local_shared<T>(boost::default_allocator<typename
         detail::sp_array_scalar<T>::type>());
 }
 
@@ -27,7 +28,7 @@ inline typename enable_if_<is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared(const typename remove_extent<T>::type& value)
 {
-    return boost::allocate_local_shared<T>(std::allocator<typename
+    return boost::allocate_local_shared<T>(boost::default_allocator<typename
         detail::sp_array_scalar<T>::type>(), value);
 }
 
@@ -36,7 +37,7 @@ inline typename enable_if_<is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared(std::size_t size)
 {
-    return boost::allocate_local_shared<T>(std::allocator<typename
+    return boost::allocate_local_shared<T>(boost::default_allocator<typename
         detail::sp_array_scalar<T>::type>(), size);
 }
 
@@ -46,7 +47,7 @@ inline typename enable_if_<is_unbounded_array<T>::value,
 make_local_shared(std::size_t size,
     const typename remove_extent<T>::type& value)
 {
-    return boost::allocate_local_shared<T>(std::allocator<typename
+    return boost::allocate_local_shared<T>(boost::default_allocator<typename
         detail::sp_array_scalar<T>::type>(), size, value);
 }
 
@@ -55,8 +56,8 @@ inline typename enable_if_<is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared_noinit()
 {
-    return boost::allocate_local_shared_noinit<T>(std::allocator<typename
-        detail::sp_array_scalar<T>::type>());
+    return boost::allocate_local_shared_noinit<T>(boost::
+        default_allocator<typename detail::sp_array_scalar<T>::type>());
 }
 
 template<class T>
@@ -64,8 +65,8 @@ inline typename enable_if_<is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared_noinit(std::size_t size)
 {
-    return boost::allocate_local_shared_noinit<T>(std::allocator<typename
-        detail::sp_array_scalar<T>::type>(), size);
+    return boost::allocate_local_shared_noinit<T>(boost::
+        default_allocator<typename detail::sp_array_scalar<T>::type>(), size);
 }
 
 } /* boost */

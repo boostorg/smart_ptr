@@ -8,14 +8,12 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
+#include <boost/core/noinit_adaptor.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
-#include <boost/type_traits/has_trivial_assign.hpp>
-#include <boost/type_traits/has_trivial_constructor.hpp>
-#include <boost/type_traits/has_trivial_destructor.hpp>
 #include <boost/type_traits/remove_all_extents.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_extent.hpp>
@@ -70,33 +68,27 @@ sp_objects(std::size_t size) BOOST_SP_NOEXCEPT
     return (size + sizeof(T) - 1) / sizeof(T);
 }
 
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    boost::has_trivial_destructor<T>::value>::type
-sp_array_destroy(A&, T*, std::size_t) BOOST_SP_NOEXCEPT { }
-
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    !boost::has_trivial_destructor<T>::value>::type
-sp_array_destroy(A&, T* ptr, std::size_t size)
-{
-    while (size > 0) {
-        ptr[--size].~T();
-    }
-}
-
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-template<bool E, class A, class T>
-inline typename boost::enable_if_<E>::type
+template<class A, class T>
+inline void
 sp_array_destroy(A& allocator, T* ptr, std::size_t size)
 {
     while (size > 0) {
         std::allocator_traits<A>::destroy(allocator, ptr + --size);
     }
 }
+#else
+template<class A, class T>
+inline void
+sp_array_destroy(A&, T* ptr, std::size_t size)
+{
+    while (size > 0) {
+        ptr[--size].~T();
+    }
+}
 #endif
 
-template<bool E, class A, class T>
+template<class A, class T>
 class sp_destroyer {
 public:
     sp_destroyer(A& allocator, T* ptr) BOOST_SP_NOEXCEPT
@@ -105,7 +97,7 @@ public:
           size_(0) { }
 
     ~sp_destroyer() {
-        sp_array_destroy<E>(allocator_, ptr_, size_);
+        sp_array_destroy(allocator_, ptr_, size_);
     }
 
     std::size_t& size() BOOST_SP_NOEXCEPT {
@@ -121,102 +113,65 @@ private:
     std::size_t size_;
 };
 
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    boost::has_trivial_constructor<T>::value &&
-    boost::has_trivial_assign<T>::value &&
-    boost::has_trivial_destructor<T>::value>::type
-sp_array_construct(A&, T* ptr, std::size_t size)
-{
-    for (std::size_t i = 0; i < size; ++i) {
-        ptr[i] = T();
-    }
-}
-
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    boost::has_trivial_constructor<T>::value &&
-    boost::has_trivial_assign<T>::value &&
-    boost::has_trivial_destructor<T>::value>::type
-sp_array_construct(A&, T* ptr, std::size_t size, const T* list,
-    std::size_t count)
-{
-    for (std::size_t i = 0; i < size; ++i) {
-        ptr[i] = list[i % count];
-    }
-}
-
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    !(boost::has_trivial_constructor<T>::value &&
-      boost::has_trivial_assign<T>::value &&
-      boost::has_trivial_destructor<T>::value)>::type
-sp_array_construct(A& none, T* ptr, std::size_t size)
-{
-    sp_destroyer<E, A, T> hold(none, ptr);
-    for (std::size_t& i = hold.size(); i < size; ++i) {
-        ::new(static_cast<void*>(ptr + i)) T();
-    }
-    hold.size() = 0;
-}
-
-template<bool E, class A, class T>
-inline typename boost::enable_if_<!E &&
-    !(boost::has_trivial_constructor<T>::value &&
-      boost::has_trivial_assign<T>::value &&
-      boost::has_trivial_destructor<T>::value)>::type
-sp_array_construct(A& none, T* ptr, std::size_t size, const T* list,
-    std::size_t count)
-{
-    sp_destroyer<E, A, T> hold(none, ptr);
-    for (std::size_t& i = hold.size(); i < size; ++i) {
-        ::new(static_cast<void*>(ptr + i)) T(list[i % count]);
-    }
-    hold.size() = 0;
-}
-
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
-template<bool E, class A, class T>
-inline typename boost::enable_if_<E>::type
+template<class A, class T>
+inline void
 sp_array_construct(A& allocator, T* ptr, std::size_t size)
 {
-    sp_destroyer<E, A, T> hold(allocator, ptr);
+    sp_destroyer<A, T> hold(allocator, ptr);
     for (std::size_t& i = hold.size(); i < size; ++i) {
         std::allocator_traits<A>::construct(allocator, ptr + i);
     }
     hold.size() = 0;
 }
 
-template<bool E, class A, class T>
-inline typename boost::enable_if_<E>::type
+template<class A, class T>
+inline void
 sp_array_construct(A& allocator, T* ptr, std::size_t size, const T* list,
     std::size_t count)
 {
-    sp_destroyer<E, A, T> hold(allocator, ptr);
+    sp_destroyer<A, T> hold(allocator, ptr);
     for (std::size_t& i = hold.size(); i < size; ++i) {
         std::allocator_traits<A>::construct(allocator, ptr + i,
             list[i % count]);
     }
     hold.size() = 0;
 }
-#endif
-
+#else
 template<class A, class T>
-inline typename
-    boost::enable_if_<boost::has_trivial_constructor<T>::value>::type
-sp_array_default(A&, T*, std::size_t) BOOST_SP_NOEXCEPT { }
-
-template<class A, class T>
-inline typename
-    boost::enable_if_<!boost::has_trivial_constructor<T>::value>::type
-sp_array_default(A& none, T* ptr, std::size_t size)
+inline void
+sp_array_construct(A& none, T* ptr, std::size_t size)
 {
-    sp_destroyer<false, A, T> hold(none, ptr);
+    sp_destroyer<A, T> hold(none, ptr);
+    for (std::size_t& i = hold.size(); i < size; ++i) {
+        ::new(static_cast<void*>(ptr + i)) T();
+    }
+    hold.size() = 0;
+}
+
+template<class A, class T>
+inline void
+sp_array_construct(boost::noinit_adaptor<A>& none, T* ptr, std::size_t size)
+{
+    sp_destroyer<boost::noinit_adaptor<A>, T> hold(none, ptr);
     for (std::size_t& i = hold.size(); i < size; ++i) {
         ::new(static_cast<void*>(ptr + i)) T;
     }
     hold.size() = 0;
 }
+
+template<class A, class T>
+inline void
+sp_array_construct(A& none, T* ptr, std::size_t size, const T* list,
+    std::size_t count)
+{
+    sp_destroyer<A, T> hold(none, ptr);
+    for (std::size_t& i = hold.size(); i < size; ++i) {
+        ::new(static_cast<void*>(ptr + i)) T(list[i % count]);
+    }
+    hold.size() = 0;
+}
+#endif
 
 template<class A>
 class sp_array_state {
@@ -261,29 +216,6 @@ public:
 private:
     A allocator_;
 };
-
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
-template<class A>
-struct sp_use_construct {
-    enum {
-        value = true
-    };
-};
-
-template<class T>
-struct sp_use_construct<std::allocator<T> > {
-    enum {
-        value = false
-    };
-};
-#else
-template<class>
-struct sp_use_construct {
-    enum {
-        value = false
-    };
-};
-#endif
 
 template<class T, class U>
 struct sp_array_alignment {
@@ -347,9 +279,7 @@ private:
     std::size_t size_;
 };
 
-struct sp_default { };
-
-template<class T, bool E = sp_use_construct<T>::value>
+template<class T>
 class BOOST_SYMBOL_VISIBLE sp_array_base
     : public sp_counted_base {
     typedef typename T::type allocator;
@@ -360,21 +290,15 @@ public:
     template<class A>
     sp_array_base(const A& other, std::size_t size, type* start)
         : state_(other, size) {
-        sp_array_construct<E>(state_.allocator(), start, state_.size());
+        sp_array_construct(state_.allocator(), start, state_.size());
     }
 
     template<class A>
     sp_array_base(const A& other, std::size_t size, const type* list,
         std::size_t count, type* start)
         : state_(other, size) {
-        sp_array_construct<E>(state_.allocator(), start, state_.size(), list,
+        sp_array_construct(state_.allocator(), start, state_.size(), list,
             count);
-    }
-
-    template<class A>
-    sp_array_base(sp_default, const A& other, std::size_t size, type* start)
-        : state_(other, size) {
-        sp_array_default(state_.allocator(), start, state_.size());
     }
 
     T& state() BOOST_SP_NOEXCEPT {
@@ -382,7 +306,7 @@ public:
     }
 
     virtual void dispose() BOOST_SP_NOEXCEPT {
-        sp_array_destroy<E>(state_.allocator(),
+        sp_array_destroy(state_.allocator(),
             sp_array_start<sp_array_base, type>(this), state_.size());
     }
 
@@ -533,42 +457,15 @@ template<class T, class A>
 inline typename enable_if_<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator, std::size_t count)
 {
-    typedef typename remove_extent<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
-    typedef detail::sp_array_state<other> state;
-    typedef detail::sp_array_base<state, false> base;
-    std::size_t size = count * detail::sp_array_count<type, scalar>::value;
-    detail::sp_array_result<other, base> result(allocator, size);
-    detail::sp_counted_base* node = result.get();
-    scalar* start = detail::sp_array_start<base, scalar>(node);
-    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
-        size, start);
-    result.release();
-    return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        reinterpret_cast<type*>(start), detail::shared_count(node));
+    return boost::allocate_shared<T>(boost::noinit_adaptor<A>(allocator),
+        count);
 }
 
 template<class T, class A>
 inline typename enable_if_<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator)
 {
-    typedef typename remove_extent<T>::type type;
-    typedef typename detail::sp_array_scalar<T>::type scalar;
-    typedef typename detail::sp_bind_allocator<A, scalar>::type other;
-    enum {
-        size = detail::sp_array_count<T, scalar>::value
-    };
-    typedef detail::sp_size_array_state<other, size> state;
-    typedef detail::sp_array_base<state, false> base;
-    detail::sp_array_result<other, base> result(allocator, size);
-    detail::sp_counted_base* node = result.get();
-    scalar* start = detail::sp_array_start<base, scalar>(node);
-    ::new(static_cast<void*>(node)) base(detail::sp_default(), allocator,
-        size, start);
-    result.release();
-    return shared_ptr<T>(detail::sp_internal_constructor_tag(),
-        reinterpret_cast<type*>(start), detail::shared_count(node));
+    return boost::allocate_shared<T>(boost::noinit_adaptor<A>(allocator));
 }
 
 } /* boost */

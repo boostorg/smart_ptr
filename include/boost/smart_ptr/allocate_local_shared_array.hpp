@@ -172,7 +172,7 @@ inline typename enable_if_<is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared_noinit(const A& allocator, std::size_t count)
 {
-    return boost::allocate_local_shared<T>(boost::noinit_adaptor<A>(allocator),
+    return boost::allocate_local_shared<T>(boost::noinit_adapt(allocator),
         count);
 }
 
@@ -181,8 +181,7 @@ inline typename enable_if_<is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared_noinit(const A& allocator)
 {
-    return boost::allocate_local_shared<T>(boost::
-        noinit_adaptor<A>(allocator));
+    return boost::allocate_local_shared<T>(boost::noinit_adapt(allocator));
 }
 
 } /* boost */

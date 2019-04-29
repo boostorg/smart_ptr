@@ -457,15 +457,14 @@ template<class T, class A>
 inline typename enable_if_<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator, std::size_t count)
 {
-    return boost::allocate_shared<T>(boost::noinit_adaptor<A>(allocator),
-        count);
+    return boost::allocate_shared<T>(boost::noinit_adapt(allocator), count);
 }
 
 template<class T, class A>
 inline typename enable_if_<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator)
 {
-    return boost::allocate_shared<T>(boost::noinit_adaptor<A>(allocator));
+    return boost::allocate_shared<T>(boost::noinit_adapt(allocator));
 }
 
 } /* boost */

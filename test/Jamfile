@@ -319,3 +319,5 @@ run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>n
 run shared_from_test.cpp ;
 run weak_from_test.cpp ;
 run weak_from_test2.cpp ;
+
+run allocation_ptr_test.cpp ;

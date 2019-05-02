@@ -8,6 +8,7 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_DETAIL_SP_CONSTRUCT_HPP
 #define BOOST_SMART_PTR_DETAIL_SP_CONSTRUCT_HPP
 
+#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/core/noinit_adaptor.hpp>
 
 namespace boost {

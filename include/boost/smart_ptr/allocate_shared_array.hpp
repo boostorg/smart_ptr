@@ -8,8 +8,7 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
-#include <boost/core/noinit_adaptor.hpp>
-#include <boost/smart_ptr/detail/sp_construct.hpp>
+#include <boost/core/alloc_construct.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/enable_if.hpp>
@@ -186,14 +185,15 @@ public:
     template<class A>
     sp_array_base(const A& other, std::size_t size, type* start)
         : state_(other, size) {
-        sp_construct_n(state_.allocator(), start, state_.size());
+        boost::alloc_construct_n(state_.allocator(), start, state_.size());
     }
 
     template<class A>
     sp_array_base(const A& other, std::size_t size, const type* list,
         std::size_t count, type* start)
         : state_(other, size) {
-        sp_construct_n(state_.allocator(), start, state_.size(), list, count);
+        boost::alloc_construct_n(state_.allocator(), start, state_.size(),
+            list, count);
     }
 
     T& state() BOOST_SP_NOEXCEPT {
@@ -201,7 +201,7 @@ public:
     }
 
     virtual void dispose() BOOST_SP_NOEXCEPT {
-        sp_destroy_n(state_.allocator(),
+        boost::alloc_destroy_n(state_.allocator(),
             sp_array_start<sp_array_base, type>(this), state_.size());
     }
 

@@ -10,6 +10,7 @@ Distributed under the Boost Software License, Version 1.0.
 
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
+#include <boost/type_traits/remove_cv.hpp>
 #include <boost/assert.hpp>
 #if !defined(BOOST_NO_CXX11_ALLOCATOR)
 #include <memory>
@@ -18,15 +19,19 @@ Distributed under the Boost Software License, Version 1.0.
 namespace boost {
 namespace detail {
 
+#if !defined(BOOST_NO_CXX11_ALLOCATOR)
 template<class T, class A>
 struct sp_allocation_ptr {
-#if !defined(BOOST_NO_CXX11_ALLOCATOR)
     typedef typename std::allocator_traits<A>::template
-        rebind_traits<T>::pointer type;
-#else
-    typedef typename A::template rebind<T>::other::pointer type;
-#endif
+        rebind_traits<typename boost::remove_cv<T>::type>::pointer type;
 };
+#else
+template<class T, class A>
+struct sp_allocation_ptr {
+    typedef typename A::template
+        rebind<typename boost::remove_cv<T>::type>::other::pointer type;
+};
+#endif
 
 } /* detail */
 

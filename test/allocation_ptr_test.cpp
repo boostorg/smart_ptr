@@ -17,17 +17,35 @@ void test_pointer(scalar)
 {
     BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<int,
         boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const int,
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const volatile int,
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<volatile int,
+        boost::default_allocator<void> >::pointer, int*);
 }
 
 void test_pointer(unbounded_array)
 {
     BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<int[],
         boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const int[],
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const volatile int[],
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<volatile int[],
+        boost::default_allocator<void> >::pointer, int*);
 }
 
 void test_pointer(bounded_array)
 {
     BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<int[5],
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const int[5],
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<const volatile int[5],
+        boost::default_allocator<void> >::pointer, int*);
+    BOOST_TEST_TRAIT_SAME(boost::allocation_ptr<volatile int[5],
         boost::default_allocator<void> >::pointer, int*);
 }
 

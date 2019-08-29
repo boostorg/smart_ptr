@@ -14,6 +14,10 @@
 
 #endif
 
+#if defined(__GNUC__) && __GNUC__ > 4
+# pragma GCC diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 //
 //  shared_ptr_basic_test.cpp
 //

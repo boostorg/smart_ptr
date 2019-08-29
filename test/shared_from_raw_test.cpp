@@ -9,6 +9,10 @@
 //  http://www.boost.org/LICENSE_1_0.txt
 //
 
+#if defined(__GNUC__) && __GNUC__ > 4
+# pragma GCC diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 #include <boost/smart_ptr/enable_shared_from_raw.hpp>
 #include <boost/shared_ptr.hpp>
 

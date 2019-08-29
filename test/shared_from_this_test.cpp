@@ -7,6 +7,10 @@
 #pragma warning(disable: 4514)  // unreferenced inline removed
 #endif
 
+#if defined(__GNUC__) && __GNUC__ > 4
+# pragma GCC diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 //
 //  shared_from_this_test.cpp
 //

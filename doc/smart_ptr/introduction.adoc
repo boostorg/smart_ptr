@@ -41,6 +41,7 @@ In addition, the library contains the following supporting utility functions and
 
 * `<<make_shared,make_shared>>`, a factory function for creating objects that returns a `shared_ptr`;
 * `<<make_unique,make_unique>>`, a factory function returning `std::unique_ptr`;
+* `<<allocate_unique,allocate_unique>>`, a factory function for creating objects using an allocator that returns a `std::unique_ptr`;
 * `<<enable_shared_from_this,enable_shared_from_this>>`, a helper base class that enables the acquisition of a `shared_ptr` pointing to `this`;
 * `<<pointer_to_other,pointer_to_other>>`, a helper trait for converting one smart pointer type to another;
 * `<<pointer_cast,static_pointer_cast>>` and companions, generic smart pointer casts;

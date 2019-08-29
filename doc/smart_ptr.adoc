@@ -37,6 +37,8 @@ include::smart_ptr/enable_shared_from.adoc[]
 
 include::smart_ptr/make_unique.adoc[]
 
+include::smart_ptr/allocate_unique.adoc[]
+
 include::smart_ptr/intrusive_ptr.adoc[]
 
 include::smart_ptr/intrusive_ref_counter.adoc[]

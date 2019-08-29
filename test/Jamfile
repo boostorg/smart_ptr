@@ -319,3 +319,15 @@ run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>n
 run shared_from_test.cpp ;
 run weak_from_test.cpp ;
 run weak_from_test2.cpp ;
+
+run allocate_unique_args_test.cpp ;
+run allocate_unique_array_construct_test.cpp ;
+run allocate_unique_array_noinit_test.cpp ;
+run allocate_unique_arrays_test.cpp ;
+run allocate_unique_array_test.cpp ;
+run allocate_unique_array_throws_test.cpp ;
+run allocate_unique_array_value_test.cpp ;
+run allocate_unique_construct_test.cpp ;
+run allocate_unique_noinit_test.cpp ;
+run allocate_unique_test.cpp ;
+run allocate_unique_throws_test.cpp ;

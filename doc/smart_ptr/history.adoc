@@ -111,3 +111,7 @@ Glen Fernandes rewrote `allocate_shared` and `make_shared` for arrays for a more
 Peter Dimov and Glen Fernandes rewrote the documentation in Asciidoc format.
 
 Peter Dimov added `atomic_shared_ptr` and `local_shared_ptr`.
+
+## August 2019
+
+Glen Fernandes implemented `allocate_unique` for scalars and arrays.

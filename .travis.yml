@@ -109,7 +109,17 @@ matrix:
 
     - os: linux
       compiler: g++-8
-      env: TOOLSET=gcc COMPILER=g++-8 CXXSTD=03,11,14,17,2a
+      env: TOOLSET=gcc COMPILER=g++-8 CXXSTD=03,11,14
+      addons:
+        apt:
+          packages:
+            - g++-8
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-8
+      env: TOOLSET=gcc COMPILER=g++-8 CXXSTD=17,2a
       addons:
         apt:
           packages:
@@ -119,7 +129,7 @@ matrix:
 
     - os: linux
       compiler: g++-9
-      env: TOOLSET=gcc COMPILER=g++-9 CXXSTD=03,11,14,17,2a
+      env: TOOLSET=gcc COMPILER=g++-9 CXXSTD=03,11,14
       addons:
         apt:
           packages:
@@ -129,11 +139,21 @@ matrix:
 
     - os: linux
       compiler: g++-9
-      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-9 CXXSTD=03,11,14,17,2a UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
+      env: TOOLSET=gcc COMPILER=g++-9 CXXSTD=17,2a
       addons:
         apt:
           packages:
             - g++-9
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      compiler: g++-7
+      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
+      addons:
+        apt:
+          packages:
+            - g++-7
           sources:
             - ubuntu-toolchain-r-test
 

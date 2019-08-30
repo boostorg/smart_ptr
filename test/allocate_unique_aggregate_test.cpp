@@ -6,7 +6,8 @@ Distributed under the Boost Software License, Version 1.0.
 (http://www.boost.org/LICENSE_1_0.txt)
 */
 #include <boost/config.hpp>
-#if (!defined(BOOST_LIBSTDCXX_VERSION) || \
+#if (!defined(BOOST_MSVC) || BOOST_MSVC >= 1700) && \
+    (!defined(BOOST_LIBSTDCXX_VERSION) || \
     BOOST_LIBSTDCXX_VERSION >= 46000) && \
     !defined(BOOST_NO_CXX11_SMART_PTR) && \
     !defined(BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX)

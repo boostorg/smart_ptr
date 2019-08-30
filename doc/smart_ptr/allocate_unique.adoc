@@ -67,17 +67,17 @@ namespace boost {
 
   `// T is not an array`
   template<class T, class A>
-    std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A>>>
+    std::unique_ptr<T, alloc_noinit_deleter<T, A>>
       allocate_unique_noinit(const A& a);
 
   `// T is an array of unknown bounds`
   template<class T, class A>
-    std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A>>>
+    std::unique_ptr<T, alloc_noinit_deleter<T, A>>
       allocate_unique(const A& a, std::size_t n);
 
   `// T is an array of known bounds`
   template<class T, class A>
-    std::unique_ptr<remove_extent_t<T>[], alloc_deleter<T, noinit_adaptor<A>>>
+    std::unique_ptr<remove_extent_t<T>[], alloc_noinit_deleter<T, A>>
       allocate_unique_noinit(const A& a);
 }
 ```
@@ -227,7 +227,7 @@ Examples::
 
 ```
 template<class T, class A>
-  std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A>>>
+  std::unique_ptr<T, alloc_noinit_deleter<T, A>>
     allocate_unique_noinit(const A& a);
 ```
 [none]
@@ -239,7 +239,7 @@ Example:: `auto p = allocate_unique_noinit<double>(a);`
 
 ```
 template<class T, class A>
-  std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A>>>
+  std::unique_ptr<T, alloc_noinit_deleter<T, A>>
     allocate_unique(const A& a, std::size_t n);
 ```
 [none]
@@ -252,7 +252,7 @@ Example:: `auto p = allocate_unique_noinit<double[]>(a, 1024);`
 
 ```
 template<class T, class A>
-  std::unique_ptr<remove_extent_t<T>, alloc_deleter<T, noinit_adaptor<A>>>
+  std::unique_ptr<remove_extent_t<T>, alloc_noinit_deleter<T, A>>
     allocate_unique_noinit(const A& a);
 ```
 [none]

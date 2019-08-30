@@ -93,6 +93,11 @@ public:
     sp_alloc_ptr() BOOST_SP_NOEXCEPT
         : p_() { }
 
+#if defined(BOOST_MSVC) && BOOST_MSVC == 1600
+    sp_alloc_ptr(T* p) BOOST_SP_NOEXCEPT
+        : p_(const_cast<typename boost::remove_cv<T>::type*>(p)) { }
+#endif
+
     sp_alloc_ptr(std::size_t, P p) BOOST_SP_NOEXCEPT
         : p_(p) { }
 

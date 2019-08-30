@@ -9,8 +9,8 @@ Distributed under the Boost Software License, Version 1.0.
 #if (!defined(BOOST_LIBSTDCXX_VERSION) || \
     BOOST_LIBSTDCXX_VERSION >= 46000) && \
     !defined(BOOST_NO_CXX11_SMART_PTR)
-#include <boost/core/lightweight_test.hpp>
 #include <boost/smart_ptr/allocate_unique.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 template<class T = void>
 struct creator {

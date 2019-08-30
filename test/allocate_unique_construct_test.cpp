@@ -7,8 +7,8 @@ Distributed under the Boost Software License, Version 1.0.
 */
 #include <boost/config.hpp>
 #if !defined(BOOST_NO_CXX11_SMART_PTR) && !defined(BOOST_NO_CXX11_ALLOCATOR)
-#include <boost/core/lightweight_test.hpp>
 #include <boost/smart_ptr/allocate_unique.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 struct allow { };
 

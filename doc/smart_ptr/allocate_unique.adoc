@@ -35,6 +35,12 @@ library to use an allocator for the creation of the objects managed by
 [subs=+quotes]
 ```
 namespace boost {
+  template<class T, class A>
+  class alloc_deleter;
+
+  template<class T, class A>
+  using alloc_noinit_deleter = alloc_deleter<T, noinit_adaptor<A>>;
+
   `// T is not an array`
   template<class T, class A, class... Args>
     std::unique_ptr<T, alloc_deleter<T, A>>
@@ -262,3 +268,53 @@ Constraints:: `T` is an array of known bounds.
 Returns:: A `std::unique_ptr` to a sequence of `extent_v<T>`
 default-initialized objects of type `remove_extent_t<T>`.
 Example:: `auto p = allocate_unique_noinit<double[1024]>(a);`
+
+## Deleter
+
+Class template `alloc_deleter` is the deleter used by the `allocate_unique`
+functions.
+
+### Synopsis
+
+[subs=+quotes]
+```
+namespace boost {
+  template<class T, class A>
+  class alloc_deleter {
+  public:
+    using pointer = `unspecified`;
+
+    explicit alloc_deleter(const A& a) noexcept;
+
+    void operator()(pointer p);
+  };
+}
+```
+
+### Members
+
+[subs=+quotes]
+```
+using pointer = `unspecified`;
+```
+[none]
+* {blank}
++
+A type that satisfies _NullablePointer_.
+
+```
+explicit alloc_deleter(const A& a) noexcept;
+```
+[none]
+* {blank}
++
+Effects:: Initializes the stored allocator from `a`.
+
+```
+void operator()(pointer p);
+```
+[none]
+* {blank}
++
+Effects:: Destroys the objects and deallocates the storage referenced by `p`,
+using the stored allocator.

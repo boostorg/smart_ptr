@@ -294,8 +294,7 @@ inline void
 sp_alloc_clear(A& a, typename sp_alloc_type<A>::type p, std::size_t,
     boost::false_type)
 {
-    boost::alloc_destroy(a, p);
-    a.deallocate(p, 1);
+    boost::alloc_destroy(a, boost::to_address(p));
 }
 
 template<class A>
@@ -310,7 +309,6 @@ sp_alloc_clear(A& a, typename sp_alloc_type<A>::type p, std::size_t n,
 #endif
     boost::alloc_destroy_n(a, boost::first_scalar(boost::to_address(p)),
         n * sp_alloc_size<typename A::value_type>::value);
-    a.deallocate(p, n);
 }
 
 } /* detail */
@@ -332,6 +330,7 @@ public:
 
     void operator()(pointer p) {
         detail::sp_alloc_clear(base::get(), p.ptr(), p.size(), is_array<T>());
+        base::get().deallocate(p.ptr(), p.size());
     }
 };
 

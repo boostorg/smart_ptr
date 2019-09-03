@@ -27,25 +27,25 @@ are analogous to `make_shared` and `allocate_shared` for `shared_ptr`.
 [subs=+quotes]
 ```
 namespace boost {
-  `// only if T is not an array type`
+  `// T is not an array`
   template<class T, class... Args>
     local_shared_ptr<T> make_local_shared(Args&&... args);
   template<class T, class A, class... Args>
     local_shared_ptr<T> allocate_local_shared(const A& a, Args&&... args);
 
-  `// only if T is an array type of the form U[]`
+  `// T is an array of unknown bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared(std::size_t n);
   template<class T, class A>
     local_shared_ptr<T> allocate_local_shared(const A& a, std::size_t n);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of known bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared();
   template<class T, class A>
     local_shared_ptr<T> allocate_local_shared(const A& a);
 
-  `// only if T is an array type of the form U[]`
+  `// T is an array of unknown bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared(std::size_t n,
       const remove_extent_t<T>& v);
@@ -53,20 +53,20 @@ namespace boost {
     local_shared_ptr<T> allocate_local_shared(const A& a, std::size_t n,
       const remove_extent_t<T>& v);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of known bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared(const remove_extent_t<T>& v);
   template<class T, class A>
     local_shared_ptr<T> allocate_local_shared(const A& a,
       const remove_extent_t<T>& v);
 
-  `// only if T is not an array type of the form U[]`
+  `// T is not an array of known bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared_noinit();
   template<class T, class A>
     local_shared_ptr<T> allocate_local_shared_noinit(const A& a);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of unknown bounds`
   template<class T>
     local_shared_ptr<T> make_local_shared_noinit(std::size_t n);
   template<class T, class A>

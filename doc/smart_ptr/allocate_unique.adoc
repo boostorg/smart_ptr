@@ -124,8 +124,8 @@ value `v`, or constructed from `args\...`, `allocate_unique` shall perform this
 initialization via the expression
 `std::allocator_traits<A2>::construct(a2, p, expr)` (where `_expr_` is `v` or
 `std::forward<Args>(args)\...)` respectively), `p` points to storage suitable
-to hold an object of type `U`, and `a2` of type `A2` is a rebound copy `a` such
-that its `value_type` is `U`.
+to hold an object of type `U`, and `a2` of type `A2` is a potentially rebound
+copy of `a`.
 * When a (sub)object of non-array type `U` is specified to be
 default-initialized, `allocate_unique_noinit` shall perform this initialization
 via the expression `::new(p) U`, where `p` has type `void*` and points to
@@ -134,7 +134,7 @@ storage suitable to hold an object of type `U`.
 value-initialized, `allocate_unique` shall perform this initialization via the
 expression `std::allocator_traits<A2>::construct(a2, p)`, where `p` points to
 storage suitable to hold an object of type `U` and `a2` of type `A2` is a
-rebound copy of `a` such that its value_type is `U`.
+potentially rebound copy of `a`.
 * Array elements are initialized in ascending order of their addresses.
 * When the lifetime of the object managed by the return value ends, or when the
 initialization of an array element throws an exception, the initialized
@@ -278,17 +278,15 @@ functions.
 
 [subs=+quotes]
 ```
-namespace boost {
-  template<class T, class A>
-  class alloc_deleter {
-  public:
-    using pointer = `unspecified`;
+template<class T, class A>
+class alloc_deleter {
+public:
+  using pointer = `unspecified`;
 
-    explicit alloc_deleter(const A& a) noexcept;
+  explicit alloc_deleter(const A& a) noexcept;
 
-    void operator()(pointer p);
-  };
-}
+  void operator()(pointer p);
+};
 ```
 
 ### Members

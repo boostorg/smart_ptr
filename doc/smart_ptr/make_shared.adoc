@@ -55,43 +55,43 @@ types.
 [subs=+quotes]
 ```
 namespace boost {
-  `// only if T is not an array type`
+  `// T is not an array`
   template<class T, class... Args>
     shared_ptr<T> make_shared(Args&&... args);
   template<class T, class A, class... Args>
     shared_ptr<T> allocate_shared(const A& a, Args&&... args);
 
-  `// only if T is an array type of the form U[]`
+  `// T is an array of unknown bounds`
   template<class T>
     shared_ptr<T> make_shared(std::size_t n);
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a, std::size_t n);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of known bounds`
   template<class T>
     shared_ptr<T> make_shared();
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a);
 
-  `// only if T is an array type of the form U[]`
+  `// T is an array of unknown bounds`
   template<class T> shared_ptr<T>
     make_shared(std::size_t n, const remove_extent_t<T>& v);
   template<class T, class A> shared_ptr<T>
     allocate_shared(const A& a, std::size_t n, const remove_extent_t<T>& v);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of known bounds`
   template<class T>
     shared_ptr<T> make_shared(const remove_extent_t<T>& v);
   template<class T, class A>
     shared_ptr<T> allocate_shared(const A& a, const remove_extent_t<T>& v);
 
-  `// only if T is not an array type of the form U[]`
+  `// T is not an array of unknown bounds`
   template<class T>
     shared_ptr<T> make_shared_noinit();
   template<class T, class A>
     shared_ptr<T> allocate_shared_noinit(const A& a);
 
-  `// only if T is an array type of the form U[N]`
+  `// T is an array of unknown bounds`
   template<class T>
     shared_ptr<T> make_shared_noinit(std::size_t n);
   template<class T, class A>
@@ -144,7 +144,7 @@ perform this initialization via the expression
 `std::allocator_traits<A2>::construct(a2, p, expr)` (where
 `_expr_` is `v` or `std::forward<Args>(args)\...)` respectively), `p`
 points to storage suitable to hold an object of type `U`, and `a2` of
-type `A2` is a rebound copy `a` such that its `value_type` is `U`.
+type `A2` is a potentially rebound copy `a`.
 * When a (sub)object of non-array type `U` is specified to be
 default-initialized, `make_shared_noinit` and `allocate_shared_noinit` shall
 perform this initialization via the expression `::new(p) U`, where
@@ -158,7 +158,7 @@ storage suitable to hold an object of type `U`.
 value-initialized, `allocate_shared` shall perform this initialization via the
 expression `std::allocator_traits<A2>::construct(a2, p)`, where
 `p` points to storage suitable to hold an object of type `U` and `a2` of
-type `A2` is a rebound copy of `a` such that its value_type is `U`.
+type `A2` is a potentially rebound copy of `a`.
 * Array elements are initialized in ascending order of their addresses.
 * When the lifetime of the object managed by the return value ends, or when
 the initialization of an array element throws an exception, the initialized
@@ -181,8 +181,7 @@ template<class T, class A, class... Args>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is not an array type.
+Constraints:: `T` is not an array.
 Returns:: A `shared_ptr` to an object of type `T`, constructed from
 `args\...`.
 Examples::
@@ -200,10 +199,9 @@ template<class T, class A>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `U[]`.
+Constraints:: `T` is an array of unknown bounds.
 Returns:: A `shared_ptr` to a sequence of `n` value-initialized objects of
-type `U`.
+type `remove_extent_t<T>`.
 Examples::
 * `auto p = make_shared<double[]>(1024);`
 * `auto p = make_shared<double[][2][2]>(6);`
@@ -219,10 +217,9 @@ template<class T, class A>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `U[N]`.
-Returns:: A `shared_ptr` to a sequence of `N` value-initialized objects of
-type `U`.
+Constraints:: `T` is an array of known bounds.
+Returns:: A `shared_ptr` to a sequence of `extent_v<T>` value-initialized
+objects of type `remove_extent_t<T>`.
 Examples::
 * `auto p = make_shared<double[1024]>();`
 * `auto p = make_shared<double[6][2][2]>();`
@@ -238,10 +235,9 @@ template<class T, class A> shared_ptr<T>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `U[]`.
-Returns:: A `shared_ptr` to a sequence of `n` objects of type `U`, each
-initialized to `v`.
+Constraints:: `T` is an array of unknown bounds.
+Returns:: A `shared_ptr` to a sequence of `n` objects of type
+`remove_extent_t<T>`, each initialized to `v`.
 Examples::
 * `auto p = make_shared<double[]>(1024, 1.0);`
 * `auto p = make_shared<double[][2]>(6, {1.0, 0.0});`
@@ -258,10 +254,9 @@ template<class T, class A>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `U[N]`.
-Returns:: A `shared_ptr` to a sequence of `N` objects of type `U`, each
-initialized to `v`.
+Constraints:: `T` is an array of known bounds.
+Returns:: A `shared_ptr` to a sequence of `extent_v<T>` objects of type
+`remove_extent_t<T>`, each initialized to `v`.
 Examples::
 * `auto p = make_shared<double[1024]>(1.0);`
 * `auto p = make_shared<double[6][2]>({1.0, 0.0});`
@@ -278,10 +273,10 @@ template<class T, class A>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is not an array type, or an array type of the `U[N]`.
+Constraints:: `T` is not an array, or is an array of known bounds.
 Returns:: A `shared_ptr` to a default-initialized object of type `T`, or a
-sequence of `N` default-initialized objects of type `U`, respectively.
+sequence of `extent_v<T>` default-initialized objects of type
+`remove_extent_t<T>`, respectively.
 Example:: `auto p = make_shared_noinit<double[1024]>();`
 
 ```
@@ -295,8 +290,7 @@ template<class T, class A>
 [none]
 * {blank}
 +
-Remarks:: These overloads shall only participate in overload resolution when
-`T` is an array type of the form `U[]`.
+Constraints:: `T` is an array of unknown bounds.
 Returns:: A `shared_ptr` to a sequence of `_n_` default-initialized objects
-of type `U`.
+of type `remove_extent_t<T>`.
 Example:: `auto p = make_shared_noinit<double[]>(1024);`

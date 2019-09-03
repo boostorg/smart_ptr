@@ -64,12 +64,12 @@ namespace boost {
   `// T is an array of unknown bounds`
   template<class T, class A>
     std::unique_ptr<T, alloc_deleter<T, A>>
-      allocate_unique(const A& a, std::size_t n, const type_identity_t<T>& v);
+      allocate_unique(const A& a, std::size_t n, const remove_extent_t<T>& v);
 
   `// T is an array of known bounds`
   template<class T, class A>
     std::unique_ptr<remove_extent_t<T>[], alloc_deleter<T, A>>
-      allocate_unique(const A& a, const type_identity_t<T>& v);
+      allocate_unique(const A& a, const remove_extent_t<T>& v);
 
   `// T is not an array`
   template<class T, class A>
@@ -202,7 +202,7 @@ Examples::
 ```
 template<class T, class A>
   std::unique_ptr<T, alloc_deleter<T, A>>
-    allocate_unique(const A& a, std::size_t n, const type_identity_t<T>& v);
+    allocate_unique(const A& a, std::size_t n, const remove_extent_t<T>& v);
 ```
 [none]
 * {blank}
@@ -218,7 +218,7 @@ Examples::
 ```
 template<class T, class A>
   std::unique_ptr<remove_extent_t<T>[], alloc_deleter<T, A>>
-    allocate_unique(const A& a, const type_identity_t<T>& v);
+    allocate_unique(const A& a, const remove_extent_t<T>& v);
 ```
 [none]
 * {blank}

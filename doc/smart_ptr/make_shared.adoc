@@ -144,7 +144,7 @@ perform this initialization via the expression
 `std::allocator_traits<A2>::construct(a2, p, expr)` (where
 `_expr_` is `v` or `std::forward<Args>(args)\...)` respectively), `p`
 points to storage suitable to hold an object of type `U`, and `a2` of
-type `A2` is a potentially rebound copy `a`.
+type `A2` is a potentially rebound copy of `a`.
 * When a (sub)object of non-array type `U` is specified to be
 default-initialized, `make_shared_noinit` and `allocate_shared_noinit` shall
 perform this initialization via the expression `::new(p) U`, where

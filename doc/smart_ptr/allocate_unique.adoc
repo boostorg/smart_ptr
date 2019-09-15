@@ -79,7 +79,7 @@ namespace boost {
   `// T is an array of unknown bounds`
   template<class T, class A>
     std::unique_ptr<T, alloc_noinit_deleter<T, A>>
-      allocate_unique(const A& a, std::size_t n);
+      allocate_unique_noinit(const A& a, std::size_t n);
 
   `// T is an array of known bounds`
   template<class T, class A>
@@ -246,7 +246,7 @@ Example:: `auto p = allocate_unique_noinit<double>(a);`
 ```
 template<class T, class A>
   std::unique_ptr<T, alloc_noinit_deleter<T, A>>
-    allocate_unique(const A& a, std::size_t n);
+    allocate_unique_noinit(const A& a, std::size_t n);
 ```
 [none]
 * {blank}

@@ -27,6 +27,7 @@
 #include <boost/checked_delete.hpp>
 #include <boost/smart_ptr/detail/sp_counted_base.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/core/addressof.hpp>
 
 #if defined(BOOST_SP_USE_QUICK_ALLOCATOR)

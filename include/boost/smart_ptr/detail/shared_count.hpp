@@ -30,6 +30,7 @@
 #include <boost/smart_ptr/detail/sp_counted_impl.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/config/workaround.hpp>
 // In order to avoid circular dependencies with Boost.TR1
 // we make sure that our include of <memory> doesn't try to

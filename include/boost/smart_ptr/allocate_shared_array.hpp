@@ -11,6 +11,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/extent.hpp>

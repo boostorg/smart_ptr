@@ -25,6 +25,7 @@
 #include <boost/smart_ptr/detail/shared_count.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/detail/workaround.hpp>
 
 #include <cstddef>            // for std::ptrdiff_t

@@ -31,6 +31,7 @@
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 
 #if !defined(BOOST_SP_NO_ATOMIC_ACCESS)
 #include <boost/smart_ptr/detail/spinlock_pool.hpp>

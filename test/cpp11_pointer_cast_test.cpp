@@ -11,7 +11,7 @@
 #include <boost/pointer_cast.hpp>
 
 #include <boost/config.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/get_pointer.hpp>
 #include <boost/shared_ptr.hpp>
 

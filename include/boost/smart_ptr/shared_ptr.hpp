@@ -26,7 +26,7 @@
 #include <boost/checked_delete.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/smart_ptr/detail/shared_count.hpp>
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>

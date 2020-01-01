@@ -9,7 +9,7 @@
 //
 
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <iostream>
 
 int main()

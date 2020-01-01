@@ -11,7 +11,7 @@
 #if defined( WIN32 ) || defined( _WIN32 ) || defined( __WIN32__ ) || defined( __CYGWIN__ )
 
 #include <boost/smart_ptr/detail/sp_interlocked.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #ifndef __LP64__
 

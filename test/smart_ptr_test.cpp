@@ -37,7 +37,7 @@
 
 #include <boost/smart_ptr.hpp>
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #include <iostream>
 #include <set>

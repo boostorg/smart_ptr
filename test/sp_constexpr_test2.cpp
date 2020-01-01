@@ -9,7 +9,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 
 #define HAVE_CONSTEXPR_INIT
 

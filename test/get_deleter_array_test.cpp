@@ -9,7 +9,7 @@
 //
 
 #include <boost/shared_array.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 struct deleter
 {

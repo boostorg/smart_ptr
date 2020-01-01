@@ -9,7 +9,7 @@
 //
 
 #include <boost/smart_ptr/detail/spinlock.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 // Sanity check only
 

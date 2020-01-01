@@ -11,7 +11,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt
 
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/shared_ptr.hpp>
 #include <memory>
 #include <cstddef>

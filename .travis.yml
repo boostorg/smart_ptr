@@ -323,6 +323,13 @@ matrix:
       env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
 
     - os: linux
+      env: CMAKE_TEST=1
+      script:
+        - mkdir __build__ && cd __build__
+        - cmake -DBOOST_ENABLE_CMAKE=1 -DBoost_VERBOSE=1 -DBOOST_INCLUDE_LIBRARIES=smart_ptr ..
+        - ctest --output-on-failure -R boost_smart_ptr
+
+    - os: linux
       compiler: g++
       env: CMAKE_SUBDIR_TEST=1
       script:
@@ -330,6 +337,17 @@ matrix:
       - cmake ..
       - cmake --build .
       - cmake --build . --target check
+
+    - os: linux
+      env: CMAKE_INSTALL_TEST=1
+      script:
+        - mkdir __build__ && cd __build__
+        - cmake -DBOOST_ENABLE_CMAKE=1 -DBoost_VERBOSE=1 -DBOOST_INCLUDE_LIBRARIES="smart_ptr;assert;config;core;move;static_assert;throw_exception;type_traits" -DCMAKE_INSTALL_PREFIX=~/.local ..
+        - cmake --build . --target install
+        - cd ../libs/smart_ptr/test/cmake_install_test && mkdir __build__ && cd __build__
+        - cmake -DCMAKE_INSTALL_PREFIX=~/.local ..
+        - cmake --build .
+        - cmake --build . --target check
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true

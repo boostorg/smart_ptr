@@ -6,6 +6,10 @@ include(BoostTestJamfile OPTIONAL RESULT_VARIABLE HAVE_BOOST_TEST)
 
 if(HAVE_BOOST_TEST)
 
-boost_test_jamfile(FILE Jamfile LINK_LIBRARIES Boost::smart_ptr Boost::core Boost::align Boost::atomic Boost::container_hash)
+# for lw_thread_test.cpp
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+
+boost_test_jamfile(FILE Jamfile LINK_LIBRARIES Boost::smart_ptr Boost::core Boost::align Boost::atomic Boost::container_hash Threads::Threads)
 
 endif()

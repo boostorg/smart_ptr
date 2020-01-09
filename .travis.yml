@@ -371,6 +371,7 @@ install:
   - git submodule init libs/headers
   - git submodule init tools/boost_install
   - git submodule init tools/cmake
+  - git submodule init libs/preprocessor
   - git submodule update --jobs 3
   - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
   - ./bootstrap.sh

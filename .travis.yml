@@ -23,10 +23,6 @@ matrix:
 
   include:
     - os: linux
-      compiler: g++
-      env: TOOLSET=gcc COMPILER=g++ CXXSTD=03,11,14
-
-    - os: linux
       arch: arm64
       compiler: g++
       env: TOOLSET=gcc COMPILER=g++ CXXSTD=03,11,14
@@ -171,10 +167,6 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - os: linux
-      compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11
-
-    - os: linux
       dist: trusty
       compiler: /usr/bin/clang++
       env: TOOLSET=clang COMPILER=/usr/bin/clang++ CXXSTD=03,11
@@ -194,7 +186,7 @@ matrix:
 
     - os: linux
       compiler: clang++-3.5
-      env: TOOLSET=clang COMPILER=clang++-3.5 CXXSTD=03,11,14,1z
+      env: TOOLSET=clang COMPILER=clang++-3.5 CXXSTD=03,11
       addons:
         apt:
           packages:
@@ -394,7 +386,7 @@ install:
   - git submodule init tools/boost_install
   - git submodule init tools/cmake
   - git submodule init libs/preprocessor
-  - git submodule update --jobs 3
+  - git submodule update # no --jobs 3 on non-amd64
   - cp -r $TRAVIS_BUILD_DIR/* libs/smart_ptr
   - ./bootstrap.sh
   - ./b2 headers

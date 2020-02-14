@@ -106,7 +106,7 @@ template<class T>
 +
 Constraints:: `T` is not an array.
 Returns:: `std::unique_ptr<T>(new T)`.
-Example:: `auto p = make_unique_noinit<double[1024]>();`
+Example:: `auto p = make_unique_noinit<std::array<double, 1024> >();`
 
 ```
 template<class T>

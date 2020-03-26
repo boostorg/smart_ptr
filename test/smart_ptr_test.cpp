@@ -31,7 +31,7 @@
 
 #endif
 
-#ifdef __BORLANDC__
+#ifdef BOOST_BORLANDC
 # pragma warn -8092 // template argument passed to 'find' is not an iterator
 #endif
 

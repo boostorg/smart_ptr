@@ -356,3 +356,6 @@ run allocate_unique_value_test.cpp ;
 run sp_guides_test.cpp ;
 run sp_guides_test2.cpp ;
 run wp_guides_test.cpp ;
+
+compile-fail shared_from_fail.cpp ;
+compile-fail weak_from_fail.cpp ;

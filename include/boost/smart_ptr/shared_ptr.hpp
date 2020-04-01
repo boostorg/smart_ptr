@@ -1175,6 +1175,13 @@ template<class D, class T> D const * basic_get_local_deleter( D const *, shared_
 
 } // namespace detail
 
+#if defined(__cpp_deduction_guides)
+
+template<class T> shared_ptr( weak_ptr<T> ) -> shared_ptr<T>;
+template<class T, class D> shared_ptr( std::unique_ptr<T, D> ) -> shared_ptr<T>;
+
+#endif
+
 } // namespace boost
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )

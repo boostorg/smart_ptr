@@ -9,6 +9,12 @@ struct X: public boost::enable_shared_from
 {
 };
 
+#if defined(__clang__) && defined(_MSC_VER)
+// clang-cl claims that it accepts this code for compatibility
+// with msvc, but no version of msvc accepts it
+#  pragma clang diagnostic error "-Wmicrosoft-using-decl"
+#endif
+
 int main()
 {
     boost::shared_ptr<X> px( new X );

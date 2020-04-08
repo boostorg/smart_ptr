@@ -359,3 +359,5 @@ run wp_guides_test.cpp ;
 
 compile-fail shared_from_fail.cpp ;
 compile-fail weak_from_fail.cpp ;
+
+compile sp_warning_test.cpp ;

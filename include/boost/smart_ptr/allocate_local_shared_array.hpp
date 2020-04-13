@@ -21,11 +21,12 @@ public:
         count_ = shared_count(base);
     }
 
-    virtual void local_cb_destroy() BOOST_SP_NOEXCEPT {
+    void local_cb_destroy() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
         shared_count().swap(count_);
     }
 
-    virtual shared_count local_cb_get_shared_count() const BOOST_SP_NOEXCEPT {
+    shared_count local_cb_get_shared_count() const
+        BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
         return count_;
     }
 

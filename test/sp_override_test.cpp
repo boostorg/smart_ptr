@@ -10,4 +10,9 @@
 
 int main()
 {
+    boost::shared_ptr<int> p1( new int );
+    boost::shared_ptr<int[]> p2( new int[1] );
+
+    boost::make_shared<int>();
+    boost::make_shared<int[]>( 1 );
 }

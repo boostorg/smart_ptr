@@ -47,7 +47,7 @@ class bad_weak_ptr: public std::exception
 {
 public:
 
-    virtual char const * what() const BOOST_NOEXCEPT_OR_NOTHROW
+    virtual char const * what() const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE
     {
         return "tr1::bad_weak_ptr";
     }

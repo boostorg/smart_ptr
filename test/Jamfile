@@ -352,3 +352,12 @@ run allocate_unique_noinit_test.cpp ;
 run allocate_unique_test.cpp ;
 run allocate_unique_throws_test.cpp ;
 run allocate_unique_value_test.cpp ;
+
+run sp_guides_test.cpp ;
+run sp_guides_test2.cpp ;
+run wp_guides_test.cpp ;
+
+compile-fail shared_from_fail.cpp ;
+compile-fail weak_from_fail.cpp ;
+
+compile sp_override_test.cpp ;

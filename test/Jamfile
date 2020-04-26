@@ -361,3 +361,4 @@ compile-fail shared_from_fail.cpp ;
 compile-fail weak_from_fail.cpp ;
 
 compile sp_override_test.cpp ;
+compile sp_pedantic_test.cpp : <warnings>pedantic <warnings-as-errors>on ;

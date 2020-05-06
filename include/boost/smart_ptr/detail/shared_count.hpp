@@ -661,7 +661,7 @@ inline shared_count::shared_count( weak_count const & r, sp_nothrow_tag ) BOOST_
 #pragma GCC diagnostic pop
 #endif
 
-#ifdef BOOST_BORLANDC
+#if defined(__BORLANDC__) && !defined(__clang__)
 # pragma warn .8027     // Functions containing try are not expanded inline
 #endif
 

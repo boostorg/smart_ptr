@@ -85,7 +85,7 @@ public:
 #endif
     }
 
-    virtual void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_scalar_destructor_hook( px_, sizeof(X), this );
@@ -93,17 +93,17 @@ public:
         boost::checked_delete( px_ );
     }
 
-    virtual void * get_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return 0;
     }
 
-    virtual void * get_local_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_local_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return 0;
     }
 
-    virtual void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return 0;
     }
@@ -168,22 +168,22 @@ public:
     {
     }
 
-    virtual void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         del( ptr );
     }
 
-    virtual void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return ti == BOOST_SP_TYPEID_(D)? &reinterpret_cast<char&>( del ): 0;
     }
 
-    virtual void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return ti == BOOST_SP_TYPEID_(D)? boost::detail::get_local_deleter( boost::addressof( del ) ): 0;
     }
 
-    virtual void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
+    void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return &reinterpret_cast<char&>( del );
     }
@@ -242,12 +242,12 @@ public:
     {
     }
 
-    virtual void dispose() BOOST_SP_NOEXCEPT
+    void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         d_( p_ );
     }
 
-    virtual void destroy() BOOST_SP_NOEXCEPT
+    void destroy() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
 #if !defined( BOOST_NO_CXX11_ALLOCATOR )
 
@@ -266,17 +266,17 @@ public:
         a2.deallocate( this, 1 );
     }
 
-    virtual void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT
+    void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return ti == BOOST_SP_TYPEID_( D )? &reinterpret_cast<char&>( d_ ): 0;
     }
 
-    virtual void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT
+    void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return ti == BOOST_SP_TYPEID_( D )? boost::detail::get_local_deleter( boost::addressof( d_ ) ): 0;
     }
 
-    virtual void * get_untyped_deleter() BOOST_SP_NOEXCEPT
+    void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
         return &reinterpret_cast<char&>( d_ );
     }

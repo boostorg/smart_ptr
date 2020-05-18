@@ -73,7 +73,7 @@ void * operator new(size_t n) throw(bad_alloc)
     return p;
 }
 
-#if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
+#if !defined(BOOST_BORLANDC) || (BOOST_BORLANDC > 0x551)
 
 void * operator new(size_t n, nothrow_t const &) throw()
 {
@@ -95,7 +95,7 @@ void * operator new[](size_t n) throw(bad_alloc)
     return p;
 }
 
-#if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
+#if !defined(BOOST_BORLANDC) || (BOOST_BORLANDC > 0x551)
 
 void * operator new[](size_t n, nothrow_t const &) throw()
 {
@@ -205,7 +205,7 @@ void operator delete(void * p) throw()
     free(pm);
 }
 
-#if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
+#if !defined(BOOST_BORLANDC) || (BOOST_BORLANDC > 0x551)
 
 void operator delete(void * p, nothrow_t const &) throw()
 {
@@ -231,7 +231,7 @@ void operator delete[](void * p) throw()
     free(pm);
 }
 
-#if !defined(__BORLANDC__) || (__BORLANDC__ > 0x551)
+#if !defined(BOOST_BORLANDC) || (BOOST_BORLANDC > 0x551)
 
 void operator delete[](void * p, nothrow_t const &) throw()
 {

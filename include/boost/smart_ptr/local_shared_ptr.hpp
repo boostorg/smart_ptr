@@ -494,6 +494,13 @@ public:
     {
         return std::less< boost::detail::local_counted_base* >()( pn, r.pn );
     }
+
+    // owner_equals
+
+    template<class Y> bool owner_equals( local_shared_ptr<Y> const & r ) const BOOST_SP_NOEXCEPT
+    {
+        return pn == r.pn;
+    }
 };
 
 template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT

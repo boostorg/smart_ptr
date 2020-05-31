@@ -494,10 +494,12 @@ public:
         return a.pi_ == b.pi_;
     }
 
-    friend inline bool operator<(shared_count const & a, shared_count const & b) BOOST_SP_NOEXCEPT
+    bool operator<( shared_count const & r ) const BOOST_SP_NOEXCEPT
     {
-        return std::less<sp_counted_base *>()( a.pi_, b.pi_ );
+        return std::less<sp_counted_base *>()( pi_, r.pi_ );
     }
+
+    bool operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT;
 
     void * get_deleter( sp_typeinfo_ const & ti ) const BOOST_SP_NOEXCEPT
     {
@@ -625,9 +627,14 @@ public:
         return a.pi_ == b.pi_;
     }
 
-    friend inline bool operator<(weak_count const & a, weak_count const & b) BOOST_SP_NOEXCEPT
+    bool operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT
     {
-        return std::less<sp_counted_base *>()(a.pi_, b.pi_);
+        return std::less<sp_counted_base *>()( pi_, r.pi_ );
+    }
+
+    bool operator<( shared_count const & r ) const BOOST_SP_NOEXCEPT
+    {
+        return std::less<sp_counted_base *>()( pi_, r.pi_ );
     }
 };
 
@@ -651,6 +658,11 @@ inline shared_count::shared_count( weak_count const & r, sp_nothrow_tag ) BOOST_
     {
         pi_ = 0;
     }
+}
+
+inline bool shared_count::operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT
+{
+    return std::less<sp_counted_base *>()( pi_, r.pi_ );
 }
 
 } // namespace detail

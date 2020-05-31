@@ -3,6 +3,8 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/smart_ptr.hpp>
+#include <boost/config.hpp>
+#include <boost/config/workaround.hpp>
 
 int main()
 {
@@ -10,5 +12,10 @@ int main()
     boost::shared_ptr<int[]> p2( new int[1] );
 
     boost::make_shared<int>();
+
+#if !BOOST_WORKAROUND(BOOST_MSVC, < 1500)
+
     boost::make_shared<int[]>( 1 );
+
+#endif
 }

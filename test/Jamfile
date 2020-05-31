@@ -368,3 +368,4 @@ compile sp_pedantic_test.cpp
     <toolset>clang:<warnings-as-errors>on ;
 
 run sp_owner_before_test.cpp ;
+run sp_owner_equals_test.cpp ;

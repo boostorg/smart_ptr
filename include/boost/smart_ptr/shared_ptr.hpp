@@ -777,6 +777,16 @@ public:
         return pn < rhs.pn;
     }
 
+    template<class Y> bool owner_equals( shared_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
+    {
+        return pn == rhs.pn;
+    }
+
+    template<class Y> bool owner_equals( weak_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
+    {
+        return pn == rhs.pn;
+    }
+
     void * _internal_get_deleter( boost::detail::sp_typeinfo_ const & ti ) const BOOST_SP_NOEXCEPT
     {
         return pn.get_deleter( ti );

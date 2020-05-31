@@ -237,6 +237,16 @@ public:
         return pn < rhs.pn;
     }
 
+    template<class Y> bool owner_equals( weak_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
+    {
+        return pn == rhs.pn;
+    }
+
+    template<class Y> bool owner_equals( shared_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
+    {
+        return pn == rhs.pn;
+    }
+
 // Tasteless as this may seem, making all members public allows member templates
 // to work in the absence of member template friends. (Matthew Langston)
 

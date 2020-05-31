@@ -366,3 +366,5 @@ compile sp_pedantic_test.cpp
     <toolset>msvc:<warnings-as-errors>on
     <toolset>gcc:<warnings-as-errors>on
     <toolset>clang:<warnings-as-errors>on ;
+
+run sp_owner_before_test.cpp ;

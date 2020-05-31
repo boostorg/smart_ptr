@@ -111,7 +111,8 @@ intrusive_ref_counter& operator=(const intrusive_ref_counter& v) noexcept;
 [none]
 * {blank}
 +
-Effects:: Does nothing, reference counter is not modified.
+Effects::
+  Does nothing, reference counter is not modified.
 
 ### use_count
 
@@ -137,7 +138,8 @@ template<class Derived, class CounterPolicy>
 [none]
 * {blank}
 +
-Effects:: Increments the reference counter.
+Effects::
+  Increments the reference counter.
 
 ### intrusive_ptr_release
 

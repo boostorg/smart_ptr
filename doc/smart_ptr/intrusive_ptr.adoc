@@ -174,7 +174,8 @@ template<class Y> intrusive_ptr(intrusive_ptr<Y> && r);
 [none]
 * {blank}
 +
-Postconditions:: `get()` equals the old value of `r.get()`. `r.get() == 0`.
+Postconditions::
+  `get()` equals the old value of `r.get()`. `r.get() == 0`.
 
 ### destructor
 
@@ -185,7 +186,8 @@ Postconditions:: `get()` equals the old value of `r.get()`. `r.get() == 0`.
 [none]
 * {blank}
 +
-Effects:: `if(get() != 0) intrusive_ptr_release(get());`.
+Effects::
+  `if(get() != 0) intrusive_ptr_release(get());`.
 
 ### assignment
 
@@ -245,7 +247,8 @@ void reset(T * r, bool add_ref);
 [none]
 * {blank}
 +
-Effects:: Equivalent to `intrusive_ptr(r, add_ref).swap(*this)`.
+Effects::
+  Equivalent to `intrusive_ptr(r, add_ref).swap(*this)`.
 
 ### indirection
 
@@ -278,7 +281,8 @@ T * get() const noexcept;
 [none]
 * {blank}
 +
-Returns:: the stored pointer.
+Returns::
+  the stored pointer.
 
 ### detach
 
@@ -325,7 +329,8 @@ void swap(intrusive_ptr & b) noexcept;
 [none]
 * {blank}
 +
-Effects:: Exchanges the contents of the two smart pointers.
+Effects::
+  Exchanges the contents of the two smart pointers.
 
 ## Free Functions
 
@@ -412,7 +417,8 @@ template<class T> void swap(intrusive_ptr<T> & a, intrusive_ptr<T> & b) noexcept
 [none]
 * {blank}
 +
-Effects:: Equivalent to `a.swap(b)`.
+Effects::
+  Equivalent to `a.swap(b)`.
 
 ### get_pointer
 
@@ -437,7 +443,8 @@ template<class T, class U>
 [none]
 * {blank}
 +
-Returns:: `intrusive_ptr<T>(static_cast<T*>(r.get()))`.
+Returns::
+  `intrusive_ptr<T>(static_cast<T*>(r.get()))`.
 
 ### const_pointer_cast
 
@@ -449,7 +456,8 @@ template<class T, class U>
 [none]
 * {blank}
 +
-Returns:: `intrusive_ptr<T>(const_cast<T*>(r.get()))`.
+Returns::
+  `intrusive_ptr<T>(const_cast<T*>(r.get()))`.
 
 ### dynamic_pointer_cast
 
@@ -461,7 +469,8 @@ template<class T, class U>
 [none]
 * {blank}
 +
-Returns:: `intrusive_ptr<T>(dynamic_cast<T*>(r.get()))`.
+Returns::
+  `intrusive_ptr<T>(dynamic_cast<T*>(r.get()))`.
 
 ### operator<<
 

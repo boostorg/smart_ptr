@@ -459,7 +459,8 @@ template<class Y> void reset(local_shared_ptr<Y> && r, element_type * p) noexcep
 [none]
 * {blank}
 +
-Effects:: Equivalent to `local_shared_ptr(std::move(r), p).swap(*this)`.
+Effects::
+  Equivalent to `local_shared_ptr(std::move(r), p).swap(*this)`.
 
 ### indirection
 ```
@@ -497,7 +498,8 @@ element_type * get() const noexcept;
 [none]
 * {blank}
 +
-Returns:: The stored pointer.
+Returns::
+  The stored pointer.
 
 ### local_use_count
 ```
@@ -506,7 +508,8 @@ long local_use_count() const noexcept;
 [none]
 * {blank}
 +
-Returns:: The number of `local_shared_ptr` objects, `*this` included, that share ownership with `*this`, or 0 when `*this` is empty.
+Returns::
+  The number of `local_shared_ptr` objects, `*this` included, that share ownership with `*this`, or 0 when `*this` is empty.
 
 ### conversions
 ```
@@ -538,7 +541,8 @@ void swap(local_shared_ptr & b) noexcept;
 [none]
 * {blank}
 +
-Effects:: Exchanges the contents of the two smart pointers.
+Effects::
+  Exchanges the contents of the two smart pointers.
 
 ### owner_before
 ```
@@ -547,7 +551,8 @@ template<class Y> bool owner_before(local_shared_ptr<Y> const & rhs) const noexc
 [none]
 * {blank}
 +
-Effects:: See the description of `operator<`.
+Effects::
+  See the description of `operator<`.
 
 ## Free Functions
 
@@ -631,7 +636,8 @@ template<class T> void swap(local_shared_ptr<T> & a, local_shared_ptr<T> & b) no
 [none]
 * {blank}
 +
-Effects:: Equivalent to `a.swap(b)`.
+Effects::
+  Equivalent to `a.swap(b)`.
 
 ### get_pointer
 ```

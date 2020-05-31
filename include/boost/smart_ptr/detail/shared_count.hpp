@@ -489,10 +489,12 @@ public:
         return pi_ == 0;
     }
 
-    friend inline bool operator==(shared_count const & a, shared_count const & b) BOOST_SP_NOEXCEPT
+    bool operator==( shared_count const & r ) const BOOST_SP_NOEXCEPT
     {
-        return a.pi_ == b.pi_;
+        return pi_ == r.pi_;
     }
+
+    bool operator==( weak_count const & r ) const BOOST_SP_NOEXCEPT;
 
     bool operator<( shared_count const & r ) const BOOST_SP_NOEXCEPT
     {
@@ -622,9 +624,14 @@ public:
         return pi_ == 0;
     }
 
-    friend inline bool operator==(weak_count const & a, weak_count const & b) BOOST_SP_NOEXCEPT
+    bool operator==( weak_count const & r ) const BOOST_SP_NOEXCEPT
     {
-        return a.pi_ == b.pi_;
+        return pi_ == r.pi_;
+    }
+
+    bool operator==( shared_count const & r ) const BOOST_SP_NOEXCEPT
+    {
+        return pi_ == r.pi_;
     }
 
     bool operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT
@@ -658,6 +665,11 @@ inline shared_count::shared_count( weak_count const & r, sp_nothrow_tag ) BOOST_
     {
         pi_ = 0;
     }
+}
+
+inline bool shared_count::operator==( weak_count const & r ) const BOOST_SP_NOEXCEPT
+{
+    return pi_ == r.pi_;
 }
 
 inline bool shared_count::operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT

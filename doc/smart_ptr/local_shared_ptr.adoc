@@ -124,7 +124,7 @@ namespace boost {
     template<class Y> void reset(local_shared_ptr<Y> && r, element_type * p) noexcept;
 
     // accessors
-    
+
     T & operator*() const noexcept; // only valid when T is not an array type
     T * operator->() const noexcept; // only valid when T is not an array type
 
@@ -143,12 +143,16 @@ namespace boost {
     template<class Y> operator weak_ptr<Y>() const noexcept;
 
     // swap
-    
+
     void swap(local_shared_ptr & b) noexcept;
 
     // owner_before
-    
-    template<class Y> bool owner_before(local_shared_ptr<Y> const & rhs) const noexcept;
+
+    template<class Y> bool owner_before(local_shared_ptr<Y> const & r) const noexcept;
+
+    // owner_equals
+
+    template<class Y> bool owner_equals(local_shared_ptr<Y> const & r) const noexcept;
   };
 
   // comparisons
@@ -546,13 +550,23 @@ Effects::
 
 ### owner_before
 ```
-template<class Y> bool owner_before(local_shared_ptr<Y> const & rhs) const noexcept;
+template<class Y> bool owner_before(local_shared_ptr<Y> const & r) const noexcept;
 ```
 [none]
 * {blank}
 +
-Effects::
+Returns::
   See the description of `operator<`.
+
+### owner_equals
+```
+template<class Y> bool owner_equals(local_shared_ptr<Y> const & r) const noexcept;
+```
+[none]
+* {blank}
++
+Returns::
+  `true` if and only if `*this` and `r` share ownership or are both empty.
 
 ## Free Functions
 

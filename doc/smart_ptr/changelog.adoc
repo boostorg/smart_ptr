@@ -13,6 +13,10 @@ http://www.boost.org/LICENSE_1_0.txt
 :toc-title:
 :idprefix: changelog_
 
+## Changes in 1.74.0
+
+* Added `owner_equals` to `shared_ptr`, `weak_ptr`, `local_shared_ptr`
+
 ## Changes in 1.72.0
 
 * Added `allocate_unique`

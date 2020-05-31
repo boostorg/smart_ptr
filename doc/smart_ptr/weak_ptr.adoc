@@ -112,6 +112,9 @@ namespace boost {
 
     template<class Y> bool owner_before( weak_ptr<Y> const & r ) const noexcept;
     template<class Y> bool owner_before( shared_ptr<Y> const & r ) const noexcept;
+
+    template<class Y> bool owner_equals( weak_ptr<Y> const & r ) const noexcept;
+    template<class Y> bool owner_equals( shared_ptr<Y> const & r ) const noexcept;
   };
 
   template<class T, class U>
@@ -263,6 +266,7 @@ void swap(weak_ptr & b) noexcept;
 +
 Effects:: Exchanges the contents of the two smart pointers.
 
+### owner_before
 ```
 template<class Y> bool owner_before( weak_ptr<Y> const & r ) const noexcept;
 ```
@@ -273,6 +277,18 @@ template<class Y> bool owner_before( shared_ptr<Y> const & r ) const noexcept;
 * {blank}
 +
 Returns:: See the description of `operator<`.
+
+### owner_equals
+```
+template<class Y> bool owner_equals( weak_ptr<Y> const & r ) const noexcept;
+```
+```
+template<class Y> bool owner_equals( shared_ptr<Y> const & r ) const noexcept;
+```
+[none]
+* {blank}
++
+Returns:: `true` if and only if `*this` and `r` share ownership or are both empty.
 
 ## Free Functions
 

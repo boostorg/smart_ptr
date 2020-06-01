@@ -371,3 +371,6 @@ run sp_owner_before_test.cpp ;
 run sp_owner_equals_test.cpp ;
 run lsp_owner_before_test.cpp ;
 run lsp_owner_equals_test.cpp ;
+
+run owner_equal_to_test.cpp ;
+run owner_equal_to_test2.cpp ;

@@ -374,3 +374,5 @@ run lsp_owner_equals_test.cpp ;
 
 run owner_equal_to_test.cpp ;
 run owner_equal_to_test2.cpp ;
+
+run owner_less_test2.cpp ;

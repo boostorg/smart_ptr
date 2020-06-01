@@ -16,6 +16,7 @@ http://www.boost.org/LICENSE_1_0.txt
 ## Changes in 1.74.0
 
 * Added `owner_equals` to `shared_ptr`, `weak_ptr`, `local_shared_ptr`
+* Added `owner_equal_to`
 
 ## Changes in 1.72.0
 

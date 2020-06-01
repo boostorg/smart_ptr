@@ -8,7 +8,7 @@
 
 int main()
 {
-    boost::owner_less<> const lt;
+    boost::owner_less<> const lt = {};
 
     {
         boost::local_shared_ptr<int> p1( new int );

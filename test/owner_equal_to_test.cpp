@@ -9,7 +9,7 @@
 
 int main()
 {
-    boost::owner_equal_to<> const eq;
+    boost::owner_equal_to<> const eq = {};
 
     {
         boost::shared_ptr<int> p1( new int );

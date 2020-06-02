@@ -381,3 +381,19 @@ run ip_hash_test2.cpp ;
 run sp_hash_test4.cpp ;
 run lsp_hash_test.cpp ;
 run lsp_hash_test2.cpp ;
+
+run atomic_count_mt_test.cpp
+  : : : <threading>multi ;
+
+run spinlock_mt_test.cpp
+  : : : <threading>multi ;
+
+run spinlock_pool_mt_test.cpp
+  : : : <threading>multi ;
+
+run shared_ptr_mt_test.cpp
+  : : : <threading>multi ;
+
+run weak_ptr_mt_test.cpp
+  : : : <threading>multi ;
+

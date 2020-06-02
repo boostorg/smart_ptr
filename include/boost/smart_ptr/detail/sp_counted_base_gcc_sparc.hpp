@@ -23,6 +23,13 @@
 #include <boost/config.hpp>
 #include <inttypes.h> // int32_t
 
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+
+#include <boost/config/pragma_message.hpp>
+BOOST_PRAGMA_MESSAGE("Using g++/Sparc sp_counted_base")
+
+#endif
+
 namespace boost
 {
 

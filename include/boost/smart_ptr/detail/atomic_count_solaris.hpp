@@ -15,6 +15,13 @@
 
 #include <atomic.h>
 
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+
+#include <boost/config/pragma_message.hpp>
+BOOST_PRAGMA_MESSAGE("Using Solaris atomic_count")
+
+#endif
+
 namespace boost
 {
 

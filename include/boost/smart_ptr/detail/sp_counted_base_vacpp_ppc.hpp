@@ -24,6 +24,13 @@
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
 #include <boost/config.hpp>
 
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+
+#include <boost/config/pragma_message.hpp>
+BOOST_PRAGMA_MESSAGE("Using xlC/PowerPC sp_counted_base")
+
+#endif
+
 extern "builtin" void __lwsync(void);
 extern "builtin" void __isync(void);
 extern "builtin" int __fetch_and_add(volatile int* addr, int val);

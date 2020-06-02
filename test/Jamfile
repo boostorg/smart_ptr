@@ -397,3 +397,4 @@ run shared_ptr_mt_test.cpp
 run weak_ptr_mt_test.cpp
   : : : <threading>multi ;
 
+compile sp_report_implementation.cpp ;

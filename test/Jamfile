@@ -376,3 +376,8 @@ run owner_equal_to_test.cpp ;
 run owner_equal_to_test2.cpp ;
 
 run owner_less_test2.cpp ;
+
+run ip_hash_test2.cpp ;
+run sp_hash_test4.cpp ;
+run lsp_hash_test.cpp ;
+run lsp_hash_test2.cpp ;

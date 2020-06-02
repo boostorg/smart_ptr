@@ -70,6 +70,7 @@ install:
   - git submodule init tools/build
   - git submodule init libs/headers
   - git submodule init tools/boost_install
+  - git submodule init libs/bind
   - git submodule update --jobs 3
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr\
   - cmd /c bootstrap

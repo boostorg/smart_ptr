@@ -3,7 +3,6 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/intrusive_ptr.hpp>
-#include <boost/functional/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/config.hpp>
 #include <functional>
@@ -57,13 +56,10 @@ struct X: public base
 
 int main()
 {
-    boost::hash< boost::intrusive_ptr<X> > hasher;
-    std::hash< boost::intrusive_ptr<X> > hasher2;
-
     boost::intrusive_ptr<X> p1, p2( new X );
 
-    BOOST_TEST_EQ( hasher( p1 ), hasher2( p1 ) );
-    BOOST_TEST_EQ( hasher( p2 ), hasher2( p2 ) );
+    BOOST_TEST_EQ( std::hash< boost::intrusive_ptr<X> >()( p1 ), std::hash< X* >()( p1.get() ) );
+    BOOST_TEST_EQ( std::hash< boost::intrusive_ptr<X> >()( p2 ), std::hash< X* >()( p2.get() ) );
 
     return boost::report_errors();
 }

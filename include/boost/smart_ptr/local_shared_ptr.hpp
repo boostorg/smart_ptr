@@ -697,9 +697,9 @@ namespace std
 
 template<class T> struct hash< ::boost::local_shared_ptr<T> >
 {
-    std::size_t operator()( ::boost::local_shared_ptr<T> const & v ) const BOOST_SP_NOEXCEPT
+    std::size_t operator()( ::boost::local_shared_ptr<T> const & p ) const BOOST_SP_NOEXCEPT
     {
-        return hash_value( v );
+        return std::hash< typename ::boost::local_shared_ptr<T>::element_type* >()( p.get() );
     }
 };
 

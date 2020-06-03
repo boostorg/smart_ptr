@@ -394,9 +394,9 @@ namespace std
 
 template<class T> struct hash< ::boost::intrusive_ptr<T> >
 {
-    std::size_t operator()( ::boost::intrusive_ptr<T> const & v ) const BOOST_SP_NOEXCEPT
+    std::size_t operator()( ::boost::intrusive_ptr<T> const & p ) const BOOST_SP_NOEXCEPT
     {
-        return hash_value( v );
+        return std::hash< T* >()( p.get() );
     }
 };
 

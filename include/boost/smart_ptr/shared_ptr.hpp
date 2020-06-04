@@ -14,23 +14,16 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 //
 
-#include <boost/config.hpp>   // for broken compiler workarounds
-
-// In order to avoid circular dependencies with Boost.TR1
-// we make sure that our include of <memory> doesn't try to
-// pull in the TR1 headers: that's why we use this header 
-// rather than including <memory> directly:
-#include <boost/config/no_tr1/memory.hpp>  // std::auto_ptr
-
-#include <boost/assert.hpp>
-#include <boost/checked_delete.hpp>
-#include <boost/throw_exception.hpp>
 #include <boost/smart_ptr/detail/shared_count.hpp>
-#include <boost/config/workaround.hpp>
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/checked_delete.hpp>
+#include <boost/throw_exception.hpp>
+#include <boost/assert.hpp>
+#include <boost/config.hpp>
+#include <boost/config/workaround.hpp>
 
 #if !defined(BOOST_SP_NO_ATOMIC_ACCESS)
 #include <boost/smart_ptr/detail/spinlock_pool.hpp>
@@ -40,6 +33,7 @@
 #include <functional>           // for std::less
 #include <typeinfo>             // for std::bad_cast
 #include <cstddef>              // for std::size_t
+#include <memory>               // for std::auto_ptr
 
 #if !defined(BOOST_NO_IOSTREAM)
 #if !defined(BOOST_NO_IOSFWD)
@@ -785,6 +779,11 @@ public:
     template<class Y> bool owner_equals( weak_ptr<Y> const & rhs ) const BOOST_SP_NOEXCEPT
     {
         return pn == rhs.pn;
+    }
+
+    std::size_t owner_hash_value() const BOOST_SP_NOEXCEPT
+    {
+        return pn.hash_value();
     }
 
     void * _internal_get_deleter( boost::detail::sp_typeinfo_ const & ti ) const BOOST_SP_NOEXCEPT

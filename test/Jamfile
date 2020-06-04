@@ -398,3 +398,8 @@ run weak_ptr_mt_test.cpp
   : : : <threading>multi ;
 
 compile sp_report_implementation.cpp ;
+
+run sp_owner_hash_value_test.cpp ;
+
+run wp_hash_test.cpp ;
+run wp_hash_test2.cpp ;

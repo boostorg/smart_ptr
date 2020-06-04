@@ -403,3 +403,5 @@ run sp_owner_hash_value_test.cpp ;
 
 run wp_hash_test.cpp ;
 run wp_hash_test2.cpp ;
+
+run wp_unordered_test.cpp ;

@@ -16,11 +16,11 @@ http://www.boost.org/LICENSE_1_0.txt
 ## Changes in 1.74.0
 
 * Added `owner_equals` to `shared_ptr`, `weak_ptr`, `local_shared_ptr`
-* Added `owner_equal_to`
-* Added `std::hash` specializations for `shared_ptr`, `local_shared_ptr`
 * Added `owner_hash_value` to `shared_ptr`, `weak_ptr`
-* Added `boost::hash` support and `std::hash`, `std::equal_to`
-  specializations for `weak_ptr`
+* Added `owner_equal_to`, `owner_hash`
+* Added `std::hash` specializations for `shared_ptr`, `local_shared_ptr`
+* Added `boost::hash` support to, and `std::hash`, `std::equal_to`
+  specializations for, `weak_ptr`
 
 ## Changes in 1.72.0
 

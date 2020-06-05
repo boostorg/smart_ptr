@@ -37,6 +37,7 @@ include::smart_ptr/pointer_to_other.adoc[]
 include::smart_ptr/atomic_shared_ptr.adoc[]
 include::smart_ptr/owner_less.adoc[]
 include::smart_ptr/owner_equal_to.adoc[]
+include::smart_ptr/owner_hash.adoc[]
 
 // appendix
 include::smart_ptr/techniques.adoc[]

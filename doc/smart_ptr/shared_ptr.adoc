@@ -183,6 +183,8 @@ namespace boost {
 
     template<class Y> bool owner_equals(shared_ptr<Y> const & r) const noexcept;
     template<class Y> bool owner_equals(weak_ptr<Y> const & r) const noexcept;
+
+    std::size_t owner_hash_value() const noexcept;
   };
 
   template<class T, class U>
@@ -676,6 +678,17 @@ template<class Y> bool owner_equals(weak_ptr<Y> const & r) const noexcept;
 +
 Returns::
   `true` if and only if `*this` and `r` share ownership or are both empty.
+
+### owner_hash_value
+```
+std::size_t owner_hash_value() const noexcept;
+```
+[none]
+* {blank}
++
+Returns::
+  An unspecified hash value such that two instances that share ownership
+  have the same hash value.
 
 ## Free Functions
 

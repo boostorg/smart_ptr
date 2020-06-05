@@ -405,3 +405,5 @@ run wp_hash_test.cpp ;
 run wp_hash_test2.cpp ;
 
 run wp_unordered_test.cpp ;
+
+run owner_hash_test.cpp ;

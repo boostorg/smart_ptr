@@ -74,15 +74,12 @@ namespace detail
 
 inline void yield( unsigned k ) BOOST_NOEXCEPT
 {
-    if( k < 4 )
+    if( k < 16 )
     {
-    }
 #if defined( BOOST_SMT_PAUSE )
-    else if( k < 16 )
-    {
         BOOST_SMT_PAUSE
-    }
 #endif
+    }
     else if( k < 32 )
     {
         Sleep( 0 );
@@ -102,8 +99,8 @@ inline void yield( unsigned k ) BOOST_NOEXCEPT
 #ifndef _AIX
 #include <sched.h>
 #else
-   // AIX's sched.h defines ::var which sometimes conflicts with Lambda's var
-       extern "C" int sched_yield(void);
+    // AIX's sched.h defines ::var which sometimes conflicts with Lambda's var
+    extern "C" int sched_yield(void);
 #endif
 
 #include <time.h>
@@ -116,15 +113,12 @@ namespace detail
 
 inline void yield( unsigned k )
 {
-    if( k < 4 )
+    if( k < 16 )
     {
-    }
 #if defined( BOOST_SMT_PAUSE )
-    else if( k < 16 )
-    {
         BOOST_SMT_PAUSE
-    }
 #endif
+    }
     else if( k < 32 || k & 1 )
     {
         sched_yield();

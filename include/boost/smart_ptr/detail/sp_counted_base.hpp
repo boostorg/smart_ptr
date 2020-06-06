@@ -18,7 +18,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/smart_ptr/detail/sp_has_sync.hpp>
+#include <boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp>
 
 #if !defined( __c2__ ) && defined( __clang__ ) && defined( __has_extension )
 # if __has_extension( __c_atomic__ )
@@ -71,7 +71,7 @@
 #elif defined( __GNUC__ ) && ( defined( __mips__ ) || defined( _mips ) ) && !defined(__PATHSCALE__) && !defined( __mips16 )
 # include <boost/smart_ptr/detail/sp_counted_base_gcc_mips.hpp>
 
-#elif defined( BOOST_SP_HAS_SYNC )
+#elif defined( BOOST_SP_HAS_SYNC_INTRINSICS )
 # include <boost/smart_ptr/detail/sp_counted_base_sync.hpp>
 
 #elif defined(__GNUC__) && ( defined( __sparcv9 ) || ( defined( __sparcv8 ) && ( __GNUC__ * 100 + __GNUC_MINOR__ >= 402 ) ) )

@@ -44,7 +44,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/smart_ptr/detail/sp_has_sync.hpp>
+#include <boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp>
 
 #if defined( BOOST_AC_DISABLE_THREADS )
 # include <boost/smart_ptr/detail/atomic_count_nt.hpp>
@@ -79,7 +79,7 @@
 #elif defined( __GNUC__ ) && ( defined( __i386__ ) || defined( __x86_64__ ) ) && !defined( __PATHSCALE__ )
 # include <boost/smart_ptr/detail/atomic_count_gcc_x86.hpp>
 
-#elif defined( BOOST_SP_HAS_SYNC )
+#elif defined( BOOST_SP_HAS_SYNC_INTRINSICS )
 # include <boost/smart_ptr/detail/atomic_count_sync.hpp>
 
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)

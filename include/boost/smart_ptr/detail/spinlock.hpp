@@ -29,7 +29,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/smart_ptr/detail/sp_has_sync.hpp>
+#include <boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp>
 
 #if defined( BOOST_SP_USE_STD_ATOMIC )
 # if !defined( __clang__ )
@@ -49,7 +49,7 @@
 #elif defined(__GNUC__) && defined( __arm__ ) && !defined( __thumb__ )
 #  include <boost/smart_ptr/detail/spinlock_gcc_arm.hpp>
 
-#elif defined( BOOST_SP_HAS_SYNC )
+#elif defined( BOOST_SP_HAS_SYNC_INTRINSICS )
 #  include <boost/smart_ptr/detail/spinlock_sync.hpp>
 
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)

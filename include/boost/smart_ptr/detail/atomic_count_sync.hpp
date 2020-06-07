@@ -38,7 +38,7 @@ class atomic_count
 {
 public:
 
-    explicit atomic_count( long v ) : value_( static_cast< boost::int_least32_t >( v ) )
+    explicit atomic_count( long v ): value_( static_cast< boost::int_least32_t >( v ) )
     {
     }
 

@@ -43,8 +43,9 @@
 //    Memory Ordering: acquire/release
 //
 
-#include <boost/config.hpp>
+#include <boost/smart_ptr/detail/sp_has_gcc_intrinsics.hpp>
 #include <boost/smart_ptr/detail/sp_has_sync_intrinsics.hpp>
+#include <boost/config.hpp>
 
 #if defined( BOOST_AC_DISABLE_THREADS )
 # include <boost/smart_ptr/detail/atomic_count_nt.hpp>
@@ -72,6 +73,9 @@
 
 #elif defined( BOOST_DISABLE_THREADS ) && !defined( BOOST_SP_ENABLE_THREADS ) && !defined( BOOST_DISABLE_WIN32 )
 # include <boost/smart_ptr/detail/atomic_count_nt.hpp>
+
+#elif defined( BOOST_SP_HAS_GCC_INTRINSICS )
+# include <boost/smart_ptr/detail/atomic_count_gcc_atomic.hpp>
 
 #elif !defined( BOOST_NO_CXX11_HDR_ATOMIC )
 # include <boost/smart_ptr/detail/atomic_count_std_atomic.hpp>

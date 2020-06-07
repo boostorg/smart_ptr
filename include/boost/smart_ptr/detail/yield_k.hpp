@@ -24,6 +24,7 @@
 //
 
 #include <boost/config.hpp>
+#include <boost/config/pragma_message.hpp>
 
 // BOOST_SMT_PAUSE
 
@@ -36,6 +37,10 @@ extern "C" void _mm_pause();
 #elif defined(__GNUC__) && ( defined(__i386__) || defined(__x86_64__) )
 
 #define BOOST_SMT_PAUSE __asm__ __volatile__( "rep; nop" : : : "memory" );
+
+#else
+
+#define BOOST_SMT_PAUSE
 
 #endif
 
@@ -72,22 +77,18 @@ namespace detail
 
 #endif // !defined( BOOST_USE_WINDOWS_H )
 
-inline void yield( unsigned k ) BOOST_NOEXCEPT
-{
-    if( k < 16 )
-    {
-#if defined( BOOST_SMT_PAUSE )
-        BOOST_SMT_PAUSE
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+  BOOST_PRAGMA_MESSAGE("Using Win32 yield_k")
 #endif
-    }
-    else if( k < 32 )
-    {
-        Sleep( 0 );
-    }
-    else
-    {
-        Sleep( 1 );
-    }
+
+inline void sp_thread_yield()
+{
+    Sleep( 0 );
+}
+
+inline void sp_thread_sleep()
+{
+    Sleep( 1 );
 }
 
 } // namespace detail
@@ -111,31 +112,27 @@ namespace boost
 namespace detail
 {
 
-inline void yield( unsigned k )
-{
-    if( k < 16 )
-    {
-#if defined( BOOST_SMT_PAUSE )
-        BOOST_SMT_PAUSE
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+  BOOST_PRAGMA_MESSAGE("Using POSIX yield_k")
 #endif
-    }
-    else if( k < 32 || k & 1 )
-    {
-        sched_yield();
-    }
-    else
-    {
-        // g++ -Wextra warns on {} or {0}
-        struct timespec rqtp = { 0, 0 };
 
-        // POSIX says that timespec has tv_sec and tv_nsec
-        // But it doesn't guarantee order or placement
+inline void sp_thread_yield()
+{
+    sched_yield();
+}
 
-        rqtp.tv_sec = 0;
-        rqtp.tv_nsec = 1000;
+inline void sp_thread_sleep()
+{
+    // g++ -Wextra warns on {} or {0}
+    struct timespec rqtp = { 0, 0 };
 
-        nanosleep( &rqtp, 0 );
-    }
+    // POSIX says that timespec has tv_sec and tv_nsec
+    // But it doesn't guarantee order or placement
+
+    rqtp.tv_sec = 0;
+    rqtp.tv_nsec = 1000;
+
+    nanosleep( &rqtp, 0 );
 }
 
 } // namespace detail
@@ -144,14 +141,24 @@ inline void yield( unsigned k )
 
 #else
 
+#if defined(BOOST_SP_REPORT_IMPLEMENTATION)
+  BOOST_PRAGMA_MESSAGE("Using empty yield_k")
+#endif
+
 namespace boost
 {
 
 namespace detail
 {
 
-inline void yield( unsigned )
+inline void sp_thread_yield()
 {
+    BOOST_SMT_PAUSE
+}
+
+inline void sp_thread_sleep()
+{
+    BOOST_SMT_PAUSE
 }
 
 } // namespace detail
@@ -159,5 +166,31 @@ inline void yield( unsigned )
 } // namespace boost
 
 #endif
+
+namespace boost
+{
+
+namespace detail
+{
+
+inline void yield( unsigned k ) BOOST_NOEXCEPT
+{
+    if( k < 16 )
+    {
+        BOOST_SMT_PAUSE
+    }
+    else if( k < 32 )
+    {
+        sp_thread_yield();
+    }
+    else
+    {
+        sp_thread_sleep();
+    }
+}
+
+} // namespace detail
+
+} // namespace boost
 
 #endif // #ifndef BOOST_SMART_PTR_DETAIL_YIELD_K_HPP_INCLUDED

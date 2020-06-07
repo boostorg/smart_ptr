@@ -7,13 +7,9 @@
 # pragma once
 #endif
 
-//
-//  Copyright (c) 2008 Peter Dimov
-//
-//  Distributed under the Boost Software License, Version 1.0.
-//  See accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Copyright 2008, 2020 Peter Dimov
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/smart_ptr/detail/yield_k.hpp>
 
@@ -40,8 +36,7 @@ public:
 
     bool try_lock()
     {
-        int r = __atomic_test_and_set( &v_, __ATOMIC_ACQUIRE );
-        return r == 0;
+        return __atomic_load_n( &v_, __ATOMIC_RELAXED ) == 0 && __atomic_test_and_set( &v_, __ATOMIC_ACQUIRE ) == 0;
     }
 
     void lock()

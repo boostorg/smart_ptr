@@ -38,7 +38,7 @@ class spinlock
 {
 public:
 
-    int v_;
+    unsigned char v_;
 
 public:
 

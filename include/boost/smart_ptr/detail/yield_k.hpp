@@ -175,13 +175,16 @@ namespace detail
 
 inline void yield( unsigned k ) BOOST_NOEXCEPT
 {
-    if( k < 16 )
+    // Experiments show that a simple sp_thread_sleep() here is best;
+    // leave a few pause instructions out of mostly superstition.
+    // (These are verified to not degrade performance.)
+    //
+    // There seems to be no benefit from calling sp_thread_yield()
+    // at any time.
+
+    if( k < 8 )
     {
         BOOST_SMT_PAUSE
-    }
-    else if( k < 32 )
-    {
-        sp_thread_yield();
     }
     else
     {

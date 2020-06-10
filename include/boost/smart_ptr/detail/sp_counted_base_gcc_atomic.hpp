@@ -7,7 +7,7 @@
 # pragma once
 #endif
 
-// detail/sp_counted_base_gc_atomic.hpp - g++ 4.7+ __atomic intrinsics
+// detail/sp_counted_base_gcc_atomic.hpp - g++ 4.7+ __atomic intrinsics
 //
 // Copyright 2007, 2020 Peter Dimov
 // Distributed under the Boost Software License, Version 1.0.
@@ -59,7 +59,7 @@ inline boost::uint_least32_t atomic_conditional_increment( boost::uint_least32_t
         {
             return r;
         }
-    }    
+    }
 }
 
 inline boost::uint_least32_t atomic_load( boost::uint_least32_t const * pw )

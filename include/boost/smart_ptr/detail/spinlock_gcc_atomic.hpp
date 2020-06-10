@@ -36,7 +36,7 @@ public:
 
     bool try_lock()
     {
-        return __atomic_load_n( &v_, __ATOMIC_RELAXED ) == 0 && __atomic_test_and_set( &v_, __ATOMIC_ACQUIRE ) == 0;
+        return __atomic_test_and_set( &v_, __ATOMIC_ACQUIRE ) == 0;
     }
 
     void lock()

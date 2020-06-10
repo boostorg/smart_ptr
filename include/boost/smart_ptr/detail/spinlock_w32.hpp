@@ -66,11 +66,6 @@ public:
 
     bool try_lock()
     {
-        if( *const_cast< long const volatile* >( &v_ ) != 0 )
-        {
-            return false;
-        }
-
         long r = BOOST_SP_INTERLOCKED_EXCHANGE( &v_, 1 );
 
         BOOST_COMPILER_FENCE

@@ -22,13 +22,6 @@ target_link_libraries(boost_smart_ptr
     Boost::type_traits
 )
 
-if(BOOST_SUPERPROJECT_VERSION)
-
-  include(BoostInstall)
-  boost_install(TARGETS boost_smart_ptr HEADER_DIRECTORY include/)
-
-endif()
-
 if(BUILD_TESTING)
 
   add_subdirectory(test)

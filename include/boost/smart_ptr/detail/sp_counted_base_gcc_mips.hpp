@@ -21,6 +21,7 @@
 //
 
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
+#include <boost/smart_ptr/detail/sp_obsolete.hpp>
 #include <boost/config.hpp>
 
 #if defined(BOOST_SP_REPORT_IMPLEMENTATION)
@@ -29,6 +30,8 @@
 BOOST_PRAGMA_MESSAGE("Using g++/MIPS sp_counted_base")
 
 #endif
+
+BOOST_SP_OBSOLETE()
 
 namespace boost
 {

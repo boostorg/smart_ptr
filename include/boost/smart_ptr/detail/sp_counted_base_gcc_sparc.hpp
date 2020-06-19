@@ -20,6 +20,7 @@
 //  Thanks to Michael van der Westhuizen
 
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
+#include <boost/smart_ptr/detail/sp_obsolete.hpp>
 #include <boost/config.hpp>
 #include <inttypes.h> // int32_t
 
@@ -29,6 +30,8 @@
 BOOST_PRAGMA_MESSAGE("Using g++/Sparc sp_counted_base")
 
 #endif
+
+BOOST_SP_OBSOLETE()
 
 namespace boost
 {

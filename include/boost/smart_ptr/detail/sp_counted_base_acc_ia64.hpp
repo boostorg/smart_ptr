@@ -16,6 +16,7 @@
 //
 
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
+#include <boost/smart_ptr/detail/sp_obsolete.hpp>
 #include <boost/config.hpp>
 #include <machine/sys/inline.h>
 
@@ -25,6 +26,8 @@
 BOOST_PRAGMA_MESSAGE("Using HP aCC++/HP-UX/IA64 sp_counted_base")
 
 #endif
+
+BOOST_SP_OBSOLETE()
 
 namespace boost
 {

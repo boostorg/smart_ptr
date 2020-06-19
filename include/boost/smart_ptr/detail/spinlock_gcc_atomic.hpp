@@ -1,5 +1,5 @@
-#ifndef BOOST_SMART_PTR_DETAIL_SPINLOCK_SYNC_HPP_INCLUDED
-#define BOOST_SMART_PTR_DETAIL_SPINLOCK_SYNC_HPP_INCLUDED
+#ifndef BOOST_SMART_PTR_DETAIL_SPINLOCK_GCC_ATOMIC_HPP_INCLUDED
+#define BOOST_SMART_PTR_DETAIL_SPINLOCK_GCC_ATOMIC_HPP_INCLUDED
 
 // MS compatible compilers support #pragma once
 
@@ -7,24 +7,16 @@
 # pragma once
 #endif
 
-//
-//  Copyright (c) 2008 Peter Dimov
-//
-//  Distributed under the Boost Software License, Version 1.0.
-//  See accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Copyright 2008, 2020 Peter Dimov
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/smart_ptr/detail/yield_k.hpp>
-
-#if defined( __ia64__ ) && defined( __INTEL_COMPILER )
-# include <ia64intrin.h>
-#endif
 
 #if defined(BOOST_SP_REPORT_IMPLEMENTATION)
 
 #include <boost/config/pragma_message.hpp>
-BOOST_PRAGMA_MESSAGE("Using __sync spinlock")
+BOOST_PRAGMA_MESSAGE("Using __atomic spinlock")
 
 #endif
 
@@ -44,8 +36,7 @@ public:
 
     bool try_lock()
     {
-        int r = __sync_lock_test_and_set( &v_, 1 );
-        return r == 0;
+        return __atomic_test_and_set( &v_, __ATOMIC_ACQUIRE ) == 0;
     }
 
     void lock()
@@ -58,7 +49,7 @@ public:
 
     void unlock()
     {
-        __sync_lock_release( &v_ );
+        __atomic_clear( &v_, __ATOMIC_RELEASE );
     }
 
 public:
@@ -91,4 +82,4 @@ public:
 
 #define BOOST_DETAIL_SPINLOCK_INIT {0}
 
-#endif // #ifndef BOOST_SMART_PTR_DETAIL_SPINLOCK_SYNC_HPP_INCLUDED
+#endif // #ifndef BOOST_SMART_PTR_DETAIL_SPINLOCK_GCC_ATOMIC_HPP_INCLUDED

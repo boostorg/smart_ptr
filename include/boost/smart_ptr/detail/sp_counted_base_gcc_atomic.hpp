@@ -1,5 +1,5 @@
-#ifndef BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
-#define BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
+#ifndef BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_GCC_ATOMIC_HPP_INCLUDED
+#define BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_GCC_ATOMIC_HPP_INCLUDED
 
 // MS compatible compilers support #pragma once
 
@@ -7,35 +7,22 @@
 # pragma once
 #endif
 
+// detail/sp_counted_base_gcc_atomic.hpp - g++ 4.7+ __atomic intrinsics
 //
-//  detail/sp_counted_base_cw_ppc.hpp - CodeWarrior on PowerPC
-//
-//  Copyright (c) 2001, 2002, 2003 Peter Dimov and Multi Media Ltd.
-//  Copyright 2004-2005 Peter Dimov
-//
-//  Distributed under the Boost Software License, Version 1.0. (See
-//  accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
-//
-//  Lock-free algorithm by Alexander Terekhov
-//
-//  Thanks to Ben Hitchings for the #weak + (#shared != 0)
-//  formulation
-//
+// Copyright 2007, 2020 Peter Dimov
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/smart_ptr/detail/sp_typeinfo_.hpp>
-#include <boost/smart_ptr/detail/sp_obsolete.hpp>
 #include <boost/config.hpp>
+#include <boost/cstdint.hpp>
 
 #if defined(BOOST_SP_REPORT_IMPLEMENTATION)
 
 #include <boost/config/pragma_message.hpp>
-BOOST_PRAGMA_MESSAGE("Using CodeWarrior/PowerPC sp_counted_base")
+BOOST_PRAGMA_MESSAGE("Using __atomic sp_counted_base")
 
 #endif
-
-BOOST_SP_OBSOLETE()
 
 namespace boost
 {
@@ -43,63 +30,41 @@ namespace boost
 namespace detail
 {
 
-inline void atomic_increment( register long * pw )
+inline void atomic_increment( boost::uint_least32_t * pw )
 {
-    register int a;
+    __atomic_fetch_add( pw, 1, __ATOMIC_RELAXED );
+}
 
-    asm
+inline boost::uint_least32_t atomic_decrement( boost::uint_least32_t * pw )
+{
+    return __atomic_fetch_sub( pw, 1, __ATOMIC_ACQ_REL );
+}
+
+inline boost::uint_least32_t atomic_conditional_increment( boost::uint_least32_t * pw )
+{
+    // long r = *pw;
+    // if( r != 0 ) ++*pw;
+    // return r;
+
+    boost::uint_least32_t r = __atomic_load_n( pw, __ATOMIC_RELAXED );
+
+    for( ;; )
     {
-loop:
+        if( r == 0 )
+        {
+            return r;
+        }
 
-    lwarx   a, 0, pw
-    addi    a, a, 1
-    stwcx.  a, 0, pw
-    bne-    loop
+        if( __atomic_compare_exchange_n( pw, &r, r + 1, true, __ATOMIC_RELAXED, __ATOMIC_RELAXED ) )
+        {
+            return r;
+        }
     }
 }
 
-inline long atomic_decrement( register long * pw )
+inline boost::uint_least32_t atomic_load( boost::uint_least32_t const * pw )
 {
-    register int a;
-
-    asm
-    {
-    sync
-
-loop:
-
-    lwarx   a, 0, pw
-    addi    a, a, -1
-    stwcx.  a, 0, pw
-    bne-    loop
-
-    isync
-    }
-
-    return a;
-}
-
-inline long atomic_conditional_increment( register long * pw )
-{
-    register int a;
-
-    asm
-    {
-loop:
-
-    lwarx   a, 0, pw
-    cmpwi   a, 0
-    beq     store
-
-    addi    a, a, 1
-
-store:
-
-    stwcx.  a, 0, pw
-    bne-    loop
-    }
-
-    return a;
+    return __atomic_load_n( pw, __ATOMIC_ACQUIRE );
 }
 
 class BOOST_SYMBOL_VISIBLE sp_counted_base
@@ -109,8 +74,8 @@ private:
     sp_counted_base( sp_counted_base const & );
     sp_counted_base & operator= ( sp_counted_base const & );
 
-    long use_count_;        // #shared
-    long weak_count_;       // #weak + (#shared != 0)
+    boost::uint_least32_t use_count_;        // #shared
+    boost::uint_least32_t weak_count_;       // #weak + (#shared != 0)
 
 public:
 
@@ -150,7 +115,7 @@ public:
 
     void release() // nothrow
     {
-        if( atomic_decrement( &use_count_ ) == 0 )
+        if( atomic_decrement( &use_count_ ) == 1 )
         {
             dispose();
             weak_release();
@@ -164,7 +129,7 @@ public:
 
     void weak_release() // nothrow
     {
-        if( atomic_decrement( &weak_count_ ) == 0 )
+        if( atomic_decrement( &weak_count_ ) == 1 )
         {
             destroy();
         }
@@ -172,7 +137,7 @@ public:
 
     long use_count() const // nothrow
     {
-        return static_cast<long const volatile &>( use_count_ );
+        return atomic_load( &use_count_ );
     }
 };
 
@@ -180,4 +145,4 @@ public:
 
 } // namespace boost
 
-#endif  // #ifndef BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_CW_PPC_HPP_INCLUDED
+#endif  // #ifndef BOOST_SMART_PTR_DETAIL_SP_COUNTED_BASE_SYNC_HPP_INCLUDED

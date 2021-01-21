@@ -17,5 +17,6 @@
     ],
     "maintainers": [
         "Peter Dimov <pdimov -at- gmail.com>"
-    ]
+    ],
+    "cxxstd": "03"
 }

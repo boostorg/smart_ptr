@@ -374,15 +374,26 @@ public:
     }
 
     //
-    // Requirements: D's copy constructor must not throw
+    // Requirements: D's copy/move constructors must not throw
     //
     // shared_ptr will release p by calling d(p)
     //
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, static_cast< D&& >( d ) )
+    {
+        boost::detail::sp_deleter_construct( this, p );
+    }
+
+#else
 
     template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, d )
     {
         boost::detail::sp_deleter_construct( this, p );
     }
+
+#endif
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
@@ -693,10 +704,21 @@ public:
         this_type( p ).swap( *this );
     }
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class Y, class D> void reset( Y * p, D d )
+    {
+        this_type( p, static_cast< D&& >( d ) ).swap( *this );
+    }
+
+#else
+
     template<class Y, class D> void reset( Y * p, D d )
     {
         this_type( p, d ).swap( *this );
     }
+
+#endif
 
     template<class Y, class D, class A> void reset( Y * p, D d, A a )
     {

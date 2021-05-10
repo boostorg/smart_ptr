@@ -156,13 +156,15 @@ public:
 
     // pre: d(p) must not throw
 
-    sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    sp_counted_impl_pd( P p, D & d ): ptr( p ), del( static_cast< D&& >( d ) )
     {
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+#else
 
-    sp_counted_impl_pd( P p, D && d ): ptr( p ), del( static_cast< D&& >( d ) )
+    sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )
     {
     }
 

@@ -410,3 +410,4 @@ run owner_hash_test.cpp ;
 run sp_unordered_test.cpp ;
 
 run sp_unique_ptr_test2.cpp ;
+run sp_move_only_deleter.cpp ;

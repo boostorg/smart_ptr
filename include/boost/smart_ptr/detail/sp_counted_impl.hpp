@@ -145,7 +145,7 @@ template<class P, class D> class BOOST_SYMBOL_VISIBLE sp_counted_impl_pd: public
 private:
 
     P ptr; // copy constructor must not throw
-    D del; // copy constructor must not throw
+    D del; // copy/move constructor must not throw
 
     sp_counted_impl_pd( sp_counted_impl_pd const & );
     sp_counted_impl_pd & operator= ( sp_counted_impl_pd const & );
@@ -159,6 +159,14 @@ public:
     sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )
     {
     }
+
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    sp_counted_impl_pd( P p, D && d ): ptr( p ), del( static_cast< D&& >( d ) )
+    {
+    }
+
+#endif
 
     sp_counted_impl_pd( P p ): ptr( p ), del()
     {

@@ -125,6 +125,28 @@ int main()
         BOOST_TEST( Y::instances == 0 );
     }
 
+#if !defined( BOOST_NO_CXX11_NULLPTR )
+
+    {
+        boost::shared_ptr<Y> p( nullptr, YD() );
+
+        YD del;
+        p = boost::shared_ptr<Y>( nullptr, std::move( del ) );
+
+        BOOST_TEST( del.moved_ );
+    }
+
+    {
+        boost::shared_ptr<Y> p( nullptr, YD(), std::allocator<Y>() );
+
+        YD del;
+        p = boost::shared_ptr<Y>( nullptr, std::move( del ), std::allocator<Y>() );
+
+        BOOST_TEST( del.moved_ );
+    }
+
+#endif
+
     return boost::report_errors();
 }
 

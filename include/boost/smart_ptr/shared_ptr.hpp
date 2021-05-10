@@ -397,9 +397,19 @@ public:
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class D> shared_ptr( boost::detail::sp_nullptr_t p, D d ): px( p ), pn( p, static_cast< D&& >( d ) )
+    {
+    }
+
+#else
+
     template<class D> shared_ptr( boost::detail::sp_nullptr_t p, D d ): px( p ), pn( p, d )
     {
     }
+
+#endif
 
 #endif
 
@@ -423,9 +433,19 @@ public:
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class D, class A> shared_ptr( boost::detail::sp_nullptr_t p, D d, A a ): px( p ), pn( p, static_cast< D&& >( d ), a )
+    {
+    }
+
+#else
+
     template<class D, class A> shared_ptr( boost::detail::sp_nullptr_t p, D d, A a ): px( p ), pn( p, d, a )
     {
     }
+
+#endif
 
 #endif
 

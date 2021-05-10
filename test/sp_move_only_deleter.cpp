@@ -100,6 +100,31 @@ int main()
         BOOST_TEST( Y::instances == 0 );
     }
 
+    {
+        YD del;
+        boost::shared_ptr<Y> p( new Y, std::move( del ), std::allocator<Y>() );
+
+        BOOST_TEST( Y::instances == 1 );
+        BOOST_TEST( del.moved_ );
+
+        p.reset( new Y, YD(), std::allocator<Y>() );
+
+        BOOST_TEST( Y::instances == 1 );
+
+        p = boost::shared_ptr<Y>( new Y, YD(), std::allocator<Y>() );
+
+        BOOST_TEST( Y::instances == 1 );
+
+        YD del2;
+        p.reset( new Y, std::move( del2 ), std::allocator<Y>() );
+
+        BOOST_TEST( Y::instances == 1 );
+        BOOST_TEST( del2.moved_ );
+
+        p.reset();
+        BOOST_TEST( Y::instances == 0 );
+    }
+
     return boost::report_errors();
 }
 

@@ -228,7 +228,7 @@ template<class P, class D, class A> class BOOST_SYMBOL_VISIBLE sp_counted_impl_p
 private:
 
     P p_; // copy constructor must not throw
-    D d_; // copy constructor must not throw
+    D d_; // copy/move constructor must not throw
     A a_; // copy constructor must not throw
 
     sp_counted_impl_pda( sp_counted_impl_pda const & );
@@ -240,9 +240,19 @@ public:
 
     // pre: d( p ) must not throw
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    sp_counted_impl_pda( P p, D & d, A a ): p_( p ), d_( static_cast< D&& >( d ) ), a_( a )
+    {
+    }
+
+#else
+
     sp_counted_impl_pda( P p, D & d, A a ): p_( p ), d_( d ), a_( a )
     {
     }
+
+#endif
 
     sp_counted_impl_pda( P p, A a ): p_( p ), d_( a ), a_( a )
     {

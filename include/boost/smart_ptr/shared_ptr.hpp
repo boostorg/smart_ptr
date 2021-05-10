@@ -405,10 +405,21 @@ public:
 
     // As above, but with allocator. A's copy constructor shall not throw.
 
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+
+    template<class Y, class D, class A> shared_ptr( Y * p, D d, A a ): px( p ), pn( p, static_cast< D&& >( d ), a )
+    {
+        boost::detail::sp_deleter_construct( this, p );
+    }
+
+#else
+
     template<class Y, class D, class A> shared_ptr( Y * p, D d, A a ): px( p ), pn( p, d, a )
     {
         boost::detail::sp_deleter_construct( this, p );
     }
+
+#endif
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
@@ -711,6 +722,11 @@ public:
         this_type( p, static_cast< D&& >( d ) ).swap( *this );
     }
 
+    template<class Y, class D, class A> void reset( Y * p, D d, A a )
+    {
+        this_type( p, static_cast< D&& >( d ), a ).swap( *this );
+    }
+
 #else
 
     template<class Y, class D> void reset( Y * p, D d )
@@ -718,12 +734,12 @@ public:
         this_type( p, d ).swap( *this );
     }
 
-#endif
-
     template<class Y, class D, class A> void reset( Y * p, D d, A a )
     {
         this_type( p, d, a ).swap( *this );
     }
+
+#endif
 
     template<class Y> void reset( shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT
     {

@@ -19,6 +19,11 @@ int main() {}
 BOOST_PRAGMA_MESSAGE("Skipping test because BOOST_NO_CXX11_RVALUE_REFERENCES is defined")
 int main() {}
 
+#elif defined(BOOST_MSVC) && BOOST_MSVC < 1700
+
+BOOST_PRAGMA_MESSAGE("Skipping test because msvc-10.0 unique_ptr doesn't support move-only deleters")
+int main() {}
+
 #else
 
 struct Y

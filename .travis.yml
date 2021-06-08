@@ -160,6 +160,7 @@ matrix:
       script:
         - mkdir __build__ && cd __build__
         - cmake -DBOOST_ENABLE_CMAKE=1 -DBoost_VERBOSE=1 -DBOOST_INCLUDE_LIBRARIES=smart_ptr -DBUILD_TESTING=ON ..
+        - cmake --build . --target tests -- -k
         - ctest --output-on-failure -R boost_smart_ptr
 
     - os: linux

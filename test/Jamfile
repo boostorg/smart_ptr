@@ -81,7 +81,7 @@ run sp_recursive_assign_rv_test.cpp ;
 run sp_recursive_assign2_rv_test.cpp ;
 
 compile-fail auto_ptr_lv_fail.cpp
-  : <toolset>gcc-4.4.7:<build>no ;
+  : <toolset>gcc-4.4.7:<build>no <toolset>gcc-4.4:<build>no ;
 
 run atomic_count_test2.cpp ;
 run sp_typeinfo_test.cpp ;
@@ -331,9 +331,9 @@ run weak_ptr_alias_move_test.cpp ;
 
 run sp_typeinfo_test.cpp : : : <rtti>off : sp_typeinfo_test_no_rtti ;
 
-run get_deleter_test.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
-run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
-run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;
+run get_deleter_test.cpp  : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
+run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
+run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;
 
 run shared_from_test.cpp ;
 run weak_from_test.cpp ;
@@ -408,3 +408,6 @@ run wp_unordered_test.cpp ;
 
 run owner_hash_test.cpp ;
 run sp_unordered_test.cpp ;
+
+run sp_unique_ptr_test2.cpp ;
+run sp_move_only_deleter.cpp ;

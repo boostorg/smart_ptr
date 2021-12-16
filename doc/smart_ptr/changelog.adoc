@@ -15,7 +15,7 @@ http://www.boost.org/LICENSE_1_0.txt
 
 ## Changes in 1.79.0
 
-* Added `get_allocator_ptr`
+* Added `get_allocator_pointer`
 
 ## Changes in 1.74.0
 

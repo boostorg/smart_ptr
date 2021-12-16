@@ -1,5 +1,5 @@
 ////
-Copyright 2019 Glen Joseph Fernandes (glenjofe@gmail.com)
+Copyright 2019-2021 Glen Joseph Fernandes (glenjofe@gmail.com)
 
 Distributed under the Boost Software License, Version 1.0.
 
@@ -85,6 +85,11 @@ namespace boost {
   template<class T, class A>
     std::unique_ptr<remove_extent_t<T>[], alloc_noinit_deleter<T, A>>
       allocate_unique_noinit(const A& a);
+
+  template<class T, class U, class A>
+    allocator_pointer_t<allocator_rebind_t<A, remove_cv_t<remove_extent_t<T>>>>
+      get_allocator_pointer(const std::unique_ptr<T,
+        alloc_deleter<U, A>>& p) noexcept;
 }
 ```
 
@@ -268,6 +273,18 @@ Constraints:: `T` is an array of known bounds.
 Returns:: A `std::unique_ptr` to a sequence of `extent_v<T>`
 default-initialized objects of type `remove_extent_t<T>`.
 Example:: `auto p = allocate_unique_noinit<double[1024]>(a);`
+
+```
+template<class T, class U, class A>
+  allocator_pointer_t<allocator_rebind_t<A, remove_cv_t<remove_extent_t<T>>>>
+    get_allocator_pointer(const std::unique_ptr<T,
+      alloc_deleter<U, A>>& p) noexcept;
+```
+[none]
+* {blank}
++
+Returns:: The allocator pointer to the allocation.
+Example:: `auto r = boost::get_allocator_ptr(p.release());`
 
 ## Deleter
 

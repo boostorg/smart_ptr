@@ -24,14 +24,10 @@ environment:
       TOOLSET: msvc-14.1
       CXXSTD: 14,17
       ADDRMD: 32,64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      TOOLSET: clang-win
-      CXXSTD: 14,17
-      ADDRMD: 64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      TOOLSET: msvc-14.2
+      TOOLSET: clang-win
       CXXSTD: 14,17,latest
-      ADDRMD: 32,64
+      ADDRMD: 64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ADDPATH: C:\cygwin\bin;
       TOOLSET: gcc
@@ -83,4 +79,4 @@ test_script:
   - PATH=%ADDPATH%%PATH%
   - if not "%CXXSTD%" == "" set CXXSTD=cxxstd=%CXXSTD%
   - if not "%ADDRMD%" == "" set ADDRMD=address-model=%ADDRMD%
-  - b2 -j3 libs/smart_ptr/test toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release
+  - b2 -j3 libs/smart_ptr/test toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release embed-manifest-via=linker

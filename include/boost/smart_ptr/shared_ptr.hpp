@@ -934,7 +934,7 @@ template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, shared_pt
 
 template<class T, class U> inline bool operator<(shared_ptr<T> const & a, shared_ptr<U> const & b) BOOST_SP_NOEXCEPT
 {
-    return a.owner_before( b );
+    return a.get() < b.get();
 }
 
 template<class T> inline void swap(shared_ptr<T> & a, shared_ptr<T> & b) BOOST_SP_NOEXCEPT

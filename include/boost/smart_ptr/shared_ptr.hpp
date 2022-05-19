@@ -667,9 +667,8 @@ public:
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
-    shared_ptr( shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn()
+    shared_ptr( shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( static_cast< boost::detail::shared_count && >( r.pn ) )
     {
-        pn.swap( r.pn );
         r.px = 0;
     }
 
@@ -683,11 +682,9 @@ public:
     shared_ptr( shared_ptr<Y> && r )
 
 #endif
-    BOOST_SP_NOEXCEPT : px( r.px ), pn()
+    BOOST_SP_NOEXCEPT : px( r.px ), pn( static_cast< boost::detail::shared_count && >( r.pn ) )
     {
         boost::detail::sp_assert_convertible< Y, T >();
-
-        pn.swap( r.pn );
         r.px = 0;
     }
 

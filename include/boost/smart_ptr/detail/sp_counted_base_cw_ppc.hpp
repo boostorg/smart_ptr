@@ -35,8 +35,6 @@ BOOST_PRAGMA_MESSAGE("Using CodeWarrior/PowerPC sp_counted_base")
 
 #endif
 
-BOOST_SP_OBSOLETE()
-
 namespace boost
 {
 

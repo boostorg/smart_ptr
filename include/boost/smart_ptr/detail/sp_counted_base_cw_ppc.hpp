@@ -64,7 +64,15 @@ inline long atomic_decrement( register long * pw )
 
     asm
     {
+#if defined(__PPCZen__) || defined(__PPCe500__) || defined(__PPCe500v2__)
+# if VLE_ON
+    se_isync
+# else
+    msync
+# endif
+#else
     sync
+#endif
 
 loop:
 

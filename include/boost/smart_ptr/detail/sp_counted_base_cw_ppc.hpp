@@ -60,10 +60,14 @@ inline long atomic_decrement( register long * pw )
 {
     register int a;
 
-    __sync();
-
     asm
     {
+#if defined(__PPCZen__) || defined(__PPCe500__) || defined(__PPCe500v2__)
+    msync
+#else
+    sync
+#endif
+
 loop:
 
     lwarx   a, 0, pw

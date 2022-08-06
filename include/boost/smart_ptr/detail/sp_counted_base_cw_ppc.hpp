@@ -43,7 +43,7 @@ namespace detail
 
 inline void atomic_increment( register long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {
@@ -58,7 +58,7 @@ loop:
 
 inline long atomic_decrement( register long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {
@@ -83,7 +83,7 @@ loop:
 
 inline long atomic_conditional_increment( register long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {

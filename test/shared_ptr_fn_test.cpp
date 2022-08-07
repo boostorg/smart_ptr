@@ -27,7 +27,7 @@ int main()
 
     BOOST_TEST( pf.get() == f );
     BOOST_TEST_EQ( pf.use_count(), 1 );
-    BOOST_TEST( boost::get_deleter<null_deleter>( pf ) != 0 );
+    BOOST_TEST( boost::get_deleter<null_deleter>( pf ) != BOOST_NULLPTR );
 
     boost::weak_ptr<void()> wp( pf );
 
@@ -36,7 +36,7 @@ int main()
 
     pf.reset();
 
-    BOOST_TEST( wp.lock().get() == 0 );
+    BOOST_TEST( wp.lock().get() == BOOST_NULLPTR );
     BOOST_TEST_EQ( wp.use_count(), 0 );
 
     return boost::report_errors();

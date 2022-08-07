@@ -20,10 +20,10 @@ int main()
         boost::shared_ptr<char> pc;
 
         boost::shared_ptr<int> pi = boost::reinterpret_pointer_cast<int>(pc);
-        BOOST_TEST(pi.get() == 0);
+        BOOST_TEST(pi.get() == BOOST_NULLPTR);
 
         boost::shared_ptr<X> px = boost::reinterpret_pointer_cast<X>(pc);
-        BOOST_TEST(px.get() == 0);
+        BOOST_TEST(px.get() == BOOST_NULLPTR);
     }
 
     {

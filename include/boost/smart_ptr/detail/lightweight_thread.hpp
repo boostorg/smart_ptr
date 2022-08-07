@@ -44,7 +44,7 @@ inline int lw_thread_create_( lw_thread_t* thread, const pthread_attr_t* attr, v
 
 inline void lw_thread_join( lw_thread_t th )
 {
-    ::pthread_join( th, 0 );
+    ::pthread_join( th, BOOST_NULLPTR );
 }
 
 } // namespace detail
@@ -118,7 +118,7 @@ extern "C" void * lw_thread_routine( void * pv )
 
     pt->run();
 
-    return 0;
+    return BOOST_NULLPTR;
 }
 
 #else
@@ -172,7 +172,7 @@ template<class F> int lw_thread_create( lw_thread_t & th, F f )
 
 #endif
 
-    int r = lw_thread_create_( &th, 0, lw_thread_routine, p.get() );
+    int r = lw_thread_create_( &th, BOOST_NULLPTR, lw_thread_routine, p.get() );
 
     if( r == 0 )
     {

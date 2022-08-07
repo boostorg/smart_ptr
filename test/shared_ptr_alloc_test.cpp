@@ -20,7 +20,7 @@
 
 int const n = 1024 * 1024;
 
-template<class T> void test(T * = 0)
+template<class T> void test(T * = BOOST_NULLPTR)
 {
     std::clock_t t = std::clock();
     std::clock_t t2;

@@ -188,10 +188,10 @@ int main()
         BOOST_TEST( X::allocations == 0 );
         BOOST_TEST( X::instances == 0 );
 
-        BOOST_TEST( wp2.lock() == 0 );
-        BOOST_TEST( wp3.lock() == 0 );
-        BOOST_TEST( wp4.lock() == 0 );
-        BOOST_TEST( wp5.lock() == 0 );
+        BOOST_TEST( wp2.lock() == BOOST_NULLPTR );
+        BOOST_TEST( wp3.lock() == BOOST_NULLPTR );
+        BOOST_TEST( wp4.lock() == BOOST_NULLPTR );
+        BOOST_TEST( wp5.lock() == BOOST_NULLPTR );
     }
 
 #if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
@@ -204,7 +204,7 @@ int main()
         boost::local_shared_ptr<X[]> px2( std::move( px ) );
         BOOST_TEST( X::allocations == 1 );
         BOOST_TEST( X::instances == 4 );
-        BOOST_TEST( px.get() == 0 );
+        BOOST_TEST( px.get() == BOOST_NULLPTR );
 
         try
         {
@@ -234,7 +234,7 @@ int main()
         px2 = std::move( px );
         BOOST_TEST( X::allocations == 1 );
         BOOST_TEST( X::instances == 4 );
-        BOOST_TEST( px.get() == 0 );
+        BOOST_TEST( px.get() == BOOST_NULLPTR );
 
         try
         {

@@ -69,7 +69,7 @@ inline void sp_thread_sleep()
     rqtp.tv_sec = 0;
     rqtp.tv_nsec = 1000;
 
-    nanosleep( &rqtp, 0 );
+    nanosleep( &rqtp, BOOST_NULLPTR );
 }
 
 } // namespace detail

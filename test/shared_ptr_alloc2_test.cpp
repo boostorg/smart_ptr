@@ -91,7 +91,7 @@ public:
         ::operator delete( p );
     }
 
-    pointer allocate( size_type n, void const * = 0 )
+    pointer allocate( size_type n, void const * = BOOST_NULLPTR )
     {
         T * p = static_cast< T* >( ::operator new( n * sizeof( T ) ) );
 
@@ -121,7 +121,7 @@ public:
     }
 };
 
-template<class T> T * test_allocator<T>::last_pointer_ = 0;
+template<class T> T * test_allocator<T>::last_pointer_ = BOOST_NULLPTR;
 template<class T> std::size_t test_allocator<T>::last_n_ = 0;
 template<class T> int test_allocator<T>::last_id_ = 0;
 

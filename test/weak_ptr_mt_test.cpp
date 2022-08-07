@@ -18,7 +18,7 @@ void f1( int n )
         boost::weak_ptr<int> p1( wp );
 
         BOOST_TEST( !wp.expired() );
-        BOOST_TEST( wp.lock() != 0 );
+        BOOST_TEST( wp.lock() != BOOST_NULLPTR );
     }
 }
 
@@ -29,7 +29,7 @@ void f2( int n )
         boost::weak_ptr<int> p1( wp );
 
         BOOST_TEST( wp.expired() );
-        BOOST_TEST( wp.lock() == 0 );
+        BOOST_TEST( wp.lock() == BOOST_NULLPTR );
     }
 }
 

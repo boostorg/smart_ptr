@@ -39,7 +39,7 @@ public:
 
 public:
 
-    explicit X( int expected, boost::shared_ptr<X> *early_px = 0 ): destroyed_( 0 ), deleted_( 0 ), expected_( expected )
+    explicit X( int expected, boost::shared_ptr<X> *early_px = BOOST_NULLPTR ): destroyed_( 0 ), deleted_( 0 ), expected_( expected )
     {
         ++instances;
         if( early_px ) *early_px = shared_from_raw(this);
@@ -86,7 +86,7 @@ int main()
         boost::shared_ptr<X> early_px;
         X* x = new X( 1, &early_px );
         BOOST_TEST( early_px.use_count() > 0 );
-        BOOST_TEST( boost::get_deleter<X::deleter_type>(early_px) == 0 );
+        BOOST_TEST( boost::get_deleter<X::deleter_type>(early_px) == BOOST_NULLPTR );
         BOOST_TEST( early_px.get() == x );
         boost::shared_ptr<X> px( x, &X::deleter2 );
         BOOST_TEST( early_px.use_count() == 2 && px.use_count() == 2 );

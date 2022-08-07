@@ -81,7 +81,7 @@ template<class D> D * get_local_deleter( local_sp_deleter<D> * p ) BOOST_SP_NOEX
 
 inline void * get_local_deleter( local_sp_deleter<void> * /*p*/ ) BOOST_SP_NOEXCEPT
 {
-    return 0;
+    return BOOST_NULLPTR;
 }
 
 } // namespace detail

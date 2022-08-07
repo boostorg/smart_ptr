@@ -117,7 +117,7 @@ thrown, the functions have no effect.
 Returns:: A `shared_ptr` instance that stores and owns the address of the
 newly constructed object.
 
-Postconditions:: `r.get() != 0` and `r.use_count() == 1`, where `r`
+Postconditions:: `r.get() != BOOST_NULLPTR` and `r.use_count() == 1`, where `r`
 is the return value.
 
 Throws:: `std::bad_alloc`, an exception thrown from `A::allocate`, or from the

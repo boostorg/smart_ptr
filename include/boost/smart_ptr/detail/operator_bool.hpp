@@ -11,14 +11,14 @@
 
     explicit operator bool () const BOOST_SP_NOEXCEPT
     {
-        return px != 0;
+        return px != BOOST_NULLPTR;
     }
 
 #elif ( defined(__SUNPRO_CC) && BOOST_WORKAROUND(__SUNPRO_CC, < 0x570) ) || defined(__CINT__)
 
     operator bool () const BOOST_SP_NOEXCEPT
     {
-        return px != 0;
+        return px != BOOST_NULLPTR;
     }
 
 #elif defined( _MANAGED )
@@ -31,7 +31,7 @@
 
     operator unspecified_bool_type() const BOOST_SP_NOEXCEPT
     {
-        return px == 0? 0: unspecified_bool;
+        return px == BOOST_NULLPTR? BOOST_NULLPTR: unspecified_bool;
     }
 
 #elif \
@@ -43,7 +43,7 @@
 
     operator unspecified_bool_type() const BOOST_SP_NOEXCEPT
     {
-        return px == 0? 0: &this_type::get;
+        return px == BOOST_NULLPTR? BOOST_NULLPTR: &this_type::get;
     }
 
 #else
@@ -52,7 +52,7 @@
 
     operator unspecified_bool_type() const BOOST_SP_NOEXCEPT
     {
-        return px == 0? 0: &this_type::px;
+        return px == BOOST_NULLPTR? BOOST_NULLPTR: &this_type::px;
     }
 
 #endif
@@ -60,5 +60,5 @@
     // operator! is redundant, but some compilers need it
     bool operator! () const BOOST_SP_NOEXCEPT
     {
-        return px == 0;
+        return px == BOOST_NULLPTR;
     }

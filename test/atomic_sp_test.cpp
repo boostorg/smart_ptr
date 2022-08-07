@@ -216,7 +216,7 @@ int main()
         r = apx.compare_exchange_weak( cmp, boost::shared_ptr<X>() );
 
         BOOST_TEST( r );
-        BOOST_TEST( apx.load().get() == 0 );
+        BOOST_TEST( apx.load().get() == BOOST_NULLPTR );
         BOOST_TEST( apx.load().use_count() == 0 );
     }
 
@@ -237,7 +237,7 @@ int main()
         r = apx.compare_exchange_weak( cmp, boost::shared_ptr<X>(), boost::memory_order_seq_cst, boost::memory_order_seq_cst );
 
         BOOST_TEST( r );
-        BOOST_TEST( apx.load().get() == 0 );
+        BOOST_TEST( apx.load().get() == BOOST_NULLPTR );
         BOOST_TEST( apx.load().use_count() == 0 );
     }
 
@@ -296,7 +296,7 @@ int main()
         r = apx.compare_exchange_strong( cmp, boost::shared_ptr<X>() );
 
         BOOST_TEST( r );
-        BOOST_TEST( apx.load().get() == 0 );
+        BOOST_TEST( apx.load().get() == BOOST_NULLPTR );
         BOOST_TEST( apx.load().use_count() == 0 );
     }
 
@@ -317,7 +317,7 @@ int main()
         r = apx.compare_exchange_strong( cmp, boost::shared_ptr<X>(), boost::memory_order_seq_cst, boost::memory_order_seq_cst );
 
         BOOST_TEST( r );
-        BOOST_TEST( apx.load().get() == 0 );
+        BOOST_TEST( apx.load().get() == BOOST_NULLPTR );
         BOOST_TEST( apx.load().use_count() == 0 );
     }
 

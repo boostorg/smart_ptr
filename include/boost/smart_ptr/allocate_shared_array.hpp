@@ -8,6 +8,7 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 #define BOOST_SMART_PTR_ALLOCATE_SHARED_ARRAY_HPP
 
+#include <boost/config.hpp>
 #include <boost/core/allocator_access.hpp>
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
@@ -209,16 +210,16 @@ public:
     }
 
     void* get_deleter(const sp_typeinfo_&) BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
     void* get_local_deleter(const sp_typeinfo_&)
         BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
     void* get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
 private:
@@ -244,7 +245,7 @@ public:
     }
 
     void release() BOOST_SP_NOEXCEPT {
-        result_ = 0;
+        result_ = BOOST_NULLPTR;
     }
 
 private:

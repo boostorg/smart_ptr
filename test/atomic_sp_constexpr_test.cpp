@@ -68,7 +68,7 @@ int main()
 {
     boost::shared_ptr<X> p2 = p1;
 
-    BOOST_TEST( p2.get() != 0 );
+    BOOST_TEST( p2.get() != BOOST_NULLPTR );
     BOOST_TEST_EQ( p2.use_count(), 2 );
 
     return boost::report_errors();

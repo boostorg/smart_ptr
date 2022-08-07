@@ -106,7 +106,7 @@ private:
     // Note: invoked automatically by shared_ptr; do not call
     template<class X, class Y> void _internal_accept_owner( shared_ptr<X> * ppx, Y * ) const
     {
-        BOOST_ASSERT( ppx != 0 );
+        BOOST_ASSERT( ppx != BOOST_NULLPTR );
 
         if( weak_this_.expired() )
         {
@@ -117,7 +117,7 @@ private:
             BOOST_ASSERT( ppx->unique() ); // no weak_ptrs should exist either, but there's no way to check that
 
             detail::esft2_deleter_wrapper * pd = boost::get_deleter<detail::esft2_deleter_wrapper>( shared_this_ );
-            BOOST_ASSERT( pd != 0 );
+            BOOST_ASSERT( pd != BOOST_NULLPTR );
 
             pd->set_deleter( *ppx );
 
@@ -136,14 +136,14 @@ private:
 template<typename T>
 boost::shared_ptr<T> shared_from_raw(T *p)
 {
-    BOOST_ASSERT(p != 0);
+    BOOST_ASSERT(p != BOOST_NULLPTR);
     return boost::shared_ptr<T>(p->enable_shared_from_raw::shared_from_this(), p);
 }
 
 template<typename T>
 boost::weak_ptr<T> weak_from_raw(T *p)
 {
-    BOOST_ASSERT(p != 0);
+    BOOST_ASSERT(p != BOOST_NULLPTR);
     boost::weak_ptr<T> result(p->enable_shared_from_raw::weak_from_this(), p);
     return result;
 }
@@ -152,7 +152,7 @@ namespace detail
 {
     template< class X, class Y > inline void sp_enable_shared_from_this( boost::shared_ptr<X> * ppx, Y const * py, boost::enable_shared_from_raw const * pe )
     {
-        if( pe != 0 )
+        if( pe != BOOST_NULLPTR )
         {
             pe->_internal_accept_owner( ppx, const_cast< Y* >( py ) );
         }

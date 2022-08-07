@@ -66,7 +66,7 @@ inline int32_t atomic_conditional_increment( int32_t * pw )
     int32_t tmp = fetch_and_add( pw, 0 );
     for( ;; )
     {
-        if( tmp == 0 ) return 0;
+        if( tmp == BOOST_NULLPTR ) return 0;
         if( compare_and_swap( pw, &tmp, tmp + 1 ) ) return (tmp + 1);
     }
 }

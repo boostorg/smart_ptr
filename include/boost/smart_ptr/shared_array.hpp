@@ -54,7 +54,7 @@ public:
 
     typedef T element_type;
 
-    shared_array() BOOST_SP_NOEXCEPT : px( 0 ), pn()
+    shared_array() BOOST_SP_NOEXCEPT : px( BOOST_NULLPTR ), pn()
     {
     }
 
@@ -103,7 +103,7 @@ public:
     shared_array( shared_array && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn()
     {
         pn.swap( r.pn );
-        r.px = 0;
+        r.px = BOOST_NULLPTR;
     }
 
 #endif
@@ -175,7 +175,7 @@ public:
 
     template<class Y> void reset( Y * p ) // Y must be complete
     {
-        BOOST_ASSERT( p == 0 || p != px ); // catch self-reset errors
+        BOOST_ASSERT( p == BOOST_NULLPTR || p != px ); // catch self-reset errors
         this_type( p ).swap( *this );
     }
 
@@ -196,7 +196,7 @@ public:
 
     T & operator[] (std::ptrdiff_t i) const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT(px != 0);
+        BOOST_ASSERT(px != BOOST_NULLPTR);
         BOOST_ASSERT(i >= 0);
         return px[i];
     }
@@ -253,22 +253,22 @@ template<class T> inline bool operator!=(shared_array<T> const & a, shared_array
 
 template<class T> inline bool operator==( shared_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator==( boost::detail::sp_nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( shared_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 #endif

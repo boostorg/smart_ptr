@@ -45,9 +45,9 @@ int main()
         BOOST_TEST( p2.use_count() == p.use_count() );
         BOOST_TEST( !( p < p2 ) && !( p2 < p ) );
 
-        p2.reset( p, 0 );
+        p2.reset( p, BOOST_NULLPTR );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST( p2? false: true );
         BOOST_TEST( !p2 );
         BOOST_TEST( p2.use_count() == p.use_count() );
@@ -66,9 +66,9 @@ int main()
         BOOST_TEST( !( p < p2 ) && !( p2 < p ) );
 
         boost::shared_ptr< int volatile > p3;
-        p2.reset( p3, 0 );
+        p2.reset( p3, BOOST_NULLPTR );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST( p2? false: true );
         BOOST_TEST( !p2 );
         BOOST_TEST( p2.use_count() == p3.use_count() );
@@ -77,9 +77,9 @@ int main()
 
     {
         boost::shared_ptr< int > p( new int );
-        boost::shared_ptr< void const > p2( p, 0 );
+        boost::shared_ptr< void const > p2( p, BOOST_NULLPTR );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST( p2? false: true );
         BOOST_TEST( !p2 );
         BOOST_TEST( p2.use_count() == p.use_count() );
@@ -99,17 +99,17 @@ int main()
 
     {
         boost::shared_ptr< incomplete > p;
-        boost::shared_ptr< incomplete > p2( p, 0 );
+        boost::shared_ptr< incomplete > p2( p, BOOST_NULLPTR );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST( p2? false: true );
         BOOST_TEST( !p2 );
         BOOST_TEST( p2.use_count() == p.use_count() );
         BOOST_TEST( !( p < p2 ) && !( p2 < p ) );
 
-        p2.reset( p, 0 );
+        p2.reset( p, BOOST_NULLPTR );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST( p2? false: true );
         BOOST_TEST( !p2 );
         BOOST_TEST( p2.use_count() == p.use_count() );

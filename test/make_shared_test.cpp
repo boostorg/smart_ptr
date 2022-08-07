@@ -57,7 +57,7 @@ int main()
     {
         boost::shared_ptr< int > pi = boost::make_shared< int >();
 
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
 
         BOOST_TEST( *pi == 0 );
@@ -66,14 +66,14 @@ int main()
     {
         boost::shared_ptr< int > pi = boost::make_shared_noinit< int >();
 
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
     }
 
     {
         boost::shared_ptr< int > pi = boost::make_shared< int >( 5 );
 
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
 
         BOOST_TEST( *pi == 5 );
@@ -86,7 +86,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 0 );
 
@@ -100,7 +100,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 0 );
 
@@ -114,7 +114,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1 );
 
@@ -128,7 +128,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2 );
 
@@ -142,7 +142,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3 );
 
@@ -156,7 +156,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4 );
 
@@ -170,7 +170,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5 );
 
@@ -184,7 +184,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6 );
 
@@ -198,7 +198,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7 );
 
@@ -212,7 +212,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7+8 );
 
@@ -226,7 +226,7 @@ int main()
         boost::weak_ptr<X> wp( pi );
 
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( pi.get() != 0 );
+        BOOST_TEST( pi.get() != BOOST_NULLPTR );
         BOOST_TEST( pi.use_count() == 1 );
         BOOST_TEST( pi->v == 1+2+3+4+5+6+7+8+9 );
 

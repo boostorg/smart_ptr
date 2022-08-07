@@ -54,7 +54,7 @@ template<class D> class local_sp_deleter;
 
 template<class D> D * get_local_deleter( D * /*p*/ ) BOOST_SP_NOEXCEPT
 {
-    return 0;
+    return BOOST_NULLPTR;
 }
 
 template<class D> D * get_local_deleter( local_sp_deleter<D> * p ) BOOST_SP_NOEXCEPT;
@@ -91,17 +91,17 @@ public:
 
     void * get_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
     void * get_local_deleter( sp_typeinfo_ const & ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
     void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return 0;
+        return BOOST_NULLPTR;
     }
 
 #if defined(BOOST_SP_USE_STD_ALLOCATOR)
@@ -181,12 +181,12 @@ public:
 
     void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return ti == BOOST_SP_TYPEID_(D)? &reinterpret_cast<char&>( del ): 0;
+        return ti == BOOST_SP_TYPEID_(D) ? &reinterpret_cast<char&>( del ) : BOOST_NULLPTR;
     }
 
     void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return ti == BOOST_SP_TYPEID_(D)? boost::detail::get_local_deleter( boost::addressof( del ) ): 0;
+        return ti == BOOST_SP_TYPEID_(D) ? boost::detail::get_local_deleter( boost::addressof( del ) ) : BOOST_NULLPTR;
     }
 
     void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
@@ -198,7 +198,7 @@ public:
 
     void * operator new( std::size_t )
     {
-        return std::allocator<this_type>().allocate( 1, static_cast<this_type *>(0) );
+        return std::allocator<this_type>().allocate( 1, static_cast<this_type *>(BOOST_NULLPTR) );
     }
 
     void operator delete( void * p )
@@ -284,12 +284,12 @@ public:
 
     void * get_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return ti == BOOST_SP_TYPEID_( D )? &reinterpret_cast<char&>( d_ ): 0;
+        return ti == BOOST_SP_TYPEID_( D )? &reinterpret_cast<char&>( d_ ) : BOOST_NULLPTR;
     }
 
     void * get_local_deleter( sp_typeinfo_ const & ti ) BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-        return ti == BOOST_SP_TYPEID_( D )? boost::detail::get_local_deleter( boost::addressof( d_ ) ): 0;
+        return ti == BOOST_SP_TYPEID_( D )? boost::detail::get_local_deleter( boost::addressof( d_ ) ): BOOST_NULLPTR;
     }
 
     void * get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE

@@ -19,7 +19,7 @@ struct X
 
 static void test_get_deleter( boost::shared_ptr<X> const & p )
 {
-    BOOST_TEST( boost::get_deleter<deleter>( p ) != 0 );
+    BOOST_TEST( boost::get_deleter<deleter>( p ) != BOOST_NULLPTR );
 }
 
 struct deleter

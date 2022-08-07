@@ -110,7 +110,7 @@ explicit shared_array(T* p = 0);
 +
 Effects:: Constructs a `shared_array`, storing a copy of `p`, which must be a
 pointer to an array that was allocated via a C++ `new[]` expression or be 0.
-Afterwards, the use count is 1 (even if `p == 0`; see `~shared_array`).
+Afterwards, the use count is 1 (even if `p == BOOST_NULLPTR`; see `~shared_array`).
 Requires:: `T` is a complete type.
 Throws:: `std::bad_alloc`. If an exception is thrown, `delete[] p` is called.
 

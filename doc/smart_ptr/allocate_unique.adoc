@@ -112,7 +112,7 @@ thrown, the functions have no effect.
 Returns:: A `std::unique_ptr` instance that stores and owns the address of the
 newly constructed object.
 
-Postconditions:: `r.get() != 0`, where `r` is the return value.
+Postconditions:: `r.get() != BOOST_NULLPTR`, where `r` is the return value.
 
 Throws:: An exception thrown from `A::allocate`, or from the initialization of
 the object.

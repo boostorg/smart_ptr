@@ -67,7 +67,7 @@ Z::Z()
 
 int main()
 {
-    BOOST_TEST( p1.get() != 0 );
+    BOOST_TEST( p1.get() != BOOST_NULLPTR );
     BOOST_TEST_EQ( p1.use_count(), 1 );
 
     BOOST_TEST_EQ( p2.use_count(), 1 );
@@ -75,7 +75,7 @@ int main()
 
 #if !defined( BOOST_NO_CXX11_NULLPTR )
 
-    BOOST_TEST( p3.get() != 0 );
+    BOOST_TEST( p3.get() != BOOST_NULLPTR );
     BOOST_TEST_EQ( p3.use_count(), 1 );
 
 #endif

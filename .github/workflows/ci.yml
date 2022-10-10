@@ -58,7 +58,7 @@ jobs:
             install: g++-11-multilib
             address-model: 32,64
           - toolset: gcc-12
-            cxxstd: "03,11,14,17,20"
+            cxxstd: "03,11,14,17,20,2b"
             os: ubuntu-22.04
             install: g++-12-multilib
             address-model: 32,64
@@ -111,17 +111,17 @@ jobs:
             os: ubuntu-20.04
           - toolset: clang
             compiler: clang++-13
-            cxxstd: "03,11,14,17,20"
+            cxxstd: "03,11,14,17,20,2b"
             os: ubuntu-22.04
             install: clang-13
           - toolset: clang
             compiler: clang++-14
-            cxxstd: "03,11,14,17,20"
+            cxxstd: "03,11,14,17,20,2b"
             os: ubuntu-22.04
             install: clang-14
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
-            os: macos-10.15
+            os: macos-11
 
     runs-on: ${{matrix.os}}
 
@@ -231,7 +231,7 @@ jobs:
           - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-10.15
+          - os: macos-11
 
     runs-on: ${{matrix.os}}
 
@@ -278,7 +278,7 @@ jobs:
           - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-10.15
+          - os: macos-11
 
     runs-on: ${{matrix.os}}
 
@@ -335,7 +335,7 @@ jobs:
           - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-10.15
+          - os: macos-11
 
     runs-on: ${{matrix.os}}
 

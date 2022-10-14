@@ -19,27 +19,31 @@ jobs:
         include:
           - toolset: gcc-4.8
             cxxstd: "03,11"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: g++-4.8-multilib
             address-model: 32,64
           - toolset: gcc-5
             cxxstd: "03,11,14,1z"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: g++-5-multilib
             address-model: 32,64
           - toolset: gcc-6
             cxxstd: "03,11,14,1z"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: g++-6-multilib
             address-model: 32,64
           - toolset: gcc-7
             cxxstd: "03,11,14,17"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: g++-7-multilib
             address-model: 32,64
           - toolset: gcc-8
             cxxstd: "03,11,14,17,2a"
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             install: g++-8-multilib
             address-model: 32,64
           - toolset: gcc-9
@@ -65,27 +69,30 @@ jobs:
           - toolset: clang
             compiler: clang++-3.9
             cxxstd: "03,11,14"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: clang-3.9
           - toolset: clang
             compiler: clang++-4.0
             cxxstd: "03,11,14"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: clang-4.0
           - toolset: clang
             compiler: clang++-5.0
             cxxstd: "03,11,14,1z"
-            os: ubuntu-18.04
+            os: ubuntu-latest
+            container: ubuntu:18.04
             install: clang-5.0
           - toolset: clang
             compiler: clang++-6.0
             cxxstd: "03,11,14,17"
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             install: clang-6.0
           - toolset: clang
             compiler: clang++-7
             cxxstd: "03,11,14,17"
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             install: clang-7
           - toolset: clang
             compiler: clang++-8
@@ -124,13 +131,24 @@ jobs:
             os: macos-11
 
     runs-on: ${{matrix.os}}
+    container: ${{matrix.container}}
+
+    defaults:
+      run:
+        shell: bash
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Setup container environment
+        if: matrix.container
+        run: |
+          apt-get update
+          apt-get -y install sudo python git g++
 
       - name: Install packages
         if: matrix.install
-        run: sudo apt install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |
@@ -193,7 +211,7 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Boost
         shell: cmd
@@ -228,7 +246,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
           - os: macos-11
@@ -236,11 +253,11 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install packages
         if: matrix.install
-        run: sudo apt install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |
@@ -275,7 +292,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
           - os: macos-11
@@ -283,11 +299,11 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install packages
         if: matrix.install
-        run: sudo apt install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |
@@ -332,7 +348,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-18.04
           - os: ubuntu-20.04
           - os: ubuntu-22.04
           - os: macos-11
@@ -340,11 +355,11 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install packages
         if: matrix.install
-        run: sudo apt install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |

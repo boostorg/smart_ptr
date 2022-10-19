@@ -28,6 +28,7 @@ template<class T> void test(T * = 0)
     {
         std::vector< boost::shared_ptr<T> > v;
 
+        v.reserve(n);
         for(int i = 0; i < n; ++i)
         {
             boost::shared_ptr<T> pi(new T(i));

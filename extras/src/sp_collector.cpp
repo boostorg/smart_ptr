@@ -120,7 +120,7 @@ static void find_unreachable_objects_impl(map_type const & m, map2_type & m2)
         for(map2_type::iterator i = m2.begin(); i != m2.end(); ++i)
         {
             boost::detail::sp_counted_base const * p = static_cast<boost::detail::sp_counted_base const *>(i->first);
-            if(p->use_count() != i->second) open.push_back(p);
+            if(p->use_count() != i->second) open.emplace_back(p);
         }
 
         std::cout << "... " << open.size() << " objects in open.\n";

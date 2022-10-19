@@ -33,6 +33,7 @@ int main()
 
     clock_t t = clock();
 
+    v.reserve(n);
     for(int i = 0; i < n; ++i)
     {
         v.push_back(pi);

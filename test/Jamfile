@@ -366,7 +366,9 @@ compile sp_pedantic_test.cpp
   : <warnings>pedantic
     <toolset>msvc:<warnings-as-errors>on
     <toolset>gcc:<warnings-as-errors>on
-    <toolset>clang:<warnings-as-errors>on ;
+    <toolset>clang:<warnings-as-errors>on
+    <toolset>clang-15:<cxxflags>-Wno-deprecated-builtins
+    ;
 
 run sp_owner_before_test.cpp ;
 run sp_owner_equals_test.cpp ;

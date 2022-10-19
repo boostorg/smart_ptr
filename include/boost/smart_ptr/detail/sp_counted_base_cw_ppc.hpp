@@ -41,9 +41,9 @@ namespace boost
 namespace detail
 {
 
-inline void atomic_increment( register long * pw )
+inline void atomic_increment( long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {
@@ -56,9 +56,9 @@ loop:
     }
 }
 
-inline long atomic_decrement( register long * pw )
+inline long atomic_decrement( long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {
@@ -81,9 +81,9 @@ loop:
     return a;
 }
 
-inline long atomic_conditional_increment( register long * pw )
+inline long atomic_conditional_increment( long * pw )
 {
-    register int a;
+    int a;
 
     asm
     {

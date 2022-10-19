@@ -56,7 +56,7 @@ int main()
 {
     std::vector< boost::shared_ptr<X> > v1, v2;
 
-    int const n = 256 * 1024;
+    constexpr int n = 256 * 1024;
 
     std::cout << "Filling v1 and v2\n";
 

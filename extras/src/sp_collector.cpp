@@ -43,7 +43,7 @@ namespace
     struct count_layout
     {
         boost::detail::sp_counted_base * pi;
-        int id;
+        unsigned int id;
     };
 
     struct shared_ptr_layout
@@ -54,7 +54,7 @@ namespace
 }
 
 // assume 4 byte alignment for pointers when scanning
-size_t const pointer_align = 4;
+constexpr size_t pointer_align = 4;
 
 typedef std::map<void const *, long> map2_type;
 

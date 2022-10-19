@@ -17,7 +17,7 @@ void f()
 
 int main()
 {
-    int const N = 4;
+    constexpr int N = 4;
     boost::detail::lw_thread_t th[ N ] = {};
 
     for( int i = 0; i < N; ++i )

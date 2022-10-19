@@ -14,15 +14,15 @@
 #include <new>
 #include <cstdlib>
 
-int const m = 2; // m * sizeof(int) must be aligned appropriately
+constexpr unsigned int m = 2; // m * sizeof(unsigned int) must be aligned appropriately
 
 // magic values to mark heap blocks with
 
-int const allocated_scalar  = 0x1234560C;
-int const allocated_array   = 0x1234560A;
-int const adopted_scalar    = 0x0567890C;
-int const adopted_array     = 0x0567890A;
-int const deleted           = 0x498769DE;
+constexpr unsigned int allocated_scalar  = 0x1234560C;
+constexpr unsigned int allocated_array   = 0x1234560A;
+constexpr unsigned int adopted_scalar    = 0x0567890C;
+constexpr unsigned int adopted_array     = 0x0567890A;
+constexpr unsigned int deleted           = 0x498769DE;
 
 using namespace std; // for compilers where things aren't in std
 
@@ -35,13 +35,13 @@ static new_handler get_new_handler()
     return p;
 }
 
-static void * allocate(size_t n, int mark)
+static void * allocate(size_t n, unsigned int mark)
 {
-    int * pm;
+    unsigned int * pm;
 
     for(;;)
     {
-        pm = static_cast<int*>(malloc(n + m * sizeof(int)));
+        pm = static_cast<unsigned int*>(malloc(n + m * sizeof(unsigned int)));
 
         if(pm != 0) break;
 
@@ -113,7 +113,7 @@ void sp_scalar_constructor_hook(void * p)
 {
     if(p == 0) return;
 
-    int * pm = static_cast<int*>(p);
+    unsigned int * pm = static_cast<unsigned int*>(p);
     pm -= m;
 
     BOOST_ASSERT(*pm != adopted_scalar);    // second smart pointer to the same address
@@ -132,7 +132,7 @@ void sp_scalar_destructor_hook(void * p)
 {
     if(p == 0) return;
 
-    int * pm = static_cast<int*>(p);
+    unsigned int * pm = static_cast<unsigned int*>(p);
     pm -= m;
 
     BOOST_ASSERT(*pm == adopted_scalar);    // attempt to destroy nonmanaged block
@@ -192,7 +192,7 @@ void operator delete(void * p) throw()
 {
     if(p == 0) return;
 
-    int * pm = static_cast<int*>(p);
+    unsigned int * pm = static_cast<unsigned int*>(p);
     pm -= m;
 
     BOOST_ASSERT(*pm != deleted);           // double delete
@@ -218,7 +218,7 @@ void operator delete[](void * p) throw()
 {
     if(p == 0) return;
 
-    int * pm = static_cast<int*>(p);
+    unsigned int * pm = static_cast<unsigned int*>(p);
     pm -= m;
 
     BOOST_ASSERT(*pm != deleted);           // double delete

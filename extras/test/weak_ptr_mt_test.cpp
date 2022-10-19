@@ -30,9 +30,9 @@
 
 //
 
-int const n = 16384;
-int const k = 512; // vector size
-int const m = 16; // threads
+constexpr int n = 16384;
+constexpr int k = 512; // vector size
+constexpr int m = 16; // threads
 
 void test( std::vector< boost::shared_ptr<int> > & v )
 {

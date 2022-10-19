@@ -22,7 +22,7 @@
 #include <vector>
 #include <ctime>
 
-int const n = 8 * 1024 * 1024;
+constexpr int n = 8 * 1024 * 1024;
 
 int main()
 {

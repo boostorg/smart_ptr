@@ -27,7 +27,7 @@
 
 //
 
-int const n = 1024 * 1024;
+constexpr int n = 1024 * 1024;
 
 struct X
 {
@@ -146,8 +146,8 @@ void writer()
   char const * thmodel = "Windows";
 #endif
 
-int const mr = 8; // reader threads
-int const mw = 1; // writer thread
+constexpr int mr = 8; // reader threads
+constexpr int mw = 1; // writer thread
 
 #if defined( USE_MUTEX )
   char const * prim = "mutex";

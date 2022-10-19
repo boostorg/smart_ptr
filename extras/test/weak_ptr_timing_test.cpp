@@ -28,8 +28,8 @@
 
 //
 
-int const n = 29000;
-int const k = 2048;
+constexpr int n = 29000;
+constexpr int k = 2048;
 
 void test( std::vector< boost::shared_ptr<int> > & v )
 {

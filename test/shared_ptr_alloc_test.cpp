@@ -18,7 +18,7 @@
 #include <cstddef>
 #include <memory>
 
-int const n = 1024 * 1024;
+constexpr int n = 1024 * 1024;
 
 template<class T> void test(T * = 0)
 {

@@ -28,7 +28,7 @@
 
 //
 
-int const n = 1024 * 1024;
+constexpr int n = 1024 * 1024;
 
 void test( boost::shared_ptr<int> const & pi )
 {
@@ -40,7 +40,7 @@ void test( boost::shared_ptr<int> const & pi )
     }
 }
 
-int const m = 16; // threads
+constexpr int m = 16; // threads
 
 #if defined( BOOST_HAS_PTHREADS )
 

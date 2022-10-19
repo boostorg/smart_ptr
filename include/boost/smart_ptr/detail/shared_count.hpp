@@ -61,8 +61,8 @@ namespace detail
 
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
 
-int const shared_count_id = 0x2C35F101;
-int const   weak_count_id = 0x298C38A4;
+constexpr unsigned int shared_count_id = 0x2C35F101;
+constexpr unsigned int   weak_count_id = 0x298C38A4;
 
 #endif
 
@@ -537,7 +537,7 @@ private:
     sp_counted_base * pi_;
 
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
-    int id_;
+    unsigned int id_;
 #endif
 
     friend class shared_count;

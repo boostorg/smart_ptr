@@ -20,8 +20,8 @@ void f( int n )
 
 int main()
 {
-    int const N = 100000; // iterations
-    int const M = 8;      // threads
+    constexpr int N = 100000; // iterations
+    constexpr int M = 8;      // threads
 
     boost::detail::lw_thread_t th[ M ] = {};
 

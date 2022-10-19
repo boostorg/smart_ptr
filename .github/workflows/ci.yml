@@ -129,6 +129,14 @@ jobs:
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
             os: macos-11
+          - toolset: clang
+            compiler: clang++-15
+            cxxstd: "03,11,14,17,20,2b"
+            os: ubuntu-22.04
+            install: clang-15
+          - toolset: clang
+            cxxstd: "03,11,14,17,2a"
+            os: macos-11
 
     runs-on: ${{matrix.os}}
     container: ${{matrix.container}}

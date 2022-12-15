@@ -30,8 +30,8 @@ requests from users.
 
 This library also provides additional overloads of `make_unique` for
 default-initialization, when users do not need or want to incur the expense
-of value-initialization. The {cpp} standard does not yet provide this
-feature with `std::make_unique`.
+of value-initialization. The {cpp}20 standard now provides this feature with
+`std::make_unique_for_overwrite`.
 
 ## Synopsis
 

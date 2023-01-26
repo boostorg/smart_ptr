@@ -45,8 +45,8 @@ int main()
 
         deleter * q = boost::get_deleter<deleter>( p );
 
-        BOOST_TEST( q != 0 );
-        BOOST_TEST( q != 0 && q->data == 17041 );
+        BOOST_TEST( q != BOOST_NULLPTR );
+        BOOST_TEST( q != BOOST_NULLPTR && q->data == 17041 );
     }
 
 #if defined( BOOST_MSVC ) && BOOST_WORKAROUND( BOOST_MSVC, < 1300 )
@@ -57,8 +57,8 @@ int main()
 
         deleter * q = boost::get_deleter<deleter>( p );
 
-        BOOST_TEST( q != 0 );
-        BOOST_TEST( q != 0 && q->data == 17041 );
+        BOOST_TEST( q != BOOST_NULLPTR );
+        BOOST_TEST( q != BOOST_NULLPTR && q->data == 17041 );
     }
 
 #endif

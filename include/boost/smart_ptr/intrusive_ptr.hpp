@@ -45,7 +45,7 @@ namespace boost
 //      void intrusive_ptr_add_ref(T * p);
 //      void intrusive_ptr_release(T * p);
 //
-//          (p != 0)
+//          (p != BOOST_NULLPTR)
 //
 //  The object is responsible for destroying itself.
 //
@@ -60,13 +60,13 @@ public:
 
     typedef T element_type;
 
-    BOOST_CONSTEXPR intrusive_ptr() BOOST_SP_NOEXCEPT : px( 0 )
+    BOOST_CONSTEXPR intrusive_ptr() BOOST_SP_NOEXCEPT : px( BOOST_NULLPTR )
     {
     }
 
     intrusive_ptr( T * p, bool add_ref = true ): px( p )
     {
-        if( px != 0 && add_ref ) intrusive_ptr_add_ref( px );
+        if( px != BOOST_NULLPTR && add_ref ) intrusive_ptr_add_ref( px );
     }
 
 #if !defined(BOOST_NO_MEMBER_TEMPLATES) || defined(BOOST_MSVC6_MEMBER_TEMPLATES)
@@ -83,19 +83,19 @@ public:
 #endif
     : px( rhs.get() )
     {
-        if( px != 0 ) intrusive_ptr_add_ref( px );
+        if( px != BOOST_NULLPTR ) intrusive_ptr_add_ref( px );
     }
 
 #endif
 
     intrusive_ptr(intrusive_ptr const & rhs): px( rhs.px )
     {
-        if( px != 0 ) intrusive_ptr_add_ref( px );
+        if( px != BOOST_NULLPTR ) intrusive_ptr_add_ref( px );
     }
 
     ~intrusive_ptr()
     {
-        if( px != 0 ) intrusive_ptr_release( px );
+        if( px != BOOST_NULLPTR ) intrusive_ptr_release( px );
     }
 
 #if !defined(BOOST_NO_MEMBER_TEMPLATES) || defined(BOOST_MSVC6_MEMBER_TEMPLATES)
@@ -114,7 +114,7 @@ public:
 
     intrusive_ptr(intrusive_ptr && rhs) BOOST_SP_NOEXCEPT : px( rhs.px )
     {
-        rhs.px = 0;
+        rhs.px = BOOST_NULLPTR;
     }
 
     intrusive_ptr & operator=(intrusive_ptr && rhs) BOOST_SP_NOEXCEPT
@@ -137,7 +137,7 @@ public:
 #endif        
     : px( rhs.px )
     {
-        rhs.px = 0;
+        rhs.px = BOOST_NULLPTR;
     }
 
     template<class U>
@@ -184,19 +184,19 @@ public:
     T * detach() BOOST_SP_NOEXCEPT
     {
         T * ret = px;
-        px = 0;
+        px = BOOST_NULLPTR;
         return ret;
     }
 
     T & operator*() const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT( px != 0 );
+        BOOST_ASSERT( px != BOOST_NULLPTR );
         return *px;
     }
 
     T * operator->() const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT( px != 0 );
+        BOOST_ASSERT( px != BOOST_NULLPTR );
         return px;
     }
 
@@ -260,22 +260,22 @@ template<class T> inline bool operator!=(intrusive_ptr<T> const & a, intrusive_p
 
 template<class T> inline bool operator==( intrusive_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator==( boost::detail::sp_nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( intrusive_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 #endif

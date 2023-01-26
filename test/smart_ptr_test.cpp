@@ -112,7 +112,7 @@ void test()
     ck( lp, *sp );
 
     sp.reset();
-    BOOST_TEST( sp.get() == 0 );
+    BOOST_TEST( sp.get() == BOOST_NULLPTR );
 
     //  test scoped_ptr with a user defined type
     boost::scoped_ptr<UDT> udt_sp ( new UDT( 999888777 ) );
@@ -141,7 +141,7 @@ void test()
     BOOST_TEST( strcmp( sap, "Not dog with mustard and relish" ) == 0 );
 
     sa.reset();
-    BOOST_TEST( sa.get() == 0 );
+    BOOST_TEST( sa.get() == BOOST_NULLPTR );
 
     //  test shared_ptr with a built-in type
     int * ip = new int;
@@ -203,7 +203,7 @@ void test()
     swap( cp2, cp4 );
     BOOST_TEST( cp4.use_count() == 3 );
     BOOST_TEST( *cp4 == 87654 );
-    BOOST_TEST( cp2.get() == 0 );
+    BOOST_TEST( cp2.get() == BOOST_NULLPTR );
 
     std::set< boost::shared_ptr<int> > scp;
     scp.insert(cp4);
@@ -241,13 +241,13 @@ void test()
     BOOST_TEST( ca2.use_count() == 0 );
 
     ca.reset();
-    BOOST_TEST( ca.get() == 0 );
+    BOOST_TEST( ca.get() == BOOST_NULLPTR );
 
     boost::shared_array<char> ca4;
     swap( ca3, ca4 );
     BOOST_TEST( ca4.use_count() == 1 );
     BOOST_TEST( strcmp( ca4.get(), "Not dog with mustard and relish" ) == 0 );
-    BOOST_TEST( ca3.get() == 0 );
+    BOOST_TEST( ca3.get() == BOOST_NULLPTR );
 
     std::set< boost::shared_array<char> > sca;
     sca.insert(ca4);
@@ -269,7 +269,7 @@ void test()
     BOOST_TEST( udta2[1].value() == 222 );
     BOOST_TEST( udta2[2].value() == 333 );
     udta2.reset();
-    BOOST_TEST( udta2.get() == 0 );
+    BOOST_TEST( udta2.get() == BOOST_NULLPTR );
     BOOST_TEST( udta.use_count() == 1 );
     BOOST_TEST( udta2.use_count() == 0 );
 

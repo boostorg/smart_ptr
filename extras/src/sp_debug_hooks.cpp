@@ -66,7 +66,7 @@ void * operator new(size_t n) throw(bad_alloc)
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 
-    if(p == 0) throw bad_alloc();
+    if(p == BOOST_NULLPTR) throw bad_alloc();
 
 #endif
 
@@ -88,7 +88,7 @@ void * operator new[](size_t n) throw(bad_alloc)
 
 #if !defined(BOOST_NO_EXCEPTIONS)
 
-    if(p == 0) throw bad_alloc();
+    if(p == BOOST_NULLPTR) throw bad_alloc();
 
 #endif
 
@@ -111,7 +111,7 @@ namespace boost
 
 void sp_scalar_constructor_hook(void * p)
 {
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     int * pm = static_cast<int*>(p);
     pm -= m;
@@ -130,7 +130,7 @@ void sp_scalar_constructor_hook(void * px, std::size_t, void *)
 
 void sp_scalar_destructor_hook(void * p)
 {
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     int * pm = static_cast<int*>(p);
     pm -= m;
@@ -153,7 +153,7 @@ void sp_scalar_destructor_hook(void * px, std::size_t, void *)
 void sp_array_constructor_hook(void * /* p */)
 {
 /*
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     // adjust p depending on the implementation
 
@@ -171,7 +171,7 @@ void sp_array_constructor_hook(void * /* p */)
 void sp_array_destructor_hook(void * /* p */)
 {
 /*
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     // adjust p depending on the implementation
 
@@ -190,7 +190,7 @@ void sp_array_destructor_hook(void * /* p */)
 
 void operator delete(void * p) throw()
 {
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     int * pm = static_cast<int*>(p);
     pm -= m;
@@ -216,7 +216,7 @@ void operator delete(void * p, nothrow_t const &) throw()
 
 void operator delete[](void * p) throw()
 {
-    if(p == 0) return;
+    if(p == BOOST_NULLPTR) return;
 
     int * pm = static_cast<int*>(p);
     pm -= m;

@@ -87,63 +87,63 @@ int main()
             boost::alloc_deleter<int[],
             boost::noinit_adaptor<creator<int> > > > result =
             boost::allocate_unique_noinit<int[]>(creator<int>(), 3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<int[],
             boost::alloc_deleter<int[3],
             boost::noinit_adaptor<creator<int> > > > result =
             boost::allocate_unique_noinit<int[3]>(creator<int>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<int[][2],
             boost::alloc_deleter<int[][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<int[][2]>(creator<>(), 2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<int[][2],
             boost::alloc_deleter<int[2][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<int[2][2]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<const int[],
             boost::alloc_deleter<const int[],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const int[]>(creator<>(), 3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<const int[],
             boost::alloc_deleter<const int[3],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const int[3]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<const int[][2],
             boost::alloc_deleter<const int[][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const int[][2]>(creator<>(), 2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<const int[][2],
             boost::alloc_deleter<const int[2][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const int[2][2]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
     }
     {
         std::unique_ptr<type[],
             boost::alloc_deleter<type[],
             boost::noinit_adaptor<creator<type> > > > result =
             boost::allocate_unique_noinit<type[]>(creator<type>(), 3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 3);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -153,7 +153,7 @@ int main()
             boost::alloc_deleter<type[3],
             boost::noinit_adaptor<creator<type> > > > result =
             boost::allocate_unique_noinit<type[3]>(creator<type>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 3);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -163,7 +163,7 @@ int main()
             boost::alloc_deleter<type[][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<type[][2]>(creator<>(), 2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 4);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -173,7 +173,7 @@ int main()
             boost::alloc_deleter<type[2][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<type[2][2]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 4);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -183,7 +183,7 @@ int main()
             boost::alloc_deleter<const type[],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const type[]>(creator<>(), 3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 3);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -193,7 +193,7 @@ int main()
             boost::alloc_deleter<const type[3],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const type[3]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 3);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -203,7 +203,7 @@ int main()
             boost::alloc_deleter<const type[][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const type[][2]>(creator<>(), 2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 4);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -213,7 +213,7 @@ int main()
             boost::alloc_deleter<const type[2][2],
             boost::noinit_adaptor<creator<> > > > result =
             boost::allocate_unique_noinit<const type[2][2]>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 4);
         result.reset();
         BOOST_TEST(type::instances == 0);

@@ -102,7 +102,7 @@ void shared_ptr_constructor()
     }
 
     {
-        boost::shared_ptr<int> sp(static_cast<int*>(0));
+        boost::shared_ptr<int> sp(static_cast<int*>(BOOST_NULLPTR));
 
         {
             boost::weak_ptr<int> wp(sp);
@@ -153,7 +153,7 @@ void shared_ptr_constructor()
     }
 
     {
-        boost::shared_ptr<void> sp(static_cast<int*>(0));
+        boost::shared_ptr<void> sp(static_cast<int*>(BOOST_NULLPTR));
 
         boost::weak_ptr<void> wp(sp);
         BOOST_TEST(wp.use_count() == sp.use_count());
@@ -242,7 +242,7 @@ void copy_constructor()
     }
 
     {
-        boost::shared_ptr<int> sp(static_cast<int*>(0));
+        boost::shared_ptr<int> sp(static_cast<int*>(BOOST_NULLPTR));
         boost::weak_ptr<int> wp(sp);
 
         boost::weak_ptr<int> wp2(wp);
@@ -278,7 +278,7 @@ void copy_constructor()
     }
 
     {
-        boost::shared_ptr<void> sp(static_cast<int*>(0));
+        boost::shared_ptr<void> sp(static_cast<int*>(BOOST_NULLPTR));
         boost::weak_ptr<void> wp(sp);
 
         boost::weak_ptr<void> wp2(wp);
@@ -361,7 +361,7 @@ void conversion_constructor()
     }
 
     {
-        boost::shared_ptr<int> sp(static_cast<int*>(0));
+        boost::shared_ptr<int> sp(static_cast<int*>(BOOST_NULLPTR));
         boost::weak_ptr<int> wp(sp);
 
         boost::weak_ptr<void> wp2(wp);
@@ -415,7 +415,7 @@ void conversion_constructor()
     }
 
     {
-        boost::shared_ptr<Z> sp(static_cast<Z*>(0));
+        boost::shared_ptr<Z> sp(static_cast<Z*>(BOOST_NULLPTR));
         boost::weak_ptr<Z> wp(sp);
 
         boost::weak_ptr<X> wp2(wp);
@@ -433,7 +433,7 @@ void conversion_constructor()
     }
 
     {
-        boost::shared_ptr<Z> sp(static_cast<Z*>(0));
+        boost::shared_ptr<Z> sp(static_cast<Z*>(BOOST_NULLPTR));
         boost::weak_ptr<Z> wp(sp);
 
         boost::weak_ptr<Y> wp2(wp);
@@ -611,7 +611,7 @@ void conversion_assignment()
     }
 }
 
-template<class T, class U> void shared_ptr_assignment(boost::shared_ptr<U> & sp, T * = 0)
+template<class T, class U> void shared_ptr_assignment(boost::shared_ptr<U> & sp, T * = BOOST_NULLPTR)
 {
     BOOST_TEST(sp.unique());
 
@@ -707,7 +707,7 @@ void test()
 namespace n_reset
 {
 
-template<class T, class U> void test2( boost::shared_ptr<U> & sp, T * = 0 )
+template<class T, class U> void test2( boost::shared_ptr<U> & sp, T * = BOOST_NULLPTR )
 {
     BOOST_TEST(sp.unique());
 
@@ -801,7 +801,7 @@ void test()
     }
 
     {
-        boost::shared_ptr<X> sp(static_cast<X*>(0));
+        boost::shared_ptr<X> sp(static_cast<X*>(BOOST_NULLPTR));
 
         boost::weak_ptr<X> wp(sp);
         BOOST_TEST(wp.use_count() == 1);

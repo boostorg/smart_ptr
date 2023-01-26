@@ -46,7 +46,7 @@ int main()
     {
         boost::shared_ptr<int[]> result =
             boost::make_shared<int[]>(3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -57,7 +57,7 @@ int main()
     {
         boost::shared_ptr<int[3]> result =
             boost::make_shared<int[3]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -68,7 +68,7 @@ int main()
     {
         boost::shared_ptr<int[][2]> result =
             boost::make_shared<int[][2]>(2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -80,7 +80,7 @@ int main()
     {
         boost::shared_ptr<int[2][2]> result =
             boost::make_shared<int[2][2]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -92,7 +92,7 @@ int main()
     {
         boost::shared_ptr<const int[]> result =
             boost::make_shared<const int[]>(3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -103,7 +103,7 @@ int main()
     {
         boost::shared_ptr<const int[3]> result =
             boost::make_shared<const int[3]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -114,7 +114,7 @@ int main()
     {
         boost::shared_ptr<const int[][2]> result =
             boost::make_shared<const int[][2]>(2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -126,7 +126,7 @@ int main()
     {
         boost::shared_ptr<const int[2][2]> result =
             boost::make_shared<const int[2][2]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<int>::value));
@@ -138,7 +138,7 @@ int main()
     {
         boost::shared_ptr<type[]> result =
             boost::make_shared<type[]>(3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -150,7 +150,7 @@ int main()
     {
         boost::shared_ptr<type[3]> result =
             boost::make_shared<type[3]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -162,7 +162,7 @@ int main()
     {
         boost::shared_ptr<type[][2]> result =
             boost::make_shared<type[][2]>(2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -173,7 +173,7 @@ int main()
     {
         boost::shared_ptr<type[2][2]> result =
             boost::make_shared<type[2][2]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -184,7 +184,7 @@ int main()
     {
         boost::shared_ptr<const type[]> result =
             boost::make_shared<const type[]>(3);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -195,7 +195,7 @@ int main()
     {
         boost::shared_ptr<const type[3]> result =
             boost::make_shared<const type[3]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -206,7 +206,7 @@ int main()
     {
         boost::shared_ptr<const type[][2]> result =
             boost::make_shared<const type[][2]>(2);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));
@@ -217,7 +217,7 @@ int main()
     {
         boost::shared_ptr<const type[2][2]> result =
             boost::make_shared<const type[2][2]>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result.use_count() == 1);
         BOOST_TEST(boost::alignment::is_aligned(result.get(),
             boost::alignment_of<type>::value));

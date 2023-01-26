@@ -63,7 +63,7 @@ int main()
 
         BOOST_TEST( p3.use_count() == p.use_count() );
         BOOST_TEST( share_ownership( p, p3 ) );
-        BOOST_TEST( p3.lock().get() == 0 );
+        BOOST_TEST( p3.lock().get() == BOOST_NULLPTR );
 
         BOOST_TEST( p2.empty() );
     }

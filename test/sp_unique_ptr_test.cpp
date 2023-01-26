@@ -86,19 +86,19 @@ template<class U, class T, class D> static void test_null_unique_ptr( std::uniqu
 
     boost::shared_ptr<U> sp( std::move( p1 ) );
 
-    BOOST_TEST( sp.get() == 0 );
+    BOOST_TEST( sp.get() == BOOST_NULLPTR );
     BOOST_TEST( sp.use_count() == 0 );
 
     sp.reset( new T, typename boost::remove_reference<D>::type() );
 
-    BOOST_TEST( sp.get() != 0 );
+    BOOST_TEST( sp.get() != BOOST_NULLPTR );
     BOOST_TEST( sp.use_count() == 1 );
 
     BOOST_TEST( T::instances == 1 );
 
     sp = std::move( p2 );
 
-    BOOST_TEST( sp.get() == 0 );
+    BOOST_TEST( sp.get() == BOOST_NULLPTR );
     BOOST_TEST( sp.use_count() == 0 );
 
     BOOST_TEST( T::instances == 0 );
@@ -114,7 +114,7 @@ int main()
 
         boost::shared_ptr<X> p2( std::move( p ) );
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         boost::shared_ptr<X> p3 = p2->shared_from_this();
         BOOST_TEST( p2 == p3 );
@@ -142,7 +142,7 @@ int main()
 
         boost::shared_ptr<X const> p2( std::move( p ) );
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         boost::shared_ptr<X const> p3 = p2->shared_from_this();
         BOOST_TEST( p2 == p3 );
@@ -170,7 +170,7 @@ int main()
 
         boost::shared_ptr<void> p2( std::move( p ) );
         BOOST_TEST( X::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         p2.reset();
         BOOST_TEST( X::instances == 0 );
@@ -193,7 +193,7 @@ int main()
 
         boost::shared_ptr<Y> p2( std::move( p ) );
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         p2.reset();
         BOOST_TEST( Y::instances == 0 );
@@ -218,7 +218,7 @@ int main()
 
         boost::shared_ptr<Y> p2( std::move( p ) );
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         p2.reset();
         BOOST_TEST( Y::instances == 0 );
@@ -243,7 +243,7 @@ int main()
 
         boost::shared_ptr<Y> p2( std::move( p ) );
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
 
         p2.reset();
         BOOST_TEST( Y::instances == 0 );
@@ -266,19 +266,19 @@ int main()
     }
 
     {
-        test_null_unique_ptr<Y>( std::unique_ptr<Y, YD>( 0, YD() ), std::unique_ptr<Y, YD>( 0, YD() ) );
-        test_null_unique_ptr<Y const>( std::unique_ptr<Y, YD>( 0, YD() ), std::unique_ptr<Y, YD>( 0, YD() ) );
-        test_null_unique_ptr<void>( std::unique_ptr<Y, YD>( 0, YD() ), std::unique_ptr<Y, YD>( 0, YD() ) );
-        test_null_unique_ptr<void const>( std::unique_ptr<Y, YD>( 0, YD() ), std::unique_ptr<Y, YD>( 0, YD() ) );
+        test_null_unique_ptr<Y>( std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ), std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ) );
+        test_null_unique_ptr<Y const>( std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ), std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ) );
+        test_null_unique_ptr<void>( std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ), std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ) );
+        test_null_unique_ptr<void const>( std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ), std::unique_ptr<Y, YD>( BOOST_NULLPTR, YD() ) );
     }
 
     {
         YD yd;
 
-        test_null_unique_ptr<Y>( std::unique_ptr<Y, YD&>( 0, yd ), std::unique_ptr<Y, YD&>( 0, yd ) );
-        test_null_unique_ptr<Y const>( std::unique_ptr<Y, YD&>( 0, yd ), std::unique_ptr<Y, YD&>( 0, yd ) );
-        test_null_unique_ptr<void>( std::unique_ptr<Y, YD&>( 0, yd ), std::unique_ptr<Y, YD&>( 0, yd ) );
-        test_null_unique_ptr<void const>( std::unique_ptr<Y, YD&>( 0, yd ), std::unique_ptr<Y, YD&>( 0, yd ) );
+        test_null_unique_ptr<Y>( std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ), std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ) );
+        test_null_unique_ptr<Y const>( std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ), std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ) );
+        test_null_unique_ptr<void>( std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ), std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ) );
+        test_null_unique_ptr<void const>( std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ), std::unique_ptr<Y, YD&>( BOOST_NULLPTR, yd ) );
     }
 
     return boost::report_errors();

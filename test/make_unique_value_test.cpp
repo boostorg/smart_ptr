@@ -19,14 +19,14 @@ int main()
 {
     {
         std::unique_ptr<type> result = boost::make_unique<type>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->x == 0);
         BOOST_TEST(result->y == 0);
     }
     {
         std::unique_ptr<const type> result =
             boost::make_unique<const type>();
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->x == 0);
         BOOST_TEST(result->y == 0);
     }
@@ -34,14 +34,14 @@ int main()
     {
         std::unique_ptr<type> result =
             boost::make_unique<type>({ 1, 2 });
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->x == 1);
         BOOST_TEST(result->y == 2);
     }
     {
         std::unique_ptr<const type> result =
             boost::make_unique<const type>({ 1, 2 });
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->x == 1);
         BOOST_TEST(result->y == 2);
     }

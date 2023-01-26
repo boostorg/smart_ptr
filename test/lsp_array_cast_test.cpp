@@ -21,16 +21,16 @@ void static_cast_test()
         boost::local_shared_ptr<void> pv;
 
         boost::local_shared_ptr<int[]> pi = boost::static_pointer_cast<int[]>( pv );
-        BOOST_TEST( pi.get() == 0 );
+        BOOST_TEST( pi.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<int[3]> pi2 = boost::static_pointer_cast<int[3]>( pv );
-        BOOST_TEST( pi2.get() == 0 );
+        BOOST_TEST( pi2.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<X[]> px = boost::static_pointer_cast<X[]>( pv );
-        BOOST_TEST( px.get() == 0 );
+        BOOST_TEST( px.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<X[5]> px2 = boost::static_pointer_cast<X[5]>( pv );
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
     }
 
     {
@@ -78,28 +78,28 @@ void const_cast_test()
         boost::local_shared_ptr<int const volatile[]> px;
 
         boost::local_shared_ptr<int[]> px2 = boost::const_pointer_cast<int[]>(px);
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
     }
 
     {
         boost::local_shared_ptr<int const volatile[2]> px;
 
         boost::local_shared_ptr<int[2]> px2 = boost::const_pointer_cast<int[2]>(px);
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
     }
 
     {
         boost::local_shared_ptr<X const volatile[]> px;
 
         boost::local_shared_ptr<X[]> px2 = boost::const_pointer_cast<X[]>(px);
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
     }
 
     {
         boost::local_shared_ptr<X const volatile[5]> px;
 
         boost::local_shared_ptr<X[5]> px2 = boost::const_pointer_cast<X[5]>(px);
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
     }
 
     {
@@ -139,24 +139,24 @@ void reinterpret_cast_test()
 {
     {
         boost::local_shared_ptr<int[]> pi;
-        BOOST_TEST( pi.get() == 0 );
+        BOOST_TEST( pi.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<int[3]> pi2 = boost::reinterpret_pointer_cast<int[3]>( pi );
-        BOOST_TEST( pi2.get() == 0 );
+        BOOST_TEST( pi2.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<int[6]> pi3 = boost::reinterpret_pointer_cast<int[6]>( pi2 );
-        BOOST_TEST( pi3.get() == 0 );
+        BOOST_TEST( pi3.get() == BOOST_NULLPTR );
     }
 
     {
         boost::local_shared_ptr<X[]> px;
-        BOOST_TEST( px.get() == 0 );
+        BOOST_TEST( px.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<X[5]> px2 = boost::reinterpret_pointer_cast<X[5]>( px );
-        BOOST_TEST( px2.get() == 0 );
+        BOOST_TEST( px2.get() == BOOST_NULLPTR );
 
         boost::local_shared_ptr<X[9]> px3 = boost::reinterpret_pointer_cast<X[9]>( px2 );
-        BOOST_TEST( px3.get() == 0 );
+        BOOST_TEST( px3.get() == BOOST_NULLPTR );
     }
 
     {

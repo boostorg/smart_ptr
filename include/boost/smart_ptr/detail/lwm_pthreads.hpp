@@ -18,6 +18,7 @@
 //
 
 #include <boost/assert.hpp>
+#include <boost/config.hpp>
 #include <pthread.h>
 
 namespace boost
@@ -45,7 +46,7 @@ public:
 #if defined(__hpux) && defined(_DECTHREADS_)
         BOOST_VERIFY( pthread_mutex_init( &m_, pthread_mutexattr_default ) == 0 );
 #else
-        BOOST_VERIFY( pthread_mutex_init( &m_, 0 ) == 0 );
+        BOOST_VERIFY( pthread_mutex_init( &m_, BOOST_NULLPTR ) == 0 );
 #endif
     }
 

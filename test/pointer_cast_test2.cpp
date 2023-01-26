@@ -42,7 +42,7 @@ static void test_static_cast()
 
         std::unique_ptr<int> p2 = boost::static_pointer_cast<int>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -52,7 +52,7 @@ static void test_static_cast()
 
         std::unique_ptr<int const> p2 = boost::static_pointer_cast<int const>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -62,7 +62,7 @@ static void test_static_cast()
 
         std::unique_ptr<int[]> p2 = boost::static_pointer_cast<int[]>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -72,7 +72,7 @@ static void test_static_cast()
 
         std::unique_ptr<int const[]> p2 = boost::static_pointer_cast<int const[]>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -82,12 +82,12 @@ static void test_static_cast()
 
         std::unique_ptr<B1> p2 = boost::static_pointer_cast<B1>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         std::unique_ptr<D1> p3 = boost::static_pointer_cast<D1>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p3.get(), q1 );
     }
 }
@@ -100,12 +100,12 @@ static void test_const_cast()
 
         std::unique_ptr<int const> p2 = boost::const_pointer_cast<int const>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         std::unique_ptr<int> p3 = boost::const_pointer_cast<int>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p3.get(), q1 );
     }
 
@@ -115,12 +115,12 @@ static void test_const_cast()
 
         std::unique_ptr<int const[]> p2 = boost::const_pointer_cast<int const[]>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         std::unique_ptr<int[]> p3 = boost::const_pointer_cast<int[]>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p3.get(), q1 );
     }
 }
@@ -151,7 +151,7 @@ static void test_dynamic_cast()
 
         std::unique_ptr<B2> p2 = boost::dynamic_pointer_cast<B2>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -161,7 +161,7 @@ static void test_dynamic_cast()
 
         std::unique_ptr<D2> p2 = boost::dynamic_pointer_cast<D2>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 
@@ -171,7 +171,7 @@ static void test_dynamic_cast()
 
         std::unique_ptr<D2> p2 = boost::dynamic_pointer_cast<D2>( std::move( p1 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p1.get(), q1 );
     }
 
@@ -181,7 +181,7 @@ static void test_dynamic_cast()
 
         std::unique_ptr<C2> p2 = boost::dynamic_pointer_cast<C2>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
     }
 }
@@ -194,12 +194,12 @@ static void test_reinterpret_cast()
 
         std::unique_ptr<char> p2 = boost::reinterpret_pointer_cast<char>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         p1 = boost::reinterpret_pointer_cast<int>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p1.get(), q1 );
     }
 
@@ -209,12 +209,12 @@ static void test_reinterpret_cast()
 
         std::unique_ptr<char[]> p2 = boost::reinterpret_pointer_cast<char[]>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         p1 = boost::reinterpret_pointer_cast<int>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p1.get(), q1 );
     }
 
@@ -224,12 +224,12 @@ static void test_reinterpret_cast()
 
         std::unique_ptr<char[]> p2 = boost::reinterpret_pointer_cast<char[]>( std::move( p1 ) );
 
-        BOOST_TEST( p1.get() == 0 );
+        BOOST_TEST( p1.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p2.get(), q1 );
 
         p1 = boost::reinterpret_pointer_cast<int[]>( std::move( p2 ) );
 
-        BOOST_TEST( p2.get() == 0 );
+        BOOST_TEST( p2.get() == BOOST_NULLPTR );
         BOOST_TEST_EQ( p1.get(), q1 );
     }
 }

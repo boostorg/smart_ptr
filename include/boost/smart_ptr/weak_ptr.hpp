@@ -16,6 +16,7 @@
 #include <boost/smart_ptr/detail/shared_count.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/config.hpp>
 #include <memory>
 #include <cstddef>
 
@@ -33,7 +34,7 @@ public:
 
     typedef typename boost::detail::sp_element< T >::type element_type;
 
-    BOOST_CONSTEXPR weak_ptr() BOOST_SP_NOEXCEPT : px(0), pn()
+    BOOST_CONSTEXPR weak_ptr() BOOST_SP_NOEXCEPT : px(BOOST_NULLPTR), pn()
     {
     }
 
@@ -103,14 +104,14 @@ public:
     BOOST_SP_NOEXCEPT : px( r.lock().get() ), pn( static_cast< boost::detail::weak_count && >( r.pn ) )
     {
         boost::detail::sp_assert_convertible< Y, T >();
-        r.px = 0;
+        r.px = BOOST_NULLPTR;
     }
 
     // for better efficiency in the T == Y case
     weak_ptr( weak_ptr && r )
     BOOST_SP_NOEXCEPT : px( r.px ), pn( static_cast< boost::detail::weak_count && >( r.pn ) )
     {
-        r.px = 0;
+        r.px = BOOST_NULLPTR;
     }
 
     // for better efficiency in the T == Y case

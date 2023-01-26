@@ -75,14 +75,14 @@ int main()
         std::unique_ptr<int,
             boost::alloc_deleter<int, creator<int> > > result =
             boost::allocate_unique<int>(creator<int>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(*result == 0);
     }
     {
         std::unique_ptr<const int,
             boost::alloc_deleter<const int, creator<> > > result =
             boost::allocate_unique<const int>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(*result == 0);
     }
     BOOST_TEST(type::instances == 0);
@@ -90,7 +90,7 @@ int main()
         std::unique_ptr<type,
             boost::alloc_deleter<type, creator<type> > > result =
             boost::allocate_unique<type>(creator<type>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 1);
         result.reset();
         BOOST_TEST(type::instances == 0);
@@ -100,7 +100,7 @@ int main()
         std::unique_ptr<const type,
             boost::alloc_deleter<const type, creator<> > > result =
             boost::allocate_unique<const type>(creator<>());
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(type::instances == 1);
         result.reset();
         BOOST_TEST(type::instances == 0);

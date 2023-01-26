@@ -368,7 +368,7 @@ Requires:: `Y*` should be convertible to `T*`.
 
 Effects:: Move-constructs a `shared_ptr` from `r`.
 
-Postconditions:: `*this` contains the old value of `r`. `r` is empty and `r.get() == 0`.
+Postconditions:: `*this` contains the old value of `r`. `r` is empty and `r.get() == BOOST_NULLPTR`.
 
 ### aliasing constructor
 ```
@@ -390,7 +390,7 @@ template<class Y> shared_ptr(shared_ptr<Y> && r, element_type * p) noexcept;
 +
 Effects:: Move-constructs a `shared_ptr` from `r`, while storing `p` instead.
 
-Postconditions:: `get() == p` and `use_count()` equals the old count of `r`. `r` is empty and `r.get() == 0`.
+Postconditions:: `get() == p` and `use_count()` equals the old count of `r`. `r` is empty and `r.get() == BOOST_NULLPTR`.
 
 ### weak_ptr constructor
 ```
@@ -439,7 +439,7 @@ template<class Y, class D> shared_ptr(std::unique_ptr<Y, D> && r);
 Requires:: `Y*` should be convertible to `T*`.
 
 Effects::
-- When `r.get() == 0`, equivalent to `shared_ptr()`;
+- When `r.get() == BOOST_NULLPTR`, equivalent to `shared_ptr()`;
 - When `D` is not a reference type, equivalent to `shared_ptr(r.release(), r.get_deleter())`;
 - Otherwise, equivalent to `shared_ptr(r.release(), del)`, where `del` is a deleter that stores the reference `rd` returned
   from `r.get_deleter()` and `del(p)` calls `rd(p)`.
@@ -720,7 +720,7 @@ template<class T> bool operator==(std::nullptr_t, shared_ptr<T> const & p) noexc
 [none]
 * {blank}
 +
-Returns:: `p.get() == 0`.
+Returns:: `p.get() == BOOST_NULLPTR`.
 
 ```
 template<class T> bool operator!=(shared_ptr<T> const & p, std::nullptr_t) noexcept;
@@ -731,7 +731,7 @@ template<class T> bool operator!=(std::nullptr_t, shared_ptr<T> const & p) noexc
 [none]
 * {blank}
 +
-Returns:: `p.get() != 0`.
+Returns:: `p.get() != BOOST_NULLPTR`.
 
 ```
 template<class T, class U>

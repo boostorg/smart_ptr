@@ -107,7 +107,7 @@ void test()
         BOOST_TEST( X::instances == 1 );
 
         X::deleter_type * pd = boost::get_deleter<X::deleter_type>( px );
-        BOOST_TEST( pd != 0 && *pd == X::deleter );
+        BOOST_TEST( pd != BOOST_NULLPTR && *pd == X::deleter );
 
         boost::weak_ptr<X> wp( px );
         BOOST_TEST( !wp.expired() );
@@ -124,7 +124,7 @@ void test()
         BOOST_TEST( X::instances == 1 );
 
         X::deleter_type * pd = boost::get_deleter<X::deleter_type>( px );
-        BOOST_TEST( pd != 0 && *pd == X::deleter2 );
+        BOOST_TEST( pd != BOOST_NULLPTR && *pd == X::deleter2 );
 
         boost::weak_ptr<X> wp( px );
         BOOST_TEST( !wp.expired() );

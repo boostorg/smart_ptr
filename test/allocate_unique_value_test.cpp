@@ -69,28 +69,28 @@ int main()
         std::unique_ptr<int,
             boost::alloc_deleter<int, creator<int> > > result =
             boost::allocate_unique<int>(creator<int>(), 1);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(*result == 1);
     }
     {
         std::unique_ptr<const int,
             boost::alloc_deleter<const int, creator<> > > result =
             boost::allocate_unique<const int>(creator<>(), 1);
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(*result == 1);
     }
     {
         std::unique_ptr<type,
             boost::alloc_deleter<type, creator<type> > > result =
             boost::allocate_unique<type>(creator<type>(), type(1, 2));
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->sum() == 3);
     }
     {
         std::unique_ptr<const type,
             boost::alloc_deleter<const type, creator<> > > result =
             boost::allocate_unique<const type>(creator<>(), type(1, 2));
-        BOOST_TEST(result.get() != 0);
+        BOOST_TEST(result.get() != BOOST_NULLPTR);
         BOOST_TEST(result->sum() == 3);
     }
     return boost::report_errors();

@@ -62,7 +62,7 @@ public:
 
     typedef T element_type;
 
-    explicit scoped_ptr( T * p = 0 ) BOOST_SP_NOEXCEPT : px( p )
+    explicit scoped_ptr( T * p = BOOST_NULLPTR ) BOOST_SP_NOEXCEPT : px( p )
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_scalar_constructor_hook( px );
@@ -88,21 +88,21 @@ public:
         boost::checked_delete( px );
     }
 
-    void reset(T * p = 0) BOOST_SP_NOEXCEPT_WITH_ASSERT
+    void reset(T * p = BOOST_NULLPTR) BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT( p == 0 || p != px ); // catch self-reset errors
+        BOOST_ASSERT( p == BOOST_NULLPTR || p != px ); // catch self-reset errors
         this_type(p).swap(*this);
     }
 
     T & operator*() const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT( px != 0 );
+        BOOST_ASSERT( px != BOOST_NULLPTR );
         return *px;
     }
 
     T * operator->() const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
-        BOOST_ASSERT( px != 0 );
+        BOOST_ASSERT( px != BOOST_NULLPTR );
         return px;
     }
 
@@ -126,22 +126,22 @@ public:
 
 template<class T> inline bool operator==( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator==( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() == 0;
+    return p.get() == BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( scoped_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, scoped_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
-    return p.get() != 0;
+    return p.get() != BOOST_NULLPTR;
 }
 
 #endif

@@ -96,7 +96,7 @@ int main()
         boost::shared_ptr<Y> p2( std::move( p ) );
 
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.get_deleter().moved_ );
 
         p2.reset();
@@ -110,7 +110,7 @@ int main()
         boost::shared_ptr<void> p2( std::move( p ) );
 
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.get_deleter().moved_ );
 
         p2.reset();
@@ -125,7 +125,7 @@ int main()
         p2 = std::move( p );
 
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.get_deleter().moved_ );
 
         p2.reset();
@@ -140,7 +140,7 @@ int main()
         p2 = std::move( p );
 
         BOOST_TEST( Y::instances == 1 );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.get_deleter().moved_ );
 
         p2.reset();

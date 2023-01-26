@@ -185,7 +185,7 @@ static void scan_and_free(void * area, size_t size, map2_type const & m2, free_l
     {
         shared_ptr_layout * q = reinterpret_cast<shared_ptr_layout *>(p);
 
-        if(q->pn.id == boost::detail::shared_count_id && q->pn.pi != 0 && m2.count(q->pn.pi) != 0 && q->px != 0)
+        if(q->pn.id == boost::detail::shared_count_id && q->pn.pi != 0 && m2.count(q->pn.pi) != 0 && q->px != BOOST_NULLPTR)
         {
             boost::shared_ptr<X> * ppx = reinterpret_cast< boost::shared_ptr<X> * >(p);
             free.push_back(*ppx);

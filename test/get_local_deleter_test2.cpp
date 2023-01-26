@@ -19,12 +19,12 @@ struct X
 
 static void test_lsp_get_deleter( boost::local_shared_ptr<X> const & p )
 {
-    BOOST_TEST( boost::get_deleter<deleter>( p ) != 0 );
+    BOOST_TEST( boost::get_deleter<deleter>( p ) != BOOST_NULLPTR );
 }
 
 static void test_sp_get_deleter( boost::shared_ptr<X> const & p )
 {
-    BOOST_TEST( boost::get_deleter<deleter>( p ) != 0 );
+    BOOST_TEST( boost::get_deleter<deleter>( p ) != BOOST_NULLPTR );
 }
 
 struct deleter

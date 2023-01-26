@@ -311,7 +311,7 @@ Requires:: `Y*` should be convertible to `T*`.
 
 Effects:: Move-constructs a `local_shared_ptr` from `r`.
 
-Postconditions:: `*this` contains the old value of `r`. `r` is empty and `r.get() == 0`.
+Postconditions:: `*this` contains the old value of `r`. `r` is empty and `r.get() == BOOST_NULLPTR`.
 
 ### shared_ptr constructor
 ```
@@ -349,7 +349,7 @@ template<class Y> local_shared_ptr(local_shared_ptr<Y> && r, element_type * p) n
 +
 Effects:: Move-constructs a `local_shared_ptr` from `r`, while storing `p` instead.
 
-Postconditions:: `get() == p` and `local_use_count()` equals the old count of `r`. `r` is empty and `r.get() == 0`.
+Postconditions:: `get() == p` and `local_use_count()` equals the old count of `r`. `r` is empty and `r.get() == BOOST_NULLPTR`.
 
 ### unique_ptr constructor
 ```
@@ -361,7 +361,7 @@ template<class Y, class D> local_shared_ptr(std::unique_ptr<Y, D> && r);
 Requires:: `Y*` should be convertible to `T*`.
 
 Effects::
-- When `r.get() == 0`, equivalent to `local_shared_ptr()`;
+- When `r.get() == BOOST_NULLPTR`, equivalent to `local_shared_ptr()`;
 - Otherwise, constructs a `local_shared_ptr` that owns `shared_ptr<T>( std::move(r) )`.
 
 Throws:: `std::bad_alloc`, or an implementation-defined exception when a resource other than memory could not be obtained.
@@ -614,7 +614,7 @@ template<class T> bool operator==(std::nullptr_t, local_shared_ptr<T> const & p)
 [none]
 * {blank}
 +
-Returns:: `p.get() == 0`.
+Returns:: `p.get() == BOOST_NULLPTR`.
 
 ```
 template<class T> bool operator!=(local_shared_ptr<T> const & p, std::nullptr_t) noexcept;
@@ -625,7 +625,7 @@ template<class T> bool operator!=(std::nullptr_t, local_shared_ptr<T> const & p)
 [none]
 * {blank}
 +
-Returns:: `p.get() != 0`.
+Returns:: `p.get() != BOOST_NULLPTR`.
 
 ```
 template<class T, class U>

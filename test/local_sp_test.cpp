@@ -124,7 +124,7 @@ template<class T, class U> static void pc0_test_()
 
     BOOST_TEST( p? false: true );
     BOOST_TEST( !p );
-    BOOST_TEST( p.get() == 0 );
+    BOOST_TEST( p.get() == BOOST_NULLPTR );
     BOOST_TEST( p.local_use_count() == 1 );
 }
 
@@ -151,7 +151,7 @@ template<class T, class U> static void pc1_test_()
 
     BOOST_TEST( p? true: false );
     BOOST_TEST( !!p );
-    BOOST_TEST( p.get() != 0 );
+    BOOST_TEST( p.get() != BOOST_NULLPTR );
     BOOST_TEST( p.local_use_count() == 1 );
 }
 
@@ -240,7 +240,7 @@ template<class T> static void deleter3_test_()
         boost::local_shared_ptr<T> p( nullptr, deleter3 );
 
         BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.local_use_count() == 1 );
     }
 
@@ -309,7 +309,7 @@ template<class T> static void allocator3_test_()
         boost::local_shared_ptr<T> p( nullptr, deleter3, std::allocator<void>() );
 
         BOOST_TEST( !p );
-        BOOST_TEST( p.get() == 0 );
+        BOOST_TEST( p.get() == BOOST_NULLPTR );
         BOOST_TEST( p.local_use_count() == 1 );
     }
 
@@ -466,7 +466,7 @@ template<class T, class U> static void test_nonempty_move( boost::local_shared_p
     BOOST_TEST( p2.get() == q );
     BOOST_TEST( p2.local_use_count() == k );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.local_use_count() == 0 );
 }
 
@@ -778,7 +778,7 @@ template<class T, class U> static void test_nonempty_shared_ptr_move( boost::sha
     BOOST_TEST( p2.get() == q );
     BOOST_TEST( p2.local_use_count() == 1 );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.use_count() == 0 );
 }
 
@@ -841,9 +841,9 @@ template<class T, class U> static void test_null_unique_ptr( std::unique_ptr<U> 
 {
     boost::local_shared_ptr<T> p2( std::move( p1 ) );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
 
-    BOOST_TEST( p2.get() == 0 );
+    BOOST_TEST( p2.get() == BOOST_NULLPTR );
     BOOST_TEST( p2.local_use_count() == 0 );
 }
 
@@ -879,7 +879,7 @@ template<class T, class U, class D> static void test_nonempty_unique_ptr( std::u
     BOOST_TEST( p2.get() == q );
     BOOST_TEST( p2.local_use_count() == 1 );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
 }
 
 template<class T> static void new_unique_ptr_test()
@@ -1177,7 +1177,7 @@ template<class T, class U> static void test_nonempty_move_assign( boost::local_s
     BOOST_TEST( p2.get() == q );
     BOOST_TEST( p2.local_use_count() == k );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.local_use_count() == 0 );
 }
 
@@ -1259,7 +1259,7 @@ template<class T> static void test_nullptr_assign( boost::local_shared_ptr<T> p1
 {
     p1 = nullptr;
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.local_use_count() == 0 );
 }
 
@@ -1321,7 +1321,7 @@ template<class T> static void test_default_reset( boost::local_shared_ptr<T> p1 
 {
     p1.reset();
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.local_use_count() == 0 );
 }
 
@@ -1602,7 +1602,7 @@ template<class T, class U> static void test_nonempty_shared_ptr_move_assign( boo
     BOOST_TEST_EQ( p2.get(), q );
     BOOST_TEST_EQ( p2.local_use_count(), 1 );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
     BOOST_TEST( p1.use_count() == 0 );
 
     boost::shared_ptr<T> p3( p2 );
@@ -1756,7 +1756,7 @@ template<class T, class U, class D> static void test_nonempty_unique_ptr_assign(
     BOOST_TEST_EQ( p2.get(), q );
     BOOST_TEST_EQ( p2.local_use_count(), 1 );
 
-    BOOST_TEST( p1.get() == 0 );
+    BOOST_TEST( p1.get() == BOOST_NULLPTR );
 }
 
 template<class T> static void new_unique_ptr_assign_test()
@@ -1929,7 +1929,7 @@ template<class T, class U> static void test_deleter_reset( boost::local_shared_p
 
     boost::shared_ptr<U> p3( p2 );
 
-    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
+    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != BOOST_NULLPTR );
 
     p3.reset();
     BOOST_TEST( !called );
@@ -2010,7 +2010,7 @@ template<class T, class U> static void test_allocator_reset( boost::local_shared
 
     boost::shared_ptr<U> p3( p2 );
 
-    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != 0 );
+    BOOST_TEST( boost::get_deleter< deleter<T> >( p3 ) != BOOST_NULLPTR );
 
     p3.reset();
     BOOST_TEST( !called );

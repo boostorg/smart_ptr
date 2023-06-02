@@ -6,6 +6,9 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/core/yield_primitives.hpp>
+#include <boost/config/header_deprecated.hpp>
+
+BOOST_HEADER_DEPRECATED( "<boost/core/yield_primitives.hpp>" )
 
 namespace boost
 {

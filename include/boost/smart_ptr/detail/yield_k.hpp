@@ -32,13 +32,13 @@ inline void yield( unsigned k )
     // Experiments on Windows and Fedora 32 show that a single pause,
     // followed by an immediate sp_thread_sleep(), is best.
 
-    if( k == 0 )
+    if( k & 1 )
     {
-        boost::core::sp_thread_pause();
+        boost::core::sp_thread_sleep();
     }
     else
     {
-        boost::core::sp_thread_sleep();
+        boost::core::sp_thread_pause();
     }
 }
 

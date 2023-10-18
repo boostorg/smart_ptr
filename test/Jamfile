@@ -8,6 +8,7 @@
 #  http://www.boost.org/LICENSE_1_0.txt)
 
 import testing ;
+import ../../config/checks/config : requires ;
 
 project
     : requirements
@@ -15,6 +16,8 @@ project
       <toolset>gcc:<cxxflags>-Wno-deprecated-declarations
       #<toolset>gcc:<cxxflags>-Wno-delete-non-virtual-dtor (not in 4.4/4.6)
     ;
+
+local cnhash = [ requires cxx11_decltype cxx11_noexcept ] ;
 
 # quick test (for CI)
 run quick.cpp ;
@@ -92,9 +95,11 @@ compile-fail auto_ptr_lv_fail.cpp
 run atomic_count_test2.cpp ;
 run sp_typeinfo_test.cpp ;
 compile make_shared_fp_test.cpp ;
-run sp_hash_test.cpp ;
+run sp_hash_test.cpp
+  : : : $(cnhash) ;
 run get_deleter_array_test.cpp ;
-run ip_hash_test.cpp ;
+run ip_hash_test.cpp
+  : : : $(cnhash) ;
 run owner_less_test.cpp ;
 run sp_unique_ptr_test.cpp ;
 run sp_array_test.cpp ;
@@ -221,8 +226,10 @@ run weak_from_this_test2.cpp ;
 
 run sp_bml_unique_ptr_test.cpp ;
 
-run sp_hash_test2.cpp ;
-run sp_hash_test3.cpp ;
+run sp_hash_test2.cpp
+  : : : $(cnhash) ;
+run sp_hash_test3.cpp
+  : : : $(cnhash) ;
 
 run pointer_cast_test2.cpp ;
 
@@ -388,7 +395,9 @@ run owner_less_test2.cpp ;
 
 run ip_hash_test2.cpp ;
 run sp_hash_test4.cpp ;
-run lsp_hash_test.cpp ;
+
+run lsp_hash_test.cpp
+  : : : $(cnhash)  ;
 run lsp_hash_test2.cpp ;
 
 run atomic_count_mt_test.cpp
@@ -410,7 +419,8 @@ compile sp_report_implementation.cpp ;
 
 run sp_owner_hash_value_test.cpp ;
 
-run wp_hash_test.cpp ;
+run wp_hash_test.cpp
+  : : : $(cnhash) ;
 run wp_hash_test2.cpp ;
 
 run wp_unordered_test.cpp ;

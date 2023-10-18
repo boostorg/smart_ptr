@@ -17,7 +17,7 @@ project
       #<toolset>gcc:<cxxflags>-Wno-delete-non-virtual-dtor (not in 4.4/4.6)
     ;
 
-local cnhash = [ requires cxx11_decltype cxx11_noexcept ] ;
+local cnhash = [ requires cxx11_decltype cxx11_noexcept ] <toolset>gcc-4.6:<build>no ;
 
 # quick test (for CI)
 run quick.cpp ;

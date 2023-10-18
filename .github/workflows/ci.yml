@@ -225,7 +225,7 @@ jobs:
             addrmd: 32,64
             os: windows-2022
           - toolset: clang-win
-            cxxstd: "14,17,latest"
+            cxxstd: "14,17,20,latest"
             addrmd: 32,64
             os: windows-2022
           - toolset: gcc
@@ -275,6 +275,7 @@ jobs:
           - os: ubuntu-22.04
           - os: macos-11
           - os: macos-12
+          - os: macos-13
 
     runs-on: ${{matrix.os}}
 
@@ -322,6 +323,7 @@ jobs:
           - os: ubuntu-22.04
           - os: macos-11
           - os: macos-12
+          - os: macos-13
 
     runs-on: ${{matrix.os}}
 
@@ -379,6 +381,7 @@ jobs:
           - os: ubuntu-22.04
           - os: macos-11
           - os: macos-12
+          - os: macos-13
 
     runs-on: ${{matrix.os}}
 

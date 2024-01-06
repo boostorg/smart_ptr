@@ -375,11 +375,16 @@ compile-fail shared_from_fail.cpp ;
 compile-fail weak_from_fail.cpp ;
 
 compile sp_override_test.cpp ;
+
+local gcc-flags = -Wundef ;
+
 compile sp_pedantic_test.cpp
   : <warnings>pedantic
     <toolset>msvc:<warnings-as-errors>on
     <toolset>gcc:<warnings-as-errors>on
+    <toolset>gcc:<cxxflags>$(gcc-flags)
     <toolset>clang:<warnings-as-errors>on
+    <toolset>clang:<cxxflags>$(gcc-flags)
     <toolset>clang-15:<cxxflags>-Wno-deprecated-builtins
     ;
 

@@ -405,20 +405,22 @@ run lsp_hash_test.cpp
   : : : $(cnhash)  ;
 run lsp_hash_test2.cpp ;
 
+local MT = <threading>multi [ requires cxx11_decltype cxx11_noexcept ] <toolset>gcc-4.6:<build>no ;
+
 run atomic_count_mt_test.cpp
-  : : : <threading>multi ;
+  : : : $(MT) ;
 
 run spinlock_mt_test.cpp
-  : : : <threading>multi ;
+  : : : $(MT) ;
 
 run spinlock_pool_mt_test.cpp
-  : : : <threading>multi ;
+  : : : $(MT) ;
 
 run shared_ptr_mt_test.cpp
-  : : : <threading>multi ;
+  : : : $(MT) ;
 
 run weak_ptr_mt_test.cpp
-  : : : <threading>multi ;
+  : : : $(MT) ;
 
 compile sp_report_implementation.cpp ;
 

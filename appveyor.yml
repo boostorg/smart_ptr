@@ -61,8 +61,9 @@ install:
   - git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
   - cd boost-root
   - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\smart_ptr\
-  - git submodule update --init tools/boostdep
+  - git submodule update --init tools/boostdep libs/functional
   - python tools/boostdep/depinst/depinst.py smart_ptr
+  - python tools/boostdep/depinst/depinst.py functional
   - cmd /c bootstrap
   - b2 -d0 headers
 

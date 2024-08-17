@@ -16,7 +16,6 @@ project
     : requirements
       <library>/boost/align//boost_align
       <library>/boost/container_hash//boost_container_hash
-      <library>/boost/functional//boost_functional
       <library>/boost/smart_ptr//boost_smart_ptr
       <toolset>gcc:<cxxflags>-Wno-non-virtual-dtor
       <toolset>gcc:<cxxflags>-Wno-deprecated-declarations

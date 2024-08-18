@@ -15,7 +15,7 @@ if [ "$DRONE_BRANCH" = "master" ]; then BOOST_BRANCH=master; fi
 cd ..
 git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
 cd boost-root
-git submodule update --init tools/boostdep libs/functional
+git submodule update --init tools/boostdep
 cp -r $DRONE_BUILD_DIR/* libs/$LIBRARY
 python tools/boostdep/depinst/depinst.py $LIBRARY
 ./bootstrap.sh

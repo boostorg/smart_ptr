@@ -14,15 +14,18 @@ import testing ;
 
 project
     : requirements
-      <library>/boost/align//boost_align
-      <library>/boost/container_hash//boost_container_hash
       <library>/boost/smart_ptr//boost_smart_ptr
+      <library>/boost/align//boost_align
       <toolset>gcc:<cxxflags>-Wno-non-virtual-dtor
       <toolset>gcc:<cxxflags>-Wno-deprecated-declarations
       #<toolset>gcc:<cxxflags>-Wno-delete-non-virtual-dtor (not in 4.4/4.6)
     ;
 
-local cnhash = [ requires cxx11_decltype cxx11_noexcept ] <toolset>gcc-4.6:<build>no ;
+local cnhash =
+
+  <library>/boost/container_hash//boost_container_hash
+  [ requires cxx11_decltype cxx11_noexcept ]
+  <toolset>gcc-4.6:<build>no ;
 
 # quick test (for CI)
 run quick.cpp ;
@@ -84,7 +87,8 @@ run shared_ptr_convertible_test.cpp ;
 run wp_convertible_test.cpp ;
 run ip_convertible_test.cpp ;
 run allocate_shared_test.cpp ;
-run sp_atomic_test.cpp : : : <library>/boost/atomic//boost_atomic ;
+run sp_atomic_test.cpp
+  : : : <library>/boost/atomic//boost_atomic ;
 run esft_void_test.cpp ;
 run esft_second_ptr_test.cpp ;
 run make_shared_esft_test.cpp ;
@@ -256,7 +260,8 @@ compile make_shared_msvc_test.cpp ;
 
 compile lwm_win32_cs_test.cpp ;
 
-run atomic_sp_test.cpp : : : <library>/boost/atomic//boost_atomic ;
+run atomic_sp_test.cpp
+  : : : <library>/boost/atomic//boost_atomic ;
 
 run sp_constexpr_test.cpp ;
 run sp_constexpr_test2.cpp ;
@@ -410,22 +415,27 @@ run lsp_hash_test.cpp
   : : : $(cnhash)  ;
 run lsp_hash_test2.cpp ;
 
-local MT = <threading>multi [ requires cxx11_decltype cxx11_noexcept ] <toolset>gcc-4.6:<build>no ;
+local MT =
+
+  <threading>multi
+  <library>/boost/bind//boost_bind
+  [ requires cxx11_decltype cxx11_noexcept ]
+  <toolset>gcc-4.6:<build>no ;
 
 run atomic_count_mt_test.cpp
-  : : : $(MT) <library>/boost/bind//boost_bind ;
+  : : : $(MT) ;
 
 run spinlock_mt_test.cpp
-  : : : $(MT) <library>/boost/bind//boost_bind ;
+  : : : $(MT) ;
 
 run spinlock_pool_mt_test.cpp
-  : : : $(MT) <library>/boost/bind//boost_bind ;
+  : : : $(MT) ;
 
 run shared_ptr_mt_test.cpp
-  : : : $(MT) <library>/boost/bind//boost_bind ;
+  : : : $(MT) ;
 
 run weak_ptr_mt_test.cpp
-  : : : $(MT) <library>/boost/bind//boost_bind ;
+  : : : $(MT) ;
 
 compile sp_report_implementation.cpp ;
 

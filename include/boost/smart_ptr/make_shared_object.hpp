@@ -11,14 +11,14 @@
 //
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
-#include <boost/config.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/move/core.hpp>
 #include <boost/move/utility_core.hpp>
-#include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/smart_ptr/detail/sp_forward.hpp>
-#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 #include <boost/type_traits/alignment_of.hpp>
+#include <boost/config.hpp>
+#include <utility>
 #include <cstddef>
 #include <new>
 
@@ -241,7 +241,7 @@ template< class T, class... Args > typename boost::detail::sp_if_not_array< T >:
 
     void * pv = pd->address();
 
-    ::new( pv ) T( boost::detail::sp_forward<Args>( args )... );
+    ::new( pv ) T( std::forward<Args>( args )... );
     pd->set_initialized();
 
     T * pt2 = static_cast< T* >( pv );
@@ -274,11 +274,11 @@ template< class T, class A, class... Args > typename boost::detail::sp_if_not_ar
 
 #if !defined( BOOST_NO_CXX11_ALLOCATOR )
 
-    std::allocator_traits<A2>::construct( a2, static_cast< T* >( pv ), boost::detail::sp_forward<Args>( args )... );
+    std::allocator_traits<A2>::construct( a2, static_cast< T* >( pv ), std::forward<Args>( args )... );
 
 #else
 
-    ::new( pv ) T( boost::detail::sp_forward<Args>( args )... );
+    ::new( pv ) T( std::forward<Args>( args )... );
 
 #endif
 

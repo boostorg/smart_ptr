@@ -155,8 +155,6 @@ public:
 
 #endif
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1300)
-
     template<class Y>
     weak_ptr & operator=( weak_ptr<Y> const & r ) BOOST_SP_NOEXCEPT
     {
@@ -189,8 +187,6 @@ public:
 
         return *this;
     }
-
-#endif
 
     shared_ptr<T> lock() const BOOST_SP_NOEXCEPT
     {

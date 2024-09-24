@@ -75,14 +75,7 @@ int main()
     test_default< Y >();
     test_destroy< Y >();
 
-    // test_move< Y >();
-    BOOST_TEST_TRAIT_TRUE(( std::is_nothrow_move_constructible<Y> ));
-
-#if !( defined( BOOST_MSVC ) && BOOST_MSVC == 1700 )
-
-    BOOST_TEST_TRAIT_TRUE(( std::is_nothrow_move_assignable<Y> ));
-
-#endif
+    test_move< Y >();
 
     test_default< boost::scoped_ptr<X> >();
     test_default< boost::scoped_array<X> >();

@@ -570,16 +570,12 @@ public:
         return *this;
     }
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1400)
-
     template<class Y>
     shared_ptr & operator=(shared_ptr<Y> const & r) BOOST_SP_NOEXCEPT
     {
         this_type(r).swap(*this);
         return *this;
     }
-
-#endif
 
 #ifndef BOOST_NO_AUTO_PTR
 

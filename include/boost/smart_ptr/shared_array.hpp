@@ -140,16 +140,12 @@ public:
         return *this;
     }
 
-#if !defined(BOOST_MSVC) || (BOOST_MSVC >= 1400)
-
     template<class Y>
     shared_array & operator=( shared_array<Y> const & r ) BOOST_SP_NOEXCEPT
     {
         this_type( r ).swap( *this );
         return *this;
     }
-
-#endif
 
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 

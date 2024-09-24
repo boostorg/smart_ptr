@@ -60,8 +60,6 @@ public:
         if( px != 0 && add_ref ) intrusive_ptr_add_ref( px );
     }
 
-#if !defined(BOOST_NO_MEMBER_TEMPLATES) || defined(BOOST_MSVC6_MEMBER_TEMPLATES)
-
     template<class U>
 #if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
 
@@ -77,8 +75,6 @@ public:
         if( px != 0 ) intrusive_ptr_add_ref( px );
     }
 
-#endif
-
     intrusive_ptr(intrusive_ptr const & rhs): px( rhs.px )
     {
         if( px != 0 ) intrusive_ptr_add_ref( px );
@@ -89,15 +85,11 @@ public:
         if( px != 0 ) intrusive_ptr_release( px );
     }
 
-#if !defined(BOOST_NO_MEMBER_TEMPLATES) || defined(BOOST_MSVC6_MEMBER_TEMPLATES)
-
     template<class U> intrusive_ptr & operator=(intrusive_ptr<U> const & rhs)
     {
         this_type(rhs).swap(*this);
         return *this;
     }
-
-#endif
 
 // Move support
 

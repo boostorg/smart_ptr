@@ -211,18 +211,9 @@ template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R
 
 template< class Y, class T > inline void sp_assert_convertible() BOOST_SP_NOEXCEPT
 {
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     // static_assert( sp_convertible< Y, T >::value );
     typedef char tmp[ sp_convertible< Y, T >::value? 1: -1 ];
     (void)sizeof( tmp );
-
-#else
-
-    T* p = static_cast< Y* >( 0 );
-    (void)p;
-
-#endif
 }
 
 // pointer constructor helper
@@ -426,15 +417,7 @@ public:
     }
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     shared_ptr( shared_ptr<Y> const & r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
-
-#else
-
-    shared_ptr( shared_ptr<Y> const & r )
-
-#endif
     BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y, T >();
@@ -614,15 +597,7 @@ public:
     }
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     shared_ptr( shared_ptr<Y> && r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
-
-#else
-
-    shared_ptr( shared_ptr<Y> && r )
-
-#endif
     BOOST_SP_NOEXCEPT : px( r.px ), pn( static_cast< boost::detail::shared_count && >( r.pn ) )
     {
         boost::detail::sp_assert_convertible< Y, T >();

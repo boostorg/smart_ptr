@@ -111,15 +111,7 @@ public:
     // conversion
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     shared_array( shared_array<Y> const & r, typename boost::detail::sp_enable_if_convertible< Y[], T[] >::type = boost::detail::sp_empty() )
-
-#else
-
-    shared_array( shared_array<Y> const & r )
-
-#endif
     BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y[], T[] >();

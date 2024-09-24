@@ -78,7 +78,7 @@ using boost::weak_ptr;
 
 int main()
 {
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE ) && !defined(BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS)
+#if !defined(BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS)
 
     TEST_CV_TRUE( X, X )
     TEST_CV_TRUE( X, void )

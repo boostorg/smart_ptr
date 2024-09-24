@@ -74,15 +74,7 @@ public:
 //
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     weak_ptr( weak_ptr<Y> const & r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
-
-#else
-
-    weak_ptr( weak_ptr<Y> const & r )
-
-#endif
     BOOST_SP_NOEXCEPT : px(r.lock().get()), pn(r.pn)
     {
         boost::detail::sp_assert_convertible< Y, T >();
@@ -91,15 +83,7 @@ public:
 #if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     weak_ptr( weak_ptr<Y> && r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
-
-#else
-
-    weak_ptr( weak_ptr<Y> && r )
-
-#endif
     BOOST_SP_NOEXCEPT : px( r.lock().get() ), pn( static_cast< boost::detail::weak_count && >( r.pn ) )
     {
         boost::detail::sp_assert_convertible< Y, T >();
@@ -124,15 +108,7 @@ public:
 #endif
 
     template<class Y>
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     weak_ptr( shared_ptr<Y> const & r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
-
-#else
-
-    weak_ptr( shared_ptr<Y> const & r )
-
-#endif
     BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y, T >();

@@ -78,8 +78,6 @@ using boost::weak_ptr;
 
 int main()
 {
-#if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
-
     TEST_CV_TRUE( X, X )
     TEST_CV_TRUE( X, void )
     TEST_CV_FALSE( void, X )
@@ -101,8 +99,6 @@ int main()
 
     TEST_CV_TRUE( X[3], void )
     TEST_CV_FALSE( void, X[3] )
-
-#endif
 
     return boost::report_errors();
 }

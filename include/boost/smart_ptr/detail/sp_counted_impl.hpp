@@ -133,13 +133,6 @@ public:
 #endif
 };
 
-//
-// Borland's Codeguard trips up over the -Vx- option here:
-//
-#ifdef __CODEGUARD__
-# pragma option push -Vx-
-#endif
-
 template<class P, class D> class BOOST_SYMBOL_VISIBLE sp_counted_impl_pd: public sp_counted_base
 {
 private:
@@ -297,10 +290,6 @@ public:
         return &reinterpret_cast<char&>( d_ );
     }
 };
-
-#ifdef __CODEGUARD__
-# pragma option pop
-#endif
 
 } // namespace detail
 

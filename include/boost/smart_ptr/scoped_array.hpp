@@ -98,29 +98,25 @@ public:
     }
 };
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-template<class T> inline bool operator==( scoped_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( scoped_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( boost::detail::sp_nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( scoped_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( scoped_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
-
-#endif
 
 template<class T> inline void swap(scoped_array<T> & a, scoped_array<T> & b) BOOST_SP_NOEXCEPT
 {

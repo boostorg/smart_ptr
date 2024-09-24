@@ -212,29 +212,25 @@ template<class T, class U> inline bool operator!=(T * a, intrusive_ptr<U> const 
     return a != b.get();
 }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-template<class T> inline bool operator==( intrusive_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( intrusive_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( boost::detail::sp_nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( intrusive_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( intrusive_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, intrusive_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
-
-#endif
 
 template<class T> inline bool operator<(intrusive_ptr<T> const & a, intrusive_ptr<T> const & b) BOOST_SP_NOEXCEPT
 {

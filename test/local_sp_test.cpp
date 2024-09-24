@@ -78,8 +78,6 @@ static void default_constructor()
 
 static void nullptr_constructor()
 {
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
     {
         boost::local_shared_ptr<int> p( nullptr );
 
@@ -112,8 +110,6 @@ static void nullptr_constructor()
         BOOST_TEST_EQ( p.get(), static_cast<void*>(0) );
         BOOST_TEST_EQ( p.local_use_count(), 0 );
     }
-
-#endif
 }
 
 // pointer constructor
@@ -226,8 +222,6 @@ static void deleter_constructor()
 
 // nullptr_deleter_constructor
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
 void deleter3( boost::detail::sp_nullptr_t )
 {
     ++m;
@@ -259,14 +253,6 @@ static void nullptr_deleter_constructor()
     deleter3_test_<void volatile>();
     deleter3_test_<void const volatile>();
 }
-
-#else
-
-static void nullptr_deleter_constructor()
-{
-}
-
-#endif
 
 // allocator constructor
 
@@ -300,8 +286,6 @@ static void allocator_constructor()
 
 // nullptr_allocator_constructor
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
 template<class T> static void allocator3_test_()
 {
     {
@@ -328,14 +312,6 @@ static void nullptr_allocator_constructor()
     allocator3_test_<void volatile>();
     allocator3_test_<void const volatile>();
 }
-
-#else
-
-static void nullptr_allocator_constructor()
-{
-}
-
-#endif
 
 // copy constructor
 
@@ -1253,8 +1229,6 @@ static void move_assignment()
 
 // nullptr assignment
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
 template<class T> static void test_nullptr_assign( boost::local_shared_ptr<T> p1 )
 {
     p1 = nullptr;
@@ -1306,14 +1280,6 @@ static void nullptr_assignment()
 
     BOOST_TEST( X::instances == 0 );
 }
-
-#else
-
-static void nullptr_assignment()
-{
-}
-
-#endif
 
 // default_reset
 

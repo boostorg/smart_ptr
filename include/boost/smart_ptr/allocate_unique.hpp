@@ -78,10 +78,8 @@ public:
     sp_alloc_ptr(std::size_t, P p) BOOST_SP_NOEXCEPT
         : p_(p) { }
 
-#if !defined(BOOST_NO_CXX11_NULLPTR)
-    sp_alloc_ptr(detail::sp_nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
         : p_() { }
-#endif
 
     T& operator*() const {
         return *p_;
@@ -133,10 +131,8 @@ public:
         : p_(p)
         , n_(n) { }
 
-#if !defined(BOOST_NO_CXX11_NULLPTR)
-    sp_alloc_ptr(detail::sp_nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
         : p_() { }
-#endif
 
     T& operator[](std::size_t i) const {
         return p_[i];
@@ -184,10 +180,8 @@ public:
     sp_alloc_ptr(std::size_t, P p) BOOST_SP_NOEXCEPT
         : p_(p) { }
 
-#if !defined(BOOST_NO_CXX11_NULLPTR)
-    sp_alloc_ptr(detail::sp_nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
         : p_() { }
-#endif
 
     T& operator[](std::size_t i) const {
         return p_[i];
@@ -237,18 +231,17 @@ operator!=(const sp_alloc_ptr<T, P>& lhs, const sp_alloc_ptr<T, P>& rhs)
     return !(lhs == rhs);
 }
 
-#if !defined(BOOST_NO_CXX11_NULLPTR)
 template<class T, class P>
 inline bool
 operator==(const sp_alloc_ptr<T, P>& lhs,
-    detail::sp_nullptr_t) BOOST_SP_NOEXCEPT
+    std::nullptr_t) BOOST_SP_NOEXCEPT
 {
     return !lhs.ptr();
 }
 
 template<class T, class P>
 inline bool
-operator==(detail::sp_nullptr_t,
+operator==(std::nullptr_t,
     const sp_alloc_ptr<T, P>& rhs) BOOST_SP_NOEXCEPT
 {
     return !rhs.ptr();
@@ -257,19 +250,18 @@ operator==(detail::sp_nullptr_t,
 template<class T, class P>
 inline bool
 operator!=(const sp_alloc_ptr<T, P>& lhs,
-    detail::sp_nullptr_t) BOOST_SP_NOEXCEPT
+    std::nullptr_t) BOOST_SP_NOEXCEPT
 {
     return !!lhs.ptr();
 }
 
 template<class T, class P>
 inline bool
-operator!=(detail::sp_nullptr_t,
+operator!=(std::nullptr_t,
     const sp_alloc_ptr<T, P>& rhs) BOOST_SP_NOEXCEPT
 {
     return !!rhs.ptr();
 }
-#endif
 
 template<class A>
 inline void

@@ -14,8 +14,6 @@
 #include <cstddef>
 #include <memory>
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
 struct X
 {
     static int instances;
@@ -130,12 +128,3 @@ int main()
 
     return boost::report_errors();
 }
-
-#else
-
-int main()
-{
-    return 0;
-}
-
-#endif

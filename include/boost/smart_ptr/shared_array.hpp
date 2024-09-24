@@ -58,13 +58,9 @@ public:
     {
     }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-    shared_array( boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn()
+    shared_array( std::nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn()
     {
     }
-
-#endif
 
     template<class Y>
     explicit shared_array( Y * p ): px( p ), pn( p, checked_array_deleter<Y>() )
@@ -237,29 +233,25 @@ template<class T> inline bool operator!=(shared_array<T> const & a, shared_array
     return a.get() != b.get();
 }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-template<class T> inline bool operator==( shared_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( shared_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( boost::detail::sp_nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( shared_array<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( shared_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
-
-#endif
 
 template<class T> inline bool operator<(shared_array<T> const & a, shared_array<T> const & b) BOOST_SP_NOEXCEPT
 {

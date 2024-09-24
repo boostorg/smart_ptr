@@ -125,8 +125,6 @@ int main()
         BOOST_TEST( Y::instances == 0 );
     }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
     {
         boost::shared_ptr<Y> p( nullptr, YD() );
 
@@ -144,8 +142,6 @@ int main()
 
         BOOST_TEST( del.moved_ );
     }
-
-#endif
 
     return boost::report_errors();
 }

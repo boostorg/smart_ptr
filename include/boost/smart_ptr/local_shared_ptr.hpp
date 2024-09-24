@@ -140,13 +140,9 @@ public:
     {
     }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-    BOOST_CONSTEXPR local_shared_ptr( boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn( 0 )
+    BOOST_CONSTEXPR local_shared_ptr( std::nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn( 0 )
     {
     }
-
-#endif
 
     // internal constructor, used by make_shared
     BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
@@ -164,28 +160,20 @@ public:
         boost::detail::lsp_deleter_construct( this, p, d, pn );
     }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-    template<class D> local_shared_ptr( boost::detail::sp_nullptr_t p, D d ): px( p ), pn( 0 )
+    template<class D> local_shared_ptr( std::nullptr_t p, D d ): px( p ), pn( 0 )
     {
         boost::detail::lsp_deleter_construct( this, p, d, pn );
     }
-
-#endif
 
     template<class Y, class D, class A> local_shared_ptr( Y * p, D d, A a ): px( p ), pn( 0 )
     {
         boost::detail::lsp_allocator_construct( this, p, d, a, pn );
     }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-    template<class D, class A> local_shared_ptr( boost::detail::sp_nullptr_t p, D d, A a ): px( p ), pn( 0 )
+    template<class D, class A> local_shared_ptr( std::nullptr_t p, D d, A a ): px( p ), pn( 0 )
     {
         boost::detail::lsp_allocator_construct( this, p, d, a, pn );
     }
-
-#endif
 
     // construction from shared_ptr
 
@@ -349,17 +337,13 @@ public:
 
 #endif
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-    local_shared_ptr & operator=( boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+    local_shared_ptr & operator=( std::nullptr_t ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr().swap(*this);
         return *this;
     }
 
-#endif
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
+#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y, class D>
     local_shared_ptr & operator=( std::unique_ptr<Y, D> && r )
@@ -513,29 +497,25 @@ template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a
     return a.get() != b.get();
 }
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
-template<class T> inline bool operator==( local_shared_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( local_shared_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( boost::detail::sp_nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( local_shared_ptr<T> const & p, boost::detail::sp_nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( local_shared_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( boost::detail::sp_nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
 {
     return p.get() != 0;
 }
-
-#endif
 
 template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
 {

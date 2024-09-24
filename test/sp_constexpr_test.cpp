@@ -52,17 +52,13 @@ static Z z;
 static boost::shared_ptr<X> p1;
 static boost::weak_ptr<X> p2;
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-  static boost::shared_ptr<X> p3( nullptr );
-#endif
+static boost::shared_ptr<X> p3( nullptr );
 
 Z::Z()
 {
     p1.reset( new X );
     p2 = p1;
-#if !defined( BOOST_NO_CXX11_NULLPTR )
     p3.reset( new X );
-#endif
 }
 
 int main()
@@ -73,12 +69,8 @@ int main()
     BOOST_TEST_EQ( p2.use_count(), 1 );
     BOOST_TEST_EQ( p2.lock(), p1 );
 
-#if !defined( BOOST_NO_CXX11_NULLPTR )
-
     BOOST_TEST( p3.get() != 0 );
     BOOST_TEST_EQ( p3.use_count(), 1 );
-
-#endif
 
     return boost::report_errors();
 }

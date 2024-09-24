@@ -18,10 +18,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if defined(__BORLANDC__) && !defined(__clang__)
-# pragma warn -8027     // Functions containing try are not expanded inline
-#endif
-
 #include <boost/smart_ptr/bad_weak_ptr.hpp>
 #include <boost/smart_ptr/detail/sp_counted_base.hpp>
 #include <boost/smart_ptr/detail/sp_counted_impl.hpp>
@@ -698,10 +694,6 @@ inline bool shared_count::operator<( weak_count const & r ) const BOOST_SP_NOEXC
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
 #pragma GCC diagnostic pop
-#endif
-
-#if defined(__BORLANDC__) && !defined(__clang__)
-# pragma warn .8027     // Functions containing try are not expanded inline
 #endif
 
 #endif  // #ifndef BOOST_SMART_PTR_DETAIL_SHARED_COUNT_HPP_INCLUDED

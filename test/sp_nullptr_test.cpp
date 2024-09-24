@@ -9,7 +9,6 @@
 //
 
 #include <boost/shared_ptr.hpp>
-#include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <cstddef>
 #include <memory>
@@ -36,7 +35,7 @@ private:
 
 int X::instances = 0;
 
-void f( boost::detail::sp_nullptr_t )
+void f( std::nullptr_t )
 {
 }
 

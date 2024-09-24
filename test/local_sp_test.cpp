@@ -222,7 +222,7 @@ static void deleter_constructor()
 
 // nullptr_deleter_constructor
 
-void deleter3( boost::detail::sp_nullptr_t )
+void deleter3( std::nullptr_t )
 {
     ++m;
 }

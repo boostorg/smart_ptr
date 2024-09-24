@@ -9,7 +9,6 @@ Distributed under the Boost Software License, Version 1.0.
 #define BOOST_SMART_PTR_ALLOCATE_UNIQUE_HPP
 
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
-#include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/core/allocator_access.hpp>
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/empty_value.hpp>
@@ -27,6 +26,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/config.hpp>
 #include <memory>
 #include <utility>
+#include <cstddef>
 
 namespace boost {
 namespace detail {

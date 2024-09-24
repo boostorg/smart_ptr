@@ -10,13 +10,13 @@
 //
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
-#include <boost/config.hpp>
-#include <boost/assert.hpp>
-#include <boost/core/checked_delete.hpp>
-#include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/core/checked_delete.hpp>
+#include <boost/assert.hpp>
 #include <boost/config/workaround.hpp>
+#include <boost/config.hpp>
+#include <cstddef>
 
 #ifndef BOOST_NO_AUTO_PTR
 # include <memory>          // for std::auto_ptr

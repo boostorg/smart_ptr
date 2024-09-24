@@ -14,7 +14,6 @@
 //
 
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
-#include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
@@ -22,6 +21,7 @@
 
 #include <functional>           // for std::less
 #include <iosfwd>               // for std::basic_ostream
+#include <cstddef>
 
 namespace boost
 {

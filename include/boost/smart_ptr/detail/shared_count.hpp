@@ -358,8 +358,6 @@ public:
 
 #endif 
 
-#if !defined( BOOST_NO_CXX11_SMART_PTR )
-
     template<class Y, class D>
     explicit shared_count( std::unique_ptr<Y, D> & r ): pi_( 0 )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
@@ -382,8 +380,6 @@ public:
 
         r.release();
     }
-
-#endif
 
     template<class Y, class D>
     explicit shared_count( boost::movelib::unique_ptr<Y, D> & r ): pi_( 0 )

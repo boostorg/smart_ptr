@@ -10,8 +10,11 @@
 #ifndef BOOST_POINTER_CAST_HPP
 #define BOOST_POINTER_CAST_HPP
 
-#include <boost/config.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/type_traits/has_virtual_destructor.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/config.hpp>
+#include <memory>
 
 namespace boost { 
 
@@ -42,16 +45,6 @@ inline T* reinterpret_pointer_cast(U *ptr) BOOST_SP_NOEXCEPT
 {  
    return reinterpret_cast<T*>(ptr);
 }
-
-} // namespace boost
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR )
-
-#include <boost/type_traits/has_virtual_destructor.hpp>
-#include <boost/static_assert.hpp>
-#include <memory>
-
-namespace boost {
 
 //static_pointer_cast overload for std::shared_ptr
 using std::static_pointer_cast;
@@ -116,7 +109,5 @@ template<class T, class U> std::unique_ptr<T> reinterpret_pointer_cast( std::uni
 }
 
 } // namespace boost
-
-#endif // #if !defined( BOOST_NO_CXX11_SMART_PTR )
 
 #endif   //BOOST_POINTER_CAST_HPP

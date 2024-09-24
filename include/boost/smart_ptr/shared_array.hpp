@@ -14,8 +14,6 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 //
 
-#include <boost/smart_ptr/detail/requires_cxx11.hpp>
-
 #include <boost/config.hpp>   // for broken compiler workarounds
 
 #include <memory>             // TR1 cyclic inclusion fix

@@ -249,17 +249,10 @@ public:
         return pn.hash_value();
     }
 
-// Tasteless as this may seem, making all members public allows member templates
-// to work in the absence of member template friends. (Matthew Langston)
-
-#ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
-
 private:
 
     template<class Y> friend class weak_ptr;
     template<class Y> friend class shared_ptr;
-
-#endif
 
     element_type * px;            // contained pointer
     boost::detail::weak_count pn; // reference counter

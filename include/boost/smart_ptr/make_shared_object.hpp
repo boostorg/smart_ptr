@@ -191,11 +191,7 @@ template< class T, std::size_t N > struct sp_if_not_array< T[N] >
 
 } // namespace detail
 
-#if !defined( BOOST_NO_FUNCTION_TEMPLATE_ORDERING )
-# define BOOST_SP_MSD( T ) boost::detail::sp_inplace_tag< boost::detail::sp_ms_deleter< T > >()
-#else
-# define BOOST_SP_MSD( T ) boost::detail::sp_ms_deleter< T >()
-#endif
+#define BOOST_SP_MSD( T ) boost::detail::sp_inplace_tag< boost::detail::sp_ms_deleter< T > >()
 
 // _noinit versions
 

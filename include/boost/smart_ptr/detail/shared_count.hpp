@@ -194,8 +194,6 @@ public:
 #endif
     }
 
-#if !defined( BOOST_NO_FUNCTION_TEMPLATE_ORDERING )
-
     template< class P, class D > shared_count( P p, sp_inplace_tag<D> ): pi_( 0 )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
@@ -225,8 +223,6 @@ public:
 
 #endif // #ifndef BOOST_NO_EXCEPTIONS
     }
-
-#endif // !defined( BOOST_NO_FUNCTION_TEMPLATE_ORDERING )
 
     template<class P, class D, class A> shared_count( P p, D d, A a ): pi_( 0 )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
@@ -283,8 +279,6 @@ public:
 #endif
     }
 
-#if !defined( BOOST_NO_FUNCTION_TEMPLATE_ORDERING )
-
     template< class P, class D, class A > shared_count( P p, sp_inplace_tag< D >, A a ): pi_( 0 )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
@@ -339,8 +333,6 @@ public:
 
 #endif // #ifndef BOOST_NO_EXCEPTIONS
     }
-
-#endif // !defined( BOOST_NO_FUNCTION_TEMPLATE_ORDERING )
 
 #ifndef BOOST_NO_AUTO_PTR
 

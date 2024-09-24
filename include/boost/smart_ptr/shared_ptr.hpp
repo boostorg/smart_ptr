@@ -92,8 +92,6 @@ template<> struct sp_dereference< void >
     typedef void type;
 };
 
-#if !defined(BOOST_NO_CV_VOID_SPECIALIZATIONS)
-
 template<> struct sp_dereference< void const >
 {
     typedef void type;
@@ -108,8 +106,6 @@ template<> struct sp_dereference< void const volatile >
 {
     typedef void type;
 };
-
-#endif // !defined(BOOST_NO_CV_VOID_SPECIALIZATIONS)
 
 #if !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
 

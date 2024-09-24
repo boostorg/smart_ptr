@@ -660,15 +660,11 @@ template<class T> inline typename local_shared_ptr<T>::element_type * get_pointe
 
 // operator<<
 
-#if !defined(BOOST_NO_IOSTREAM)
-
 template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< ( std::basic_ostream<E, T> & os, local_shared_ptr<Y> const & p )
 {
     os << p.get();
     return os;
 }
-
-#endif // !defined(BOOST_NO_IOSTREAM)
 
 // get_deleter
 

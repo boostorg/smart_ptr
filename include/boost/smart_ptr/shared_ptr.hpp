@@ -34,14 +34,7 @@
 #include <typeinfo>             // for std::bad_cast
 #include <cstddef>              // for std::size_t
 #include <memory>               // for std::auto_ptr
-
-#if !defined(BOOST_NO_IOSTREAM)
-#if !defined(BOOST_NO_IOSFWD)
 #include <iosfwd>               // for std::basic_ostream
-#else
-#include <ostream>
-#endif
-#endif
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
 #pragma GCC diagnostic push
@@ -1001,38 +994,11 @@ template<class T> inline typename shared_ptr<T>::element_type * get_pointer(shar
 
 // operator<<
 
-#if !defined(BOOST_NO_IOSTREAM)
-
-#if defined(BOOST_NO_TEMPLATED_IOSTREAMS) || ( defined(__GNUC__) &&  (__GNUC__ < 3) )
-
 template<class Y> std::ostream & operator<< (std::ostream & os, shared_ptr<Y> const & p)
 {
     os << p.get();
     return os;
 }
-
-#else
-
-// in STLport's no-iostreams mode no iostream symbols can be used
-#ifndef _STLP_NO_IOSTREAMS
-
-# if defined(BOOST_MSVC) && BOOST_WORKAROUND(BOOST_MSVC, < 1300 && __SGI_STL_PORT)
-// MSVC6 has problems finding std::basic_ostream through the using declaration in namespace _STL
-using std::basic_ostream;
-template<class E, class T, class Y> basic_ostream<E, T> & operator<< (basic_ostream<E, T> & os, shared_ptr<Y> const & p)
-# else
-template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p)
-# endif
-{
-    os << p.get();
-    return os;
-}
-
-#endif // _STLP_NO_IOSTREAMS
-
-#endif // __GNUC__ < 3
-
-#endif // !defined(BOOST_NO_IOSTREAM)
 
 // get_deleter
 

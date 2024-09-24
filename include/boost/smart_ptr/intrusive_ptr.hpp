@@ -13,24 +13,15 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 //
 
-#include <boost/config.hpp>
-
-#include <boost/assert.hpp>
-#include <boost/config/workaround.hpp>
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
 #include <boost/smart_ptr/detail/sp_nullptr_t.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/assert.hpp>
+#include <boost/config.hpp>
+#include <boost/config/workaround.hpp>
 
-#include <boost/config/no_tr1/functional.hpp>           // for std::less
-
-#if !defined(BOOST_NO_IOSTREAM)
-#if !defined(BOOST_NO_IOSFWD)
+#include <functional>           // for std::less
 #include <iosfwd>               // for std::basic_ostream
-#else
-#include <ostream>
-#endif
-#endif
-
 
 namespace boost
 {
@@ -330,38 +321,11 @@ template<class T, class U> intrusive_ptr<T> dynamic_pointer_cast( intrusive_ptr<
 
 // operator<<
 
-#if !defined(BOOST_NO_IOSTREAM)
-
-#if defined(BOOST_NO_TEMPLATED_IOSTREAMS) || ( defined(__GNUC__) &&  (__GNUC__ < 3) )
-
 template<class Y> std::ostream & operator<< (std::ostream & os, intrusive_ptr<Y> const & p)
 {
     os << p.get();
     return os;
 }
-
-#else
-
-// in STLport's no-iostreams mode no iostream symbols can be used
-#ifndef _STLP_NO_IOSTREAMS
-
-# if defined(BOOST_MSVC) && BOOST_WORKAROUND(BOOST_MSVC, < 1300 && __SGI_STL_PORT)
-// MSVC6 has problems finding std::basic_ostream through the using declaration in namespace _STL
-using std::basic_ostream;
-template<class E, class T, class Y> basic_ostream<E, T> & operator<< (basic_ostream<E, T> & os, intrusive_ptr<Y> const & p)
-# else
-template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< (std::basic_ostream<E, T> & os, intrusive_ptr<Y> const & p)
-# endif 
-{
-    os << p.get();
-    return os;
-}
-
-#endif // _STLP_NO_IOSTREAMS
-
-#endif // __GNUC__ < 3
-
-#endif // !defined(BOOST_NO_IOSTREAM)
 
 // hash_value
 

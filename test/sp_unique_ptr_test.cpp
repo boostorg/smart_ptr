@@ -15,8 +15,6 @@
 #include <memory>
 #include <utility>
 
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 struct X: public boost::enable_shared_from_this< X >
 {
     static int instances;
@@ -283,12 +281,3 @@ int main()
 
     return boost::report_errors();
 }
-
-#else // !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
-int main()
-{
-    return 0;
-}
-
-#endif

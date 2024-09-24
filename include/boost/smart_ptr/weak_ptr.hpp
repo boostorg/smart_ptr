@@ -38,9 +38,6 @@ public:
     }
 
 //  generated copy constructor, assignment, destructor are fine...
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 // ... except in C++0x, move disables the implicit copy
 
     weak_ptr( weak_ptr const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
@@ -53,8 +50,6 @@ public:
         pn = r.pn;
         return *this;
     }
-
-#endif
 
 //
 //  The "obvious" converting constructor implementation:
@@ -80,8 +75,6 @@ public:
         boost::detail::sp_assert_convertible< Y, T >();
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y>
     weak_ptr( weak_ptr<Y> && r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
     BOOST_SP_NOEXCEPT : px( r.lock().get() ), pn( static_cast< boost::detail::weak_count && >( r.pn ) )
@@ -105,8 +98,6 @@ public:
     }
 
 
-#endif
-
     template<class Y>
     weak_ptr( shared_ptr<Y> const & r, typename boost::detail::sp_enable_if_convertible<Y,T>::type = boost::detail::sp_empty() )
     BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
@@ -123,13 +114,9 @@ public:
     {
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y> weak_ptr(weak_ptr<Y> && r, element_type * p) BOOST_SP_NOEXCEPT: px( p ), pn( std::move( r.pn ) )
     {
     }
-
-#endif
 
     template<class Y>
     weak_ptr & operator=( weak_ptr<Y> const & r ) BOOST_SP_NOEXCEPT
@@ -142,16 +129,12 @@ public:
         return *this;
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y>
     weak_ptr & operator=( weak_ptr<Y> && r ) BOOST_SP_NOEXCEPT
     {
         this_type( static_cast< weak_ptr<Y> && >( r ) ).swap( *this );
         return *this;
     }
-
-#endif
 
     template<class Y>
     weak_ptr & operator=( shared_ptr<Y> const & r ) BOOST_SP_NOEXCEPT

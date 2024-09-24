@@ -424,8 +424,6 @@ public:
         if( pi_ != 0 ) pi_->add_ref_copy();
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     shared_count(shared_count && r) BOOST_SP_NOEXCEPT: pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
@@ -433,8 +431,6 @@ public:
     {
         r.pi_ = 0;
     }
-
-#endif
 
     explicit shared_count(weak_count const & r); // throws bad_weak_ptr when r.use_count() == 0
     shared_count( weak_count const & r, sp_nothrow_tag ) BOOST_SP_NOEXCEPT; // constructs an empty *this when r.use_count() == 0
@@ -550,8 +546,6 @@ public:
 
 // Move support
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     weak_count(weak_count && r) BOOST_SP_NOEXCEPT: pi_(r.pi_)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
@@ -559,8 +553,6 @@ public:
     {
         r.pi_ = 0;
     }
-
-#endif
 
     ~weak_count() /*BOOST_SP_NOEXCEPT*/
     {

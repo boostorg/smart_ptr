@@ -407,8 +407,6 @@ static void copy_constructor()
 
 // move constructor
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T> static void empty_move_test()
 {
     boost::local_shared_ptr<T> p2(( boost::local_shared_ptr<T>() ));
@@ -488,14 +486,6 @@ static void move_constructor()
 
     BOOST_TEST( X::instances == 0 );
 }
-
-#else
-
-static void move_constructor()
-{
-}
-
-#endif
 
 // aliasing constructor
 
@@ -720,8 +710,6 @@ static void shared_ptr_copy_constructor()
 
 // shared_ptr_move constructor
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T> static void empty_shared_ptr_move_test()
 {
     boost::local_shared_ptr<T> p2(( boost::shared_ptr<T>() ));
@@ -801,17 +789,7 @@ static void shared_ptr_move_constructor()
     BOOST_TEST( X::instances == 0 );
 }
 
-#else
-
-static void shared_ptr_move_constructor()
-{
-}
-
-#endif
-
 // unique_ptr_constructor
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 template<class T, class U> static void test_null_unique_ptr( std::unique_ptr<U> && p1 )
 {
@@ -913,14 +891,6 @@ static void unique_ptr_constructor()
     deleter_unique_ptr_test<int>();
     deleter_unique_ptr_test<void>();
 }
-
-#else
-
-static void unique_ptr_constructor()
-{
-}
-
-#endif
 
 // copy assignment
 
@@ -1079,8 +1049,6 @@ static void copy_assignment()
 
 // move assignment
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T> static void empty_move_assign_test()
 {
     boost::local_shared_ptr<T> p2;
@@ -1218,14 +1186,6 @@ static void move_assignment()
 
     BOOST_TEST( X::instances == 0 );
 }
-
-#else
-
-static void move_assignment()
-{
-}
-
-#endif
 
 // nullptr assignment
 
@@ -1494,8 +1454,6 @@ static void shared_ptr_copy_assignment()
 
 // shared_ptr_move assignment
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T> static void empty_shared_ptr_move_assign_test()
 {
     boost::local_shared_ptr<T> p2;
@@ -1639,17 +1597,7 @@ static void shared_ptr_move_assignment()
     BOOST_TEST( X::instances == 0 );
 }
 
-#else
-
-static void shared_ptr_move_assignment()
-{
-}
-
-#endif
-
 // unique_ptr assignment
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES ) && !defined( BOOST_NO_CXX11_SMART_PTR )
 
 template<class T> static void empty_unique_ptr_assign_test()
 {
@@ -1790,14 +1738,6 @@ static void unique_ptr_assignment()
 
     BOOST_TEST( X::instances == 0 );
 }
-
-#else
-
-static void unique_ptr_assignment()
-{
-}
-
-#endif
 
 // pointer reset
 

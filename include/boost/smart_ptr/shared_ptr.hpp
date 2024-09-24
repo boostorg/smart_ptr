@@ -290,13 +290,9 @@ public:
     {
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     BOOST_CONSTEXPR shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count && pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( std::move( pn_ ) )
     {
     }
-
-#endif
 
     template<class Y>
     explicit shared_ptr( Y * p ): px( p ), pn() // Y must be complete
@@ -310,79 +306,32 @@ public:
     // shared_ptr will release p by calling d(p)
     //
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, static_cast< D&& >( d ) )
     {
         boost::detail::sp_deleter_construct( this, p );
     }
 
-#else
-
-    template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, d )
-    {
-        boost::detail::sp_deleter_construct( this, p );
-    }
-
-#endif
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class D> shared_ptr( std::nullptr_t p, D d ): px( p ), pn( p, static_cast< D&& >( d ) )
     {
     }
 
-#else
-
-    template<class D> shared_ptr( std::nullptr_t p, D d ): px( p ), pn( p, d )
-    {
-    }
-
-#endif
-
     // As above, but with allocator. A's copy constructor shall not throw.
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y, class D, class A> shared_ptr( Y * p, D d, A a ): px( p ), pn( p, static_cast< D&& >( d ), a )
     {
         boost::detail::sp_deleter_construct( this, p );
     }
 
-#else
-
-    template<class Y, class D, class A> shared_ptr( Y * p, D d, A a ): px( p ), pn( p, d, a )
-    {
-        boost::detail::sp_deleter_construct( this, p );
-    }
-
-#endif
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class D, class A> shared_ptr( std::nullptr_t p, D d, A a ): px( p ), pn( p, static_cast< D&& >( d ), a )
     {
     }
 
-#else
-
-    template<class D, class A> shared_ptr( std::nullptr_t p, D d, A a ): px( p ), pn( p, d, a )
-    {
-    }
-
-#endif
-
 //  generated copy constructor, destructor are fine...
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 // ... except in C++0x, move disables the implicit copy
 
     shared_ptr( shared_ptr const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
     }
-
-#endif
 
     template<class Y>
     explicit shared_ptr( weak_ptr<Y> const & r ): pn( r.pn ) // may throw
@@ -429,8 +378,6 @@ public:
         boost::detail::sp_deleter_construct( this, tmp );
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y>
     shared_ptr( std::auto_ptr<Y> && r ): px(r.get()), pn()
     {
@@ -442,26 +389,7 @@ public:
         boost::detail::sp_deleter_construct( this, tmp );
     }
 
-#elif !defined( BOOST_NO_SFINAE ) && !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
-
-    template<class Ap>
-    explicit shared_ptr( Ap r, typename boost::detail::sp_enable_if_auto_ptr<Ap, int>::type = 0 ): px( r.get() ), pn()
-    {
-        typedef typename Ap::element_type Y;
-
-        boost::detail::sp_assert_convertible< Y, T >();
-
-        Y * tmp = r.get();
-        pn = boost::detail::shared_count( r );
-
-        boost::detail::sp_deleter_construct( this, tmp );
-    }
-
-#endif // BOOST_NO_SFINAE, BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
 #endif // BOOST_NO_AUTO_PTR
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template< class Y, class D >
     shared_ptr( std::unique_ptr< Y, D > && r ): px( r.get() ), pn()
@@ -476,8 +404,6 @@ public:
             boost::detail::sp_deleter_construct( this, tmp );
         }
     }
-
-#endif
 
     template< class Y, class D >
     shared_ptr( boost::movelib::unique_ptr< Y, D > r ): px( r.get() ), pn()
@@ -517,8 +443,6 @@ public:
         return *this;
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y>
     shared_ptr & operator=( std::auto_ptr<Y> && r )
     {
@@ -526,20 +450,7 @@ public:
         return *this;
     }
 
-#elif !defined( BOOST_NO_SFINAE ) && !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION )
-
-    template<class Ap>
-    typename boost::detail::sp_enable_if_auto_ptr< Ap, shared_ptr & >::type operator=( Ap r )
-    {
-        this_type( r ).swap( *this );
-        return *this;
-    }
-
-#endif // BOOST_NO_SFINAE, BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
 #endif // BOOST_NO_AUTO_PTR
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y, class D>
     shared_ptr & operator=( std::unique_ptr<Y, D> && r )
@@ -547,8 +458,6 @@ public:
         this_type( static_cast< std::unique_ptr<Y, D> && >( r ) ).swap(*this);
         return *this;
     }
-
-#endif
 
     template<class Y, class D>
     shared_ptr & operator=( boost::movelib::unique_ptr<Y, D> r )
@@ -575,8 +484,6 @@ public:
     }
 
 // Move support
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     shared_ptr( shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( static_cast< boost::detail::shared_count && >( r.pn ) )
     {
@@ -612,8 +519,6 @@ public:
         r.px = 0;
     }
 
-#endif
-
     shared_ptr & operator=( std::nullptr_t ) BOOST_SP_NOEXCEPT
     {
         this_type().swap(*this);
@@ -631,8 +536,6 @@ public:
         this_type( p ).swap( *this );
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y, class D> void reset( Y * p, D d )
     {
         this_type( p, static_cast< D&& >( d ) ).swap( *this );
@@ -643,33 +546,15 @@ public:
         this_type( p, static_cast< D&& >( d ), a ).swap( *this );
     }
 
-#else
-
-    template<class Y, class D> void reset( Y * p, D d )
-    {
-        this_type( p, d ).swap( *this );
-    }
-
-    template<class Y, class D, class A> void reset( Y * p, D d, A a )
-    {
-        this_type( p, d, a ).swap( *this );
-    }
-
-#endif
-
     template<class Y> void reset( shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT
     {
         this_type( r, p ).swap( *this );
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y> void reset( shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT
     {
         this_type( static_cast< shared_ptr<Y> && >( r ), p ).swap( *this );
     }
-
-#endif
 
     typename boost::detail::sp_dereference< T >::type operator* () const BOOST_SP_NOEXCEPT_WITH_ASSERT
     {
@@ -856,8 +741,6 @@ template<class T, class U> shared_ptr<T> reinterpret_pointer_cast( shared_ptr<U>
     return shared_ptr<T>( r, p );
 }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T, class U> shared_ptr<T> static_pointer_cast( shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
 {
     (void) static_cast< T* >( static_cast< U* >( 0 ) );
@@ -897,8 +780,6 @@ template<class T, class U> shared_ptr<T> reinterpret_pointer_cast( shared_ptr<U>
     E * p = reinterpret_cast< E* >( r.get() );
     return shared_ptr<T>( std::move(r), p );
 }
-
-#endif // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 // get_pointer() enables boost::mem_fn to recognize shared_ptr
 

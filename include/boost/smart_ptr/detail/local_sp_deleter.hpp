@@ -42,13 +42,9 @@ public:
     {
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     explicit local_sp_deleter( D&& d ) BOOST_SP_NOEXCEPT: d_( std::move(d) )
     {
     }
-
-#endif
 
     D& deleter() BOOST_SP_NOEXCEPT
     {

@@ -77,11 +77,7 @@ public:
     }
 
     atomic_shared_ptr( shared_ptr<T> p ) BOOST_SP_NOEXCEPT
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
         : p_( std::move( p ) )
-#else
-        : p_( p )
-#endif
     {
         boost::detail::spinlock init = BOOST_DETAIL_SPINLOCK_INIT;
         std::memcpy( &l_, &init, sizeof( init ) );
@@ -139,15 +135,7 @@ public:
             p_.swap( r );
         }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
         return std::move( r );
-
-#else
-
-        return r;
-
-#endif
     }
 
     template<class M> shared_ptr<T> exchange( shared_ptr<T> r, M ) BOOST_SP_NOEXCEPT
@@ -157,15 +145,7 @@ public:
             p_.swap( r );
         }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
         return std::move( r );
-
-#else
-
-        return r;
-
-#endif
     }
 
     template<class M> bool compare_exchange_weak( shared_ptr<T>& v, const shared_ptr<T>& w, M, M ) BOOST_SP_NOEXCEPT
@@ -198,8 +178,6 @@ public:
         return compare_exchange( v, w );
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class M> bool compare_exchange_weak( shared_ptr<T>& v, shared_ptr<T>&& w, M, M ) BOOST_SP_NOEXCEPT
     {
         return compare_exchange( v, std::move( w ) );
@@ -229,8 +207,6 @@ public:
     {
         return compare_exchange( v, std::move( w ) );
     }
-
-#endif
 };
 
 } // namespace boost

@@ -149,19 +149,9 @@ public:
 
     // pre: d(p) must not throw
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     sp_counted_impl_pd( P p, D & d ): ptr( p ), del( static_cast< D&& >( d ) )
     {
     }
-
-#else
-
-    sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )
-    {
-    }
-
-#endif
 
     sp_counted_impl_pd( P p ): ptr( p ), del()
     {
@@ -233,19 +223,9 @@ public:
 
     // pre: d( p ) must not throw
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     sp_counted_impl_pda( P p, D & d, A a ): p_( p ), d_( static_cast< D&& >( d ) ), a_( a )
     {
     }
-
-#else
-
-    sp_counted_impl_pda( P p, D & d, A a ): p_( p ), d_( d ), a_( a )
-    {
-    }
-
-#endif
 
     sp_counted_impl_pda( P p, A a ): p_( p ), d_( a ), a_( a )
     {

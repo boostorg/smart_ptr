@@ -189,8 +189,6 @@ public:
         }
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y> local_shared_ptr( shared_ptr<Y> && r,
         typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() )
         : px( r.get() ), pn( 0 )
@@ -204,11 +202,7 @@ public:
         }
     }
 
-#endif
-
     // construction from unique_ptr
-
-#if !defined( BOOST_NO_CXX11_SMART_PTR ) && !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template< class Y, class D >
     local_shared_ptr( std::unique_ptr< Y, D > && r,
@@ -222,8 +216,6 @@ public:
             pn = new boost::detail::local_counted_impl( shared_ptr<T>( std::move(r) )._internal_count() );
         }
     }
-
-#endif
 
     template< class Y, class D >
     local_shared_ptr( boost::movelib::unique_ptr< Y, D > r ); // !
@@ -244,15 +236,11 @@ public:
 
     // move constructor
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     local_shared_ptr( local_shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
     {
         r.px = 0;
         r.pn = 0;
     }
-
-#endif
 
     // converting copy constructor
 
@@ -270,8 +258,6 @@ public:
 
     // converting move constructor
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y> local_shared_ptr( local_shared_ptr<Y> && r,
         typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() ) BOOST_SP_NOEXCEPT
         : px( r.px ), pn( r.pn )
@@ -281,8 +267,6 @@ public:
         r.px = 0;
         r.pn = 0;
     }
-
-#endif
 
     // aliasing
 
@@ -295,16 +279,12 @@ public:
         }
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y>
     local_shared_ptr( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
     {
         r.px = 0;
         r.pn = 0;
     }
-
-#endif
 
     // assignment
 
@@ -320,8 +300,6 @@ public:
         return *this;
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     local_shared_ptr & operator=( local_shared_ptr && r ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr( std::move( r ) ).swap( *this );
@@ -335,15 +313,11 @@ public:
         return *this;
     }
 
-#endif
-
     local_shared_ptr & operator=( std::nullptr_t ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr().swap(*this);
         return *this;
     }
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
     template<class Y, class D>
     local_shared_ptr & operator=( std::unique_ptr<Y, D> && r )
@@ -351,8 +325,6 @@ public:
         local_shared_ptr( std::move(r) ).swap( *this );
         return *this;
     }
-
-#endif
 
     template<class Y, class D>
     local_shared_ptr & operator=( boost::movelib::unique_ptr<Y, D> r ); // !
@@ -384,14 +356,10 @@ public:
         local_shared_ptr( r, p ).swap( *this );
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     template<class Y> void reset( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT
     {
         local_shared_ptr( std::move( r ), p ).swap( *this );
     }
-
-#endif
 
     // accessors
 
@@ -587,8 +555,6 @@ template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_s
     return local_shared_ptr<T>( r, p );
 }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
 {
     (void) static_cast< T* >( static_cast< U* >( 0 ) );
@@ -628,8 +594,6 @@ template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_s
     E * p = reinterpret_cast< E* >( r.get() );
     return local_shared_ptr<T>( std::move(r), p );
 }
-
-#endif // !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 // get_pointer() enables boost::mem_fn to recognize local_shared_ptr
 

@@ -85,8 +85,6 @@ public:
 
 // Move support
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     intrusive_ptr(intrusive_ptr && rhs) BOOST_SP_NOEXCEPT : px( rhs.px )
     {
         rhs.px = 0;
@@ -113,8 +111,6 @@ public:
         this_type( static_cast< intrusive_ptr<U> && >( rhs ) ).swap(*this);
         return *this;
     }
-
-#endif
 
     intrusive_ptr & operator=(intrusive_ptr const & rhs)
     {
@@ -266,8 +262,6 @@ template<class T, class U> intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U
     return dynamic_cast<T *>(p.get());
 }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 template<class T, class U> intrusive_ptr<T> static_pointer_cast( intrusive_ptr<U> && p ) BOOST_SP_NOEXCEPT
 {
     return intrusive_ptr<T>( static_cast<T*>( p.detach() ), false );
@@ -288,8 +282,6 @@ template<class T, class U> intrusive_ptr<T> dynamic_pointer_cast( intrusive_ptr<
 
     return r;
 }
-
-#endif // defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
 
 // operator<<
 

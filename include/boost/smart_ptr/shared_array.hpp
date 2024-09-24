@@ -82,9 +82,6 @@ public:
     }
 
 //  generated copy constructor, destructor are fine...
-
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
 // ... except in C++0x, move disables the implicit copy
 
     shared_array( shared_array const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
@@ -96,8 +93,6 @@ public:
         pn.swap( r.pn );
         r.px = 0;
     }
-
-#endif
 
     // conversion
 
@@ -130,8 +125,6 @@ public:
         return *this;
     }
 
-#if !defined( BOOST_NO_CXX11_RVALUE_REFERENCES )
-
     shared_array & operator=( shared_array && r ) BOOST_SP_NOEXCEPT
     {
         this_type( static_cast< shared_array && >( r ) ).swap( *this );
@@ -144,8 +137,6 @@ public:
         this_type( static_cast< shared_array<Y> && >( r ) ).swap( *this );
         return *this;
     }
-
-#endif
 
     void reset() BOOST_SP_NOEXCEPT
     {

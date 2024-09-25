@@ -396,11 +396,7 @@ public:
 
     // conversions to shared_ptr, weak_ptr
 
-#if !defined(BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS)
     template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator shared_ptr<Y>() const BOOST_SP_NOEXCEPT
-#else
-    template<class Y> operator shared_ptr<Y>() const BOOST_SP_NOEXCEPT
-#endif
     {
         boost::detail::sp_assert_convertible<T, Y>();
 
@@ -414,11 +410,7 @@ public:
         }
     }
 
-#if !defined(BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS)
     template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator weak_ptr<Y>() const BOOST_SP_NOEXCEPT
-#else
-    template<class Y> operator weak_ptr<Y>() const BOOST_SP_NOEXCEPT
-#endif
     {
         boost::detail::sp_assert_convertible<T, Y>();
 

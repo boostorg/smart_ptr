@@ -89,11 +89,9 @@ public:
         return boost::to_address(p_);
     }
 
-#if !defined(BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS)
     explicit operator bool() const BOOST_SP_NOEXCEPT {
         return !!p_;
     }
-#endif
 
     bool operator!() const BOOST_SP_NOEXCEPT {
         return !p_;
@@ -138,11 +136,9 @@ public:
         return p_[i];
     }
 
-#if !defined(BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS)
     explicit operator bool() const BOOST_SP_NOEXCEPT {
         return !!p_;
     }
-#endif
 
     bool operator!() const BOOST_SP_NOEXCEPT {
         return !p_;
@@ -187,11 +183,9 @@ public:
         return p_[i];
     }
 
-#if !defined(BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS)
     explicit operator bool() const BOOST_SP_NOEXCEPT {
         return !!p_;
     }
-#endif
 
     bool operator!() const BOOST_SP_NOEXCEPT {
         return !p_;

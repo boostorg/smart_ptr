@@ -238,15 +238,7 @@ public:
 
     void destroy() BOOST_SP_NOEXCEPT BOOST_OVERRIDE
     {
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
         typedef typename std::allocator_traits<A>::template rebind_alloc< this_type > A2;
-
-#else
-
-        typedef typename A::template rebind< this_type >::other A2;
-
-#endif
 
         A2 a2( a_ );
 

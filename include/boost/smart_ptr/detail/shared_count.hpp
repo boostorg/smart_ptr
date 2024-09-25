@@ -231,15 +231,7 @@ public:
     {
         typedef sp_counted_impl_pda<P, D, A> impl_type;
 
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
         typedef typename std::allocator_traits<A>::template rebind_alloc< impl_type > A2;
-
-#else
-
-        typedef typename A::template rebind< impl_type >::other A2;
-
-#endif
 
         A2 a2( a );
 
@@ -286,15 +278,7 @@ public:
     {
         typedef sp_counted_impl_pda< P, D, A > impl_type;
 
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
         typedef typename std::allocator_traits<A>::template rebind_alloc< impl_type > A2;
-
-#else
-
-        typedef typename A::template rebind< impl_type >::other A2;
-
-#endif
 
         A2 a2( a );
 

@@ -59,15 +59,7 @@ private:
         {
             T * p = reinterpret_cast< T* >( storage_.data_ );
 
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
             std::allocator_traits<A>::destroy( a_, p );
-
-#else
-
-            p->~T();
-
-#endif
 
             initialized_ = false;
         }
@@ -113,15 +105,7 @@ public:
 
 template<class T, class A, class... Args> typename boost::detail::lsp_if_not_array<T>::type allocate_local_shared( A const & a, Args&&... args )
 {
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
     typedef typename std::allocator_traits<A>::template rebind_alloc<T> A2;
-
-#else
-
-    typedef typename A::template rebind<T>::other A2;
-
-#endif
 
     A2 a2( a );
 
@@ -132,15 +116,7 @@ template<class T, class A, class... Args> typename boost::detail::lsp_if_not_arr
     D * pd = static_cast< D* >( pt._internal_get_untyped_deleter() );
     void * pv = pd->address();
 
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
     std::allocator_traits<A2>::construct( a2, static_cast< T* >( pv ), std::forward<Args>( args )... );
-
-#else
-
-    ::new( pv ) T( std::forward<Args>( args )... );
-
-#endif
 
     pd->set_initialized();
 
@@ -154,15 +130,7 @@ template<class T, class A, class... Args> typename boost::detail::lsp_if_not_arr
 
 template<class T, class A> typename boost::detail::lsp_if_not_array<T>::type allocate_local_shared_noinit( A const & a )
 {
-#if !defined( BOOST_NO_CXX11_ALLOCATOR )
-
     typedef typename std::allocator_traits<A>::template rebind_alloc<T> A2;
-
-#else
-
-    typedef typename A::template rebind<T>::other A2;
-
-#endif
 
     A2 a2( a );
 

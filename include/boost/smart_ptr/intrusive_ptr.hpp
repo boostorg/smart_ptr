@@ -304,8 +304,6 @@ template< class T > std::size_t hash_value( boost::intrusive_ptr<T> const & p ) 
 
 // std::hash
 
-#if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
-
 namespace std
 {
 
@@ -318,7 +316,5 @@ template<class T> struct hash< ::boost::intrusive_ptr<T> >
 };
 
 } // namespace std
-
-#endif // #if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
 
 #endif  // #ifndef BOOST_SMART_PTR_INTRUSIVE_PTR_HPP_INCLUDED

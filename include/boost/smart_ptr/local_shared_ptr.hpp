@@ -630,8 +630,6 @@ template< class T > std::size_t hash_value( local_shared_ptr<T> const & p ) BOOS
 
 // std::hash
 
-#if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
-
 namespace std
 {
 
@@ -644,7 +642,5 @@ template<class T> struct hash< ::boost::local_shared_ptr<T> >
 };
 
 } // namespace std
-
-#endif // #if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
 
 #endif  // #ifndef BOOST_SMART_PTR_LOCAL_SHARED_PTR_HPP_INCLUDED

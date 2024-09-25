@@ -248,8 +248,6 @@ template< class T > std::size_t hash_value( boost::weak_ptr<T> const & p ) BOOST
 namespace std
 {
 
-#if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
-
 template<class T> struct hash< ::boost::weak_ptr<T> >
 {
     std::size_t operator()( ::boost::weak_ptr<T> const & p ) const BOOST_SP_NOEXCEPT
@@ -257,8 +255,6 @@ template<class T> struct hash< ::boost::weak_ptr<T> >
         return p.owner_hash_value();
     }
 };
-
-#endif // #if !defined(BOOST_NO_CXX11_HDR_FUNCTIONAL)
 
 template<class T> struct equal_to< ::boost::weak_ptr<T> >
 {

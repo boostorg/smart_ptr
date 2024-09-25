@@ -195,9 +195,7 @@ inline void sp_enable_shared_from_this( ... )
 
 template< class Y, class T > inline void sp_assert_convertible() BOOST_SP_NOEXCEPT
 {
-    // static_assert( sp_convertible< Y, T >::value );
-    typedef char tmp[ sp_convertible< Y, T >::value? 1: -1 ];
-    (void)sizeof( tmp );
+    static_assert( sp_convertible< Y, T >::value, "incompatible pointer type" );
 }
 
 // pointer constructor helper

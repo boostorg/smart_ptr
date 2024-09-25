@@ -8,16 +8,6 @@
 // http://www.boost.org/LICENSE_1_0.txt
 //
 
-#include <boost/config.hpp>
-
-#if defined( BOOST_NO_CXX11_HDR_TYPE_TRAITS )
-
-int main()
-{
-}
-
-#else
-
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/weak_ptr.hpp>
@@ -85,5 +75,3 @@ int main()
 
     return boost::report_errors();
 }
-
-#endif // #if defined( BOOST_NO_CXX11_HDR_TYPE_TRAITS )

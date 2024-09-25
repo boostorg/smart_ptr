@@ -65,4 +65,4 @@ int main()
     return boost::report_errors();
 }
 
-#endif // #if defined( BOOST_NO_CXX11_CONSEXPR )
+#endif

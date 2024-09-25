@@ -12,7 +12,6 @@
 
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/type_traits/has_virtual_destructor.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/config.hpp>
 #include <memory>
 
@@ -81,7 +80,7 @@ template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
-    BOOST_STATIC_ASSERT_MSG( boost::has_virtual_destructor<T>::value, "The target of dynamic_pointer_cast must have a virtual destructor." );
+    static_assert( boost::has_virtual_destructor<T>::value, "The target of dynamic_pointer_cast must have a virtual destructor." );
 
     T * p = dynamic_cast<T*>( r.get() );
     if( p ) r.release();

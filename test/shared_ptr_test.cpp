@@ -1979,10 +1979,6 @@ void test()
         BOOST_TEST(px? false: true);
         BOOST_TEST(!px);
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
-
         BOOST_TEST(get_pointer(px) == px.get());
     }
 
@@ -1992,10 +1988,6 @@ void test()
         BOOST_TEST(px? false: true);
         BOOST_TEST(!px);
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
-
         BOOST_TEST(get_pointer(px) == px.get());
     }
 
@@ -2004,10 +1996,6 @@ void test()
         BOOST_TEST(px.get() == 0);
         BOOST_TEST(px? false: true);
         BOOST_TEST(!px);
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
 
         BOOST_TEST(get_pointer(px) == px.get());
     }
@@ -2021,10 +2009,6 @@ void test()
         BOOST_TEST(&*px == px.get());
         BOOST_TEST(px.operator ->() == px.get());
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
-
         BOOST_TEST(get_pointer(px) == px.get());
     }
 
@@ -2036,10 +2020,6 @@ void test()
         BOOST_TEST(!!px);
         BOOST_TEST(&*px == px.get());
         BOOST_TEST(px.operator ->() == px.get());
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
 
         BOOST_TEST(get_pointer(px) == px.get());
     }

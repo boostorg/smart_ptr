@@ -50,8 +50,6 @@ public:
         return use_count_;
     }
 
-#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-
     inline friend void intrusive_ptr_add_ref(base const * p)
     {
         ++p->use_count_;
@@ -61,44 +59,11 @@ public:
     {
         if(--p->use_count_ == 0) delete p;
     }
-
-#else
-
-    void add_ref() const
-    {
-        ++use_count_;
-    }
-
-    void release() const
-    {
-        if(--use_count_ == 0) delete this;
-    }
-
-#endif
 };
 
 long base::instances = 0;
 
 } // namespace N
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-
-namespace boost
-{
-
-inline void intrusive_ptr_add_ref(N::base const * p)
-{
-    p->add_ref();
-}
-
-inline void intrusive_ptr_release(N::base const * p)
-{
-    p->release();
-}
-
-} // namespace boost
-
-#endif
 
 //
 
@@ -170,9 +135,6 @@ void pointer_constructor()
 
         BOOST_TEST( N::base::instances == 1 );
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::intrusive_ptr_add_ref;
-#endif
         intrusive_ptr_add_ref(p);
         BOOST_TEST(p->use_count() == 1);
 
@@ -581,9 +543,6 @@ void test()
 
         BOOST_TEST( N::base::instances == 1 );
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::intrusive_ptr_add_ref;
-#endif
         intrusive_ptr_add_ref( p );
         BOOST_TEST( p->use_count() == 1 );
 
@@ -649,9 +608,6 @@ void test()
         X * p = new X;
         BOOST_TEST( p->use_count() == 0 );
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::intrusive_ptr_add_ref;
-#endif
         intrusive_ptr_add_ref( p );
         BOOST_TEST( p->use_count() == 1 );
 
@@ -679,10 +635,6 @@ void test()
         BOOST_TEST(px? false: true);
         BOOST_TEST(!px);
 
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
-
         BOOST_TEST(get_pointer(px) == px.get());
     }
 
@@ -690,10 +642,6 @@ void test()
         boost::intrusive_ptr<X> px(0);
         BOOST_TEST(px? false: true);
         BOOST_TEST(!px);
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
 
         BOOST_TEST(get_pointer(px) == px.get());
     }
@@ -704,10 +652,6 @@ void test()
         BOOST_TEST(!!px);
         BOOST_TEST(&*px == px.get());
         BOOST_TEST(px.operator ->() == px.get());
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-        using boost::get_pointer;
-#endif
 
         BOOST_TEST(get_pointer(px) == px.get());
     }

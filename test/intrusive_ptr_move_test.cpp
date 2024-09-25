@@ -47,8 +47,6 @@ public:
         return use_count_;
     }
 
-#if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-
     inline friend void intrusive_ptr_add_ref(base const * p)
     {
         ++p->use_count_;
@@ -58,44 +56,11 @@ public:
     {
         if(--p->use_count_ == 0) delete p;
     }
-
-#else
-
-    void add_ref() const
-    {
-        ++use_count_;
-    }
-
-    void release() const
-    {
-        if(--use_count_ == 0) delete this;
-    }
-
-#endif
 };
 
 long base::instances = 0;
 
 } // namespace N
-
-#if defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
-
-namespace boost
-{
-
-inline void intrusive_ptr_add_ref(N::base const * p)
-{
-    p->add_ref();
-}
-
-inline void intrusive_ptr_release(N::base const * p)
-{
-    p->release();
-}
-
-} // namespace boost
-
-#endif
 
 //
 

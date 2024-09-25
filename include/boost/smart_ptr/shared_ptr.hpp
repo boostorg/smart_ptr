@@ -191,21 +191,6 @@ inline void sp_enable_shared_from_this( ... )
 
 #endif // _MANAGED
 
-#if !defined( BOOST_NO_SFINAE ) && !defined( BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION ) && !defined( BOOST_NO_AUTO_PTR )
-
-// rvalue auto_ptr support based on a technique by Dave Abrahams
-
-template< class T, class R > struct sp_enable_if_auto_ptr
-{
-};
-
-template< class T, class R > struct sp_enable_if_auto_ptr< std::auto_ptr< T >, R >
-{
-    typedef R type;
-}; 
-
-#endif
-
 // sp_assert_convertible
 
 template< class Y, class T > inline void sp_assert_convertible() BOOST_SP_NOEXCEPT

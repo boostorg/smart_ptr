@@ -29,7 +29,6 @@ int main()
         BOOST_TEST(result->x == 0);
         BOOST_TEST(result->y == 0);
     }
-#if !defined(BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX)
     {
         std::unique_ptr<type> result =
             boost::make_unique<type>({ 1, 2 });
@@ -44,6 +43,6 @@ int main()
         BOOST_TEST(result->x == 1);
         BOOST_TEST(result->y == 2);
     }
-#endif
+
     return boost::report_errors();
 }

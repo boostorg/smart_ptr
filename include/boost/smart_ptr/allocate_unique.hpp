@@ -372,7 +372,6 @@ allocate_unique(const A& alloc)
     return c.release();
 }
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 template<class T, class A, class... Args>
 inline typename enable_if_<!is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
@@ -382,7 +381,6 @@ allocate_unique(const A& alloc, Args&&... args)
     boost::alloc_construct(c.state(), c.get(), std::forward<Args>(args)...);
     return c.release();
 }
-#endif
 
 template<class T, class A>
 inline typename enable_if_<!is_array<T>::value,

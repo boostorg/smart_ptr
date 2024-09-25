@@ -5,14 +5,12 @@ Copyright 2017 Glen Joseph Fernandes
 Distributed under the Boost Software License, Version 1.0.
 (http://www.boost.org/LICENSE_1_0.txt)
 */
-#include <boost/config.hpp>
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
-    !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
-#include <boost/align/is_aligned.hpp>
-#include <boost/core/lightweight_test.hpp>
 #include <boost/smart_ptr/make_local_shared.hpp>
 #include <boost/smart_ptr/weak_ptr.hpp>
+#include <boost/align/is_aligned.hpp>
 #include <boost/type_traits/alignment_of.hpp>
+#include <boost/core/lightweight_test.hpp>
+#include <boost/config.hpp>
 
 class type {
 public:
@@ -230,9 +228,3 @@ int main()
     }
     return boost::report_errors();
 }
-#else
-int main()
-{
-    return 0;
-}
-#endif

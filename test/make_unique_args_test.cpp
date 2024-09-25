@@ -55,7 +55,6 @@ int main()
         BOOST_TEST(type::instances == 0);
     }
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
     {
         std::unique_ptr<type> result = boost::make_unique<type>(1);
         BOOST_TEST(result.get() != 0);
@@ -143,6 +142,6 @@ int main()
         result.reset();
         BOOST_TEST(type::instances == 0);
     }
-#endif
+
     return boost::report_errors();
 }

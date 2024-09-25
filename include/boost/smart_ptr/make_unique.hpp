@@ -25,14 +25,12 @@ make_unique()
     return std::unique_ptr<T>(new T());
 }
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 template<class T, class... Args>
 inline typename enable_if_<!is_array<T>::value, std::unique_ptr<T> >::type
 make_unique(Args&&... args)
 {
     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
-#endif
 
 template<class T>
 inline typename enable_if_<!is_array<T>::value, std::unique_ptr<T> >::type

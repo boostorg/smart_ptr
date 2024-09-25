@@ -163,8 +163,10 @@ public:
         return px;
     }
 
-// implicit conversion to "bool"
-#include <boost/smart_ptr/detail/operator_bool.hpp>
+    explicit operator bool () const BOOST_SP_NOEXCEPT
+    {
+        return px != 0;
+    }
 
     void swap(intrusive_ptr & rhs) BOOST_SP_NOEXCEPT
     {

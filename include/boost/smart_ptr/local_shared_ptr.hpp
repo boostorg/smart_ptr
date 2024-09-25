@@ -386,8 +386,10 @@ public:
         return px;
     }
 
-    // implicit conversion to "bool"
-#include <boost/smart_ptr/detail/operator_bool.hpp>
+    explicit operator bool () const BOOST_SP_NOEXCEPT
+    {
+        return px != 0;
+    }
 
     long local_use_count() const BOOST_SP_NOEXCEPT
     {

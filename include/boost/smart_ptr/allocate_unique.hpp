@@ -302,10 +302,8 @@ public:
     }
 };
 
-#if !defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
 template<class T, class A>
 using alloc_noinit_deleter = alloc_deleter<T, noinit_adaptor<A> >;
-#endif
 
 namespace detail {
 

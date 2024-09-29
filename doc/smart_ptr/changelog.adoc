@@ -13,6 +13,11 @@ http://www.boost.org/LICENSE_1_0.txt
 :toc-title:
 :idprefix: changelog_
 
+## Changes in 1.87.0
+
+* {cpp}03 is no longer supported, a {cpp}11 compiler is required.
+  This includes GCC 4.8 or later, and MSVC 14.0 or later.
+
 ## Changes in 1.79.0
 
 * Added `get_allocator_pointer`

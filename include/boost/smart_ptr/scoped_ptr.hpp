@@ -12,6 +12,7 @@
 
 #include <boost/smart_ptr/detail/sp_disable_deprecated.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/smart_ptr/detail/deprecated_macros.hpp>
 #include <boost/core/checked_delete.hpp>
 #include <boost/assert.hpp>
 #include <boost/config/workaround.hpp>

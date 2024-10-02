@@ -38,25 +38,25 @@ public:
     {
     }
 
-    explicit local_sp_deleter( D const& d ) BOOST_SP_NOEXCEPT: d_( d )
+    explicit local_sp_deleter( D const& d ) noexcept: d_( d )
     {
     }
 
-    explicit local_sp_deleter( D&& d ) BOOST_SP_NOEXCEPT: d_( std::move(d) )
+    explicit local_sp_deleter( D&& d ) noexcept: d_( std::move(d) )
     {
     }
 
-    D& deleter() BOOST_SP_NOEXCEPT
+    D& deleter() noexcept
     {
         return d_;
     }
 
-    template<class Y> void operator()( Y* p ) BOOST_SP_NOEXCEPT
+    template<class Y> void operator()( Y* p ) noexcept
     {
         d_( p );
     }
 
-    void operator()( std::nullptr_t p ) BOOST_SP_NOEXCEPT
+    void operator()( std::nullptr_t p ) noexcept
     {
         d_( p );
     }
@@ -66,12 +66,12 @@ template<> class local_sp_deleter<void>
 {
 };
 
-template<class D> D * get_local_deleter( local_sp_deleter<D> * p ) BOOST_SP_NOEXCEPT
+template<class D> D * get_local_deleter( local_sp_deleter<D> * p ) noexcept
 {
     return &p->deleter();
 }
 
-inline void * get_local_deleter( local_sp_deleter<void> * /*p*/ ) BOOST_SP_NOEXCEPT
+inline void * get_local_deleter( local_sp_deleter<void> * /*p*/ ) noexcept
 {
     return 0;
 }

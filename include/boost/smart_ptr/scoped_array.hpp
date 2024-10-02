@@ -53,14 +53,14 @@ public:
 
     typedef T element_type;
 
-    explicit scoped_array( T * p = 0 ) BOOST_SP_NOEXCEPT : px( p )
+    explicit scoped_array( T * p = 0 ) noexcept : px( p )
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_array_constructor_hook( px );
 #endif
     }
 
-    ~scoped_array() BOOST_SP_NOEXCEPT
+    ~scoped_array() noexcept
     {
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         boost::sp_array_destructor_hook( px );
@@ -81,17 +81,17 @@ public:
         return px[i];
     }
 
-    T * get() const BOOST_SP_NOEXCEPT
+    T * get() const noexcept
     {
         return px;
     }
 
-    explicit operator bool () const BOOST_SP_NOEXCEPT
+    explicit operator bool () const noexcept
     {
         return px != 0;
     }
 
-    void swap(scoped_array & b) BOOST_SP_NOEXCEPT
+    void swap(scoped_array & b) noexcept
     {
         T * tmp = b.px;
         b.px = px;
@@ -99,27 +99,27 @@ public:
     }
 };
 
-template<class T> inline bool operator==( scoped_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( scoped_array<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( std::nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, scoped_array<T> const & p ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( scoped_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( scoped_array<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( std::nullptr_t, scoped_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, scoped_array<T> const & p ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T> inline void swap(scoped_array<T> & a, scoped_array<T> & b) BOOST_SP_NOEXCEPT
+template<class T> inline void swap(scoped_array<T> & a, scoped_array<T> & b) noexcept
 {
     a.swap(b);
 }

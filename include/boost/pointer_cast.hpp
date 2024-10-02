@@ -10,9 +10,8 @@
 #ifndef BOOST_POINTER_CAST_HPP
 #define BOOST_POINTER_CAST_HPP
 
-#include <boost/type_traits/has_virtual_destructor.hpp>
-#include <boost/config.hpp>
 #include <memory>
+#include <type_traits>
 
 namespace boost { 
 
@@ -79,7 +78,7 @@ template<class T, class U> std::unique_ptr<T> dynamic_pointer_cast( std::unique_
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
-    static_assert( boost::has_virtual_destructor<T>::value, "The target of dynamic_pointer_cast must have a virtual destructor." );
+    static_assert( std::has_virtual_destructor<T>::value, "The target of dynamic_pointer_cast must have a virtual destructor." );
 
     T * p = dynamic_cast<T*>( r.get() );
     if( p ) r.release();

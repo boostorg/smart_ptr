@@ -53,7 +53,7 @@ private:
 
 private:
 
-    void destroy() BOOST_SP_NOEXCEPT
+    void destroy() noexcept
     {
         if( initialized_ )
         {
@@ -67,35 +67,35 @@ private:
 
 public:
 
-    explicit lsp_ms_deleter( A const & a ) BOOST_SP_NOEXCEPT : a_( a ), initialized_( false )
+    explicit lsp_ms_deleter( A const & a ) noexcept : a_( a ), initialized_( false )
     {
     }
 
     // optimization: do not copy storage_
-    lsp_ms_deleter( lsp_ms_deleter const & r ) BOOST_SP_NOEXCEPT : a_( r.a_), initialized_( false )
+    lsp_ms_deleter( lsp_ms_deleter const & r ) noexcept : a_( r.a_), initialized_( false )
     {
     }
 
-    ~lsp_ms_deleter() BOOST_SP_NOEXCEPT
-    {
-        destroy();
-    }
-
-    void operator()( T * ) BOOST_SP_NOEXCEPT
+    ~lsp_ms_deleter() noexcept
     {
         destroy();
     }
 
-    static void operator_fn( T* ) BOOST_SP_NOEXCEPT // operator() can't be static
+    void operator()( T * ) noexcept
+    {
+        destroy();
+    }
+
+    static void operator_fn( T* ) noexcept // operator() can't be static
     {
     }
 
-    void * address() BOOST_SP_NOEXCEPT
+    void * address() noexcept
     {
         return storage_.data_;
     }
 
-    void set_initialized() BOOST_SP_NOEXCEPT
+    void set_initialized() noexcept
     {
         initialized_ = true;
     }

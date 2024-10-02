@@ -8,7 +8,6 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_ALLOCATE_UNIQUE_HPP
 #define BOOST_SMART_PTR_ALLOCATE_UNIQUE_HPP
 
-#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/core/allocator_access.hpp>
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/empty_value.hpp>
@@ -67,41 +66,41 @@ class sp_alloc_ptr {
 public:
     typedef T element_type;
 
-    sp_alloc_ptr() BOOST_SP_NOEXCEPT
+    sp_alloc_ptr() noexcept
         : p_() { }
 
 #if defined(BOOST_MSVC) && BOOST_MSVC == 1600
-    sp_alloc_ptr(T* p) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(T* p) noexcept
         : p_(const_cast<typename boost::remove_cv<T>::type*>(p)) { }
 #endif
 
-    sp_alloc_ptr(std::size_t, P p) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::size_t, P p) noexcept
         : p_(p) { }
 
-    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) noexcept
         : p_() { }
 
     T& operator*() const {
         return *p_;
     }
 
-    T* operator->() const BOOST_SP_NOEXCEPT {
+    T* operator->() const noexcept {
         return boost::to_address(p_);
     }
 
-    explicit operator bool() const BOOST_SP_NOEXCEPT {
+    explicit operator bool() const noexcept {
         return !!p_;
     }
 
-    bool operator!() const BOOST_SP_NOEXCEPT {
+    bool operator!() const noexcept {
         return !p_;
     }
 
-    P ptr() const BOOST_SP_NOEXCEPT {
+    P ptr() const noexcept {
         return p_;
     }
 
-    BOOST_STATIC_CONSTEXPR std::size_t size() BOOST_SP_NOEXCEPT {
+    BOOST_STATIC_CONSTEXPR std::size_t size() noexcept {
         return 1;
     }
 
@@ -122,33 +121,33 @@ class sp_alloc_ptr<T[], P> {
 public:
     typedef T element_type;
 
-    sp_alloc_ptr() BOOST_SP_NOEXCEPT
+    sp_alloc_ptr() noexcept
         : p_() { }
 
-    sp_alloc_ptr(std::size_t n, P p) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::size_t n, P p) noexcept
         : p_(p)
         , n_(n) { }
 
-    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) noexcept
         : p_() { }
 
     T& operator[](std::size_t i) const {
         return p_[i];
     }
 
-    explicit operator bool() const BOOST_SP_NOEXCEPT {
+    explicit operator bool() const noexcept {
         return !!p_;
     }
 
-    bool operator!() const BOOST_SP_NOEXCEPT {
+    bool operator!() const noexcept {
         return !p_;
     }
 
-    P ptr() const BOOST_SP_NOEXCEPT {
+    P ptr() const noexcept {
         return p_;
     }
 
-    std::size_t size() const BOOST_SP_NOEXCEPT {
+    std::size_t size() const noexcept {
         return n_;
     }
 
@@ -170,32 +169,32 @@ class sp_alloc_ptr<T[N], P> {
 public:
     typedef T element_type;
 
-    sp_alloc_ptr() BOOST_SP_NOEXCEPT
+    sp_alloc_ptr() noexcept
         : p_() { }
 
-    sp_alloc_ptr(std::size_t, P p) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::size_t, P p) noexcept
         : p_(p) { }
 
-    sp_alloc_ptr(std::nullptr_t) BOOST_SP_NOEXCEPT
+    sp_alloc_ptr(std::nullptr_t) noexcept
         : p_() { }
 
     T& operator[](std::size_t i) const {
         return p_[i];
     }
 
-    explicit operator bool() const BOOST_SP_NOEXCEPT {
+    explicit operator bool() const noexcept {
         return !!p_;
     }
 
-    bool operator!() const BOOST_SP_NOEXCEPT {
+    bool operator!() const noexcept {
         return !p_;
     }
 
-    P ptr() const BOOST_SP_NOEXCEPT {
+    P ptr() const noexcept {
         return p_;
     }
 
-    BOOST_STATIC_CONSTEXPR std::size_t size() BOOST_SP_NOEXCEPT {
+    BOOST_STATIC_CONSTEXPR std::size_t size() noexcept {
         return N;
     }
 
@@ -228,7 +227,7 @@ operator!=(const sp_alloc_ptr<T, P>& lhs, const sp_alloc_ptr<T, P>& rhs)
 template<class T, class P>
 inline bool
 operator==(const sp_alloc_ptr<T, P>& lhs,
-    std::nullptr_t) BOOST_SP_NOEXCEPT
+    std::nullptr_t) noexcept
 {
     return !lhs.ptr();
 }
@@ -236,7 +235,7 @@ operator==(const sp_alloc_ptr<T, P>& lhs,
 template<class T, class P>
 inline bool
 operator==(std::nullptr_t,
-    const sp_alloc_ptr<T, P>& rhs) BOOST_SP_NOEXCEPT
+    const sp_alloc_ptr<T, P>& rhs) noexcept
 {
     return !rhs.ptr();
 }
@@ -244,7 +243,7 @@ operator==(std::nullptr_t,
 template<class T, class P>
 inline bool
 operator!=(const sp_alloc_ptr<T, P>& lhs,
-    std::nullptr_t) BOOST_SP_NOEXCEPT
+    std::nullptr_t) noexcept
 {
     return !!lhs.ptr();
 }
@@ -252,7 +251,7 @@ operator!=(const sp_alloc_ptr<T, P>& lhs,
 template<class T, class P>
 inline bool
 operator!=(std::nullptr_t,
-    const sp_alloc_ptr<T, P>& rhs) BOOST_SP_NOEXCEPT
+    const sp_alloc_ptr<T, P>& rhs) noexcept
 {
     return !!rhs.ptr();
 }
@@ -293,7 +292,7 @@ public:
     typedef detail::sp_alloc_ptr<T,
         typename allocator_pointer<allocator>::type> pointer;
 
-    explicit alloc_deleter(const allocator& a) BOOST_SP_NOEXCEPT
+    explicit alloc_deleter(const allocator& a) noexcept
         : base(empty_init_t(), a) { }
 
     void operator()(pointer p) {
@@ -330,15 +329,15 @@ public:
         }
     }
 
-    typename allocator::value_type* get() const BOOST_SP_NOEXCEPT {
+    typename allocator::value_type* get() const noexcept {
         return boost::to_address(p_);
     }
 
-    allocator& state() BOOST_SP_NOEXCEPT {
+    allocator& state() noexcept {
         return a_;
     }
 
-    type release() BOOST_SP_NOEXCEPT {
+    type release() noexcept {
         pointer p = p_;
         p_ = pointer();
         return type(typename deleter::pointer(n_, p), deleter(a_));

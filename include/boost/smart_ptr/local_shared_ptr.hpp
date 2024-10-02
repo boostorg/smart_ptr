@@ -12,6 +12,7 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/smart_ptr/detail/sp_noexcept.hpp>
 
 namespace boost
 {
@@ -126,7 +127,7 @@ public:
 
     // destructor
 
-    ~local_shared_ptr() BOOST_SP_NOEXCEPT
+    ~local_shared_ptr() noexcept
     {
         if( pn )
         {
@@ -136,16 +137,16 @@ public:
 
     // constructors
 
-    BOOST_CONSTEXPR local_shared_ptr() BOOST_SP_NOEXCEPT : px( 0 ), pn( 0 )
+    BOOST_CONSTEXPR local_shared_ptr() noexcept : px( 0 ), pn( 0 )
     {
     }
 
-    BOOST_CONSTEXPR local_shared_ptr( std::nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn( 0 )
+    BOOST_CONSTEXPR local_shared_ptr( std::nullptr_t ) noexcept : px( 0 ), pn( 0 )
     {
     }
 
     // internal constructor, used by make_shared
-    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) BOOST_SP_NOEXCEPT : px( px_ ), pn( pn_ )
+    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) noexcept : px( px_ ), pn( pn_ )
     {
     }
 
@@ -226,7 +227,7 @@ public:
 
     // copy constructor
 
-    local_shared_ptr( local_shared_ptr const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr const & r ) noexcept : px( r.px ), pn( r.pn )
     {
         if( pn )
         {
@@ -236,7 +237,7 @@ public:
 
     // move constructor
 
-    local_shared_ptr( local_shared_ptr && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr && r ) noexcept : px( r.px ), pn( r.pn )
     {
         r.px = 0;
         r.pn = 0;
@@ -245,7 +246,7 @@ public:
     // converting copy constructor
 
     template<class Y> local_shared_ptr( local_shared_ptr<Y> const & r,
-        typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() ) BOOST_SP_NOEXCEPT
+        typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() ) noexcept
         : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y, T >();
@@ -259,7 +260,7 @@ public:
     // converting move constructor
 
     template<class Y> local_shared_ptr( local_shared_ptr<Y> && r,
-        typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() ) BOOST_SP_NOEXCEPT
+        typename boost::detail::sp_enable_if_convertible<Y, T>::type = boost::detail::sp_empty() ) noexcept
         : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y, T >();
@@ -271,7 +272,7 @@ public:
     // aliasing
 
     template<class Y>
-    local_shared_ptr( local_shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr<Y> const & r, element_type * p ) noexcept : px( p ), pn( r.pn )
     {
         if( pn )
         {
@@ -280,7 +281,7 @@ public:
     }
 
     template<class Y>
-    local_shared_ptr( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
+    local_shared_ptr( local_shared_ptr<Y> && r, element_type * p ) noexcept : px( p ), pn( r.pn )
     {
         r.px = 0;
         r.pn = 0;
@@ -288,32 +289,32 @@ public:
 
     // assignment
 
-    local_shared_ptr & operator=( local_shared_ptr const & r ) BOOST_SP_NOEXCEPT
+    local_shared_ptr & operator=( local_shared_ptr const & r ) noexcept
     {
         local_shared_ptr( r ).swap( *this );
         return *this;
     }
 
-    template<class Y> local_shared_ptr & operator=( local_shared_ptr<Y> const & r ) BOOST_SP_NOEXCEPT
+    template<class Y> local_shared_ptr & operator=( local_shared_ptr<Y> const & r ) noexcept
     {
         local_shared_ptr( r ).swap( *this );
         return *this;
     }
 
-    local_shared_ptr & operator=( local_shared_ptr && r ) BOOST_SP_NOEXCEPT
+    local_shared_ptr & operator=( local_shared_ptr && r ) noexcept
     {
         local_shared_ptr( std::move( r ) ).swap( *this );
         return *this;
     }
 
     template<class Y>
-    local_shared_ptr & operator=( local_shared_ptr<Y> && r ) BOOST_SP_NOEXCEPT
+    local_shared_ptr & operator=( local_shared_ptr<Y> && r ) noexcept
     {
         local_shared_ptr( std::move( r ) ).swap( *this );
         return *this;
     }
 
-    local_shared_ptr & operator=( std::nullptr_t ) BOOST_SP_NOEXCEPT
+    local_shared_ptr & operator=( std::nullptr_t ) noexcept
     {
         local_shared_ptr().swap(*this);
         return *this;
@@ -331,7 +332,7 @@ public:
 
     // reset
 
-    void reset() BOOST_SP_NOEXCEPT
+    void reset() noexcept
     {
         local_shared_ptr().swap( *this );
     }
@@ -351,24 +352,24 @@ public:
         local_shared_ptr( p, d, a ).swap( *this );
     }
 
-    template<class Y> void reset( local_shared_ptr<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT
+    template<class Y> void reset( local_shared_ptr<Y> const & r, element_type * p ) noexcept
     {
         local_shared_ptr( r, p ).swap( *this );
     }
 
-    template<class Y> void reset( local_shared_ptr<Y> && r, element_type * p ) BOOST_SP_NOEXCEPT
+    template<class Y> void reset( local_shared_ptr<Y> && r, element_type * p ) noexcept
     {
         local_shared_ptr( std::move( r ), p ).swap( *this );
     }
 
     // accessors
 
-    typename boost::detail::sp_dereference< T >::type operator* () const BOOST_SP_NOEXCEPT
+    typename boost::detail::sp_dereference< T >::type operator* () const noexcept
     {
         return *px;
     }
 
-    typename boost::detail::sp_member_access< T >::type operator-> () const BOOST_SP_NOEXCEPT
+    typename boost::detail::sp_member_access< T >::type operator-> () const noexcept
     {
         return px;
     }
@@ -381,24 +382,24 @@ public:
         return static_cast< typename boost::detail::sp_array_access< T >::type >( px[ i ] );
     }
 
-    element_type * get() const BOOST_SP_NOEXCEPT
+    element_type * get() const noexcept
     {
         return px;
     }
 
-    explicit operator bool () const BOOST_SP_NOEXCEPT
+    explicit operator bool () const noexcept
     {
         return px != 0;
     }
 
-    long local_use_count() const BOOST_SP_NOEXCEPT
+    long local_use_count() const noexcept
     {
         return pn? pn->local_use_count(): 0;
     }
 
     // conversions to shared_ptr, weak_ptr
 
-    template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator shared_ptr<Y>() const BOOST_SP_NOEXCEPT
+    template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator shared_ptr<Y>() const noexcept
     {
         boost::detail::sp_assert_convertible<T, Y>();
 
@@ -412,7 +413,7 @@ public:
         }
     }
 
-    template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator weak_ptr<Y>() const BOOST_SP_NOEXCEPT
+    template<class Y, class E = typename boost::detail::sp_enable_if_convertible<T,Y>::type> operator weak_ptr<Y>() const noexcept
     {
         boost::detail::sp_assert_convertible<T, Y>();
 
@@ -428,7 +429,7 @@ public:
 
     // swap
 
-    void swap( local_shared_ptr & r ) BOOST_SP_NOEXCEPT
+    void swap( local_shared_ptr & r ) noexcept
     {
         std::swap( px, r.px );
         std::swap( pn, r.pn );
@@ -436,80 +437,80 @@ public:
 
     // owner_before
 
-    template<class Y> bool owner_before( local_shared_ptr<Y> const & r ) const BOOST_SP_NOEXCEPT
+    template<class Y> bool owner_before( local_shared_ptr<Y> const & r ) const noexcept
     {
         return std::less< boost::detail::local_counted_base* >()( pn, r.pn );
     }
 
     // owner_equals
 
-    template<class Y> bool owner_equals( local_shared_ptr<Y> const & r ) const BOOST_SP_NOEXCEPT
+    template<class Y> bool owner_equals( local_shared_ptr<Y> const & r ) const noexcept
     {
         return pn == r.pn;
     }
 };
 
-template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, local_shared_ptr<U> const & b ) noexcept
 {
     return a.get() == b.get();
 }
 
-template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a, local_shared_ptr<U> const & b ) noexcept
 {
     return a.get() != b.get();
 }
 
-template<class T> inline bool operator==( local_shared_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( local_shared_ptr<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( std::nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, local_shared_ptr<T> const & p ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( local_shared_ptr<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( local_shared_ptr<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( std::nullptr_t, local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, local_shared_ptr<T> const & p ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator==( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) noexcept
 {
     return a.get() == b.get();
 }
 
-template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator!=( local_shared_ptr<T> const & a, shared_ptr<U> const & b ) noexcept
 {
     return a.get() != b.get();
 }
 
-template<class T, class U> inline bool operator==( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator==( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) noexcept
 {
     return a.get() == b.get();
 }
 
-template<class T, class U> inline bool operator!=( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator!=( shared_ptr<T> const & a, local_shared_ptr<U> const & b ) noexcept
 {
     return a.get() != b.get();
 }
 
-template<class T, class U> inline bool operator<(local_shared_ptr<T> const & a, local_shared_ptr<U> const & b) BOOST_SP_NOEXCEPT
+template<class T, class U> inline bool operator<(local_shared_ptr<T> const & a, local_shared_ptr<U> const & b) noexcept
 {
     return a.owner_before( b );
 }
 
-template<class T> inline void swap( local_shared_ptr<T> & a, local_shared_ptr<T> & b ) BOOST_SP_NOEXCEPT
+template<class T> inline void swap( local_shared_ptr<T> & a, local_shared_ptr<T> & b ) noexcept
 {
     a.swap( b );
 }
 
-template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared_ptr<U> const & r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared_ptr<U> const & r ) noexcept
 {
     (void) static_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -519,7 +520,7 @@ template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared
     return local_shared_ptr<T>( r, p );
 }
 
-template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_ptr<U> const & r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_ptr<U> const & r ) noexcept
 {
     (void) const_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -529,7 +530,7 @@ template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_
     return local_shared_ptr<T>( r, p );
 }
 
-template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_shared_ptr<U> const & r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_shared_ptr<U> const & r ) noexcept
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -539,7 +540,7 @@ template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_share
     return p? local_shared_ptr<T>( r, p ): local_shared_ptr<T>();
 }
 
-template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_shared_ptr<U> const & r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_shared_ptr<U> const & r ) noexcept
 {
     (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -549,7 +550,7 @@ template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_s
     return local_shared_ptr<T>( r, p );
 }
 
-template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared_ptr<U> && r ) noexcept
 {
     (void) static_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -559,7 +560,7 @@ template<class T, class U> local_shared_ptr<T> static_pointer_cast( local_shared
     return local_shared_ptr<T>( std::move(r), p );
 }
 
-template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_ptr<U> && r ) noexcept
 {
     (void) const_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -569,7 +570,7 @@ template<class T, class U> local_shared_ptr<T> const_pointer_cast( local_shared_
     return local_shared_ptr<T>( std::move(r), p );
 }
 
-template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_shared_ptr<U> && r ) noexcept
 {
     (void) dynamic_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -579,7 +580,7 @@ template<class T, class U> local_shared_ptr<T> dynamic_pointer_cast( local_share
     return p? local_shared_ptr<T>( std::move(r), p ): local_shared_ptr<T>();
 }
 
-template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_shared_ptr<U> && r ) BOOST_SP_NOEXCEPT
+template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_shared_ptr<U> && r ) noexcept
 {
     (void) reinterpret_cast< T* >( static_cast< U* >( 0 ) );
 
@@ -591,7 +592,7 @@ template<class T, class U> local_shared_ptr<T> reinterpret_pointer_cast( local_s
 
 // get_pointer() enables boost::mem_fn to recognize local_shared_ptr
 
-template<class T> inline typename local_shared_ptr<T>::element_type * get_pointer( local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline typename local_shared_ptr<T>::element_type * get_pointer( local_shared_ptr<T> const & p ) noexcept
 {
     return p.get();
 }
@@ -606,7 +607,7 @@ template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< ( std:
 
 // get_deleter
 
-template<class D, class T> D * get_deleter( local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template<class D, class T> D * get_deleter( local_shared_ptr<T> const & p ) noexcept
 {
     return get_deleter<D>( shared_ptr<T>( p ) );
 }
@@ -615,7 +616,7 @@ template<class D, class T> D * get_deleter( local_shared_ptr<T> const & p ) BOOS
 
 template< class T > struct hash;
 
-template< class T > std::size_t hash_value( local_shared_ptr<T> const & p ) BOOST_SP_NOEXCEPT
+template< class T > std::size_t hash_value( local_shared_ptr<T> const & p ) noexcept
 {
     return boost::hash< typename local_shared_ptr<T>::element_type* >()( p.get() );
 }
@@ -629,7 +630,7 @@ namespace std
 
 template<class T> struct hash< ::boost::local_shared_ptr<T> >
 {
-    std::size_t operator()( ::boost::local_shared_ptr<T> const & p ) const BOOST_SP_NOEXCEPT
+    std::size_t operator()( ::boost::local_shared_ptr<T> const & p ) const noexcept
     {
         return std::hash< typename ::boost::local_shared_ptr<T>::element_type* >()( p.get() );
     }

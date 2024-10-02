@@ -49,11 +49,11 @@ public:
 
     typedef T element_type;
 
-    shared_array() BOOST_SP_NOEXCEPT : px( 0 ), pn()
+    shared_array() noexcept : px( 0 ), pn()
     {
     }
 
-    shared_array( std::nullptr_t ) BOOST_SP_NOEXCEPT : px( 0 ), pn()
+    shared_array( std::nullptr_t ) noexcept : px( 0 ), pn()
     {
     }
 
@@ -84,11 +84,11 @@ public:
 //  generated copy constructor, destructor are fine...
 // ... except in C++0x, move disables the implicit copy
 
-    shared_array( shared_array const & r ) BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
+    shared_array( shared_array const & r ) noexcept : px( r.px ), pn( r.pn )
     {
     }
 
-    shared_array( shared_array && r ) BOOST_SP_NOEXCEPT : px( r.px ), pn()
+    shared_array( shared_array && r ) noexcept : px( r.px ), pn()
     {
         pn.swap( r.pn );
         r.px = 0;
@@ -98,7 +98,7 @@ public:
 
     template<class Y>
     shared_array( shared_array<Y> const & r, typename boost::detail::sp_enable_if_convertible< Y[], T[] >::type = boost::detail::sp_empty() )
-    BOOST_SP_NOEXCEPT : px( r.px ), pn( r.pn )
+    noexcept : px( r.px ), pn( r.pn )
     {
         boost::detail::sp_assert_convertible< Y[], T[] >();
     }
@@ -106,39 +106,39 @@ public:
     // aliasing
 
     template< class Y >
-    shared_array( shared_array<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT : px( p ), pn( r.pn )
+    shared_array( shared_array<Y> const & r, element_type * p ) noexcept : px( p ), pn( r.pn )
     {
     }
 
     // assignment
 
-    shared_array & operator=( shared_array const & r ) BOOST_SP_NOEXCEPT
+    shared_array & operator=( shared_array const & r ) noexcept
     {
         this_type( r ).swap( *this );
         return *this;
     }
 
     template<class Y>
-    shared_array & operator=( shared_array<Y> const & r ) BOOST_SP_NOEXCEPT
+    shared_array & operator=( shared_array<Y> const & r ) noexcept
     {
         this_type( r ).swap( *this );
         return *this;
     }
 
-    shared_array & operator=( shared_array && r ) BOOST_SP_NOEXCEPT
+    shared_array & operator=( shared_array && r ) noexcept
     {
         this_type( static_cast< shared_array && >( r ) ).swap( *this );
         return *this;
     }
 
     template<class Y>
-    shared_array & operator=( shared_array<Y> && r ) BOOST_SP_NOEXCEPT
+    shared_array & operator=( shared_array<Y> && r ) noexcept
     {
         this_type( static_cast< shared_array<Y> && >( r ) ).swap( *this );
         return *this;
     }
 
-    void reset() BOOST_SP_NOEXCEPT
+    void reset() noexcept
     {
         this_type().swap( *this );
     }
@@ -159,7 +159,7 @@ public:
         this_type( p, d, a ).swap( *this );
     }
 
-    template<class Y> void reset( shared_array<Y> const & r, element_type * p ) BOOST_SP_NOEXCEPT
+    template<class Y> void reset( shared_array<Y> const & r, element_type * p ) noexcept
     {
         this_type( r, p ).swap( *this );
     }
@@ -171,33 +171,33 @@ public:
         return px[i];
     }
     
-    T * get() const BOOST_SP_NOEXCEPT
+    T * get() const noexcept
     {
         return px;
     }
 
-    explicit operator bool () const BOOST_SP_NOEXCEPT
+    explicit operator bool () const noexcept
     {
         return px != 0;
     }
 
-    bool unique() const BOOST_SP_NOEXCEPT
+    bool unique() const noexcept
     {
         return pn.unique();
     }
 
-    long use_count() const BOOST_SP_NOEXCEPT
+    long use_count() const noexcept
     {
         return pn.use_count();
     }
 
-    void swap(shared_array<T> & other) BOOST_SP_NOEXCEPT
+    void swap(shared_array<T> & other) noexcept
     {
         std::swap(px, other.px);
         pn.swap(other.pn);
     }
 
-    void * _internal_get_deleter( boost::detail::sp_typeinfo_ const & ti ) const BOOST_SP_NOEXCEPT
+    void * _internal_get_deleter( boost::detail::sp_typeinfo_ const & ti ) const noexcept
     {
         return pn.get_deleter( ti );
     }
@@ -211,47 +211,47 @@ private:
 
 };  // shared_array
 
-template<class T> inline bool operator==(shared_array<T> const & a, shared_array<T> const & b) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==(shared_array<T> const & a, shared_array<T> const & b) noexcept
 {
     return a.get() == b.get();
 }
 
-template<class T> inline bool operator!=(shared_array<T> const & a, shared_array<T> const & b) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=(shared_array<T> const & a, shared_array<T> const & b) noexcept
 {
     return a.get() != b.get();
 }
 
-template<class T> inline bool operator==( shared_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( shared_array<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator==( std::nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator==( std::nullptr_t, shared_array<T> const & p ) noexcept
 {
     return p.get() == 0;
 }
 
-template<class T> inline bool operator!=( shared_array<T> const & p, std::nullptr_t ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( shared_array<T> const & p, std::nullptr_t ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator!=( std::nullptr_t, shared_array<T> const & p ) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator!=( std::nullptr_t, shared_array<T> const & p ) noexcept
 {
     return p.get() != 0;
 }
 
-template<class T> inline bool operator<(shared_array<T> const & a, shared_array<T> const & b) BOOST_SP_NOEXCEPT
+template<class T> inline bool operator<(shared_array<T> const & a, shared_array<T> const & b) noexcept
 {
     return std::less<T*>()(a.get(), b.get());
 }
 
-template<class T> void swap(shared_array<T> & a, shared_array<T> & b) BOOST_SP_NOEXCEPT
+template<class T> void swap(shared_array<T> & a, shared_array<T> & b) noexcept
 {
     a.swap(b);
 }
 
-template< class D, class T > D * get_deleter( shared_array<T> const & p ) BOOST_SP_NOEXCEPT
+template< class D, class T > D * get_deleter( shared_array<T> const & p ) noexcept
 {
     return static_cast< D * >( p._internal_get_deleter( BOOST_SP_TYPEID_(D) ) );
 }

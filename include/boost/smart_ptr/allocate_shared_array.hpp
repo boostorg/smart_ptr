@@ -60,7 +60,7 @@ struct sp_align_up {
 
 template<class T>
 BOOST_CONSTEXPR inline std::size_t
-sp_objects(std::size_t size) BOOST_SP_NOEXCEPT
+sp_objects(std::size_t size) noexcept
 {
     return (size + sizeof(T) - 1) / sizeof(T);
 }
@@ -71,15 +71,15 @@ public:
     typedef A type;
 
     template<class U>
-    sp_array_state(const U& _allocator, std::size_t _size) BOOST_SP_NOEXCEPT
+    sp_array_state(const U& _allocator, std::size_t _size) noexcept
         : allocator_(_allocator),
           size_(_size) { }
 
-    A& allocator() BOOST_SP_NOEXCEPT {
+    A& allocator() noexcept {
         return allocator_;
     }
 
-    std::size_t size() const BOOST_SP_NOEXCEPT {
+    std::size_t size() const noexcept {
         return size_;
     }
 
@@ -94,14 +94,14 @@ public:
     typedef A type;
 
     template<class U>
-    sp_size_array_state(const U& _allocator, std::size_t) BOOST_SP_NOEXCEPT
+    sp_size_array_state(const U& _allocator, std::size_t) noexcept
         : allocator_(_allocator) { }
 
-    A& allocator() BOOST_SP_NOEXCEPT {
+    A& allocator() noexcept {
         return allocator_;
     }
 
-    BOOST_CONSTEXPR std::size_t size() const BOOST_SP_NOEXCEPT {
+    BOOST_CONSTEXPR std::size_t size() const noexcept {
         return N;
     }
 
@@ -126,7 +126,7 @@ struct sp_array_offset {
 
 template<class U, class T>
 inline U*
-sp_array_start(T* base) BOOST_SP_NOEXCEPT
+sp_array_start(T* base) noexcept
 {
     enum {
         size = sp_array_offset<T, U>::value
@@ -147,7 +147,7 @@ class sp_array_creator {
 
 public:
     template<class U>
-    sp_array_creator(const U& other, std::size_t size) BOOST_SP_NOEXCEPT
+    sp_array_creator(const U& other, std::size_t size) noexcept
         : other_(other),
           size_(sp_objects<type>(offset + sizeof(element) * size)) { }
 
@@ -191,33 +191,33 @@ public:
             boost::first_scalar(&list), count);
     }
 
-    T& state() BOOST_SP_NOEXCEPT {
+    T& state() noexcept {
         return state_;
     }
 
-    void dispose() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+    void dispose() noexcept BOOST_OVERRIDE {
         boost::alloc_destroy_n(state_.allocator(),
             boost::first_scalar(sp_array_start<type>(this)),
             state_.size() * sp_array_count<type>::value);
     }
 
-    void destroy() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+    void destroy() noexcept BOOST_OVERRIDE {
         sp_array_creator<allocator, sp_array_base> other(state_.allocator(),
             state_.size());
         this->~sp_array_base();
         other.destroy(this);
     }
 
-    void* get_deleter(const sp_typeinfo_&) BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+    void* get_deleter(const sp_typeinfo_&) noexcept BOOST_OVERRIDE {
         return 0;
     }
 
     void* get_local_deleter(const sp_typeinfo_&)
-        BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+        noexcept BOOST_OVERRIDE {
         return 0;
     }
 
-    void* get_untyped_deleter() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+    void* get_untyped_deleter() noexcept BOOST_OVERRIDE {
         return 0;
     }
 
@@ -239,11 +239,11 @@ public:
         }
     }
 
-    T* get() const BOOST_SP_NOEXCEPT {
+    T* get() const noexcept {
         return result_;
     }
 
-    void release() BOOST_SP_NOEXCEPT {
+    void release() noexcept {
         result_ = 0;
     }
 

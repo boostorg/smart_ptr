@@ -17,16 +17,16 @@ namespace detail {
 class BOOST_SYMBOL_VISIBLE lsp_array_base
     : public local_counted_base {
 public:
-    void set(sp_counted_base* base) BOOST_SP_NOEXCEPT {
+    void set(sp_counted_base* base) noexcept {
         count_ = shared_count(base);
     }
 
-    void local_cb_destroy() BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+    void local_cb_destroy() noexcept BOOST_OVERRIDE {
         shared_count().swap(count_);
     }
 
     shared_count local_cb_get_shared_count() const
-        BOOST_SP_NOEXCEPT BOOST_OVERRIDE {
+        noexcept BOOST_OVERRIDE {
         return count_;
     }
 
@@ -39,10 +39,10 @@ class lsp_array_state
     : public sp_array_state<A> {
 public:
     template<class U>
-    lsp_array_state(const U& other, std::size_t size) BOOST_SP_NOEXCEPT
+    lsp_array_state(const U& other, std::size_t size) noexcept
         : sp_array_state<A>(other, size) { }
 
-    lsp_array_base& base() BOOST_SP_NOEXCEPT {
+    lsp_array_base& base() noexcept {
         return base_;
     }
 
@@ -55,10 +55,10 @@ class lsp_size_array_state
     : public sp_size_array_state<A, N> {
 public:
     template<class U>
-    lsp_size_array_state(const U& other, std::size_t size) BOOST_SP_NOEXCEPT
+    lsp_size_array_state(const U& other, std::size_t size) noexcept
         : sp_size_array_state<A, N>(other, size) { }
 
-    lsp_array_base& base() BOOST_SP_NOEXCEPT {
+    lsp_array_base& base() noexcept {
         return base_;
     }
 

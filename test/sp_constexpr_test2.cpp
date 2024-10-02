@@ -42,7 +42,7 @@ struct X: public boost::enable_shared_from_this<X>
 {
     int v_;
 
-    constexpr X() BOOST_NOEXCEPT: v_( 1 )
+    constexpr X() noexcept: v_( 1 )
     {
     }
 };

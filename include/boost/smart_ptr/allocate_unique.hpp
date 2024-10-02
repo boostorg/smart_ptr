@@ -462,7 +462,7 @@ template<class T, class U, class A>
 inline typename allocator_pointer<typename allocator_rebind<A,
     typename detail::sp_alloc_value<T>::type>::type>::type
 get_allocator_pointer(const std::unique_ptr<T,
-    alloc_deleter<U, A> >& p) BOOST_NOEXCEPT
+    alloc_deleter<U, A> >& p) noexcept
 {
     return p.get().ptr();
 }

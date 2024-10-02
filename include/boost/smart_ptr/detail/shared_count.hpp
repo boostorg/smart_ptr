@@ -96,7 +96,7 @@ template< class D > struct sp_convert_reference< D& >
     typedef sp_reference_wrapper< D > type;
 };
 
-template<class T> std::size_t sp_hash_pointer( T* p ) BOOST_NOEXCEPT
+template<class T> std::size_t sp_hash_pointer( T* p ) noexcept
 {
     boost::uintptr_t v = reinterpret_cast<boost::uintptr_t>( p );
 

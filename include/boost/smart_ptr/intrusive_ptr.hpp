@@ -16,8 +16,6 @@
 #include <boost/smart_ptr/detail/sp_convertible.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
 #include <boost/assert.hpp>
-#include <boost/config.hpp>
-#include <boost/config/workaround.hpp>
 
 #include <functional>           // for std::less
 #include <iosfwd>               // for std::basic_ostream
@@ -51,7 +49,7 @@ public:
 
     typedef T element_type;
 
-    BOOST_CONSTEXPR intrusive_ptr() noexcept : px( 0 )
+    constexpr intrusive_ptr() noexcept : px( 0 )
     {
     }
 

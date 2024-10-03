@@ -16,7 +16,6 @@
 #include <boost/smart_ptr/weak_ptr.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/assert.hpp>
-#include <boost/config.hpp>
 
 namespace boost
 {
@@ -25,11 +24,11 @@ template<class T> class enable_shared_from_this
 {
 protected:
 
-    BOOST_CONSTEXPR enable_shared_from_this() noexcept
+    constexpr enable_shared_from_this() noexcept
     {
     }
 
-    BOOST_CONSTEXPR enable_shared_from_this(enable_shared_from_this const &) noexcept
+    constexpr enable_shared_from_this(enable_shared_from_this const &) noexcept
     {
     }
 

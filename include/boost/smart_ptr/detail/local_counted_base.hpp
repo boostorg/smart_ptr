@@ -42,11 +42,11 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR local_counted_base() noexcept: local_use_count_( initial_ )
+    constexpr local_counted_base() noexcept: local_use_count_( initial_ )
     {
     }
 
-    BOOST_CONSTEXPR local_counted_base( local_counted_base const & ) noexcept: local_use_count_( initial_ )
+    constexpr local_counted_base( local_counted_base const & ) noexcept: local_use_count_( initial_ )
     {
     }
 

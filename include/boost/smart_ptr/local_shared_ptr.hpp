@@ -13,6 +13,7 @@
 
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
+#include <boost/assert.hpp>
 
 namespace boost
 {
@@ -137,16 +138,16 @@ public:
 
     // constructors
 
-    BOOST_CONSTEXPR local_shared_ptr() noexcept : px( 0 ), pn( 0 )
+    constexpr local_shared_ptr() noexcept : px( 0 ), pn( 0 )
     {
     }
 
-    BOOST_CONSTEXPR local_shared_ptr( std::nullptr_t ) noexcept : px( 0 ), pn( 0 )
+    constexpr local_shared_ptr( std::nullptr_t ) noexcept : px( 0 ), pn( 0 )
     {
     }
 
     // internal constructor, used by make_shared
-    BOOST_CONSTEXPR local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) noexcept : px( px_ ), pn( pn_ )
+    constexpr local_shared_ptr( boost::detail::lsp_internal_constructor_tag, element_type * px_, boost::detail::local_counted_base * pn_ ) noexcept : px( px_ ), pn( pn_ )
     {
     }
 

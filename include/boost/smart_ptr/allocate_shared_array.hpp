@@ -59,7 +59,7 @@ struct sp_align_up {
 };
 
 template<class T>
-BOOST_CONSTEXPR inline std::size_t
+constexpr inline std::size_t
 sp_objects(std::size_t size) noexcept
 {
     return (size + sizeof(T) - 1) / sizeof(T);
@@ -101,7 +101,7 @@ public:
         return allocator_;
     }
 
-    BOOST_CONSTEXPR std::size_t size() const noexcept {
+    constexpr std::size_t size() const noexcept {
         return N;
     }
 

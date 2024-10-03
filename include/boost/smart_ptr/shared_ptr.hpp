@@ -261,19 +261,19 @@ public:
 
     typedef typename boost::detail::sp_element< T >::type element_type;
 
-    BOOST_CONSTEXPR shared_ptr() noexcept : px( 0 ), pn()
+    constexpr shared_ptr() noexcept : px( 0 ), pn()
     {
     }
 
-    BOOST_CONSTEXPR shared_ptr( std::nullptr_t ) noexcept : px( 0 ), pn()
+    constexpr shared_ptr( std::nullptr_t ) noexcept : px( 0 ), pn()
     {
     }
 
-    BOOST_CONSTEXPR shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count const & pn_ ) noexcept : px( px_ ), pn( pn_ )
+    constexpr shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count const & pn_ ) noexcept : px( px_ ), pn( pn_ )
     {
     }
 
-    BOOST_CONSTEXPR shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count && pn_ ) noexcept : px( px_ ), pn( std::move( pn_ ) )
+    constexpr shared_ptr( boost::detail::sp_internal_constructor_tag, element_type * px_, boost::detail::shared_count && pn_ ) noexcept : px( px_ ), pn( std::move( pn_ ) )
     {
     }
 

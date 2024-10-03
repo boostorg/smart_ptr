@@ -74,7 +74,7 @@ public:
         return *this;
     }
 
-    BOOST_CONSTEXPR bool is_lock_free() const noexcept
+    constexpr bool is_lock_free() const noexcept
     {
         return false;
     }

@@ -120,14 +120,14 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR shared_count() noexcept: pi_(0)
+    constexpr shared_count() noexcept: pi_(0)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
     {
     }
 
-    BOOST_CONSTEXPR explicit shared_count( sp_counted_base * pi ) noexcept: pi_( pi )
+    constexpr explicit shared_count( sp_counted_base * pi ) noexcept: pi_( pi )
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(shared_count_id)
 #endif
@@ -501,7 +501,7 @@ private:
 
 public:
 
-    BOOST_CONSTEXPR weak_count() noexcept: pi_(0)
+    constexpr weak_count() noexcept: pi_(0)
 #if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
         , id_(weak_count_id)
 #endif

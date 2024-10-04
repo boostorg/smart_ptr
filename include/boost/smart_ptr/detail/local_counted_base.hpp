@@ -109,12 +109,12 @@ public:
     {
     }
 
-    void local_cb_destroy() noexcept BOOST_OVERRIDE
+    void local_cb_destroy() noexcept override
     {
         delete this;
     }
 
-    boost::detail::shared_count local_cb_get_shared_count() const noexcept BOOST_OVERRIDE
+    boost::detail::shared_count local_cb_get_shared_count() const noexcept override
     {
         return pn_;
     }
@@ -126,12 +126,12 @@ public:
 
     shared_count pn_;
 
-    void local_cb_destroy() noexcept BOOST_OVERRIDE
+    void local_cb_destroy() noexcept override
     {
         shared_count().swap( pn_ );
     }
 
-    boost::detail::shared_count local_cb_get_shared_count() const noexcept BOOST_OVERRIDE
+    boost::detail::shared_count local_cb_get_shared_count() const noexcept override
     {
         return pn_;
     }

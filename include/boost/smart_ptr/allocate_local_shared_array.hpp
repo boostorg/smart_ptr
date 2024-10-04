@@ -21,12 +21,12 @@ public:
         count_ = shared_count(base);
     }
 
-    void local_cb_destroy() noexcept BOOST_OVERRIDE {
+    void local_cb_destroy() noexcept override {
         shared_count().swap(count_);
     }
 
     shared_count local_cb_get_shared_count() const
-        noexcept BOOST_OVERRIDE {
+        noexcept override {
         return count_;
     }
 

@@ -195,29 +195,29 @@ public:
         return state_;
     }
 
-    void dispose() noexcept BOOST_OVERRIDE {
+    void dispose() noexcept override {
         boost::alloc_destroy_n(state_.allocator(),
             boost::first_scalar(sp_array_start<type>(this)),
             state_.size() * sp_array_count<type>::value);
     }
 
-    void destroy() noexcept BOOST_OVERRIDE {
+    void destroy() noexcept override {
         sp_array_creator<allocator, sp_array_base> other(state_.allocator(),
             state_.size());
         this->~sp_array_base();
         other.destroy(this);
     }
 
-    void* get_deleter(const sp_typeinfo_&) noexcept BOOST_OVERRIDE {
+    void* get_deleter(const sp_typeinfo_&) noexcept override {
         return 0;
     }
 
     void* get_local_deleter(const sp_typeinfo_&)
-        noexcept BOOST_OVERRIDE {
+        noexcept override {
         return 0;
     }
 
-    void* get_untyped_deleter() noexcept BOOST_OVERRIDE {
+    void* get_untyped_deleter() noexcept override {
         return 0;
     }
 

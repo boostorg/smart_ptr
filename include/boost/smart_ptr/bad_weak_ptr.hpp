@@ -33,7 +33,7 @@ class bad_weak_ptr: public std::exception
 {
 public:
 
-    char const * what() const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE
+    char const * what() const noexcept override
     {
         return "tr1::bad_weak_ptr";
     }

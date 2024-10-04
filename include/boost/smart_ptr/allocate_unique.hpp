@@ -32,17 +32,17 @@ namespace detail {
 
 template<class T>
 struct sp_alloc_size {
-    BOOST_STATIC_CONSTEXPR std::size_t value = 1;
+    static constexpr std::size_t value = 1;
 };
 
 template<class T>
 struct sp_alloc_size<T[]> {
-    BOOST_STATIC_CONSTEXPR std::size_t value = sp_alloc_size<T>::value;
+    static constexpr std::size_t value = sp_alloc_size<T>::value;
 };
 
 template<class T, std::size_t N>
 struct sp_alloc_size<T[N]> {
-    BOOST_STATIC_CONSTEXPR std::size_t value = N * sp_alloc_size<T>::value;
+    static constexpr std::size_t value = N * sp_alloc_size<T>::value;
 };
 
 template<class T>
@@ -100,7 +100,7 @@ public:
         return p_;
     }
 
-    BOOST_STATIC_CONSTEXPR std::size_t size() noexcept {
+    static constexpr std::size_t size() noexcept {
         return 1;
     }
 
@@ -194,7 +194,7 @@ public:
         return p_;
     }
 
-    BOOST_STATIC_CONSTEXPR std::size_t size() noexcept {
+    static constexpr std::size_t size() noexcept {
         return N;
     }
 

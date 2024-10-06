@@ -14,7 +14,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
-#include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 #include <type_traits>
 
@@ -23,7 +22,7 @@ namespace detail {
 
 template<class T>
 struct sp_array_element {
-    typedef typename boost::remove_cv<typename
+    typedef typename std::remove_cv<typename
         std::remove_extent<T>::type>::type type;
 };
 

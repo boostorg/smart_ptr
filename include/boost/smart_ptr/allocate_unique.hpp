@@ -17,7 +17,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
-#include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/type_identity.hpp>
 #include <boost/config.hpp>
 #include <memory>
@@ -55,7 +54,7 @@ struct sp_alloc_result<T[N]> {
 
 template<class T>
 struct sp_alloc_value {
-    typedef typename boost::remove_cv<typename
+    typedef typename std::remove_cv<typename
         std::remove_extent<T>::type>::type type;
 };
 
@@ -69,7 +68,7 @@ public:
 
 #if defined(BOOST_MSVC) && BOOST_MSVC == 1600
     sp_alloc_ptr(T* p) noexcept
-        : p_(const_cast<typename boost::remove_cv<T>::type*>(p)) { }
+        : p_(const_cast<typename std::remove_cv<T>::type*>(p)) { }
 #endif
 
     sp_alloc_ptr(std::size_t, P p) noexcept
@@ -106,7 +105,7 @@ public:
     static sp_alloc_ptr pointer_to(T& v) {
         return sp_alloc_ptr(1,
             std::pointer_traits<P>::pointer_to(const_cast<typename
-                boost::remove_cv<T>::type&>(v)));
+                std::remove_cv<T>::type&>(v)));
     }
 #endif
 
@@ -153,7 +152,7 @@ public:
     static sp_alloc_ptr pointer_to(T& v) {
         return sp_alloc_ptr(n_,
             std::pointer_traits<P>::pointer_to(const_cast<typename
-                boost::remove_cv<T>::type&>(v)));
+                std::remove_cv<T>::type&>(v)));
     }
 #endif
 
@@ -200,7 +199,7 @@ public:
     static sp_alloc_ptr pointer_to(T& v) {
         return sp_alloc_ptr(N,
             std::pointer_traits<P>::pointer_to(const_cast<typename
-                boost::remove_cv<T>::type&>(v)));
+                std::remove_cv<T>::type&>(v)));
     }
 #endif
 

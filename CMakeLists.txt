@@ -18,7 +18,6 @@ target_link_libraries(boost_smart_ptr
     Boost::config
     Boost::core
     Boost::throw_exception
-    Boost::type_traits
 )
 
 target_compile_features(boost_smart_ptr INTERFACE cxx_std_11)

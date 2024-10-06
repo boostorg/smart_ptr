@@ -21,7 +21,7 @@
 #include <boost/config.hpp>
 
 #include <boost/smart_ptr/detail/lightweight_mutex.hpp>
-#include <boost/type_traits/type_with_alignment.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 
 #include <type_traits>
 #include <new>              // ::operator new, ::operator delete
@@ -29,13 +29,12 @@
 
 namespace boost
 {
-
 namespace detail
 {
 
 template<unsigned size, unsigned align_> union freeblock
 {
-    typedef typename boost::type_with_alignment<align_>::type aligner_type;
+    typedef typename sp_type_with_alignment<align_>::type aligner_type;
     aligner_type aligner;
     char bytes[size];
     freeblock * next;

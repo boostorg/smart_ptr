@@ -13,7 +13,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/smart_ptr/detail/sp_type_traits.hpp>
-#include <boost/type_traits/type_with_alignment.hpp>
 #include <type_traits>
 
 namespace boost {
@@ -137,7 +136,7 @@ class sp_array_creator {
         offset = sp_array_offset<T, element>::value
     };
 
-    typedef typename boost::type_with_alignment<sp_array_alignment<T,
+    typedef typename sp_type_with_alignment<sp_array_alignment<T,
         element>::value>::type type;
 
 public:

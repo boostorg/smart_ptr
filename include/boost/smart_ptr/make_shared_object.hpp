@@ -12,7 +12,7 @@
 //  See http://www.boost.org/libs/smart_ptr/ for documentation.
 
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/type_with_alignment.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 #include <boost/config.hpp>
 #include <utility>
 #include <cstddef>
@@ -21,7 +21,6 @@
 
 namespace boost
 {
-
 namespace detail
 {
 
@@ -30,7 +29,7 @@ template< std::size_t N, std::size_t A > struct sp_aligned_storage
     union type
     {
         char data_[ N ];
-        typename boost::type_with_alignment< A >::type align_;
+        typename sp_type_with_alignment< A >::type align_;
     };
 };
 

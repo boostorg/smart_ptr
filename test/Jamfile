@@ -427,3 +427,4 @@ run sp_move_only_deleter.cpp ;
 
 run sp_is_bounded_array_test.cpp ;
 run sp_is_unbounded_array_test.cpp ;
+run sp_type_identity_test.cpp ;

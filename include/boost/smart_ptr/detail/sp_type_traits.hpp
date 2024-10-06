@@ -32,6 +32,13 @@ template<class T> struct sp_is_unbounded_array< T[] >: std::true_type
 {
 };
 
+// std::type_identity (C++20)
+
+template<class T> struct sp_type_identity
+{
+    typedef T type;
+};
+
 } // namespace detail
 } // namespace boost
 

@@ -35,7 +35,7 @@ make_local_shared(const typename std::remove_extent<T>::type& value)
 }
 
 template<class T>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared(std::size_t size)
 {
@@ -44,7 +44,7 @@ make_local_shared(std::size_t size)
 }
 
 template<class T>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared(std::size_t size,
     const typename std::remove_extent<T>::type& value)
@@ -63,7 +63,7 @@ make_local_shared_noinit()
 }
 
 template<class T>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 make_local_shared_noinit(std::size_t size)
 {

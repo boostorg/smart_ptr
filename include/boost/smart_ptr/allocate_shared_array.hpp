@@ -13,7 +13,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/smart_ptr/detail/sp_type_traits.hpp>
-#include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 #include <type_traits>
 
@@ -254,7 +253,7 @@ private:
 } /* detail */
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator, std::size_t count)
 {
     typedef typename detail::sp_array_element<T>::type element;
@@ -291,7 +290,7 @@ allocate_shared(const A& allocator)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator, std::size_t count,
     const typename std::remove_extent<T>::type& value)
 {
@@ -330,7 +329,7 @@ allocate_shared(const A& allocator,
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator, std::size_t count)
 {
     return boost::allocate_shared<T>(boost::noinit_adapt(allocator), count);

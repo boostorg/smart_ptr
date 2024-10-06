@@ -8,10 +8,10 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_SMART_PTR_MAKE_UNIQUE_HPP
 #define BOOST_SMART_PTR_MAKE_UNIQUE_HPP
 
-#include <boost/type_traits/is_unbounded_array.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 #include <memory>
-#include <utility>
 #include <type_traits>
+#include <utility>
 
 namespace boost {
 
@@ -44,7 +44,7 @@ make_unique_noinit()
 }
 
 template<class T>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     std::unique_ptr<T> >::type
 make_unique(std::size_t size)
 {
@@ -52,7 +52,7 @@ make_unique(std::size_t size)
 }
 
 template<class T>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     std::unique_ptr<T> >::type
 make_unique_noinit(std::size_t size)
 {

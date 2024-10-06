@@ -71,7 +71,7 @@ private:
 } /* detail */
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator, std::size_t count)
 {
@@ -114,7 +114,7 @@ allocate_local_shared(const A& allocator)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator, std::size_t count,
     const typename std::remove_extent<T>::type& value)
@@ -159,7 +159,7 @@ allocate_local_shared(const A& allocator,
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared_noinit(const A& allocator, std::size_t count)
 {

@@ -15,7 +15,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/noinit_adaptor.hpp>
 #include <boost/core/pointer_traits.hpp>
 #include <boost/smart_ptr/detail/sp_type_traits.hpp>
-#include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/type_identity.hpp>
 #include <boost/config.hpp>
 #include <memory>
@@ -388,7 +387,7 @@ allocate_unique_noinit(const A& alloc)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, std::size_t size)
 {
@@ -411,7 +410,7 @@ allocate_unique(const A& alloc)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A> > > >::type
 allocate_unique_noinit(const A& alloc, std::size_t size)
 {
@@ -428,7 +427,7 @@ allocate_unique_noinit(const A& alloc)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_unbounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, std::size_t size,
     const typename std::remove_extent<T>::type& value)

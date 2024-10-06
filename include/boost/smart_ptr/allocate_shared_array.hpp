@@ -12,7 +12,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/extent.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
@@ -258,7 +257,7 @@ private:
 } /* detail */
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator, std::size_t count)
 {
     typedef typename detail::sp_array_element<T>::type element;
@@ -275,7 +274,7 @@ allocate_shared(const A& allocator, std::size_t count)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator)
 {
     enum {
@@ -295,7 +294,7 @@ allocate_shared(const A& allocator)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator, std::size_t count,
     const typename remove_extent<T>::type& value)
 {
@@ -313,7 +312,7 @@ allocate_shared(const A& allocator, std::size_t count,
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator,
     const typename remove_extent<T>::type& value)
 {
@@ -334,14 +333,14 @@ allocate_shared(const A& allocator,
 }
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator, std::size_t count)
 {
     return boost::allocate_shared<T>(boost::noinit_adapt(allocator), count);
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator)
 {
     return boost::allocate_shared<T>(boost::noinit_adapt(allocator));

@@ -14,7 +14,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/first_scalar.hpp>
 #include <boost/core/noinit_adaptor.hpp>
 #include <boost/core/pointer_traits.hpp>
-#include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/extent.hpp>
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
@@ -26,6 +25,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <memory>
 #include <utility>
 #include <cstddef>
+#include <type_traits>
 
 namespace boost {
 namespace detail {
@@ -354,7 +354,7 @@ private:
 } /* detail */
 
 template<class T, class A>
-inline typename enable_if_<!is_array<T>::value,
+inline typename std::enable_if<!is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc)
 {
@@ -364,7 +364,7 @@ allocate_unique(const A& alloc)
 }
 
 template<class T, class A, class... Args>
-inline typename enable_if_<!is_array<T>::value,
+inline typename std::enable_if<!is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, Args&&... args)
 {
@@ -374,7 +374,7 @@ allocate_unique(const A& alloc, Args&&... args)
 }
 
 template<class T, class A>
-inline typename enable_if_<!is_array<T>::value,
+inline typename std::enable_if<!is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, typename type_identity<T>::type&& value)
 {
@@ -384,7 +384,7 @@ allocate_unique(const A& alloc, typename type_identity<T>::type&& value)
 }
 
 template<class T, class A>
-inline typename enable_if_<!is_array<T>::value,
+inline typename std::enable_if<!is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A> > > >::type
 allocate_unique_noinit(const A& alloc)
 {
@@ -392,7 +392,7 @@ allocate_unique_noinit(const A& alloc)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value,
+inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, std::size_t size)
 {
@@ -403,7 +403,7 @@ allocate_unique(const A& alloc, std::size_t size)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value,
+inline typename std::enable_if<is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc)
@@ -415,7 +415,7 @@ allocate_unique(const A& alloc)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value,
+inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, noinit_adaptor<A> > > >::type
 allocate_unique_noinit(const A& alloc, std::size_t size)
 {
@@ -423,7 +423,7 @@ allocate_unique_noinit(const A& alloc, std::size_t size)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value,
+inline typename std::enable_if<is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, noinit_adaptor<A> > > >::type
 allocate_unique_noinit(const A& alloc)
@@ -432,7 +432,7 @@ allocate_unique_noinit(const A& alloc)
 }
 
 template<class T, class A>
-inline typename enable_if_<is_unbounded_array<T>::value,
+inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, std::size_t size,
     const typename remove_extent<T>::type& value)
@@ -445,7 +445,7 @@ allocate_unique(const A& alloc, std::size_t size,
 }
 
 template<class T, class A>
-inline typename enable_if_<is_bounded_array<T>::value,
+inline typename std::enable_if<is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc,

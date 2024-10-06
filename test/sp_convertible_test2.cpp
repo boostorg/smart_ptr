@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/core/lightweight_test.hpp>
-#include <boost/type_traits/is_convertible.hpp>
+#include <type_traits>
 
 //
 
@@ -25,7 +25,7 @@ class D: public B
 {
 };
 
-using boost::is_convertible;
+using std::is_convertible;
 
 #define TEST_CV_TRUE_( S1, T, S2, U ) \
     BOOST_TEST(( is_convertible< S1<T>, S2<U> >::value == true )); \

@@ -12,9 +12,9 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/remove_extent.hpp>
-#include <boost/type_traits/remove_reference.hpp>
 #include <memory>
 #include <utility>
+#include <type_traits>
 
 namespace boost {
 
@@ -34,7 +34,7 @@ make_unique(Args&&... args)
 
 template<class T>
 inline typename enable_if_<!is_array<T>::value, std::unique_ptr<T> >::type
-make_unique(typename remove_reference<T>::type&& value)
+make_unique(typename std::remove_reference<T>::type&& value)
 {
     return std::unique_ptr<T>(new T(std::move(value)));
 }

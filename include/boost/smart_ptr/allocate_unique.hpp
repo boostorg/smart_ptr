@@ -15,7 +15,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/noinit_adaptor.hpp>
 #include <boost/core/pointer_traits.hpp>
 #include <boost/smart_ptr/detail/sp_type_traits.hpp>
-#include <boost/type_traits/type_identity.hpp>
 #include <boost/config.hpp>
 #include <memory>
 #include <utility>
@@ -371,7 +370,7 @@ allocate_unique(const A& alloc, Args&&... args)
 template<class T, class A>
 inline typename std::enable_if<!std::is_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
-allocate_unique(const A& alloc, typename type_identity<T>::type&& value)
+allocate_unique(const A& alloc, typename detail::sp_type_identity<T>::type&& value)
 {
     detail::sp_alloc_make<T, A> c(alloc, 1);
     boost::alloc_construct(c.state(), c.get(), std::move(value));

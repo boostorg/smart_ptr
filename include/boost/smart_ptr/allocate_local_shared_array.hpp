@@ -116,7 +116,7 @@ template<class T, class A>
 inline typename std::enable_if<is_unbounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator, std::size_t count,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;
@@ -137,7 +137,7 @@ template<class T, class A>
 inline typename std::enable_if<is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     enum {
         count = std::extent<T>::value

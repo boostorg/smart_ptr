@@ -24,7 +24,7 @@ make_shared()
 
 template<class T>
 inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
-make_shared(const typename remove_extent<T>::type& value)
+make_shared(const typename std::remove_extent<T>::type& value)
 {
     return boost::allocate_shared<T>(boost::default_allocator<typename
         detail::sp_array_element<T>::type>(), value);
@@ -40,7 +40,7 @@ make_shared(std::size_t size)
 
 template<class T>
 inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
-make_shared(std::size_t size, const typename remove_extent<T>::type& value)
+make_shared(std::size_t size, const typename std::remove_extent<T>::type& value)
 {
     return boost::allocate_shared<T>(boost::default_allocator<typename
         detail::sp_array_element<T>::type>(), size, value);

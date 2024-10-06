@@ -10,7 +10,6 @@ Distributed under the Boost Software License, Version 1.0.
 
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
-#include <boost/type_traits/remove_extent.hpp>
 #include <memory>
 #include <utility>
 #include <type_traits>
@@ -50,7 +49,7 @@ inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T> >::type
 make_unique(std::size_t size)
 {
-    return std::unique_ptr<T>(new typename remove_extent<T>::type[size]());
+    return std::unique_ptr<T>(new typename std::remove_extent<T>::type[size]());
 }
 
 template<class T>
@@ -58,7 +57,7 @@ inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T> >::type
 make_unique_noinit(std::size_t size)
 {
-    return std::unique_ptr<T>(new typename remove_extent<T>::type[size]);
+    return std::unique_ptr<T>(new typename std::remove_extent<T>::type[size]);
 }
 
 } /* boost */

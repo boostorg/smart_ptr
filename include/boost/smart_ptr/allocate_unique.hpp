@@ -18,7 +18,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/remove_extent.hpp>
 #include <boost/type_traits/type_identity.hpp>
 #include <boost/config.hpp>
 #include <memory>
@@ -57,7 +56,7 @@ struct sp_alloc_result<T[N]> {
 template<class T>
 struct sp_alloc_value {
     typedef typename boost::remove_cv<typename
-        boost::remove_extent<T>::type>::type type;
+        std::remove_extent<T>::type>::type type;
 };
 
 template<class T, class P>
@@ -434,12 +433,12 @@ template<class T, class A>
 inline typename std::enable_if<is_unbounded_array<T>::value,
     std::unique_ptr<T, alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc, std::size_t size,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     detail::sp_alloc_make<T, A> c(alloc, size);
     boost::alloc_construct_n(c.state(), boost::first_scalar(c.get()),
         size * detail::sp_alloc_size<T>::value, boost::first_scalar(&value),
-        detail::sp_alloc_size<typename remove_extent<T>::type>::value);
+        detail::sp_alloc_size<typename std::remove_extent<T>::type>::value);
     return c.release();
 }
 
@@ -448,12 +447,12 @@ inline typename std::enable_if<is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     detail::sp_alloc_make<T, A> c(alloc, std::extent<T>::value);
     boost::alloc_construct_n(c.state(), boost::first_scalar(c.get()),
         detail::sp_alloc_size<T>::value, boost::first_scalar(&value),
-        detail::sp_alloc_size<typename remove_extent<T>::type>::value);
+        detail::sp_alloc_size<typename std::remove_extent<T>::type>::value);
     return c.release();
 }
 

@@ -15,7 +15,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/remove_extent.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 #include <type_traits>
 
@@ -25,7 +24,7 @@ namespace detail {
 template<class T>
 struct sp_array_element {
     typedef typename boost::remove_cv<typename
-        boost::remove_extent<T>::type>::type type;
+        std::remove_extent<T>::type>::type type;
 };
 
 template<class T>
@@ -295,7 +294,7 @@ allocate_shared(const A& allocator)
 template<class T, class A>
 inline typename std::enable_if<is_unbounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator, std::size_t count,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;
@@ -313,7 +312,7 @@ allocate_shared(const A& allocator, std::size_t count,
 template<class T, class A>
 inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator,
-    const typename remove_extent<T>::type& value)
+    const typename std::remove_extent<T>::type& value)
 {
     enum {
         count = std::extent<T>::value

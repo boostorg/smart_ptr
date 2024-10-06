@@ -22,6 +22,16 @@ template<class T, std::size_t N> struct sp_is_bounded_array< T[N] >: std::true_t
 {
 };
 
+// std::is_unbounded_array (C++20)
+
+template<class T> struct sp_is_unbounded_array: std::false_type
+{
+};
+
+template<class T> struct sp_is_unbounded_array< T[] >: std::true_type
+{
+};
+
 } // namespace detail
 } // namespace boost
 

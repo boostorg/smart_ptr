@@ -426,3 +426,4 @@ run sp_unique_ptr_test2.cpp ;
 run sp_move_only_deleter.cpp ;
 
 run sp_is_bounded_array_test.cpp ;
+run sp_is_unbounded_array_test.cpp ;

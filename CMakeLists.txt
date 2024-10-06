@@ -17,8 +17,6 @@ target_link_libraries(boost_smart_ptr
     Boost::assert
     Boost::config
     Boost::core
-    Boost::move
-    Boost::static_assert
     Boost::throw_exception
     Boost::type_traits
 )

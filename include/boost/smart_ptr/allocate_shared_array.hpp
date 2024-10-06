@@ -12,7 +12,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/is_bounded_array.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
 #include <type_traits>
@@ -271,7 +271,7 @@ allocate_shared(const A& allocator, std::size_t count)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator)
 {
     enum {
@@ -309,7 +309,7 @@ allocate_shared(const A& allocator, std::size_t count,
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator,
     const typename std::remove_extent<T>::type& value)
 {
@@ -337,7 +337,7 @@ allocate_shared_noinit(const A& allocator, std::size_t count)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared_noinit(const A& allocator)
 {
     return boost::allocate_shared<T>(boost::noinit_adapt(allocator));

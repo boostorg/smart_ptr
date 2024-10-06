@@ -10,6 +10,7 @@ Distributed under the Boost Software License, Version 1.0.
 
 #include <boost/smart_ptr/allocate_shared_array.hpp>
 #include <boost/smart_ptr/local_shared_ptr.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 #include <type_traits>
 
 namespace boost {
@@ -90,7 +91,7 @@ allocate_local_shared(const A& allocator, std::size_t count)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator)
 {
@@ -134,7 +135,7 @@ allocate_local_shared(const A& allocator, std::size_t count,
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared(const A& allocator,
     const typename std::remove_extent<T>::type& value)
@@ -167,7 +168,7 @@ allocate_local_shared_noinit(const A& allocator, std::size_t count)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     local_shared_ptr<T> >::type
 allocate_local_shared_noinit(const A& allocator)
 {

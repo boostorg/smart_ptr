@@ -14,7 +14,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/first_scalar.hpp>
 #include <boost/core/noinit_adaptor.hpp>
 #include <boost/core/pointer_traits.hpp>
-#include <boost/type_traits/is_bounded_array.hpp>
+#include <boost/smart_ptr/detail/sp_type_traits.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/type_identity.hpp>
 #include <boost/config.hpp>
@@ -399,7 +399,7 @@ allocate_unique(const A& alloc, std::size_t size)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc)
@@ -419,7 +419,7 @@ allocate_unique_noinit(const A& alloc, std::size_t size)
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, noinit_adaptor<A> > > >::type
 allocate_unique_noinit(const A& alloc)
@@ -441,7 +441,7 @@ allocate_unique(const A& alloc, std::size_t size,
 }
 
 template<class T, class A>
-inline typename std::enable_if<is_bounded_array<T>::value,
+inline typename std::enable_if<detail::sp_is_bounded_array<T>::value,
     std::unique_ptr<typename detail::sp_alloc_result<T>::type,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc,

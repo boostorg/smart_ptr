@@ -14,7 +14,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/first_scalar.hpp>
 #include <boost/core/noinit_adaptor.hpp>
 #include <boost/core/pointer_traits.hpp>
-#include <boost/type_traits/extent.hpp>
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
@@ -408,7 +407,7 @@ inline typename std::enable_if<is_bounded_array<T>::value,
         alloc_deleter<T, A> > >::type
 allocate_unique(const A& alloc)
 {
-    detail::sp_alloc_make<T, A> c(alloc, extent<T>::value);
+    detail::sp_alloc_make<T, A> c(alloc, std::extent<T>::value);
     boost::alloc_construct_n(c.state(), boost::first_scalar(c.get()),
         detail::sp_alloc_size<T>::value);
     return c.release();
@@ -451,7 +450,7 @@ inline typename std::enable_if<is_bounded_array<T>::value,
 allocate_unique(const A& alloc,
     const typename remove_extent<T>::type& value)
 {
-    detail::sp_alloc_make<T, A> c(alloc, extent<T>::value);
+    detail::sp_alloc_make<T, A> c(alloc, std::extent<T>::value);
     boost::alloc_construct_n(c.state(), boost::first_scalar(c.get()),
         detail::sp_alloc_size<T>::value, boost::first_scalar(&value),
         detail::sp_alloc_size<typename remove_extent<T>::type>::value);

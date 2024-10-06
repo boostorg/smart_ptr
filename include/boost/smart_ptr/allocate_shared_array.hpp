@@ -12,7 +12,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/extent.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
 #include <boost/type_traits/is_unbounded_array.hpp>
 #include <boost/type_traits/remove_cv.hpp>
@@ -278,11 +277,11 @@ inline typename std::enable_if<is_bounded_array<T>::value, shared_ptr<T> >::type
 allocate_shared(const A& allocator)
 {
     enum {
-        count = extent<T>::value
+        count = std::extent<T>::value
     };
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;
-    typedef detail::sp_size_array_state<other, extent<T>::value> state;
+    typedef detail::sp_size_array_state<other, std::extent<T>::value> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, count);
     base* node = result.get();
@@ -317,11 +316,11 @@ allocate_shared(const A& allocator,
     const typename remove_extent<T>::type& value)
 {
     enum {
-        count = extent<T>::value
+        count = std::extent<T>::value
     };
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;
-    typedef detail::sp_size_array_state<other, extent<T>::value> state;
+    typedef detail::sp_size_array_state<other, std::extent<T>::value> state;
     typedef detail::sp_array_base<state> base;
     detail::sp_array_result<other, base> result(allocator, count);
     base* node = result.get();

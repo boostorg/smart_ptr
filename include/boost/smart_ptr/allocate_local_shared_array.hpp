@@ -95,7 +95,7 @@ inline typename std::enable_if<is_bounded_array<T>::value,
 allocate_local_shared(const A& allocator)
 {
     enum {
-        count = extent<T>::value
+        count = std::extent<T>::value
     };
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;
@@ -140,7 +140,7 @@ allocate_local_shared(const A& allocator,
     const typename remove_extent<T>::type& value)
 {
     enum {
-        count = extent<T>::value
+        count = std::extent<T>::value
     };
     typedef typename detail::sp_array_element<T>::type element;
     typedef typename allocator_rebind<A, element>::type other;

@@ -13,11 +13,11 @@
 
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
-#include <boost/type_traits/alignment_of.hpp>
 #include <boost/config.hpp>
 #include <utility>
 #include <cstddef>
 #include <new>
+#include <type_traits>
 
 namespace boost
 {
@@ -38,7 +38,7 @@ template< class T > class sp_ms_deleter
 {
 private:
 
-    typedef typename sp_aligned_storage< sizeof( T ), ::boost::alignment_of< T >::value >::type storage_type;
+    typedef typename sp_aligned_storage< sizeof( T ), std::alignment_of< T >::value >::type storage_type;
 
     bool initialized_;
     storage_type storage_;
@@ -109,7 +109,7 @@ template< class T, class A > class sp_as_deleter
 {
 private:
 
-    typedef typename sp_aligned_storage< sizeof( T ), ::boost::alignment_of< T >::value >::type storage_type;
+    typedef typename sp_aligned_storage< sizeof( T ), std::alignment_of< T >::value >::type storage_type;
 
     storage_type storage_;
     A a_;

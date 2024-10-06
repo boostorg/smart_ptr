@@ -12,7 +12,6 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/core/alloc_construct.hpp>
 #include <boost/core/first_scalar.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/extent.hpp>
 #include <boost/type_traits/is_bounded_array.hpp>
@@ -20,6 +19,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_extent.hpp>
 #include <boost/type_traits/type_with_alignment.hpp>
+#include <type_traits>
 
 namespace boost {
 namespace detail {
@@ -112,8 +112,8 @@ private:
 template<class T, class U>
 struct sp_array_alignment {
     enum {
-        value = sp_max_size<boost::alignment_of<T>::value,
-            boost::alignment_of<U>::value>::value
+        value = sp_max_size<std::alignment_of<T>::value,
+            std::alignment_of<U>::value>::value
     };
 };
 

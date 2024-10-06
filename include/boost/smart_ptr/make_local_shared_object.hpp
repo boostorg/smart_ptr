@@ -45,7 +45,7 @@ template<class T, class A> class lsp_ms_deleter: public local_counted_impl_em
 {
 private:
 
-    typedef typename sp_aligned_storage<sizeof(T), ::boost::alignment_of<T>::value>::type storage_type;
+    typedef typename sp_aligned_storage<sizeof(T), std::alignment_of<T>::value>::type storage_type;
 
     storage_type storage_;
     A a_;

@@ -39,6 +39,16 @@ template<class T> struct sp_type_identity
     typedef T type;
 };
 
+// boost::type_with_alignment
+
+template<std::size_t A> struct sp_type_with_alignment
+{
+    struct alignas(A) type
+    {
+        unsigned char padding[ A ];
+    };
+};
+
 } // namespace detail
 } // namespace boost
 

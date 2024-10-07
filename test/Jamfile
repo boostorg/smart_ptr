@@ -14,14 +14,19 @@ import testing ;
 
 project
     : requirements
+
       <library>/boost/smart_ptr//boost_smart_ptr
+      <library>/boost/core//boost_core
       <library>/boost/align//boost_align
+      <library>/boost/atomic//boost_atomic
+      <library>/boost/container_hash//boost_container_hash
+      <library>/boost/bind//boost_bind
+      <library>/boost/move//boost_move
+
       <toolset>gcc:<cxxflags>-Wno-non-virtual-dtor
       <toolset>gcc:<cxxflags>-Wno-deprecated-declarations
       <toolset>gcc:<cxxflags>-Wno-delete-non-virtual-dtor
     ;
-
-local cnhash = <library>/boost/container_hash//boost_container_hash ;
 
 # quick test (for CI)
 run quick.cpp ;
@@ -79,8 +84,7 @@ run shared_ptr_convertible_test.cpp ;
 run wp_convertible_test.cpp ;
 run ip_convertible_test.cpp ;
 run allocate_shared_test.cpp ;
-run sp_atomic_test.cpp
-  : : : <library>/boost/atomic//boost_atomic ;
+run sp_atomic_test.cpp ;
 run esft_void_test.cpp ;
 run esft_second_ptr_test.cpp ;
 run make_shared_esft_test.cpp ;
@@ -95,11 +99,9 @@ compile-fail auto_ptr_lv_fail.cpp ;
 run atomic_count_test2.cpp ;
 run sp_typeinfo_test.cpp ;
 compile make_shared_fp_test.cpp ;
-run sp_hash_test.cpp
-  : : : $(cnhash) ;
+run sp_hash_test.cpp ;
 run get_deleter_array_test.cpp ;
-run ip_hash_test.cpp
-  : : : $(cnhash) ;
+run ip_hash_test.cpp ;
 run owner_less_test.cpp ;
 run sp_unique_ptr_test.cpp ;
 run sp_array_test.cpp ;
@@ -216,10 +218,8 @@ run weak_from_this_test2.cpp ;
 
 run sp_bml_unique_ptr_test.cpp ;
 
-run sp_hash_test2.cpp
-  : : : $(cnhash) ;
-run sp_hash_test3.cpp
-  : : : $(cnhash) ;
+run sp_hash_test2.cpp ;
+run sp_hash_test3.cpp ;
 
 run pointer_cast_test2.cpp ;
 
@@ -241,8 +241,7 @@ compile make_shared_msvc_test.cpp ;
 
 compile lwm_win32_cs_test.cpp ;
 
-run atomic_sp_test.cpp
-  : : : <library>/boost/atomic//boost_atomic ;
+run atomic_sp_test.cpp ;
 
 run sp_constexpr_test.cpp ;
 run sp_constexpr_test2.cpp ;
@@ -388,33 +387,29 @@ run owner_less_test2.cpp ;
 run ip_hash_test2.cpp ;
 run sp_hash_test4.cpp ;
 
-run lsp_hash_test.cpp
-  : : : $(cnhash)  ;
+run lsp_hash_test.cpp ;
 run lsp_hash_test2.cpp ;
 
-local MT = <threading>multi <library>/boost/bind//boost_bind ;
-
 run atomic_count_mt_test.cpp
-  : : : $(MT) ;
+  : : : <threading>multi ;
 
 run spinlock_mt_test.cpp
-  : : : $(MT) ;
+  : : : <threading>multi ;
 
 run spinlock_pool_mt_test.cpp
-  : : : $(MT) ;
+  : : : <threading>multi ;
 
 run shared_ptr_mt_test.cpp
-  : : : $(MT) ;
+  : : : <threading>multi ;
 
 run weak_ptr_mt_test.cpp
-  : : : $(MT) ;
+  : : : <threading>multi ;
 
 compile sp_report_implementation.cpp ;
 
 run sp_owner_hash_value_test.cpp ;
 
-run wp_hash_test.cpp
-  : : : $(cnhash) ;
+run wp_hash_test.cpp ;
 run wp_hash_test2.cpp ;
 
 run wp_unordered_test.cpp ;

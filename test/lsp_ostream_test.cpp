@@ -13,12 +13,22 @@ template<class T> std::string to_string( T const& t )
     return os.str();
 }
 
+template<class T> std::wstring to_wstring( T const& t )
+{
+    std::wostringstream os;
+    os << t;
+    return os.str();
+}
+
 int main()
 {
     boost::local_shared_ptr<int> p1, p2( new int );
 
     BOOST_TEST_EQ( to_string( p1 ), to_string( p1.get() ) );
     BOOST_TEST_EQ( to_string( p2 ), to_string( p2.get() ) );
+
+    BOOST_TEST( to_wstring( p1 ) == to_wstring( p1.get() ) );
+    BOOST_TEST( to_wstring( p2 ) == to_wstring( p2.get() ) );
 
     return boost::report_errors();
 }

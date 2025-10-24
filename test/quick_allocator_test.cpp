@@ -15,6 +15,7 @@
 //     static void* alloc();
 //
 //     // deallocate the memory returned from alloc()
+//     // if p == 0, no effect
 //     static void dealloc( void* p );
 //
 //     // if n == sizeof(T), returns alloc()
@@ -22,6 +23,7 @@
 //     static void* alloc( std::size_t n );
 //
 //     // deallocate the memory returned from alloc( n )
+//     // if p == 0, no effect
 //     static void dealloc( void* p, std::size_t n );
 //  };
 
@@ -53,6 +55,10 @@ int main()
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p1 ), 0xCC );
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
 
+        quick_allocator<X>::dealloc( 0 );
+        BOOST_TEST_EQ( *static_cast<unsigned char*>( p1 ), 0xCC );
+        BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
+
         quick_allocator<X>::dealloc( p1 );
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
 
@@ -70,11 +76,21 @@ int main()
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p1 ), 0xCC );
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
 
+        quick_allocator<X>::dealloc( 0, sizeof(X) );
+        BOOST_TEST_EQ( *static_cast<unsigned char*>( p1 ), 0xCC );
+        BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
+
         quick_allocator<X>::dealloc( p1, sizeof(X) );
+        BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
+
+        quick_allocator<X>::dealloc( 0, sizeof(Y) );
         BOOST_TEST_EQ( *static_cast<unsigned char*>( p2 ), 0xDD );
 
         quick_allocator<X>::dealloc( p2, sizeof(Y) );
     }
+
+    BOOST_TEST_EQ( *static_cast<unsigned char*>( p ), 0xAA );
+    quick_allocator<Y>::dealloc( 0 );
 
     BOOST_TEST_EQ( *static_cast<unsigned char*>( p ), 0xAA );
     quick_allocator<Y>::dealloc( p );

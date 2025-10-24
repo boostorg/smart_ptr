@@ -28,7 +28,7 @@
 #include <boost/core/addressof.hpp>
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
-#include <boost/cstdint.hpp>
+#include <cstdint>
 #include <memory>            // std::auto_ptr
 #include <functional>        // std::less
 #include <cstddef>           // std::size_t
@@ -91,7 +91,7 @@ template< class D > struct sp_convert_reference< D& >
 
 template<class T> std::size_t sp_hash_pointer( T* p ) noexcept
 {
-    boost::uintptr_t v = reinterpret_cast<boost::uintptr_t>( p );
+    std::uintptr_t v = reinterpret_cast<std::uintptr_t>( p );
 
     // match boost::hash<T*>
     return static_cast<std::size_t>( v + ( v >> 3 ) );

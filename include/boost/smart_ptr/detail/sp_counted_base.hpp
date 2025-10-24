@@ -25,9 +25,6 @@
 #elif defined( BOOST_SP_USE_STD_ATOMIC )
 # include <boost/smart_ptr/detail/sp_counted_base_std_atomic.hpp>
 
-#elif defined( BOOST_SP_USE_PTHREADS )
-# include <boost/smart_ptr/detail/sp_counted_base_pt.hpp>
-
 #else
 # include <boost/smart_ptr/detail/sp_counted_base_std_atomic.hpp>
 

@@ -33,9 +33,6 @@
 #if defined( BOOST_SP_USE_STD_ATOMIC )
 #  include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
 
-#elif defined( BOOST_SP_USE_PTHREADS )
-#  include <boost/smart_ptr/detail/spinlock_pt.hpp>
-
 #else
 #  include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
 

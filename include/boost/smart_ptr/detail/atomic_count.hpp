@@ -51,9 +51,6 @@
 #elif defined( BOOST_AC_USE_STD_ATOMIC )
 # include <boost/smart_ptr/detail/atomic_count_std_atomic.hpp>
 
-#elif defined( BOOST_AC_USE_SPINLOCK )
-# include <boost/smart_ptr/detail/atomic_count_spin.hpp>
-
 #elif defined( BOOST_AC_USE_PTHREADS )
 # include <boost/smart_ptr/detail/atomic_count_pt.hpp>
 

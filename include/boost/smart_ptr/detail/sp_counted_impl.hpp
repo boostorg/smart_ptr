@@ -18,10 +18,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#if defined(BOOST_SP_USE_STD_ALLOCATOR) && defined(BOOST_SP_USE_QUICK_ALLOCATOR)
-# error BOOST_SP_USE_STD_ALLOCATOR and BOOST_SP_USE_QUICK_ALLOCATOR are incompatible.
-#endif
-
 #include <boost/smart_ptr/detail/sp_counted_base.hpp>
 #include <boost/smart_ptr/detail/deprecated_macros.hpp>
 #include <boost/core/checked_delete.hpp>
@@ -91,20 +87,6 @@ public:
         return 0;
     }
 
-#if defined(BOOST_SP_USE_STD_ALLOCATOR)
-
-    void * operator new( std::size_t )
-    {
-        return std::allocator<this_type>().allocate( 1, static_cast<this_type *>(0) );
-    }
-
-    void operator delete( void * p )
-    {
-        std::allocator<this_type>().deallocate( static_cast<this_type *>(p), 1 );
-    }
-
-#endif
-
 #if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
 
     void * operator new( std::size_t )
@@ -163,20 +145,6 @@ public:
     {
         return &reinterpret_cast<char&>( del );
     }
-
-#if defined(BOOST_SP_USE_STD_ALLOCATOR)
-
-    void * operator new( std::size_t )
-    {
-        return std::allocator<this_type>().allocate( 1, static_cast<this_type *>(0) );
-    }
-
-    void operator delete( void * p )
-    {
-        std::allocator<this_type>().deallocate( static_cast<this_type *>(p), 1 );
-    }
-
-#endif
 
 #if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
 

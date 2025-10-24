@@ -24,10 +24,6 @@
 #include <boost/core/addressof.hpp>
 #include <boost/config.hpp>
 
-#if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
-#include <boost/smart_ptr/detail/quick_allocator.hpp>
-#endif
-
 #include <memory>           // std::allocator, std::allocator_traits
 #include <cstddef>          // std::size_t
 
@@ -86,20 +82,6 @@ public:
     {
         return 0;
     }
-
-#if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
-
-    void * operator new( std::size_t )
-    {
-        return quick_allocator<this_type>::alloc();
-    }
-
-    void operator delete( void * p )
-    {
-        quick_allocator<this_type>::dealloc( p );
-    }
-
-#endif
 };
 
 template<class P, class D> class BOOST_SYMBOL_VISIBLE sp_counted_impl_pd: public sp_counted_base
@@ -145,20 +127,6 @@ public:
     {
         return &reinterpret_cast<char&>( del );
     }
-
-#if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
-
-    void * operator new( std::size_t )
-    {
-        return quick_allocator<this_type>::alloc();
-    }
-
-    void operator delete( void * p )
-    {
-        quick_allocator<this_type>::dealloc( p );
-    }
-
-#endif
 };
 
 template<class P, class D, class A> class BOOST_SYMBOL_VISIBLE sp_counted_impl_pda: public sp_counted_base

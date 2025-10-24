@@ -122,12 +122,6 @@ int main()
     std::cout << "BOOST_HAS_THREADS: (not defined)\n";
 #endif
 
-#if defined(BOOST_SP_USE_QUICK_ALLOCATOR)
-    std::cout << "BOOST_SP_USE_QUICK_ALLOCATOR: (defined)\n";
-#else
-    std::cout << "BOOST_SP_USE_QUICK_ALLOCATOR: (not defined)\n";
-#endif
-
 #if defined(BOOST_QA_PAGE_SIZE)
     std::cout << "BOOST_QA_PAGE_SIZE: " << BOOST_QA_PAGE_SIZE << "\n";
 #else

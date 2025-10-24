@@ -22,9 +22,6 @@
 #if defined( BOOST_SP_DISABLE_THREADS )
 # include <boost/smart_ptr/detail/sp_counted_base_nt.hpp>
 
-#elif defined( BOOST_SP_USE_STD_ATOMIC )
-# include <boost/smart_ptr/detail/sp_counted_base_std_atomic.hpp>
-
 #else
 # include <boost/smart_ptr/detail/sp_counted_base_std_atomic.hpp>
 

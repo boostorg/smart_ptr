@@ -29,13 +29,6 @@
 //
 
 #include <boost/smart_ptr/detail/deprecated_macros.hpp>
-
-#if defined( BOOST_SP_USE_STD_ATOMIC )
-#  include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
-
-#else
-#  include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
-
-#endif
+#include <boost/smart_ptr/detail/spinlock_std_atomic.hpp>
 
 #endif // #ifndef BOOST_SMART_PTR_DETAIL_SPINLOCK_HPP_INCLUDED

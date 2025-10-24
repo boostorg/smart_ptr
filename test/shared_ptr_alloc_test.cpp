@@ -52,7 +52,7 @@ public:
 
     void * operator new(std::size_t)
     {
-        return std::allocator<X>().allocate(1, static_cast<X*>(0));
+        return std::allocator<X>().allocate(1);
     }
 
     void operator delete(void * p)

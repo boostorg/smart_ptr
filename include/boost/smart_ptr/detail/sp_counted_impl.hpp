@@ -38,13 +38,6 @@
 namespace boost
 {
 
-#if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
-
-void sp_scalar_constructor_hook( void * px, std::size_t size, void * pn );
-void sp_scalar_destructor_hook( void * px, std::size_t size, void * pn );
-
-#endif
-
 namespace detail
 {
 
@@ -76,16 +69,10 @@ public:
 
     explicit sp_counted_impl_p( X * px ): px_( px )
     {
-#if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
-        boost::sp_scalar_constructor_hook( px, sizeof(X), this );
-#endif
     }
 
     void dispose() noexcept override
     {
-#if defined(BOOST_SP_ENABLE_DEBUG_HOOKS)
-        boost::sp_scalar_destructor_hook( px_, sizeof(X), this );
-#endif
         boost::checked_delete( px_ );
     }
 

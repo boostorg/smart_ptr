@@ -33,7 +33,7 @@ BOOST_PRAGMA_MESSAGE("The macro BOOST_AC_USE_SPINLOCK has been deprecated in 1.8
 
 #if defined(BOOST_AC_USE_PTHREADS)
 
-BOOST_PRAGMA_MESSAGE("The macro BOOST_AC_USE_PTHREADS has been deprecated in 1.87 and support for it will be removed.")
+BOOST_PRAGMA_MESSAGE("The macro BOOST_AC_USE_PTHREADS has been deprecated in 1.87 and support for it was removed in 1.90.")
 
 #endif
 

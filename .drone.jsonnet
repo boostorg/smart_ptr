@@ -213,17 +213,17 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     ),
 
     linux_pipeline(
-        "Linux 16.04 Clang 3.5",
-        "cppalliance/droneubuntu1604:1",
-        { TOOLSET: 'clang', COMPILER: 'clang++-3.5', CXXSTD: '11' },
-        "clang-3.5",
+        "Linux 25.04 GCC 15 UBSAN",
+        "cppalliance/droneubuntu2504:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++-15', CXXSTD: '11,14,17,20,23,2c' } + ubsan,
+        "g++-15-multilib",
     ),
 
     linux_pipeline(
-        "Linux 16.04 Clang 3.6",
-        "cppalliance/droneubuntu1604:1",
-        { TOOLSET: 'clang', COMPILER: 'clang++-3.6', CXXSTD: '11,14' },
-        "clang-3.6",
+        "Linux 25.04 GCC 15 ASAN",
+        "cppalliance/droneubuntu2504:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++-15', CXXSTD: '11,14,17,20,23,2c' } + asan,
+        "g++-15-multilib",
     ),
 
     linux_pipeline(
